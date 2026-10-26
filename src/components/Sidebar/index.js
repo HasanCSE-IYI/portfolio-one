@@ -30,7 +30,7 @@ const Sidebar = () => {
   return (
     <div className="nav-bar">
       <Link className="logo" to="/" onClick={handleLinkClick}>
-        <img className="App-logo" src={LogoS} alt="Mahmud" />
+        <img className="App-logo" src={LogoS} alt="Mahmud al Hasan" />
         <img className="sub-logo" src={LogoSubtitle} alt="Mahmud al Hasan" />
       </Link>
       <nav className={showNav ? 'mobile-show' : ''}>

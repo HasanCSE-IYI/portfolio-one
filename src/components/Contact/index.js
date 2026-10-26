@@ -203,7 +203,7 @@ const Contact = () => {
             <MapContainer center={[22.3833, 91.8167]} zoom={13}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker position={[22.3833, 91.8167]}>
-                <Popup>Mahmud lives here in Bayazid, Chattogram :)</Popup>
+                <Popup>Mahmud al Hasan lives here in Bayazid, Chattogram :)</Popup>
               </Marker>
             </MapContainer>
           </div>

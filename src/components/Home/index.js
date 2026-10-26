@@ -44,7 +44,23 @@ const Home = () => {
   const [activeCapability, setActiveCapability] = useState(0)
   const [isResumeOpen, setIsResumeOpen] = useState(false)
 
-  const nameArray = ['a', 'h', 'm', 'u', 'd', ',']
+  const nameArray = [
+    'a',
+    'h',
+    'm',
+    'u',
+    'd',
+    ' ',
+    'a',
+    'l',
+    ' ',
+    'H',
+    'a',
+    's',
+    'a',
+    'n',
+    ',',
+  ]
   const jobArray = [
     's',
     'o',
@@ -131,7 +147,7 @@ const Home = () => {
               <AnimatedLetters
                 letterClass={letterClass}
                 strArray={jobArray}
-                idx={22}
+                idx={30}
               />
             </h1>
 
@@ -179,7 +195,7 @@ const Home = () => {
                   <span className="dot yellow"></span>
                   <span className="dot green"></span>
                 </div>
-                <span className="terminal-title">mahmud@backend-engine:~$ specs --summary</span>
+                <span className="terminal-title">mahmud-al-hasan@backend-engine:~$ specs --summary</span>
               </div>
               <div className="terminal-body">
                 <div className="spec-row">
