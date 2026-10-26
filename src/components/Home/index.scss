@@ -1,29 +1,32 @@
+// Home Page Mobile-First Styles
 .home-page {
   .text-zone {
-    position: absolute;
-    left: 10%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40%;
-    max-height: 90%;
+    position: relative;
+    width: 100%;
+    left: 0;
+    top: 0;
+    transform: none;
+    padding: 10px 0 30px;
+    box-sizing: border-box;
   }
 
   h1 {
     color: #fff;
-    font-size: 56px;
-    line-height: 53px;
+    font-size: clamp(30px, 8vw, 56px);
+    line-height: 1.15;
     margin: 0;
-    font-family: 'Coolvetica';
+    font-family: 'Coolvetica', sans-serif;
     font-weight: 400;
+    position: relative;
 
     &:before {
       content: '<h1>';
       font-family: 'La Belle Aurore', cursive;
       color: #ffd700;
-      font-size: 18px;
+      font-size: 14px;
       position: absolute;
-      margin-top: -40px;
-      left: -15px;
+      margin-top: -24px;
+      left: 0;
       opacity: 0.6;
     }
 
@@ -31,51 +34,108 @@
       content: '</h1>';
       font-family: 'La Belle Aurore', cursive;
       color: #ffd700;
-      font-size: 18px;
+      font-size: 14px;
       position: absolute;
-      margin-top: 18px;
-      margin-left: 20px;
+      margin-top: 14px;
+      margin-left: 12px;
       animation: fadeIn 1s 1.7s backwards;
       opacity: 0.6;
     }
 
     img {
-      margin-left: 20px;
+      margin-left: 8px;
       opacity: 0;
-      width: 50px;
+      width: clamp(28px, 6vw, 48px);
       height: auto;
+      vertical-align: middle;
       animation: rotateIn 1s linear both;
       animation-delay: 1.4s;
     }
   }
 
   h2 {
-    color: #8d8d8d;
+    color: #a0a0a0;
     margin-top: 20px;
     font-weight: 400;
-    font-size: 11px;
-    font-family: sans-serif;
-    letter-spacing: 3px;
+    font-size: 1.2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: 2px;
+    line-height: 1.5;
     animation: fadeIn 1s 1.8s backwards;
   }
 
   .flat-button {
     color: #ffd700;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 4px;
-    font-family: sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-decoration: none;
-    padding: 10px 18px;
+    padding: 12px 28px;
+    min-height: 48px;
     border: 1px solid #ffd700;
-    margin-top: 25px;
-    float: left;
+    border-radius: 6px;
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    float: none;
     animation: fadeIn 1s 1.8s backwards;
     white-space: nowrap;
+    transition: all 0.3s ease;
 
     &:hover {
       background: #ffd700;
-      color: #333;
+      color: #181818;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Desktop Home Page (min-width: 992px)
+@media screen and (min-width: 992px) {
+  .home-page {
+    .text-zone {
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42%;
+      max-height: 90%;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 56px;
+      line-height: 53px;
+
+      &:before {
+        font-size: 18px;
+        margin-top: -40px;
+        left: -15px;
+      }
+
+      &:after {
+        font-size: 18px;
+        margin-top: 18px;
+        margin-left: 20px;
+      }
+
+      img {
+        margin-left: 16px;
+        width: 50px;
+      }
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      margin-top: 24px;
+    }
+
+    .flat-button {
+      float: left;
     }
   }
 }

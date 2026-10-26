@@ -1,12 +1,16 @@
+// About Page Mobile-First Styles
 .stage-cube-cont {
-  width: 50%;
-  height: 100%;
-  top: 0;
-  padding-top: 18%;
-  margin-left: 0;
-  position: absolute;
-  right: 0;
-  overflow: hidden;
+  width: 100%;
+  height: 220px;
+  position: relative;
+  margin: 30px auto 20px;
+  padding-top: 0;
+  right: auto;
+  top: auto;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cubespinner {
@@ -15,46 +19,93 @@
   animation-iteration-count: infinite;
   animation-duration: 12s;
   transform-style: preserve-3d;
-  transform-origin: 100px 100px 0;
-  margin-left: calc(50% - 100px);
+  transform-origin: 60px 60px 0;
+  margin-left: calc(50% - 60px);
 
   div {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    border: 1px solid #ccc;
-    background: rgba(255, 255, 255, 0.4);
+    width: 120px;
+    height: 120px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(4px);
     text-align: center;
-    font-size: 100px;
+    font-size: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 20px 0px lightyellow;
+    box-shadow: 0 0 15px 0px rgba(255, 255, 224, 0.5);
   }
 
   .face1 {
-    transform: translateZ(100px);
+    transform: translateZ(60px);
     color: #dd0031;
   }
   .face2 {
-    transform: rotateY(90deg) translateZ(100px);
+    transform: rotateY(90deg) translateZ(60px);
     color: #f06529;
   }
   .face3 {
-    transform: rotateY(90deg) rotateX(90deg) translateZ(100px);
+    transform: rotateY(90deg) rotateX(90deg) translateZ(60px);
     color: #28a4d9;
   }
   .face4 {
-    transform: rotateY(180deg) rotateZ(90deg) translateZ(100px);
+    transform: rotateY(180deg) rotateZ(90deg) translateZ(60px);
     color: #5ed4f4;
   }
   .face5 {
-    transform: rotateY(-90deg) rotateZ(90deg) translateZ(100px);
+    transform: rotateY(-90deg) rotateZ(90deg) translateZ(60px);
     color: #efd81d;
   }
   .face6 {
-    transform: rotateX(-90deg) translateZ(100px);
+    transform: rotateX(-90deg) translateZ(60px);
     color: #ec4d28;
+  }
+}
+
+// Desktop About Page (min-width: 992px)
+@media screen and (min-width: 992px) {
+  .stage-cube-cont {
+    width: 50%;
+    height: 100%;
+    top: 0;
+    padding-top: 18%;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    overflow: hidden;
+    display: block;
+  }
+
+  .cubespinner {
+    transform-origin: 100px 100px 0;
+    margin-left: calc(50% - 100px);
+
+    div {
+      width: 200px;
+      height: 200px;
+      font-size: 100px;
+      box-shadow: 0 0 20px 0px lightyellow;
+    }
+
+    .face1 {
+      transform: translateZ(100px);
+    }
+    .face2 {
+      transform: rotateY(90deg) translateZ(100px);
+    }
+    .face3 {
+      transform: rotateY(90deg) rotateX(90deg) translateZ(100px);
+    }
+    .face4 {
+      transform: rotateY(180deg) rotateZ(90deg) translateZ(100px);
+    }
+    .face5 {
+      transform: rotateY(-90deg) rotateZ(90deg) translateZ(100px);
+    }
+    .face6 {
+      transform: rotateX(-90deg) translateZ(100px);
+    }
   }
 }
 

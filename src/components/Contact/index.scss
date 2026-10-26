@@ -1,3 +1,4 @@
+// Contact Page Mobile-First Styles
 .contact-form {
   width: 100%;
   margin-top: 20px;
@@ -5,79 +6,128 @@
   ul {
     padding: 0;
     margin: 0;
+    list-style: none;
 
     li {
       padding: 0;
-      margin: 0;
-      list-style: none;
-      margin-bottom: 10px;
-      opacity: 0;
-      overflow: hidden;
-      display: block;
-      clear: both;
+      margin: 0 0 14px;
       position: relative;
-      animation: fadeInUp 2s 2s;
-      animation-fill-mode: forwards;
+      opacity: 0;
+      animation: fadeInUp 0.8s 0.2s forwards;
     }
 
     li.half {
-      width: 49%;
-      margin-left: 2%;
-      float: left;
-      clear: none;
-
-      &:first-child {
-        margin-left: 0;
-      }
+      width: 100%;
+      margin-left: 0;
+      float: none;
     }
   }
 
   input[type='text'],
   input[type='email'] {
     width: 100%;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     background: #115173;
-    height: 50px;
-    font-size: 16px;
+    height: 48px;
+    font-size: 1.6rem;
     color: #fff;
-    padding: 0 20px;
+    padding: 0 16px;
     box-sizing: border-box;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #ffd700;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+    }
   }
 
   textarea {
     width: 100%;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     background: #115173;
-    height: 50px;
-    font-size: 16px;
+    min-height: 130px;
+    font-size: 1.6rem;
     color: #fff;
-    padding: 20px;
+    padding: 16px;
     box-sizing: border-box;
-    min-height: 150px;
+    border-radius: 6px;
+    outline: none;
+    resize: vertical;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #ffd700;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+    }
   }
 
   .flat-button {
     color: #ffd700;
-    font-size: 11px;
+    font-size: 1.3rem;
+    font-weight: 600;
     letter-spacing: 3px;
     text-decoration: none;
-    padding: 8px 10px;
+    padding: 12px 24px;
     border: 1px solid #ffd700;
-    border-radius: 4px;
-    background: 0 0;
+    border-radius: 6px;
+    background: transparent;
     text-transform: uppercase;
-    float: right;
     text-align: center;
-    margin-right: 10px;
+    cursor: pointer;
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #ffd700;
+      color: #181818;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+  }
+}
+
+.info-map {
+  position: relative;
+  background: rgba(0, 0, 0, 0.75);
+  border-left: 4px solid #ffd700;
+  border-radius: 8px;
+  top: auto;
+  right: auto;
+  width: 100%;
+  padding: 16px 20px;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.4s forwards;
+
+  span {
+    font-size: 1.4rem;
+    color: #ffd700;
+    font-weight: 500;
   }
 }
 
 .map-wrap {
   background: rgba(8, 253, 216, 0.1);
-  float: right;
-  width: 53%;
-  height: 115%;
-  margin-top: -3%;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  float: none;
+  margin: 0 0 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .leaflet-container {
@@ -85,31 +135,55 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  animation: backInRight 1s 1.2s;
-  animation-fill-mode: forwards;
+  animation: backInRight 1s 0.8s forwards;
 }
 
-.info-map {
-  position: absolute;
-  background: #000;
-  top: 50px;
-  right: 30%;
-  z-index: 999999;
-  width: 267px;
-  padding: 20px;
-  color: #fff;
-  font-family: 'Helvetica';
-  font-size: 17px;
-  font-weight: 300;
-  opacity: 0;
-  animation: fadeIn 1s 1.5s;
-  animation-fill-mode: forwards;
+// Desktop Contact Page (min-width: 992px)
+@media screen and (min-width: 992px) {
+  .contact-form {
+    ul {
+      li.half {
+        width: 49%;
+        margin-left: 2%;
+        float: left;
 
-  span {
-    font-size: 16px;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .flat-button {
+      width: auto;
+      float: right;
+      padding: 10px 30px;
+    }
+  }
+
+  .map-wrap {
+    float: right;
+    width: 53%;
+    height: 115%;
+    margin-top: -3%;
+    border-radius: 0;
+    border: none;
+  }
+
+  .info-map {
+    position: absolute;
+    background: #000;
+    top: 50px;
+    right: 30%;
+    z-index: 999999;
+    width: 267px;
+    padding: 20px;
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    font-size: 17px;
 
     span {
-      color: #ffd700;
+      font-size: 16px;
     }
   }
 }

@@ -1,43 +1,50 @@
+// Home Logo Styles
 .logo-container {
   z-index: 0;
-  width: 400px;
-  height: 609px;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  right: 15%;
-  bottom: 0;
-  left: auto;
-  margin: auto;
+  width: 100%;
+  max-width: 240px;
+  height: 240px;
+  margin: 30px auto 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 1.5s 1s forwards;
-  pointer-events: auto;
+  position: relative;
+  opacity: 0;
+  animation: fadeIn 1s 0.8s forwards;
 
   .solid-logo {
     width: 100%;
-    max-width: 380px;
+    max-width: 200px;
     height: auto;
     opacity: 0;
-    transform: rotateZ(5deg);
-    animation: fadeIn 1.5s 1.2s forwards;
-    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.2));
+    transform: rotateZ(4deg);
+    animation: fadeIn 1.2s 1s forwards;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.25));
     transition: transform 0.4s ease, filter 0.4s ease;
 
     &:hover {
-      transform: rotateZ(0deg) scale(1.03);
-      filter: drop-shadow(0 0 35px rgba(255, 215, 0, 0.4));
+      transform: rotateZ(0deg) scale(1.05);
+      filter: drop-shadow(0 0 35px rgba(255, 215, 0, 0.45));
     }
   }
 }
 
-@media screen and (max-width: 1200px) {
+// Desktop Logo (min-width: 992px)
+@media screen and (min-width: 992px) {
   .logo-container {
-    position: static;
-    width: 100%;
-    height: auto;
-    margin: 40px auto;
-    display: none;
+    width: 400px;
+    height: 609px;
+    max-width: 400px;
+    position: absolute;
+    top: 0;
+    right: 12%;
+    bottom: 0;
+    left: auto;
+    margin: auto;
+
+    .solid-logo {
+      max-width: 380px;
+      transform: rotateZ(5deg);
+    }
   }
 }
