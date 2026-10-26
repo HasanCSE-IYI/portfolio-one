@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Loader from 'react-loaders';
 import AnimatedLetters from '../AnimatedLetters';
 import StoreApiDemo from './StoreApiDemo';
 import './index.scss';
-import { getDocs, collection } from 'firebase/firestore';
-import { db } from '../../firebase';
 import portfolioData from '../../data/portfolio.json';
 
 const CATEGORIES = [
@@ -16,7 +13,7 @@ const CATEGORIES = [
 
 const Portfolio = () => {
   const [letterClass, setLetterClass] = useState('text-animate');
-  const [portfolio, setPortfolio] = useState([]);
+  const [portfolio] = useState(portfolioData.portfolio || []);
   const [activeCategory, setActiveCategory] = useState('all');
   const [showSimulator, setShowSimulator] = useState(true);
 
@@ -29,24 +26,6 @@ const Portfolio = () => {
       clearTimeout(timer);
     };
   }, []);
-
-  useEffect(() => {
-    getPortfolio();
-  }, []);
-
-  const getPortfolio = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'portfolio'));
-      if (querySnapshot.docs.length > 0) {
-        setPortfolio(querySnapshot.docs.map((doc) => doc.data()));
-      } else {
-        setPortfolio(portfolioData.portfolio);
-      }
-    } catch (error) {
-      console.warn('Firebase portfolio fetch failed, falling back to local data:', error);
-      setPortfolio(portfolioData.portfolio);
-    }
-  };
 
   const filteredPortfolio =
     activeCategory === 'all'
@@ -204,7 +183,6 @@ const Portfolio = () => {
           </a>
         </div>
       </div>
-      <Loader type="pacman" />
     </>
   );
 };

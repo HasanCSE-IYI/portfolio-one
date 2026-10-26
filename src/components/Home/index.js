@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import Loader from 'react-loaders'
 import { Link } from 'react-router-dom'
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
+import RequestPipeline from '../RequestPipeline'
+import ResumeModal from '../ResumeModal'
 import './index.scss'
 import portfolioData from '../../data/portfolio.json'
 
@@ -41,6 +42,7 @@ const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
 
   const nameArray = ['a', 'h', 'm', 'u', 'd', ',']
   const jobArray = [
@@ -155,6 +157,13 @@ const Home = () => {
               <Link to="/contact" className="flat-button">
                 CONTACT ME
               </Link>
+              <button
+                type="button"
+                className="flat-button button-cv"
+                onClick={() => setIsResumeOpen(true)}
+              >
+                VIEW / DOWNLOAD CV 📄
+              </button>
               <Link to="/portfolio" className="flat-button button-secondary">
                 VIEW ARCHITECTURE &amp; SIMULATOR
               </Link>
@@ -247,9 +256,16 @@ const Home = () => {
             ))}
           </div>
         </div>
+
+        {/* Systems in Motion: REST API Request Lifecycle Pipeline */}
+        <RequestPipeline />
       </div>
 
-      <Loader type="pacman" />
+      {/* Full Executive Resume / CV Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+      />
     </>
   )
 }

@@ -7,9 +7,36 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import Loader from 'react-loaders'
 import AnimatedLetters from '../AnimatedLetters'
+import ResumeModal from '../ResumeModal'
 import './index.scss'
+
+const BOOKS = [
+  {
+    title: 'Clean Architecture',
+    author: 'Robert C. Martin (Uncle Bob)',
+    takeaway: 'Separation of concerns, dependency inversion, and business logic decoupled from frameworks and databases.',
+    tag: 'Architecture',
+  },
+  {
+    title: 'Designing Data-Intensive Applications',
+    author: 'Martin Kleppmann',
+    takeaway: 'Reliability, scalability, and maintainability across transactional isolation levels, replication, and distributed storage.',
+    tag: 'Distributed Systems',
+  },
+  {
+    title: 'Domain-Driven Design',
+    author: 'Eric Evans',
+    takeaway: 'Ubiquitous language, bounded contexts, aggregates, and modeling complex business rules directly into domain code.',
+    tag: 'Domain Modeling',
+  },
+  {
+    title: 'Pro ASP.NET Core Web API',
+    author: 'Adam Freeman',
+    takeaway: 'Deep dive into HTTP pipeline interception, IoC container, EF Core Code-First patterns, and high-performance Web APIs.',
+    tag: '.NET Ecosystem',
+  },
+]
 
 const PRINCIPLES = [
   {
@@ -29,6 +56,7 @@ const PRINCIPLES = [
 const About = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [showPrinciples, setShowPrinciples] = useState(false)
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -140,9 +168,47 @@ const About = () => {
               <span className="tag">Python / Scrapy</span>
             </div>
           </div>
+
+          {/* Curated Engineering Library (Inspired by Muttakin Hasib's Library) */}
+          <div className="books-section">
+            <div className="books-header">
+              <span className="section-eyebrow">ENGINEERING FOUNDATIONS</span>
+              <h3>Architectural Influences &amp; Curated Library</h3>
+              <p>Books that systematically shaped my approach to software structure, domain boundaries, and data scalability.</p>
+            </div>
+            <div className="books-grid">
+              {BOOKS.map((book, idx) => (
+                <div className="book-card" key={idx}>
+                  <div className="book-top">
+                    <span className="book-tag">{book.tag}</span>
+                    <span className="book-icon">📖</span>
+                  </div>
+                  <h4 className="book-title">{book.title}</h4>
+                  <span className="book-author">{book.author}</span>
+                  <p className="book-takeaway">{book.takeaway}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Direct Resume / CV Trigger */}
+          <div className="about-cv-cta">
+            <button
+              type="button"
+              className="about-cv-btn"
+              onClick={() => setIsResumeOpen(true)}
+            >
+              📄 VIEW / DOWNLOAD EXECUTIVE CV (PDF)
+            </button>
+          </div>
         </div>
       </div>
-      <Loader type="pacman" />
+
+      {/* Full Executive Resume / CV Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+      />
     </>
   )
 }

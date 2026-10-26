@@ -155,6 +155,19 @@
       transform: translateY(-2px);
     }
 
+    &.button-cv {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: #f59e0b;
+      color: #f59e0b;
+      cursor: pointer;
+
+      &:hover {
+        background: #f59e0b;
+        color: #0f172a;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+      }
+    }
+
     &.button-secondary {
       background: #181b20;
       color: #fff;

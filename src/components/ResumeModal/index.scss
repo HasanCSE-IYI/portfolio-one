@@ -1,0 +1,321 @@
+// Resume Modal Styles & Print Rules
+.resume-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.25s ease-out;
+
+  .resume-modal-content {
+    background: #11141a;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+
+    .modal-top-bar {
+      background: #181c24;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .modal-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          &.green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        }
+
+        .title-text {
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: #f59e0b;
+          font-weight: 600;
+        }
+      }
+
+      .modal-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .print-btn {
+          background: rgba(245, 158, 11, 0.15);
+          color: #f59e0b;
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          padding: 6px 14px;
+          border-radius: 6px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #f59e0b;
+            color: #11141a;
+          }
+        }
+
+        .close-btn {
+          background: transparent;
+          color: #9ca3af;
+          border: none;
+          font-size: 1.1rem;
+          cursor: pointer;
+          padding: 4px 8px;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+          }
+        }
+      }
+    }
+
+    .resume-sheet {
+      padding: 30px;
+      overflow-y: auto;
+      color: #e5e7eb;
+      font-family: var(--font-sans);
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(245, 158, 11, 0.3);
+        border-radius: 4px;
+      }
+
+      .resume-header {
+        border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+        padding-bottom: 16px;
+        margin-bottom: 20px;
+
+        .name {
+          font-size: 2rem;
+          color: #fff;
+          margin: 0;
+          font-weight: 800;
+        }
+
+        .headline {
+          font-size: 1rem;
+          color: #f59e0b;
+          margin: 6px 0 10px;
+          font-weight: 600;
+        }
+
+        .contact-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+          font-size: 0.82rem;
+          color: #9ca3af;
+          font-family: var(--font-mono);
+
+          a {
+            color: #38bdf8;
+            text-decoration: none;
+            &:hover { text-decoration: underline; }
+          }
+        }
+      }
+
+      .resume-section {
+        margin-bottom: 22px;
+
+        .section-title {
+          font-size: 1.1rem;
+          color: #f59e0b;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 0 0 10px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          padding-bottom: 4px;
+        }
+
+        .summary-text {
+          font-size: 0.92rem;
+          line-height: 1.6;
+          color: #d1d5db;
+          margin: 0;
+
+          strong { color: #fff; }
+        }
+
+        .skills-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .skill-cat {
+            font-size: 0.88rem;
+            line-height: 1.5;
+
+            .cat-title {
+              font-weight: 700;
+              color: #fff;
+              margin-right: 6px;
+            }
+
+            .cat-items {
+              color: #9ca3af;
+            }
+          }
+        }
+
+        .job-entry {
+          margin-bottom: 16px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+
+            .job-title {
+              font-size: 0.98rem;
+              color: #fff;
+              font-weight: 700;
+              margin: 0;
+            }
+
+            .company {
+              font-size: 0.85rem;
+              color: #38bdf8;
+              font-weight: 500;
+              display: block;
+              margin-top: 2px;
+            }
+
+            .period {
+              font-size: 0.82rem;
+              font-family: var(--font-mono);
+              color: #9ca3af;
+              white-space: nowrap;
+            }
+          }
+
+          .achievements {
+            margin: 6px 0 0;
+            padding-left: 18px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            color: #d1d5db;
+
+            li {
+              margin-bottom: 4px;
+            }
+          }
+        }
+
+        .project-entry {
+          margin-bottom: 12px;
+
+          .proj-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.92rem;
+            display: block;
+          }
+
+          .proj-desc {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            margin: 4px 0 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Print Styles for Clean A4 PDF Output
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .resume-modal-overlay,
+  .resume-modal-overlay * {
+    visibility: visible;
+  }
+
+  .resume-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    padding: 0;
+
+    .modal-top-bar {
+      display: none !important;
+    }
+
+    .resume-modal-content {
+      background: #fff !important;
+      border: none !important;
+      box-shadow: none !important;
+      max-width: 100% !important;
+      max-height: none !important;
+    }
+
+    .resume-sheet {
+      color: #111 !important;
+      padding: 0 !important;
+
+      .resume-header {
+        border-bottom-color: #333 !important;
+        .name { color: #000 !important; }
+        .headline { color: #444 !important; }
+        .contact-row { color: #555 !important; }
+      }
+
+      .resume-section {
+        .section-title {
+          color: #000 !important;
+          border-bottom-color: #ccc !important;
+        }
+        .summary-text,
+        .achievements,
+        .proj-desc,
+        .cat-items {
+          color: #333 !important;
+        }
+        .job-title,
+        .cat-title,
+        .proj-name {
+          color: #000 !important;
+        }
+        .company {
+          color: #1e40af !important;
+        }
+      }
+    }
+  }
+}
