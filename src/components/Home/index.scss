@@ -1,4 +1,4 @@
-// Home Page Mobile-First Styles
+// Home Page Mobile-First Styles (Enhanced with Hasib & Nahian UI/UX)
 .home-page {
   .text-zone {
     position: relative;
@@ -8,6 +8,48 @@
     transform: none;
     padding: 10px 0 30px;
     box-sizing: border-box;
+  }
+
+  // Status & Time Bar
+  .status-time-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+
+    .availability-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      padding: 5px 12px;
+      border-radius: 20px;
+
+      .pulse-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #22c55e;
+        box-shadow: 0 0 8px #22c55e;
+        animation: pulseAnimation 2s infinite;
+      }
+    }
+
+    .location-clock {
+      color: #9ca3af;
+      font-size: 0.8rem;
+      font-family: monospace;
+
+      .time-val {
+        color: #fff;
+        font-weight: 600;
+      }
+    }
   }
 
   h1 {
@@ -55,40 +97,62 @@
 
   h2 {
     color: #a0a0a0;
-    margin-top: 20px;
+    margin-top: 16px;
+    margin-bottom: 0;
     font-weight: 400;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     line-height: 1.5;
     animation: fadeIn 1s 1.8s backwards;
+  }
+
+  // Focus Chain
+  .focus-chain {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+
+    .chain-item {
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: #d1d5db;
+      background: #181b20;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .chain-arrow {
+      color: #ffd700;
+      font-size: 0.75rem;
+    }
   }
 
   .cta-buttons {
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
-    margin-top: 28px;
+    margin-top: 24px;
+    margin-bottom: 30px;
   }
 
   .flat-button {
     color: #ffd700;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-decoration: none;
     padding: 12px 24px;
     min-height: 48px;
     border: 1px solid #ffd700;
     border-radius: 6px;
-    margin-top: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    float: none;
-    animation: fadeIn 1s 1.8s backwards;
-    white-space: nowrap;
     transition: all 0.3s ease;
 
     &:hover {
@@ -110,6 +174,52 @@
       }
     }
   }
+
+  // Engineering Impact Metrics Grid
+  .impact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 20px;
+
+    @media screen and (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .impact-card {
+      background: #14171d;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: rgba(255, 215, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .metric-val {
+        font-family: monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffd700;
+      }
+
+      .metric-claim {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #fff;
+        margin-top: 4px;
+      }
+
+      .metric-context {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        line-height: 1.4;
+        margin-top: 6px;
+      }
+    }
+  }
 }
 
 // Desktop Home Page (min-width: 992px)
@@ -120,41 +230,52 @@
       left: 10%;
       top: 50%;
       transform: translateY(-50%);
-      width: 42%;
+      width: 46%;
       max-height: 90%;
       padding: 0;
+      overflow-y: auto;
+      padding-right: 15px;
+
+      // Custom sleek scrollbar for desktop
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 215, 0, 0.3);
+        border-radius: 4px;
+      }
     }
 
     h1 {
-      font-size: 56px;
-      line-height: 53px;
+      font-size: 52px;
+      line-height: 50px;
 
       &:before {
-        font-size: 18px;
-        margin-top: -40px;
+        font-size: 16px;
+        margin-top: -35px;
         left: -15px;
       }
 
       &:after {
-        font-size: 18px;
-        margin-top: 18px;
+        font-size: 16px;
+        margin-top: 16px;
         margin-left: 20px;
       }
 
       img {
-        margin-left: 16px;
-        width: 50px;
+        margin-left: 14px;
+        width: 46px;
       }
     }
 
     h2 {
-      font-size: 1.3rem;
-      letter-spacing: 3px;
-      margin-top: 24px;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      margin-top: 18px;
     }
 
-    .flat-button {
-      float: left;
+    .impact-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

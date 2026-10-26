@@ -1,26 +1,128 @@
-// About Page Mobile-First Styles
-.tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
+// About Page Mobile-First Styles (Enhanced with Hasib & Nahian Concepts)
+.about-page {
+  .text-zone {
+    p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #d1d5db;
+      margin: 0 0 16px;
 
-  .tag {
-    font-size: 1.2rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: #ffd700;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    transition: all 0.2s ease;
+      strong {
+        color: #ffd700;
+      }
+    }
+  }
 
-    &:hover {
-      background: #ffd700;
-      color: #022c43;
-      transform: translateY(-2px);
+  // Philosophy Section
+  .philosophy-section {
+    margin: 20px 0 24px;
+
+    .philosophy-toggle-btn {
+      background: #181b20;
+      color: #ffd700;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+
+      &:hover {
+        background: #ffd700;
+        color: #111317;
+      }
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+
+      @media screen and (min-width: 600px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .principle-card {
+        background: #14171d;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 12px 14px;
+
+        .principle-title {
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 6px;
+
+          .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+          }
+        }
+
+        .principle-summary {
+          font-size: 0.78rem;
+          color: #9ca3af;
+          line-height: 1.45;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .tech-groups {
+    margin-top: 20px;
+
+    .group-label {
+      font-size: 0.75rem;
+      font-family: monospace;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #ffd700;
+      margin-top: 14px;
+      margin-bottom: 8px;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0;
+      margin-bottom: 12px;
+
+      .tag {
+        font-size: 0.8rem;
+        font-family: monospace;
+        color: #d1d5db;
+        background: #181b20;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 4px 10px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+
+        &.highlight {
+          color: #ffd700;
+          background: rgba(255, 215, 0, 0.1);
+          border-color: rgba(255, 215, 0, 0.35);
+          font-weight: 600;
+        }
+
+        &:hover {
+          background: #ffd700;
+          color: #111317;
+          border-color: #ffd700;
+          transform: translateY(-2px);
+        }
+      }
     }
   }
 }
@@ -91,8 +193,29 @@
 
 // Desktop About Page (min-width: 992px)
 @media screen and (min-width: 992px) {
+  .about-page {
+    .text-zone {
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48%;
+      max-height: 90%;
+      overflow-y: auto;
+      padding-right: 20px;
+
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 215, 0, 0.3);
+        border-radius: 4px;
+      }
+    }
+  }
+
   .stage-cube-cont {
-    width: 50%;
+    width: 45%;
     height: 100%;
     top: 0;
     padding-top: 18%;

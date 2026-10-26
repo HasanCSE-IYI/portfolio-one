@@ -12,8 +12,24 @@ import Loader from 'react-loaders'
 import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
 
+const PRINCIPLES = [
+  {
+    title: 'Clean Architecture & Decoupled Domain',
+    summary: 'Keeping business logic independent of frameworks, databases, and UI layers using Repository patterns and Dependency Injection.',
+  },
+  {
+    title: 'High Throughput & Database Indexing',
+    summary: 'Minimizing latency via EF Core AsNoTracking(), asynchronous I/O (async/await), and optimized relational indexing.',
+  },
+  {
+    title: 'Defensive Security & RBAC',
+    summary: 'Enforcing granular Role-Based Access Control, JWT signature verification, and secure parameter validation at every API boundary.',
+  },
+]
+
 const About = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
+  const [showPrinciples, setShowPrinciples] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,16 +58,53 @@ const About = () => {
           <p>
             Expanding on my extensive backend foundation, I am <strong>now actively focused on the .NET ecosystem</strong>—building clean, modular Web APIs with <strong>C#, ASP.NET Core, and Entity Framework Core</strong> (Code-First &amp; Migrations), alongside cloud deployments on <strong>AWS, Docker, and Linux</strong>.
           </p>
-          <div className="tech-tags">
-            <span className="tag">.NET / C#</span>
-            <span className="tag">ASP.NET Core</span>
-            <span className="tag">EF Core</span>
-            <span className="tag">Laravel (PHP)</span>
-            <span className="tag">NestJS / Node.js</span>
-            <span className="tag">AWS</span>
-            <span className="tag">Docker</span>
-            <span className="tag">MySQL &amp; MongoDB</span>
-            <span className="tag">Python / Scrapy</span>
+
+          {/* Expandable Engineering Philosophy (Inspired by Muttakin Hasib & Al Nahian) */}
+          <div className="philosophy-section">
+            <button
+              className="philosophy-toggle-btn"
+              onClick={() => setShowPrinciples(!showPrinciples)}
+            >
+              <span>{showPrinciples ? '▲ Hide Engineering Philosophy' : '▼ View Engineering Principles & Philosophy'}</span>
+            </button>
+
+            {showPrinciples && (
+              <div className="principles-grid">
+                {PRINCIPLES.map((p, idx) => (
+                  <div className="principle-card" key={idx}>
+                    <div className="principle-title">
+                      <span className="dot"></span>
+                      {p.title}
+                    </div>
+                    <p className="principle-summary">{p.summary}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="tech-groups">
+            <div className="group-label">CURRENT FOCUS:</div>
+            <div className="tech-tags">
+              <span className="tag highlight">C# (.NET 8)</span>
+              <span className="tag highlight">ASP.NET Core Web API</span>
+              <span className="tag highlight">Entity Framework Core</span>
+              <span className="tag highlight">JWT &amp; RBAC</span>
+            </div>
+
+            <div className="group-label">CORE BACKEND FOUNDATION:</div>
+            <div className="tech-tags">
+              <span className="tag">Laravel (PHP)</span>
+              <span className="tag">NestJS</span>
+              <span className="tag">Node.js / Express</span>
+              <span className="tag">MySQL</span>
+              <span className="tag">MongoDB</span>
+              <span className="tag">SQLite</span>
+              <span className="tag">AWS (EC2, S3, RDS)</span>
+              <span className="tag">Docker</span>
+              <span className="tag">Linux</span>
+              <span className="tag">Python / Scrapy</span>
+            </div>
           </div>
         </div>
 

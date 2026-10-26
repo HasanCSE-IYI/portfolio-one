@@ -1,34 +1,123 @@
 {
   "portfolio": [
     {
+      "id": "store-api",
       "cover": "/portfolio/1/one.png",
       "title": "Store API (ASP.NET Core)",
-      "description": "RESTful product inventory API with JWT auth, role-based authorization (User/Admin), search, category filtering, pagination, and EF Core Code First migrations.",
-      "url": "https://github.com/HasanCSE-IYI/StoreApi"
+      "category": "dotnet",
+      "categoryLabel": ".NET & C#",
+      "role": "Backend Engineer (.NET Focus)",
+      "period": "2024",
+      "metrics": "<60ms Latency • JWT RBAC",
+      "description": "Production-grade RESTful API built with ASP.NET Core, C#, and Entity Framework Core with Code-First Migrations, SQLite, JWT authentication, and role-based authorization.",
+      "highlights": [
+        "Repository & Unit-of-Work design pattern for testable, decoupled data access",
+        "Role-Based Authorization (User vs Admin) with secure JWT bearer authentication",
+        "Optimized EF Core query pipelines with AsNoTracking() and indexed search filters",
+        "Interactive Swagger / OpenAPI documentation for seamless client integration"
+      ],
+      "tags": ["C#", "ASP.NET Core", "EF Core", "JWT", "SQLite", "REST API", "Clean Architecture"],
+      "url": "https://github.com/HasanCSE-IYI/StoreApi",
+      "hasInteractiveDemo": true
     },
     {
+      "id": "doctor-dekhao",
       "cover": "/portfolio/1/sms-dashboard.jpg",
       "title": "Doctor Dekhao (Telemedicine)",
-      "description": "Led backend architecture for a 4-member engineering team. Designed and deployed RESTful APIs (Laravel, MySQL) serving mobile consultations under real-time constraints.",
-      "url": "https://github.com/HasanCSE-IYI"
+      "category": "laravel",
+      "categoryLabel": "Laravel & Microservices",
+      "role": "Co-Founder & Backend Lead",
+      "period": "2020 – 2023",
+      "metrics": "4 Engineers Led • 99.9% Uptime",
+      "description": "Led backend engineering for a 4-member team. Architected and deployed high-concurrency RESTful APIs serving patient-doctor video consultations under strict real-time constraints.",
+      "highlights": [
+        "Designed relational database schemas with zero-downtime migrations in MySQL",
+        "Engineered real-time consultation booking and doctor schedule sync algorithms",
+        "Integrated secure payment gateways and SMS notification microservices",
+        "Managed AWS infrastructure (EC2, RDS, S3) with Dockerized deployment pipelines"
+      ],
+      "tags": ["Laravel", "PHP", "MySQL", "AWS", "Docker", "REST API", "Team Leadership"],
+      "url": "https://github.com/HasanCSE-IYI",
+      "hasInteractiveDemo": false
     },
     {
+      "id": "shuni-live",
       "cover": "/portfolio/1/mist-blog.jpg",
       "title": "Shuni Live Analytics",
-      "description": "AI-powered social listening & sentiment analytics platform. Integrated Facebook Graph API, automated timeline extraction, and Celery/Redis task queues with Python.",
-      "url": "https://github.com/HasanCSE-IYI"
+      "category": "python",
+      "categoryLabel": "Python & Data",
+      "role": "Backend & Data Pipeline Engineer",
+      "period": "2022 – 2023",
+      "metrics": "100k+ Data Points • Celery/Redis",
+      "description": "AI-driven social listening & sentiment analytics engine. Integrated Facebook Graph API, automated post extraction, and asynchronous queue processing.",
+      "highlights": [
+        "Distributed task queues powered by Celery, Redis, and Python workers",
+        "Automated scraping and timeline extraction with Scrapy and custom spiders",
+        "Scalable database ingestion pipelines handling high-frequency social feeds"
+      ],
+      "tags": ["Python", "Celery", "Redis", "Scrapy", "REST API", "Data Pipelines"],
+      "url": "https://github.com/HasanCSE-IYI",
+      "hasInteractiveDemo": false
     },
     {
+      "id": "hamd-shop",
       "cover": "/portfolio/1/hamd-shop.jpg",
       "title": "Hamd-Shop E-Commerce",
-      "description": "Full-featured online shopping and e-commerce platform built with Laravel and MySQL, featuring catalog search, inventory, and order processing.",
-      "url": "https://github.com/HasanCSE-IYI/Hamd-Shop"
+      "category": "laravel",
+      "categoryLabel": "Laravel & MySQL",
+      "role": "Full Stack / Backend Engineer",
+      "period": "2021",
+      "metrics": "Full Cart & Order Lifecycle",
+      "description": "Full-featured online commerce system built with Laravel and MySQL, featuring catalog search, inventory tracking, payment processing, and administrative dashboards.",
+      "highlights": [
+        "Relational inventory control with ACID transactional consistency during order checkout",
+        "Dynamic category filtering, keyword search, and customer account workflows",
+        "Admin panel for product management, coupon code logic, and sales metrics"
+      ],
+      "tags": ["Laravel", "PHP", "MySQL", "E-Commerce", "Authentication"],
+      "url": "https://github.com/HasanCSE-IYI/Hamd-Shop",
+      "hasInteractiveDemo": false
     },
     {
+      "id": "student-mgmt",
       "cover": "/portfolio/1/aster.jpg",
       "title": "Student Management System",
-      "description": "Comprehensive academic record, grading, and student administration system with role-based security.",
-      "url": "https://github.com/HasanCSE-IYI/Student-Management-System"
+      "category": "laravel",
+      "categoryLabel": "Enterprise Web Apps",
+      "role": "Backend Engineer",
+      "period": "2020",
+      "metrics": "Role-Based Academic Workflows",
+      "description": "Comprehensive academic record, grading, and student administration system with strict role-based access control and report generation.",
+      "highlights": [
+        "Granular RBAC for Administrators, Faculty, Students, and Guardians",
+        "Automated GPA calculation, course enrollment, and attendance records",
+        "Optimized relational queries with bulk export and audit logging"
+      ],
+      "tags": ["Laravel", "PHP", "MySQL", "RBAC", "Reporting"],
+      "url": "https://github.com/HasanCSE-IYI/Student-Management-System",
+      "hasInteractiveDemo": false
+    }
+  ],
+  "impactMetrics": [
+    {
+      "value": "8+ Years",
+      "claim": "Production Backend Engineering",
+      "context": "Architecting resilient REST APIs and scalable web architectures in Laravel, NestJS, and Node.js."
+    },
+    {
+      "value": "4 Engineers",
+      "claim": "Team Leadership & Architecture",
+      "context": "Led backend engineering, schema design, and API contracts at Doctor Dekhao telemedicine startup."
+    },
+    {
+      "value": "<60 ms",
+      "claim": "API Response Latency Target",
+      "context": "Optimized EF Core query pipelines with AsNoTracking(), indexed lookups, and minimal allocations."
+    },
+    {
+      "value": "99.9%",
+      "claim": "Real-time Telemedicine Uptime",
+      "context": "Zero-downtime database migrations, resilient AWS infrastructure, and real-time appointment sync."
     }
   ]
 }
