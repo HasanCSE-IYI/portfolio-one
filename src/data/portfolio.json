@@ -1,34 +1,28 @@
 {
     "portfolio": [
         {
-            "cover": "/portfolio/1/one.png",
-            "title": "GGWP",
-            "description": "React, JSX, Tailwind, Jest",
-            "url": "http://google.com"
+            "cover": "/portfolio/1/hamd-shop.jpg",
+            "title": "Hamd-Shop",
+            "description": "E-Commerce / Online Shop built with Laravel & MySQL",
+            "url": "https://github.com/zero-fighter/Hamd-Shop"
         },
         {
-            "cover": "/portfolio/1/one.png",
-            "title": "GGWP",
-            "description": "React, JSX, Tailwind, Jest",
-            "url": "http://google.com"
+            "cover": "/portfolio/1/sms-dashboard.jpg",
+            "title": "Student Management System",
+            "description": "Academic Records & Student Management Solution",
+            "url": "https://github.com/zero-fighter/Student-Management-System"
         },
         {
-            "cover": "/portfolio/1/one.png",
-            "title": "GGWP",
-            "description": "React, JSX, Tailwind, Jest",
-            "url": "http://google.com"
+            "cover": "/portfolio/1/mist-blog.jpg",
+            "title": "Mist - Blog Site",
+            "description": "Modern Blogging Platform and Content System",
+            "url": "https://github.com/zero-fighter/Mist"
         },
         {
-            "cover": "/portfolio/1/one.png",
-            "title": "GGWP",
-            "description": "React, JSX, Tailwind, Jest",
-            "url": "http://google.com"
-        },
-        {
-            "cover": "/portfolio/1/one.png",
-            "title": "GGWP",
-            "description": "React, JSX, Tailwind, Jest",
-            "url": "http://google.com"
+            "cover": "/portfolio/1/aster.jpg",
+            "title": "Aster Properties",
+            "description": "Real Estate Property Management Application",
+            "url": "https://github.com/zero-fighter"
         }
     ]
 }

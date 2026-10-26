@@ -1,29 +1,28 @@
-import { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Home from "./home";
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebase';
+import Home from './home';
 import Login from '../Login';
+import Loader from 'react-loaders';
 
 const Dashboard = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const [user, setUser] = useState(null);
-    const auth = getAuth();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
 
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if(user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        })
-    }, []);
+    return () => unsubscribe();
+  }, []);
 
+  if (loading) {
+    return <Loader type="pacman" />;
+  }
 
-    return (
-       <div>
-           {user ? <Home /> : <Login />}
-       </div>
-    )
-}
+  return <div>{user ? <Home /> : <Login />}</div>;
+};
 
 export default Dashboard;

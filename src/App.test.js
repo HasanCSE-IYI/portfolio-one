@@ -1,8 +1,15 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders portfolio app navigation and header', () => {
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
+
+  // Check that the main navigation or home text renders
+  const contactLinks = screen.getAllByRole('link', { name: /contact/i });
+  expect(contactLinks.length).toBeGreaterThan(0);
 });

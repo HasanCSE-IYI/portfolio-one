@@ -28,7 +28,7 @@
     }
 
     &:after {
-      content: '<h1/>';
+      content: '</h1>';
       font-family: 'La Belle Aurore', cursive;
       color: #ffd700;
       font-size: 18px;
@@ -70,7 +70,7 @@
     border: 1px solid #ffd700;
     margin-top: 25px;
     float: left;
-    animation: fadeInAnimation 1s 1.8s backwards;
+    animation: fadeIn 1s 1.8s backwards;
     white-space: nowrap;
 
     &:hover {

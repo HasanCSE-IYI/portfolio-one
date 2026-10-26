@@ -16,9 +16,10 @@ const About = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
 
   useEffect(() => {
-    return setTimeout(() => {
+    const timer = setTimeout(() => {
       setLetterClass('text-animate-hover')
     }, 3000)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -38,7 +39,7 @@ const About = () => {
             with the opportunity to work with the latest
             technologies on challenging and diverse projects.
           </p>
-          <p align="LEFT">
+          <p>
             I'm quietly confident, naturally curious,
             and perpetually working on improving my skills
             by solving various problems.
