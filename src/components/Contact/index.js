@@ -25,6 +25,8 @@ const COLLABORATION_TIERS = [
 
 const Contact = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
+  const [selectedTier, setSelectedTier] = useState('')
+  const [subject, setSubject] = useState('')
   const form = useRef()
 
   useEffect(() => {
@@ -33,6 +35,15 @@ const Contact = () => {
     }, 3000)
     return () => clearTimeout(timer)
   }, [])
+
+  const handleSelectTier = (tierTitle) => {
+    setSelectedTier(tierTitle)
+    setSubject(`[Engagement] ${tierTitle}`)
+    const messageInput = document.querySelector('textarea[name="message"]')
+    if (messageInput) {
+      messageInput.focus()
+    }
+  }
 
   const sendEmail = (e) => {
     e.preventDefault()
@@ -116,12 +127,20 @@ const Contact = () => {
             <h2 className="section-title">Ways We Can Work Together</h2>
             <div className="tiers-grid">
               {COLLABORATION_TIERS.map((tier, idx) => (
-                <div className="tier-card" key={idx}>
+                <div
+                  className={`tier-card ${selectedTier === tier.title ? 'selected' : ''}`}
+                  key={idx}
+                  onClick={() => handleSelectTier(tier.title)}
+                  title="Click to select this engagement type"
+                >
                   <div className="tier-header">
                     <span className="tier-title">{tier.title}</span>
                     <span className="tier-badge">{tier.badge}</span>
                   </div>
                   <p className="tier-desc">{tier.description}</p>
+                  <span className="tier-select-hint">
+                    {selectedTier === tier.title ? '✓ Selected' : '+ Select Engagement'}
+                  </span>
                 </div>
               ))}
             </div>
@@ -148,6 +167,8 @@ const Contact = () => {
                       placeholder="Subject (e.g. Senior Backend Opportunity / Consulting)"
                       type="text"
                       name="subject"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
                       required
                     />
                   </li>

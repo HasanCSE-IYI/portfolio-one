@@ -6,9 +6,41 @@ import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
 import portfolioData from '../../data/portfolio.json'
 
+const CAPABILITIES = [
+  {
+    name: 'ASP.NET Core & Modern C#',
+    tag: '.NET & C#',
+    summary: 'Clean Architecture, ASP.NET Core Web API, EF Core (Code-First & Migrations), and JWT Role-Based Authorization.',
+    project: 'Store API',
+    link: '/portfolio',
+  },
+  {
+    name: 'High-Concurrency Telemedicine',
+    tag: 'Laravel & Cloud',
+    summary: 'Led 4-member backend team, designed relational schemas, and maintained 99.9% uptime real-time consultations.',
+    project: 'Doctor Dekhao',
+    link: '/portfolio',
+  },
+  {
+    name: 'Cloud Infrastructure & DevOps',
+    tag: 'AWS & Docker',
+    summary: 'Automated containerized microservices on AWS (EC2, RDS, S3), Docker, and production Linux environments.',
+    project: 'AWS / Docker',
+    link: '/about',
+  },
+  {
+    name: 'Event-Driven Data Pipelines',
+    tag: 'Python & Redis',
+    summary: 'Asynchronous task processing with Celery, Redis queues, and high-volume data ingestion pipelines.',
+    project: 'Shuni Live',
+    link: '/portfolio',
+  },
+]
+
 const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
+  const [activeCapability, setActiveCapability] = useState(0)
 
   const nameArray = ['a', 'h', 'm', 'u', 'd', ',']
   const jobArray = [
@@ -129,7 +161,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* System Specification Terminal (Replaces large spinning React logo) */}
+          {/* System Specification Terminal */}
           <div className="hero-spec">
             <div className="terminal-card">
               <div className="terminal-header">
@@ -187,6 +219,33 @@ const Home = () => {
               <div className="metric-context">{item.context}</div>
             </div>
           ))}
+        </div>
+
+        {/* Interactive Architecture Capabilities (Inspired by Muttakin Hasib's Capabilities section) */}
+        <div className="capabilities-section">
+          <div className="capabilities-header">
+            <span className="section-eyebrow">SYSTEM DOMAINS &amp; ARCHITECTURAL PATTERNS</span>
+            <h3>Architectural Capabilities</h3>
+            <p>Four connected domains. Each traced directly to real production systems.</p>
+          </div>
+          <div className="capabilities-grid">
+            {CAPABILITIES.map((cap, idx) => (
+              <div
+                className={`capability-node ${activeCapability === idx ? 'active' : ''}`}
+                key={idx}
+                onClick={() => setActiveCapability(idx)}
+              >
+                <div className="cap-top">
+                  <span className="cap-tag">{cap.tag}</span>
+                  <Link to={cap.link} className="cap-trace">
+                    Traced to: {cap.project} ↗
+                  </Link>
+                </div>
+                <h4 className="cap-title">{cap.name}</h4>
+                <p className="cap-summary">{cap.summary}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -76,7 +76,7 @@ const Sidebar = () => {
         <FontAwesomeIcon
           onClick={() => setShowNav(false)}
           icon={faClose}
-          color="#ffd700"
+          color="#f59e0b"
           className="close-icon"
           aria-label="Close Menu"
         />
@@ -135,7 +135,7 @@ const Sidebar = () => {
       <FontAwesomeIcon
         onClick={() => setShowNav(true)}
         icon={faBars}
-        color="#ffd700"
+        color="#f59e0b"
         className="hamburger-icon"
         aria-label="Open Menu"
       />

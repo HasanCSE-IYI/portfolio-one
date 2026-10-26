@@ -8,6 +8,8 @@ const ENDPOINTS = [
     path: '/api/products?page=1&pageSize=2',
     name: 'Browse Catalog (EF Core Query)',
     authRequired: false,
+    curlCmd: `curl -X GET "https://api.store.local/api/products?page=1&pageSize=2" \\
+  -H "Accept: application/json"`,
     csharpCode: `// ProductsController.cs
 [HttpGet]
 public async Task<ActionResult<PagedResult<ProductDto>>> GetProducts(
@@ -47,6 +49,9 @@ LIMIT 2 OFFSET 0;`,
     path: '/api/auth/login',
     name: 'JWT Authentication & Claims',
     authRequired: false,
+    curlCmd: `curl -X POST "https://api.store.local/api/auth/login" \\
+  -H "Content-Type: application/json" \\
+  -d '{"username": "admin", "password": "SecurePassword123!"}'`,
     csharpCode: `// AuthController.cs
 [HttpPost("login")]
 public async Task<IActionResult> Login([FromBody] LoginDto dto)
@@ -82,6 +87,10 @@ WHERE [u].[UserName] = 'admin' LIMIT 1;`,
     path: '/api/products',
     name: 'Role Authorization ([Authorize(Roles = "Admin")])',
     authRequired: true,
+    curlCmd: `curl -X POST "https://api.store.local/api/products" \\
+  -H "Authorization: Bearer eyJhbGciOi..." \\
+  -H "Content-Type: application/json" \\
+  -d '{"name": "Ultra-Wide USB-C Dock", "price": 119.00, "stock": 25}'`,
     csharpCode: `// ProductsController.cs
 [HttpPost]
 [Authorize(Roles = "Admin")]
@@ -125,6 +134,9 @@ const StoreApiDemo = () => {
   const [role, setRole] = useState('Admin'); // 'Admin' or 'User'
   const [isExecuting, setIsExecuting] = useState(false);
   const [hasExecuted, setHasExecuted] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedJson, setCopiedJson] = useState(false);
+  const [viewTab, setViewTab] = useState('csharp'); // 'csharp' or 'curl'
 
   const activeEndpoint = ENDPOINTS.find((e) => e.id === activeEndpointId) || ENDPOINTS[0];
 
@@ -134,7 +146,28 @@ const StoreApiDemo = () => {
     setTimeout(() => {
       setIsExecuting(false);
       setHasExecuted(true);
-    }, 450);
+    }, 400);
+  };
+
+  const handleCopyCode = () => {
+    const textToCopy = viewTab === 'curl' ? activeEndpoint.curlCmd : activeEndpoint.csharpCode;
+    navigator.clipboard?.writeText(textToCopy);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  const handleCopyJson = () => {
+    const payload = isForbidden
+      ? {
+          status: 403,
+          title: "Forbidden",
+          detail: "User is not authorized to access this resource. Requires role: 'Admin'. Current role: 'User'.",
+          path: activeEndpoint.path
+        }
+      : activeEndpoint.responseData;
+    navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
+    setCopiedJson(true);
+    setTimeout(() => setCopiedJson(false), 2000);
   };
 
   const isForbidden = activeEndpoint.authRequired && role !== 'Admin';
@@ -214,11 +247,27 @@ const StoreApiDemo = () => {
       <div className="demo-workspace">
         <div className="code-column">
           <div className="panel-header">
-            <span>C# ASP.NET Core Controller Logic</span>
-            <span className="file-tag">C# / EF Core</span>
+            <div className="tab-switch">
+              <button
+                className={`tab-btn ${viewTab === 'csharp' ? 'active' : ''}`}
+                onClick={() => setViewTab('csharp')}
+              >
+                C# Controller
+              </button>
+              <button
+                className={`tab-btn ${viewTab === 'curl' ? 'active' : ''}`}
+                onClick={() => setViewTab('curl')}
+              >
+                cURL Command
+              </button>
+            </div>
+            <button className="copy-btn" onClick={handleCopyCode}>
+              {copiedCode ? '✓ Copied' : 'Copy'}
+            </button>
           </div>
+
           <pre className="code-block">
-            <code>{activeEndpoint.csharpCode}</code>
+            <code>{viewTab === 'curl' ? activeEndpoint.curlCmd : activeEndpoint.csharpCode}</code>
           </pre>
 
           <div className="panel-header sql-header">
@@ -233,11 +282,18 @@ const StoreApiDemo = () => {
         <div className="output-column">
           <div className="panel-header">
             <span>HTTP Response Inspector</span>
-            {hasExecuted && (
-              <span className={`status-pill ${isForbidden ? 'error' : 'success'}`}>
-                {isForbidden ? '403 Forbidden' : activeEndpoint.responseStatus} ({activeEndpoint.latency})
-              </span>
-            )}
+            <div className="header-actions">
+              {hasExecuted && (
+                <>
+                  <button className="copy-btn" onClick={handleCopyJson}>
+                    {copiedJson ? '✓ Copied' : 'Copy JSON'}
+                  </button>
+                  <span className={`status-pill ${isForbidden ? 'error' : 'success'}`}>
+                    {isForbidden ? '403 Forbidden' : activeEndpoint.responseStatus} ({activeEndpoint.latency})
+                  </span>
+                </>
+              )}
+            </div>
           </div>
           <div className="output-body">
             {!hasExecuted && !isExecuting && (
