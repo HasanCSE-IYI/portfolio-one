@@ -28,14 +28,11 @@
     }
 
     img {
-      width: 32px;
+      width: 34px;
       height: auto;
       display: block;
-      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
-
-      &.sub-logo {
-        width: 38px;
-      }
+      filter: drop-shadow(0 0 10px rgba(97, 218, 251, 0.55));
+      animation: spinLogo 24s linear infinite;
     }
   }
 
@@ -242,21 +239,17 @@
       img {
         display: block;
         margin: 0 auto;
-        width: 42px;
+        width: 44px;
         height: auto;
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
-
-        &.sub-logo {
-          width: 44px;
-          margin-top: 6px;
-        }
+        filter: drop-shadow(0 0 12px rgba(97, 218, 251, 0.5));
+        animation: spinLogo 24s linear infinite;
+        transition: filter 0.3s ease;
       }
 
       &:hover {
         transform: none;
         img {
-          transform: scale(1.08);
-          filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+          filter: drop-shadow(0 0 20px rgba(97, 218, 251, 0.9));
         }
       }
     }
@@ -436,5 +429,14 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes spinLogo {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

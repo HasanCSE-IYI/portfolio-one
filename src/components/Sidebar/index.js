@@ -17,7 +17,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink } from 'react-router-dom'
 import LogoS from '../../assets/images/logo.svg'
-import LogoSubtitle from '../../assets/images/logo_sub.svg'
 import './index.scss'
 
 const Sidebar = () => {
@@ -30,8 +29,7 @@ const Sidebar = () => {
   return (
     <div className="nav-bar">
       <Link className="logo" to="/" onClick={handleLinkClick}>
-        <img className="App-logo" src={LogoS} alt="Mahmud al Hasan" />
-        <img className="sub-logo" src={LogoSubtitle} alt="Mahmud al Hasan" />
+        <img className="App-logo" src={LogoS} alt="React" />
       </Link>
       <nav className={showNav ? 'mobile-show' : ''}>
         <NavLink
