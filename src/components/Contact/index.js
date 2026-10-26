@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
 import emailjs from '@emailjs/browser'
 import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
@@ -226,9 +227,9 @@ const Contact = () => {
             <br />
             Backend Software Engineer
             <br />
-            (Laravel, NestJS • Focused on .NET)
+            (Laravel, NestJS • Transitioning to .NET)
             <br />
-            Public Mor, Bayazid, Chattogram, Bangladesh
+            Bayazid, Chattogram, Bangladesh
             <br />
             Phone: +880 1727 328200
             <br />
@@ -240,7 +241,7 @@ const Contact = () => {
             <MapContainer center={[22.3833, 91.8167]} zoom={13}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker position={[22.3833, 91.8167]}>
-                <Popup>Mahmud al Hasan lives here in Public Mor, Bayazid, Chattogram :)</Popup>
+                <Popup>Mahmud al Hasan · Bayazid (Near Public Mor), Chattogram :)</Popup>
               </Marker>
             </MapContainer>
           </div>

@@ -104,10 +104,10 @@ const Home = () => {
             <div className="status-time-bar">
               <span className="availability-chip">
                 <span className="pulse-indicator"></span>
-                Open to Opportunities · Backend &amp; .NET Core
+                Open to Opportunities · Backend Software Engineer
               </span>
               <span className="location-clock">
-                📍 Public Mor, Bayazid, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
+                📍 Bayazid, Chattogram, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
               </span>
             </div>
 
@@ -152,11 +152,11 @@ const Home = () => {
               />
             </h1>
 
-            <h2>Backend Software Engineer (8+ Years) | Laravel • NestJS • Focused on .NET</h2>
+            <h2>Backend Software Engineer (8+ Years) | Laravel • NestJS • Transitioning to .NET</h2>
 
             <p className="hero-bio">
-              Architecting resilient REST APIs, microservices, and high-concurrency systems.
-              Former Co-Founder &amp; Tech Lead at <strong>Doctor Dekhao</strong>; currently building production-grade services with <strong>ASP.NET Core Web API, C#, and Entity Framework Core</strong>.
+              Architecting resilient REST APIs, relational schemas, and high-concurrency systems.
+              Former Co-Founder &amp; Tech Lead at <strong>Doctor Dekhao</strong> (Laravel/Cloud); actively preparing for .NET roles and building clean services with <strong>ASP.NET Core Web API, C#, and Entity Framework Core</strong>.
             </p>
 
             {/* Focus Chain */}

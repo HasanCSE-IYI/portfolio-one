@@ -258,62 +258,90 @@
 
 // Print Styles for Clean A4 PDF Output
 @media print {
-  body * {
-    visibility: hidden;
+  html,
+  body {
+    overflow: visible !important;
+    height: auto !important;
+    background: #ffffff !important;
+    color: #000000 !important;
   }
 
-  .resume-modal-overlay,
-  .resume-modal-overlay * {
-    visibility: visible;
+  .modern-navbar,
+  .mobile-bottom-dock,
+  .page {
+    display: none !important;
   }
 
   .resume-modal-overlay {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    padding: 0;
+    position: static !important;
+    inset: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    animation: none !important;
 
     .modal-top-bar {
       display: none !important;
     }
 
     .resume-modal-content {
-      background: #fff !important;
+      background: #ffffff !important;
       border: none !important;
+      border-radius: 0 !important;
       box-shadow: none !important;
+      width: 100% !important;
       max-width: 100% !important;
       max-height: none !important;
+      overflow: visible !important;
     }
 
     .resume-sheet {
-      color: #111 !important;
+      color: #111111 !important;
       padding: 0 !important;
+      overflow: visible !important;
 
       .resume-header {
-        border-bottom-color: #333 !important;
-        .name { color: #000 !important; }
-        .headline { color: #444 !important; }
-        .contact-row { color: #555 !important; }
+        border-bottom: 2px solid #333333 !important;
+        .name {
+          color: #000000 !important;
+        }
+        .headline {
+          color: #374151 !important;
+        }
+        .contact-row {
+          color: #4b5563 !important;
+        }
       }
 
       .resume-section {
+        margin-bottom: 16px !important;
+        page-break-inside: avoid;
+
         .section-title {
-          color: #000 !important;
-          border-bottom-color: #ccc !important;
+          color: #111827 !important;
+          border-bottom: 1px solid #d1d5db !important;
         }
+
         .summary-text,
         .achievements,
         .proj-desc,
         .cat-items {
-          color: #333 !important;
+          color: #374151 !important;
         }
+
         .job-title,
         .cat-title,
         .proj-name {
-          color: #000 !important;
+          color: #111827 !important;
         }
+
         .company {
           color: #1e40af !important;
+        }
+
+        .period {
+          color: #6b7280 !important;
         }
       }
     }

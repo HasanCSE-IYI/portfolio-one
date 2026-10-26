@@ -17,3 +17,34 @@ button,
 select {
   font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
 }
+
+.route-fallback-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+
+  .loader-pulse-bar {
+    width: 64px;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f59e0b, #38bdf8);
+    animation: loaderBarAnim 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes loaderBarAnim {
+  0% {
+    transform: scaleX(0.2);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0.2);
+    opacity: 0.4;
+  }
+}

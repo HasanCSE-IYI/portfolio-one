@@ -77,7 +77,7 @@ const About = () => {
             />
           </h1>
           <p className="about-subtitle">
-            8+ Years in Production Backend Systems · Architecture · Modern .NET Focus
+            8+ Years in Production Backend Systems · Architecture · Active .NET Transition
           </p>
         </div>
 
@@ -119,7 +119,7 @@ const About = () => {
               As a former Co-Founder of <strong>Doctor Dekhao</strong> (telemedicine startup), I led backend engineering for a 4-member team—designing robust API contracts, modeling relational schemas, and delivering high-performance telemedicine services under real-time constraints.
             </p>
             <p>
-              Expanding on my extensive backend foundation, I am <strong>now actively focused on the .NET ecosystem</strong>—building clean, modular Web APIs with <strong>C#, ASP.NET Core, and Entity Framework Core</strong> (Code-First &amp; Migrations), alongside cloud deployments on <strong>AWS, Docker, and Linux</strong>.
+              Leveraging my extensive 8+ years of backend foundation, I am <strong>actively preparing for .NET backend engineering roles</strong>—building clean, modular Web APIs with <strong>C#, ASP.NET Core, and Entity Framework Core</strong> (Code-First &amp; Migrations), alongside cloud deployments on <strong>AWS, Docker, and Linux</strong>.
             </p>
           </div>
 
