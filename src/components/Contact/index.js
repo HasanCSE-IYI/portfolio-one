@@ -93,20 +93,22 @@ const Contact = () => {
           </div>
         </div>
         <div className="info-map">
-          Mahmud al Hasan,
+          Mahmud al Hasan
           <br />
-          Lalkhan Bazar,
+          Software Engineer (.NET / Backend)
           <br />
-          Chittagong District, 4200,  <br />
-          Bangladesh <br />
+          Bayazid, Chattogram, Bangladesh
+          <br />
+          Phone: +880 1727 328200
+          <br />
           <br />
           <span>mahmud.csem@gmail.com</span>
         </div>
         <div className="map-wrap">
-          <MapContainer center={[22.353, 91.8127]} zoom={13}>
+          <MapContainer center={[22.3833, 91.8167]} zoom={13}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={[22.35302, 91.81273]}>
-              <Popup>Mahmud lives here, come over for a cup of coffee :)</Popup>
+            <Marker position={[22.3833, 91.8167]}>
+              <Popup>Mahmud lives here in Bayazid, Chattogram :)</Popup>
             </Marker>
           </MapContainer>
         </div>

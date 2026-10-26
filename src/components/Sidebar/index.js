@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import {
   faGithub,
-  faHackerrank,
   faLinkedin,
   faSkype,
 } from '@fortawesome/free-brands-svg-icons'
@@ -10,6 +9,7 @@ import {
   faClose,
   faEnvelope,
   faHome,
+  faPhone,
   faSuitcase,
   faUser,
 } from '@fortawesome/free-solid-svg-icons'
@@ -93,7 +93,7 @@ const Sidebar = () => {
         </li>
         <li>
           <a
-            href="https://github.com/zero-fighter"
+            href="https://github.com/HasanCSE-IYI"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
@@ -103,12 +103,11 @@ const Sidebar = () => {
         </li>
         <li>
           <a
-            href="https://www.hackerrank.com/zero_fighter"
+            href="tel:+8801727328200"
             rel="noreferrer"
-            target="_blank"
-            aria-label="HackerRank"
+            aria-label="Phone: +880 1727 328200"
           >
-            <FontAwesomeIcon icon={faHackerrank} color="#4d4d4e" />
+            <FontAwesomeIcon icon={faPhone} color="#4d4d4e" />
           </a>
         </li>
         <li>

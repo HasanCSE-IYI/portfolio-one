@@ -1,4 +1,30 @@
 // About Page Mobile-First Styles
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+
+  .tag {
+    font-size: 1.2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #ffd700;
+      color: #022c43;
+      transform: translateY(-2px);
+    }
+  }
+}
+
 .stage-cube-cont {
   width: 100%;
   height: 220px;
@@ -39,27 +65,27 @@
 
   .face1 {
     transform: translateZ(60px);
-    color: #dd0031;
+    color: #512bd4;
   }
   .face2 {
     transform: rotateY(90deg) translateZ(60px);
-    color: #f06529;
+    color: #dd0031;
   }
   .face3 {
     transform: rotateY(90deg) rotateX(90deg) translateZ(60px);
-    color: #28a4d9;
+    color: #68a063;
   }
   .face4 {
     transform: rotateY(180deg) rotateZ(90deg) translateZ(60px);
-    color: #5ed4f4;
+    color: #ff9900;
   }
   .face5 {
     transform: rotateY(-90deg) rotateZ(90deg) translateZ(60px);
-    color: #efd81d;
+    color: #4b8bbe;
   }
   .face6 {
     transform: rotateX(-90deg) translateZ(60px);
-    color: #ec4d28;
+    color: #2496ed;
   }
 }
 

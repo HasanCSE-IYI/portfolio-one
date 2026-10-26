@@ -52,7 +52,7 @@ const Home = () => {
             <span className={`${letterClass} _16`}>m</span>
             <img
               src={LogoTitle}
-              alt="JavaScript Developer Name, Web Developer Name"
+              alt="Mahmud al Hasan"
             />
             <AnimatedLetters
               letterClass={letterClass}
@@ -66,10 +66,15 @@ const Home = () => {
               idx={22}
             />
           </h1>
-          <h2>Back End Developer / Laravel Expert / Freelancer</h2>
-          <Link to="/contact" className="flat-button">
-            CONTACT ME
-          </Link>
+          <h2>Software Engineer (.NET / Backend) | 8+ Years Experience</h2>
+          <div className="cta-buttons">
+            <Link to="/contact" className="flat-button">
+              CONTACT ME
+            </Link>
+            <Link to="/portfolio" className="flat-button button-secondary">
+              VIEW PROJECTS
+            </Link>
+          </div>
         </div>
         <Logo />
       </div>

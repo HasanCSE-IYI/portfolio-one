@@ -1,10 +1,10 @@
 import {
-  faCss3,
-  faGitAlt,
-  faHtml5,
-  faJsSquare,
-  faReact,
+  faAws,
+  faDocker,
   faLaravel,
+  faMicrosoft,
+  faNodeJs,
+  faPython,
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
@@ -34,43 +34,46 @@ const About = () => {
             />
           </h1>
           <p>
-            I'm a very ambitious back-end developer,
-            looking for a role in an established IT company
-            with the opportunity to work with the latest
-            technologies on challenging and diverse projects.
+            I am a Backend-focused Software Engineer with <strong>8+ years of experience</strong> building and deploying production-ready REST APIs, microservices, and web applications using <strong>Laravel, NestJS, Node.js, and the modern .NET ecosystem</strong>.
           </p>
           <p>
-            I'm quietly confident, naturally curious,
-            and perpetually working on improving my skills
-            by solving various problems.
+            As a former Co-Founder of <strong>Doctor Dekhao</strong> (telemedicine startup), I led backend architecture for a 4-member engineering team—designing robust API contracts, modeling complex databases, and delivering high-performance telemedicine services under real-time constraints.
           </p>
           <p>
-            If I need to define myself in one sentence,
-            that would be: I'm a family person who loves 
-            history books and travelling, also an open-source
-            enthusiast, and tech-obsessed!
+            Currently, I am deeply focused on building enterprise-grade backend systems using <strong>C#, ASP.NET Core Web API, Entity Framework Core (Code First &amp; Migrations), JWT Authentication</strong>, along with cloud deployments on <strong>AWS, Docker, and Linux</strong>.
           </p>
+          <div className="tech-tags">
+            <span className="tag">.NET / C#</span>
+            <span className="tag">ASP.NET Core</span>
+            <span className="tag">EF Core</span>
+            <span className="tag">Laravel (PHP)</span>
+            <span className="tag">NestJS / Node.js</span>
+            <span className="tag">AWS</span>
+            <span className="tag">Docker</span>
+            <span className="tag">MySQL &amp; MongoDB</span>
+            <span className="tag">Python / Scrapy</span>
+          </div>
         </div>
 
         <div className="stage-cube-cont">
           <div className="cubespinner">
             <div className="face1">
-              <FontAwesomeIcon icon={faLaravel} color="#DD0031" />
+              <FontAwesomeIcon icon={faMicrosoft} color="#512BD4" title=".NET / C#" />
             </div>
             <div className="face2">
-              <FontAwesomeIcon icon={faHtml5} color="#F06529" />
+              <FontAwesomeIcon icon={faLaravel} color="#DD0031" title="Laravel" />
             </div>
             <div className="face3">
-              <FontAwesomeIcon icon={faCss3} color="#28A4D9" />
+              <FontAwesomeIcon icon={faNodeJs} color="#68A063" title="Node.js / NestJS" />
             </div>
             <div className="face4">
-              <FontAwesomeIcon icon={faReact} color="#5ED4F4" />
+              <FontAwesomeIcon icon={faAws} color="#FF9900" title="AWS Cloud" />
             </div>
             <div className="face5">
-              <FontAwesomeIcon icon={faJsSquare} color="#EFD81D" />
+              <FontAwesomeIcon icon={faPython} color="#4B8BBE" title="Python" />
             </div>
             <div className="face6">
-              <FontAwesomeIcon icon={faGitAlt} color="#EC4D28" />
+              <FontAwesomeIcon icon={faDocker} color="#2496ED" title="Docker / Linux" />
             </div>
           </div>
         </div>

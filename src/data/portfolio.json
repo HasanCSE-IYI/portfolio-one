@@ -1,28 +1,34 @@
 {
-    "portfolio": [
-        {
-            "cover": "/portfolio/1/hamd-shop.jpg",
-            "title": "Hamd-Shop",
-            "description": "E-Commerce / Online Shop built with Laravel & MySQL",
-            "url": "https://github.com/zero-fighter/Hamd-Shop"
-        },
-        {
-            "cover": "/portfolio/1/sms-dashboard.jpg",
-            "title": "Student Management System",
-            "description": "Academic Records & Student Management Solution",
-            "url": "https://github.com/zero-fighter/Student-Management-System"
-        },
-        {
-            "cover": "/portfolio/1/mist-blog.jpg",
-            "title": "Mist - Blog Site",
-            "description": "Modern Blogging Platform and Content System",
-            "url": "https://github.com/zero-fighter/Mist"
-        },
-        {
-            "cover": "/portfolio/1/aster.jpg",
-            "title": "Aster Properties",
-            "description": "Real Estate Property Management Application",
-            "url": "https://github.com/zero-fighter"
-        }
-    ]
+  "portfolio": [
+    {
+      "cover": "/portfolio/1/one.png",
+      "title": "Store API (ASP.NET Core)",
+      "description": "RESTful product inventory API with JWT auth, role-based authorization (User/Admin), search, category filtering, pagination, and EF Core Code First migrations.",
+      "url": "https://github.com/HasanCSE-IYI/StoreApi"
+    },
+    {
+      "cover": "/portfolio/1/sms-dashboard.jpg",
+      "title": "Doctor Dekhao (Telemedicine)",
+      "description": "Led backend architecture for a 4-member engineering team. Designed and deployed RESTful APIs (Laravel, MySQL) serving mobile consultations under real-time constraints.",
+      "url": "https://github.com/HasanCSE-IYI"
+    },
+    {
+      "cover": "/portfolio/1/mist-blog.jpg",
+      "title": "Shuni Live Analytics",
+      "description": "AI-powered social listening & sentiment analytics platform. Integrated Facebook Graph API, automated timeline extraction, and Celery/Redis task queues with Python.",
+      "url": "https://github.com/HasanCSE-IYI"
+    },
+    {
+      "cover": "/portfolio/1/hamd-shop.jpg",
+      "title": "Hamd-Shop E-Commerce",
+      "description": "Full-featured online shopping and e-commerce platform built with Laravel and MySQL, featuring catalog search, inventory, and order processing.",
+      "url": "https://github.com/HasanCSE-IYI/Hamd-Shop"
+    },
+    {
+      "cover": "/portfolio/1/aster.jpg",
+      "title": "Student Management System",
+      "description": "Comprehensive academic record, grading, and student administration system with role-based security.",
+      "url": "https://github.com/HasanCSE-IYI/Student-Management-System"
+    }
+  ]
 }

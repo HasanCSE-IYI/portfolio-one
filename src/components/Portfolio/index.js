@@ -74,25 +74,25 @@ const Portfolio = () => {
             className="portfolio-page"
             target="_blank"
             rel="noreferrer"
-            href="https://github.com/zero-fighter/Hamd-Shop"
+            href="https://github.com/HasanCSE-IYI/StoreApi"
           >
-            Hamd-Shop [E Commerce/E Shop/Online Shop]
+            Store API [ASP.NET Core / EF Core]
           </a>
           <a
             className="portfolio-page"
             target="_blank"
             rel="noreferrer"
-            href="https://github.com/zero-fighter/Student-Management-System"
+            href="https://github.com/HasanCSE-IYI/Hamd-Shop"
           >
-            Student-Management-System
+            Hamd-Shop [Laravel E-Commerce]
           </a>
           <a
             className="portfolio-page"
             target="_blank"
             rel="noreferrer"
-            href="https://github.com/zero-fighter/Mist"
+            href="https://github.com/HasanCSE-IYI/Student-Management-System"
           >
-            Mist [Blog Site]
+            Student Management System
           </a>
         </div>
       </div>
