@@ -1,7 +1,6 @@
 import {
   faAws,
   faDocker,
-  faLaravel,
   faLinux,
   faNodeJs,
   faPython,
@@ -41,7 +40,7 @@ const About = () => {
   return (
     <>
       <div className="container about-page">
-        <div className="text-zone">
+        <div className="about-header">
           <h1>
             <AnimatedLetters
               letterClass={letterClass}
@@ -49,15 +48,50 @@ const About = () => {
               idx={15}
             />
           </h1>
-          <p>
-            I am a Backend-focused Software Engineer with <strong>8+ years of experience</strong> building and deploying production-ready REST APIs, microservices, and web platforms primarily using <strong>Laravel, NestJS, and Node.js</strong>.
+          <p className="about-subtitle">
+            8+ Years in Production Backend Systems · Architecture · Modern .NET Focus
           </p>
-          <p>
-            As a former Co-Founder of <strong>Doctor Dekhao</strong> (telemedicine startup), I led backend engineering for a 4-member team—designing robust API contracts, modeling relational schemas, and delivering high-performance telemedicine services under real-time constraints.
-          </p>
-          <p>
-            Expanding on my extensive backend foundation, I am <strong>now actively focused on the .NET ecosystem</strong>—building clean, modular Web APIs with <strong>C#, ASP.NET Core, and Entity Framework Core</strong> (Code-First &amp; Migrations), alongside cloud deployments on <strong>AWS, Docker, and Linux</strong>.
-          </p>
+        </div>
+
+        {/* Centered Grand 3D Interactive Tech Cube */}
+        <div className="stage-cube-cont">
+          <div className="cubespinner">
+            <div className="face1">
+              <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
+            </div>
+            <div className="face2 flutter-face">
+              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#02569b" aria-label="Flutter">
+                <title>Flutter</title>
+                <path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z" />
+              </svg>
+            </div>
+            <div className="face3">
+              <FontAwesomeIcon icon={faNodeJs} color="#339933" title="Node.js / NestJS" />
+            </div>
+            <div className="face4">
+              <FontAwesomeIcon icon={faAws} color="#ff9900" title="AWS Cloud Infrastructure" />
+            </div>
+            <div className="face5">
+              <FontAwesomeIcon icon={faPython} color="#3776ab" title="Python Data Pipelines" />
+            </div>
+            <div className="face6">
+              <FontAwesomeIcon icon={faDocker} color="#2496ed" title="Docker Containerization" />
+            </div>
+          </div>
+        </div>
+
+        <div className="text-zone">
+          <div className="bio-card">
+            <p>
+              I am a Backend-focused Software Engineer with <strong>8+ years of experience</strong> building and deploying production-ready REST APIs, microservices, and web platforms primarily using <strong>Laravel, NestJS, and Node.js</strong>.
+            </p>
+            <p>
+              As a former Co-Founder of <strong>Doctor Dekhao</strong> (telemedicine startup), I led backend engineering for a 4-member team—designing robust API contracts, modeling relational schemas, and delivering high-performance telemedicine services under real-time constraints.
+            </p>
+            <p>
+              Expanding on my extensive backend foundation, I am <strong>now actively focused on the .NET ecosystem</strong>—building clean, modular Web APIs with <strong>C#, ASP.NET Core, and Entity Framework Core</strong> (Code-First &amp; Migrations), alongside cloud deployments on <strong>AWS, Docker, and Linux</strong>.
+            </p>
+          </div>
 
           {/* Expandable Engineering Philosophy (Inspired by Muttakin Hasib & Al Nahian) */}
           <div className="philosophy-section">
@@ -104,29 +138,6 @@ const About = () => {
               <span className="tag">Docker</span>
               <span className="tag">Linux</span>
               <span className="tag">Python / Scrapy</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="stage-cube-cont">
-          <div className="cubespinner">
-            <div className="face1">
-              <FontAwesomeIcon icon={faLinux} color="#FCC624" title="Linux Environment" />
-            </div>
-            <div className="face2">
-              <FontAwesomeIcon icon={faLaravel} color="#DD0031" title="Laravel" />
-            </div>
-            <div className="face3">
-              <FontAwesomeIcon icon={faNodeJs} color="#68A063" title="Node.js / NestJS" />
-            </div>
-            <div className="face4">
-              <FontAwesomeIcon icon={faAws} color="#FF9900" title="AWS Cloud" />
-            </div>
-            <div className="face5">
-              <FontAwesomeIcon icon={faPython} color="#4B8BBE" title="Python" />
-            </div>
-            <div className="face6">
-              <FontAwesomeIcon icon={faDocker} color="#2496ED" title="Docker / Linux" />
             </div>
           </div>
         </div>

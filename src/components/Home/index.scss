@@ -48,7 +48,7 @@
     .location-clock {
       color: #9ca3af;
       font-size: 0.8rem;
-      font-family: monospace;
+      font-family: var(--font-mono);
 
       .time-val {
         color: #fff;
@@ -62,7 +62,7 @@
     font-size: clamp(32px, 6vw, 54px);
     line-height: 1.15;
     margin: 0;
-    font-family: 'Coolvetica', sans-serif;
+    font-family: 'Coolvetica', var(--font-sans);
     font-weight: 400;
 
     img {
@@ -82,7 +82,7 @@
     margin-bottom: 0;
     font-weight: 500;
     font-size: clamp(1rem, 2.5vw, 1.25rem);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
     letter-spacing: 0.5px;
     line-height: 1.45;
   }
@@ -94,6 +94,7 @@
     margin-top: 14px;
     margin-bottom: 0;
     max-width: 60ch;
+    font-family: var(--font-sans);
 
     strong {
       color: #e5e7eb;
@@ -109,7 +110,7 @@
     margin-top: 18px;
 
     .chain-item {
-      font-family: monospace;
+      font-family: var(--font-mono);
       font-size: 0.78rem;
       color: #d1d5db;
       background: #181b20;
@@ -136,7 +137,7 @@
     font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: 1px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
     text-decoration: none;
     padding: 12px 24px;
     min-height: 46px;
@@ -202,7 +203,7 @@
         }
 
         .terminal-title {
-          font-family: monospace;
+          font-family: var(--font-mono);
           font-size: 0.78rem;
           color: #9ca3af;
         }
@@ -218,7 +219,7 @@
           display: flex;
           justify-content: space-between;
           align-items: baseline;
-          font-family: monospace;
+          font-family: var(--font-mono);
           font-size: 0.8rem;
           line-height: 1.4;
           gap: 10px;
@@ -288,7 +289,7 @@
       }
 
       .metric-val {
-        font-family: monospace;
+        font-family: var(--font-mono);
         font-size: 1.6rem;
         font-weight: 700;
         color: #ffd700;

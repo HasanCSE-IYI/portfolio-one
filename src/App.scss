@@ -27,8 +27,10 @@ $primary-color: #ffd700;
 }
 
 input,
-textarea {
-  font-family: 'Helvetica Neue', sans-serif;
+textarea,
+button,
+select {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
 }
 
 .loader-hidden {

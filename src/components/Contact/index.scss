@@ -138,7 +138,7 @@
 
           .tier-badge {
             font-size: 0.7rem;
-            font-family: monospace;
+            font-family: var(--font-mono);
             padding: 2px 6px;
             border-radius: 4px;
             background: rgba(255, 215, 0, 0.1);
@@ -185,7 +185,7 @@
       span {
         color: #ffd700;
         font-weight: 600;
-        font-family: monospace;
+        font-family: var(--font-mono);
       }
     }
 

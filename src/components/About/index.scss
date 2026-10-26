@@ -1,45 +1,175 @@
-// About Page Styles (Clean Modern Responsive Grid)
+// About Page Styles (Centered Grand 3D Luminous Glass Cube & Modern Architecture)
 .about-page {
   padding-bottom: 60px;
+  max-width: 1000px;
+  margin: 0 auto;
 
-  @media screen and (min-width: 992px) {
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 40px;
-    align-items: start;
+  .about-header {
+    text-align: center;
+    margin-bottom: 10px;
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(32px, 6vw, 48px);
+    }
+
+    .about-subtitle {
+      color: #9ca3af;
+      font-size: 1.05rem;
+      font-family: var(--font-sans);
+      margin: 0;
+    }
+  }
+
+  // Centered Grand 3D Cube Container
+  .stage-cube-cont {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    margin: 25px auto 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+
+    @media screen and (min-width: 768px) {
+      height: 380px;
+      margin: 35px auto 45px;
+    }
+  }
+
+  .cubespinner {
+    animation-name: spincube;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 12s;
+    transform-style: preserve-3d;
+    transform-origin: 90px 90px 0;
+    position: relative;
+    width: 180px;
+    height: 180px;
+
+    @media screen and (min-width: 768px) {
+      width: 240px;
+      height: 240px;
+      transform-origin: 120px 120px 0;
+    }
+
+    div {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      font-size: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 30px rgba(255, 255, 224, 0.65), inset 0 0 15px rgba(255, 255, 255, 0.4);
+      border-radius: 6px;
+
+      @media screen and (min-width: 768px) {
+        width: 240px;
+        height: 240px;
+        font-size: 110px;
+        box-shadow: 0 0 40px rgba(255, 255, 224, 0.75), inset 0 0 20px rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .flutter-face {
+      svg {
+        width: 1em;
+        height: 1em;
+        display: block;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+    }
+
+    // 3D Faces Positioned (Mobile: 90px half-depth, Desktop: 120px half-depth)
+    .face1 {
+      transform: translateZ(90px);
+      color: #1a1a1a;
+      @media screen and (min-width: 768px) {
+        transform: translateZ(120px);
+      }
+    }
+    .face2 {
+      transform: rotateY(90deg) translateZ(90px);
+      @media screen and (min-width: 768px) {
+        transform: rotateY(90deg) translateZ(120px);
+      }
+    }
+    .face3 {
+      transform: rotateY(90deg) rotateX(90deg) translateZ(90px);
+      color: #339933;
+      @media screen and (min-width: 768px) {
+        transform: rotateY(90deg) rotateX(90deg) translateZ(120px);
+      }
+    }
+    .face4 {
+      transform: rotateY(180deg) rotateZ(90deg) translateZ(90px);
+      color: #ff9900;
+      @media screen and (min-width: 768px) {
+        transform: rotateY(180deg) rotateZ(90deg) translateZ(120px);
+      }
+    }
+    .face5 {
+      transform: rotateY(-90deg) rotateZ(90deg) translateZ(90px);
+      color: #3776ab;
+      @media screen and (min-width: 768px) {
+        transform: rotateY(-90deg) rotateZ(90deg) translateZ(120px);
+      }
+    }
+    .face6 {
+      transform: rotateX(-90deg) translateZ(90px);
+      color: #2496ed;
+      @media screen and (min-width: 768px) {
+        transform: rotateX(-90deg) translateZ(120px);
+      }
+    }
   }
 
   .text-zone {
     width: 100%;
 
-    h1 {
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
+    .bio-card {
+      background: #14171d;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 
-    p {
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: #d1d5db;
-      margin: 0 0 16px;
+      p {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #d1d5db;
+        margin: 0 0 16px;
 
-      strong {
-        color: #ffd700;
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        strong {
+          color: #ffd700;
+        }
       }
     }
   }
 
   // Philosophy Section
   .philosophy-section {
-    margin: 20px 0 24px;
+    margin: 20px 0 28px;
 
     .philosophy-toggle-btn {
       background: #181b20;
       color: #ffd700;
       border: 1px solid rgba(255, 215, 0, 0.3);
-      padding: 8px 16px;
+      padding: 10px 20px;
       border-radius: 6px;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -49,16 +179,17 @@
       &:hover {
         background: #ffd700;
         color: #111317;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
       }
     }
 
     .principles-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 14px;
+      gap: 14px;
+      margin-top: 16px;
 
-      @media screen and (min-width: 600px) {
+      @media screen and (min-width: 768px) {
         grid-template-columns: repeat(3, 1fr);
       }
 
@@ -66,29 +197,36 @@
         background: #14171d;
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 8px;
-        padding: 12px 14px;
+        padding: 16px;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255, 215, 0, 0.3);
+        }
 
         .principle-title {
-          font-size: 0.85rem;
+          font-size: 0.92rem;
           font-weight: 700;
           color: #fff;
           display: flex;
           align-items: center;
-          gap: 6px;
-          margin-bottom: 6px;
+          gap: 8px;
+          margin-bottom: 8px;
 
           .dot {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #22c55e;
+            box-shadow: 0 0 6px #22c55e;
           }
         }
 
         .principle-summary {
-          font-size: 0.78rem;
+          font-size: 0.82rem;
           color: #9ca3af;
-          line-height: 1.45;
+          line-height: 1.5;
           margin: 0;
         }
       }
@@ -96,16 +234,16 @@
   }
 
   .tech-groups {
-    margin-top: 20px;
+    margin-top: 24px;
 
     .group-label {
-      font-size: 0.75rem;
-      font-family: monospace;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
       font-weight: 700;
       letter-spacing: 1px;
       color: #ffd700;
-      margin-top: 14px;
-      margin-bottom: 8px;
+      margin-top: 18px;
+      margin-bottom: 10px;
     }
 
     .tech-tags {
@@ -113,15 +251,15 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 0;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
 
       .tag {
-        font-size: 0.8rem;
-        font-family: monospace;
+        font-size: 0.84rem;
+        font-family: var(--font-mono);
         color: #d1d5db;
         background: #181b20;
         border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 4px 10px;
+        padding: 6px 12px;
         border-radius: 4px;
         transition: all 0.2s ease;
 
@@ -137,103 +275,9 @@
           color: #111317;
           border-color: #ffd700;
           transform: translateY(-2px);
+          box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
       }
-    }
-  }
-}
-
-// 3D Cube Container
-.stage-cube-cont {
-  width: 100%;
-  height: 320px;
-  position: relative;
-  margin: 30px auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media screen and (min-width: 992px) {
-    height: 400px;
-    margin: 40px 0;
-  }
-}
-
-.cubespinner {
-  animation-name: spincube;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-duration: 12s;
-  transform-style: preserve-3d;
-  transform-origin: 75px 75px 0;
-  margin-left: calc(50% - 75px);
-
-  @media screen and (min-width: 992px) {
-    transform-origin: 90px 90px 0;
-    margin-left: calc(50% - 90px);
-  }
-
-  div {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    background: rgba(17, 24, 39, 0.7);
-    backdrop-filter: blur(8px);
-    text-align: center;
-    font-size: 65px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-
-    @media screen and (min-width: 992px) {
-      width: 180px;
-      height: 180px;
-      font-size: 80px;
-    }
-  }
-
-  .face1 {
-    transform: translateZ(75px);
-    color: #fcc624;
-    @media screen and (min-width: 992px) {
-      transform: translateZ(90px);
-    }
-  }
-  .face2 {
-    transform: rotateY(90deg) translateZ(75px);
-    color: #dd0031;
-    @media screen and (min-width: 992px) {
-      transform: rotateY(90deg) translateZ(90px);
-    }
-  }
-  .face3 {
-    transform: rotateY(90deg) rotateX(90deg) translateZ(75px);
-    color: #68a063;
-    @media screen and (min-width: 992px) {
-      transform: rotateY(90deg) rotateX(90deg) translateZ(90px);
-    }
-  }
-  .face4 {
-    transform: rotateY(180deg) rotateZ(90deg) translateZ(75px);
-    color: #ff9900;
-    @media screen and (min-width: 992px) {
-      transform: rotateY(180deg) rotateZ(90deg) translateZ(90px);
-    }
-  }
-  .face5 {
-    transform: rotateY(-90deg) rotateZ(90deg) translateZ(75px);
-    color: #4b8bbe;
-    @media screen and (min-width: 992px) {
-      transform: rotateY(-90deg) rotateZ(90deg) translateZ(90px);
-    }
-  }
-  .face6 {
-    transform: rotateX(-90deg) translateZ(75px);
-    color: #2496ed;
-    @media screen and (min-width: 992px) {
-      transform: rotateX(-90deg) translateZ(90px);
     }
   }
 }
