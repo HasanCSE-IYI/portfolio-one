@@ -5,10 +5,11 @@ import './index.scss';
 import portfolioData from '../../data/portfolio.json';
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Architectures' },
+  { id: 'all', label: 'All Repositories' },
   { id: 'dotnet', label: '.NET Core & C#' },
-  { id: 'laravel', label: 'Laravel & Cloud' },
-  { id: 'python', label: 'Python & Data Pipelines' },
+  { id: 'mobile', label: 'Mobile & GIS' },
+  { id: 'backend', label: 'Backend & Cloud' },
+  { id: 'typescript', label: 'TypeScript & APIs' },
 ];
 
 const Portfolio = () => {
@@ -20,7 +21,7 @@ const Portfolio = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover');
-    }, 3000);
+    }, 1800);
 
     return () => {
       clearTimeout(timer);
@@ -44,7 +45,7 @@ const Portfolio = () => {
             />
           </h1>
           <p className="portfolio-subheading">
-            Selected backend architectures, high-concurrency APIs, and microservices engineered across 8+ years.
+            Curated production backend architectures, GIS mobile engines, and cloud microservices directly from GitHub.
           </p>
 
           <div className="category-filters">
@@ -60,13 +61,13 @@ const Portfolio = () => {
           </div>
         </div>
 
-        {/* Interactive Store API Simulator (Inspired by Muttakin Hasib's case study prototypes) */}
+        {/* Interactive Store API Simulator (Featured Architectural Prototype) */}
         {(activeCategory === 'all' || activeCategory === 'dotnet') && (
           <div className="simulator-section">
             <div className="simulator-toggle-bar">
               <span className="section-label">
                 <span className="accent-dot"></span>
-                FEATURED ARCHITECTURAL PROTOTYPE
+                FEATURED ARCHITECTURAL PROTOTYPE · .NET CORE 8
               </span>
               <button
                 className="toggle-simulator-btn"
@@ -79,32 +80,44 @@ const Portfolio = () => {
           </div>
         )}
 
+        {/* GitHub Repositories Grid (No Images, Pure Architectural Cards) */}
         <div className="projects-grid">
           {filteredPortfolio.map((port, idx) => {
-            const imgSrc = port.image || (port.cover ? `${process.env.PUBLIC_URL}${port.cover}` : '');
-            const title = port.name || port.title;
+            const title = port.title || port.name;
 
             return (
-              <div className="project-card" key={idx}>
-                {imgSrc && (
-                  <div className="project-cover-wrap">
-                    <img
-                      src={imgSrc}
-                      className="project-cover"
-                      alt={title || 'Portfolio item'}
-                    />
-                    {port.categoryLabel && (
-                      <span className="category-badge">{port.categoryLabel}</span>
-                    )}
-                    {port.metrics && (
-                      <span className="metrics-badge">{port.metrics}</span>
-                    )}
+              <div
+                className="project-card"
+                key={port.id || idx}
+                style={{ animationDelay: `${0.08 * (idx + 1)}s` }}
+              >
+                <div className="card-header-bar">
+                  <div className="repo-meta">
+                    <span
+                      className="lang-dot"
+                      style={{ backgroundColor: port.languageColor || '#f59e0b' }}
+                      title={port.language}
+                    ></span>
+                    <span className="lang-name">{port.language}</span>
+                    <span className="sep">•</span>
+                    <span className="category-tag">{port.categoryLabel}</span>
                   </div>
-                )}
+                  {port.metrics && (
+                    <span className="metrics-badge">{port.metrics}</span>
+                  )}
+                </div>
+
                 <div className="card-body">
                   <div className="card-top">
-                    <h3 className="card-title">{title}</h3>
-                    {port.role && <p className="card-role">{port.role} {port.period && `• ${port.period}`}</p>}
+                    <h3 className="card-title">
+                      <span className="folder-icon" aria-hidden="true">📁</span>
+                      {title}
+                    </h3>
+                    {port.role && (
+                      <p className="card-role">
+                        {port.role} {port.period && `• ${port.period}`}
+                      </p>
+                    )}
                   </div>
 
                   <p className="card-description">{port.description}</p>
@@ -112,7 +125,10 @@ const Portfolio = () => {
                   {port.highlights && port.highlights.length > 0 && (
                     <ul className="card-highlights">
                       {port.highlights.map((hl, hIdx) => (
-                        <li key={hIdx}>{hl}</li>
+                        <li key={hIdx}>
+                          <span className="hl-bullet">▹</span>
+                          <span>{hl}</span>
+                        </li>
                       ))}
                     </ul>
                   )}
@@ -143,7 +159,7 @@ const Portfolio = () => {
                         className="action-btn secondary"
                         onClick={() => {
                           setShowSimulator(true);
-                          window.scrollTo({ top: 150, behavior: 'smooth' });
+                          window.scrollTo({ top: 180, behavior: 'smooth' });
                         }}
                       >
                         ⚡ Live Simulator
@@ -156,6 +172,7 @@ const Portfolio = () => {
           })}
         </div>
 
+        {/* Quick Repository Links */}
         <div className="project-links">
           <a
             className="portfolio-page-link"
@@ -163,7 +180,23 @@ const Portfolio = () => {
             rel="noreferrer"
             href="https://github.com/HasanCSE-IYI/StoreApi"
           >
-            Store API [.NET Core / EF Core] ↗
+            StoreApi [.NET Core / EF Core] ↗
+          </a>
+          <a
+            className="portfolio-page-link"
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/HasanCSE-IYI/Mappi"
+          >
+            Mappi [Flutter GIS Navigation] ↗
+          </a>
+          <a
+            className="portfolio-page-link"
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/HasanCSE-IYI/chittago"
+          >
+            Chittago [Offline Kotlin Map] ↗
           </a>
           <a
             className="portfolio-page-link"
@@ -172,14 +205,6 @@ const Portfolio = () => {
             href="https://github.com/HasanCSE-IYI/Hamd-Shop"
           >
             Hamd-Shop [Laravel E-Commerce] ↗
-          </a>
-          <a
-            className="portfolio-page-link"
-            target="_blank"
-            rel="noreferrer"
-            href="https://github.com/HasanCSE-IYI/Student-Management-System"
-          >
-            Student Management System ↗
           </a>
         </div>
       </div>

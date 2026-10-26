@@ -83,27 +83,29 @@ const About = () => {
 
         {/* Centered Grand 3D Interactive Tech Cube */}
         <div className="stage-cube-cont">
-          <div className="cubespinner">
-            <div className="face1">
-              <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
-            </div>
-            <div className="face2 flutter-face">
-              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#02569b" aria-label="Flutter">
-                <title>Flutter</title>
-                <path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z" />
-              </svg>
-            </div>
-            <div className="face3">
-              <FontAwesomeIcon icon={faNodeJs} color="#339933" title="Node.js / NestJS" />
-            </div>
-            <div className="face4">
-              <FontAwesomeIcon icon={faAws} color="#ff9900" title="AWS Cloud Infrastructure" />
-            </div>
-            <div className="face5">
-              <FontAwesomeIcon icon={faPython} color="#3776ab" title="Python Data Pipelines" />
-            </div>
-            <div className="face6">
-              <FontAwesomeIcon icon={faDocker} color="#2496ed" title="Docker Containerization" />
+          <div className="cube-orbit-wrap">
+            <div className="cubespinner">
+              <div className="face1">
+                <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
+              </div>
+              <div className="face2 flutter-face">
+                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#02569b" aria-label="Flutter">
+                  <title>Flutter</title>
+                  <path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z" />
+                </svg>
+              </div>
+              <div className="face3">
+                <FontAwesomeIcon icon={faNodeJs} color="#339933" title="Node.js / NestJS" />
+              </div>
+              <div className="face4">
+                <FontAwesomeIcon icon={faAws} color="#ff9900" title="AWS Cloud Infrastructure" />
+              </div>
+              <div className="face5">
+                <FontAwesomeIcon icon={faPython} color="#3776ab" title="Python Data Pipelines" />
+              </div>
+              <div className="face6">
+                <FontAwesomeIcon icon={faDocker} color="#2496ed" title="Docker Containerization" />
+              </div>
             </div>
           </div>
         </div>

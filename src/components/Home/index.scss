@@ -66,19 +66,21 @@
     font-weight: 400;
 
     img {
-      margin-left: 10px;
+      margin-left: 8px;
+      margin-right: 2px;
       opacity: 0;
-      width: clamp(28px, 5vw, 46px);
+      width: clamp(44px, 7.5vw, 68px);
       height: auto;
-      vertical-align: middle;
+      vertical-align: -10px;
+      display: inline-block;
       animation: rotateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
       animation-delay: 0.42s;
-      filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.45));
-      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.6));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 
       &:hover {
-        transform: scale(1.1) rotate(5deg);
-        filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.7));
+        transform: scale(1.15) translateY(-4px) rotate(4deg);
+        filter: drop-shadow(0 0 26px rgba(245, 158, 11, 0.85));
       }
     }
   }

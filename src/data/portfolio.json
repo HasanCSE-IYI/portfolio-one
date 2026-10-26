@@ -2,14 +2,15 @@
   "portfolio": [
     {
       "id": "store-api",
-      "cover": "/portfolio/1/one.png",
-      "title": "Store API (ASP.NET Core)",
+      "title": "Store API (ASP.NET Core Web API)",
       "category": "dotnet",
       "categoryLabel": ".NET & C#",
-      "role": "Backend Engineer (.NET Focus)",
-      "period": "2024",
+      "role": "Backend Software Engineer",
+      "period": "2024 – 2026",
+      "language": "C#",
+      "languageColor": "#9333ea",
       "metrics": "<60ms Latency • JWT RBAC",
-      "description": "Production-grade RESTful API built with ASP.NET Core, C#, and Entity Framework Core with Code-First Migrations, SQLite, JWT authentication, and role-based authorization.",
+      "description": "Production-grade RESTful API built with ASP.NET Core 8, C#, and Entity Framework Core with Code-First Migrations, SQLite, JWT authentication, and role-based authorization.",
       "highlights": [
         "Repository & Unit-of-Work design pattern for testable, decoupled data access",
         "Role-Based Authorization (User vs Admin) with secure JWT bearer authentication",
@@ -21,13 +22,77 @@
       "hasInteractiveDemo": true
     },
     {
+      "id": "mappi",
+      "title": "Mappi (Flutter Mapping & Navigation)",
+      "category": "mobile",
+      "categoryLabel": "Mobile & GIS",
+      "role": "Mobile & Systems Engineer",
+      "period": "2026",
+      "language": "Dart",
+      "languageColor": "#0284c7",
+      "metrics": "Multi-Layer Tiles • HUD Mode",
+      "description": "Production-grade Flutter mapping and navigation app with multi-layer vector tiles, high-performance POI search, offline tile cache, and heads-up display (HUD) driving navigation.",
+      "highlights": [
+        "Vector tile caching engine enabling fast offline route and terrain rendering",
+        "Real-time geographic point-of-interest indexing and proximity calculation algorithms",
+        "Adaptive heads-up display (HUD) night-mode for low-distraction driving navigation",
+        "State management architecture built on reactive streams and Clean Architecture"
+      ],
+      "tags": ["Flutter", "Dart", "GIS", "OpenStreetMap", "HUD Navigation", "Offline-First", "State Management"],
+      "url": "https://github.com/HasanCSE-IYI/Mappi",
+      "hasInteractiveDemo": false
+    },
+    {
+      "id": "chittago",
+      "title": "Chittago (Offline Chattogram Navigation)",
+      "category": "mobile",
+      "categoryLabel": "Mobile & GIS",
+      "role": "Android Engineer",
+      "period": "2026",
+      "language": "Kotlin",
+      "languageColor": "#f97316",
+      "metrics": "100% Offline • Native Android",
+      "description": "Complete open-source offline-ready map and navigation app for Chattogram Division, Bangladesh, packaged with local spatial layers and essential community POI databases.",
+      "highlights": [
+        "Native Android architecture utilizing Kotlin coroutines and Android Jetpack",
+        "Pre-packaged MBTiles database providing instant search without cellular connection",
+        "Curated localized POI layers covering regional healthcare, emergency hubs, and transit",
+        "Low-memory raster tile rendering engine tuned for budget Android devices"
+      ],
+      "tags": ["Kotlin", "Android", "GIS", "MBTiles", "Coroutines", "Jetpack", "Chattogram"],
+      "url": "https://github.com/HasanCSE-IYI/chittago",
+      "hasInteractiveDemo": false
+    },
+    {
+      "id": "redgrid",
+      "title": "RedGrid (Emergency Blood Donor Network)",
+      "category": "mobile",
+      "categoryLabel": "Mobile & GIS",
+      "role": "Flutter & Backend Engineer",
+      "period": "2026",
+      "language": "Dart",
+      "languageColor": "#ef4444",
+      "metrics": "Emergency Routing • Geolocation",
+      "description": "Real-time emergency blood bank and donor dispatch application connecting hospital requests with available registered donors across geographic proximity clusters.",
+      "highlights": [
+        "Urgent blood dispatch notification engine with geolocation proximity filtering",
+        "Donor eligibility countdown tracker based on 90-day medical donation intervals",
+        "Strict verification workflows safeguarding donor privacy and emergency contact details",
+        "Cross-platform client designed for rapid one-tap emergency request broadcasting"
+      ],
+      "tags": ["Flutter", "Dart", "Real-Time", "Geolocation", "Healthcare Tech", "REST API"],
+      "url": "https://github.com/HasanCSE-IYI/redgrid",
+      "hasInteractiveDemo": false
+    },
+    {
       "id": "doctor-dekhao",
-      "cover": "/portfolio/1/sms-dashboard.jpg",
-      "title": "Doctor Dekhao (Telemedicine)",
-      "category": "laravel",
-      "categoryLabel": "Laravel & Microservices",
+      "title": "Doctor Dekhao (Telemedicine Platform)",
+      "category": "backend",
+      "categoryLabel": "Backend & Cloud",
       "role": "Co-Founder & Backend Lead",
       "period": "2020 – 2023",
+      "language": "PHP",
+      "languageColor": "#6366f1",
       "metrics": "4 Engineers Led • 99.9% Uptime",
       "description": "Led backend engineering for a 4-member team. Architected and deployed high-concurrency RESTful APIs serving patient-doctor video consultations under strict real-time constraints.",
       "highlights": [
@@ -36,88 +101,91 @@
         "Integrated secure payment gateways and SMS notification microservices",
         "Managed AWS infrastructure (EC2, RDS, S3) with Dockerized deployment pipelines"
       ],
-      "tags": ["Laravel", "PHP", "MySQL", "AWS", "Docker", "REST API", "Team Leadership"],
-      "url": "https://github.com/HasanCSE-IYI",
-      "hasInteractiveDemo": false
-    },
-    {
-      "id": "shuni-live",
-      "cover": "/portfolio/1/mist-blog.jpg",
-      "title": "Shuni Live Analytics",
-      "category": "python",
-      "categoryLabel": "Python & Data",
-      "role": "Backend & Data Pipeline Engineer",
-      "period": "2022 – 2023",
-      "metrics": "100k+ Data Points • Celery/Redis",
-      "description": "AI-driven social listening & sentiment analytics engine. Integrated Facebook Graph API, automated post extraction, and asynchronous queue processing.",
-      "highlights": [
-        "Distributed task queues powered by Celery, Redis, and Python workers",
-        "Automated scraping and timeline extraction with Scrapy and custom spiders",
-        "Scalable database ingestion pipelines handling high-frequency social feeds"
-      ],
-      "tags": ["Python", "Celery", "Redis", "Scrapy", "REST API", "Data Pipelines"],
+      "tags": ["Laravel", "PHP", "MySQL", "AWS", "Docker", "REST API", "Microservices", "Team Leadership"],
       "url": "https://github.com/HasanCSE-IYI",
       "hasInteractiveDemo": false
     },
     {
       "id": "hamd-shop",
-      "cover": "/portfolio/1/hamd-shop.jpg",
-      "title": "Hamd-Shop E-Commerce",
-      "category": "laravel",
-      "categoryLabel": "Laravel & MySQL",
-      "role": "Full Stack / Backend Engineer",
+      "title": "Hamd-Shop E-Commerce System",
+      "category": "backend",
+      "categoryLabel": "Backend & Cloud",
+      "role": "Backend Engineer",
       "period": "2021",
-      "metrics": "Full Cart & Order Lifecycle",
+      "language": "PHP",
+      "languageColor": "#6366f1",
+      "metrics": "ACID Checkout • Inventory Engine",
       "description": "Full-featured online commerce system built with Laravel and MySQL, featuring catalog search, inventory tracking, payment processing, and administrative dashboards.",
       "highlights": [
         "Relational inventory control with ACID transactional consistency during order checkout",
         "Dynamic category filtering, keyword search, and customer account workflows",
         "Admin panel for product management, coupon code logic, and sales metrics"
       ],
-      "tags": ["Laravel", "PHP", "MySQL", "E-Commerce", "Authentication"],
+      "tags": ["Laravel", "PHP", "MySQL", "E-Commerce", "ACID Transactions", "REST API"],
       "url": "https://github.com/HasanCSE-IYI/Hamd-Shop",
       "hasInteractiveDemo": false
     },
     {
-      "id": "student-mgmt",
-      "cover": "/portfolio/1/aster.jpg",
-      "title": "Student Management System",
-      "category": "laravel",
-      "categoryLabel": "Enterprise Web Apps",
-      "role": "Backend Engineer",
-      "period": "2020",
-      "metrics": "Role-Based Academic Workflows",
-      "description": "Comprehensive academic record, grading, and student administration system with strict role-based access control and report generation.",
+      "id": "saas-ai",
+      "title": "SaaS AI (AI Model Platform)",
+      "category": "typescript",
+      "categoryLabel": "TypeScript & APIs",
+      "role": "Full Stack Engineer",
+      "period": "2023 – 2024",
+      "language": "TypeScript",
+      "languageColor": "#38bdf8",
+      "metrics": "Streaming Edge APIs • Stripe",
+      "description": "All-in-one multi-tenant AI service orchestration platform providing a diverse range of AI model services with streaming responses and metered token billing.",
       "highlights": [
-        "Granular RBAC for Administrators, Faculty, Students, and Guardians",
-        "Automated GPA calculation, course enrollment, and attendance records",
-        "Optimized relational queries with bulk export and audit logging"
+        "Streaming response pipeline utilizing Next.js Edge runtime for sub-second latency",
+        "Stripe subscription webhooks and metered API usage tracking per organization",
+        "Prisma ORM schema modeling with MongoDB persistence and strong typing"
       ],
-      "tags": ["Laravel", "PHP", "MySQL", "RBAC", "Reporting"],
-      "url": "https://github.com/HasanCSE-IYI/Student-Management-System",
+      "tags": ["TypeScript", "Next.js", "Prisma", "Stripe API", "AI Models", "TailwindCSS"],
+      "url": "https://github.com/HasanCSE-IYI/saas-ai",
+      "hasInteractiveDemo": false
+    },
+    {
+      "id": "bookish",
+      "title": "Bookish (Bookstore API Platform)",
+      "category": "typescript",
+      "categoryLabel": "TypeScript & APIs",
+      "role": "Backend Engineer",
+      "period": "2024",
+      "language": "TypeScript",
+      "languageColor": "#38bdf8",
+      "metrics": "Sub-40ms Reads • Cursor Paging",
+      "description": "Minimalistic, high-throughput bookstore catalog and search API with typed domain models, cursor-based pagination, and schema validation.",
+      "highlights": [
+        "Cursor-based pagination engine minimizing database query overhead on large datasets",
+        "Declarative request validation and sanitized query response filters",
+        "Clean Architecture layers decoupling domain entities from HTTP transport"
+      ],
+      "tags": ["TypeScript", "Node.js", "REST API", "Cursor Pagination", "Clean Architecture"],
+      "url": "https://github.com/HasanCSE-IYI/bookish",
       "hasInteractiveDemo": false
     }
   ],
   "impactMetrics": [
     {
-      "value": "8+ Years",
-      "claim": "Production Backend Engineering",
-      "context": "Architecting resilient REST APIs and scalable web architectures in Laravel, NestJS, and Node.js."
-    },
-    {
-      "value": "4 Engineers",
-      "claim": "Team Leadership & Architecture",
-      "context": "Led backend engineering, schema design, and API contracts at Doctor Dekhao telemedicine startup."
-    },
-    {
-      "value": "<60 ms",
-      "claim": "API Response Latency Target",
-      "context": "Optimized EF Core query pipelines with AsNoTracking(), indexed lookups, and minimal allocations."
+      "value": "8+",
+      "claim": "Years Backend Engineering",
+      "context": "Laravel, NestJS, and focused on ASP.NET Core & C#"
     },
     {
       "value": "99.9%",
-      "claim": "Real-time Telemedicine Uptime",
-      "context": "Zero-downtime database migrations, resilient AWS infrastructure, and real-time appointment sync."
+      "claim": "Production SLA Uptime",
+      "context": "Doctor Dekhao telemedicine microservices on AWS & Docker"
+    },
+    {
+      "value": "<60ms",
+      "claim": "REST API Response Latency",
+      "context": "Optimized EF Core LINQ queries, indexes & Redis caching"
+    },
+    {
+      "value": "4",
+      "claim": "Engineers Led as Co-Founder",
+      "context": "API contract standards, code reviews, and schema architecture"
     }
   ]
 }
