@@ -85,7 +85,7 @@ const Home = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover')
-    }, 4000)
+    }, 2200)
     return () => clearTimeout(timer)
   }, [])
 
@@ -122,18 +122,18 @@ const Home = () => {
                 Open to Opportunities · Backend &amp; .NET Core
               </span>
               <span className="location-clock">
-                📍 Chattogram, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
+                📍 Public Mor, Bayazid, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
               </span>
             </div>
 
             <h1>
               <span className={letterClass}>H</span>
-              <span className={`${letterClass} _12`}>i</span>
-              <span className={`${letterClass} _13`}>,</span>
+              <span className={`${letterClass} _1`}>i</span>
+              <span className={`${letterClass} _2`}>,</span>
               <br />
-              <span className={`${letterClass} _14`}>I</span>
-              <span className={`${letterClass} _15`}>'</span>
-              <span className={`${letterClass} _16`}>m</span>
+              <span className={`${letterClass} _3`}>I</span>
+              <span className={`${letterClass} _4`}>'</span>
+              <span className={`${letterClass} _5`}>m</span>
               <img
                 src={LogoTitle}
                 alt="Mahmud al Hasan"
@@ -141,13 +141,13 @@ const Home = () => {
               <AnimatedLetters
                 letterClass={letterClass}
                 strArray={nameArray}
-                idx={15}
+                idx={6}
               />
               <br />
               <AnimatedLetters
                 letterClass={letterClass}
                 strArray={jobArray}
-                idx={30}
+                idx={22}
               />
             </h1>
 
@@ -195,12 +195,12 @@ const Home = () => {
                   <span className="dot yellow"></span>
                   <span className="dot green"></span>
                 </div>
-                <span className="terminal-title">mahmud-al-hasan@backend-engine:~$ specs --summary</span>
+                <span className="terminal-title">mahmud-al-hasan@backend-engineer:~$ specs --summary</span>
               </div>
               <div className="terminal-body">
                 <div className="spec-row">
                   <span className="spec-key">Role:</span>
-                  <span className="spec-val highlight">Senior Backend Software Engineer</span>
+                  <span className="spec-val highlight">Backend Software Engineer</span>
                 </div>
                 <div className="spec-row">
                   <span className="spec-key">Experience:</span>

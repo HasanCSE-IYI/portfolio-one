@@ -61,7 +61,7 @@ const About = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover')
-    }, 3000)
+    }, 1800)
     return () => clearTimeout(timer)
   }, [])
 

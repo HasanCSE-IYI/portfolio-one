@@ -6,7 +6,7 @@ import './index.scss'
 
 const COLLABORATION_TIERS = [
   {
-    title: 'Full-Time Senior Backend Engineer',
+    title: 'Full-Time Backend Software Engineer',
     badge: 'Primary Focus',
     description: 'Looking to join engineering teams building enterprise .NET Core, ASP.NET Web API, Laravel, or NestJS microservices with high performance and cloud readiness.',
   },
@@ -31,7 +31,7 @@ const Contact = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover')
-    }, 3000)
+    }, 1800)
     return () => clearTimeout(timer)
   }, [])
 
@@ -84,7 +84,7 @@ const Contact = () => {
           </h1>
 
           <p className="contact-lead">
-            Have a senior engineering opportunity, system architecture challenge, or project in mind? Pick whatever channel is most convenient:
+            Have a backend engineering opportunity, system architecture challenge, or project in mind? Pick whatever channel is most convenient:
           </p>
 
           {/* Quick Connect Channels (Inspired by Al Nahian's quick reach bar) */}
@@ -163,7 +163,7 @@ const Contact = () => {
                   </li>
                   <li>
                     <input
-                      placeholder="Subject (e.g. Senior Backend Opportunity / Consulting)"
+                      placeholder="Subject (e.g. Backend Opportunity / Consulting)"
                       type="text"
                       name="subject"
                       value={subject}
@@ -191,7 +191,7 @@ const Contact = () => {
             <br />
             (Laravel, NestJS • Focused on .NET)
             <br />
-            Bayazid, Chattogram, Bangladesh
+            Public Mor, Bayazid, Chattogram, Bangladesh
             <br />
             Phone: +880 1727 328200
             <br />
@@ -203,7 +203,7 @@ const Contact = () => {
             <MapContainer center={[22.3833, 91.8167]} zoom={13}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker position={[22.3833, 91.8167]}>
-                <Popup>Mahmud al Hasan lives here in Bayazid, Chattogram :)</Popup>
+                <Popup>Mahmud al Hasan lives here in Public Mor, Bayazid, Chattogram :)</Popup>
               </Marker>
             </MapContainer>
           </div>

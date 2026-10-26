@@ -1,28 +1,85 @@
 @use 'sass:math';
 
+.animated-word-wrap {
+  display: inline-block;
+  perspective: 600px;
+}
+
 .text-animate {
   display: inline-block;
   opacity: 0;
-  animation: bounceIn;
-  animation-duration: 1s;
-  animation-delay: 1s;
-  animation-fill-mode: forwards;
+  animation: modernLetterIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   min-width: 10px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+
+  &.space-char {
+    min-width: 0.35em;
+  }
 }
 
 .text-animate-hover {
   min-width: 10px;
   display: inline-block;
-  animation-fill-mode: both;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+  cursor: default;
+
+  &.space-char {
+    min-width: 0.35em;
+  }
 
   &:hover {
-    animation: rubberBand 1s;
+    animation: kineticLetterHover 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
     color: #f59e0b;
+    text-shadow: 0 0 16px rgba(245, 158, 11, 0.65), 0 0 28px rgba(245, 158, 11, 0.35);
   }
 }
 
-@for $i from 1 through 39 {
+// Stagger loop for up to 60 sequential characters
+@for $i from 1 through 60 {
   .text-animate._#{$i} {
-    animation-delay: #{math.div($i, 10)}s;
+    animation-delay: #{0.2 + math.div($i, 24)}s;
+  }
+}
+
+@keyframes modernLetterIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 32px, -30px) rotateX(-55deg) scale(0.85);
+    filter: blur(8px);
+  }
+  65% {
+    opacity: 0.95;
+    transform: translate3d(0, -5px, 6px) rotateX(8deg) scale(1.05);
+    filter: blur(0px);
+  }
+  85% {
+    transform: translate3d(0, 2px, 0) rotateX(-3deg) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes kineticLetterHover {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.22, 0.8, 1) translateY(-8px);
+  }
+  45% {
+    transform: scale3d(0.82, 1.2, 1) translateY(-12px);
+  }
+  60% {
+    transform: scale3d(1.12, 0.9, 1) translateY(-4px);
+  }
+  75% {
+    transform: scale3d(0.96, 1.04, 1) translateY(-1px);
+  }
+  100% {
+    transform: scale3d(1, 1, 1) translateY(0);
   }
 }

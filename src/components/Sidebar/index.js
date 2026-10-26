@@ -42,6 +42,7 @@ const Sidebar = () => {
         >
           <FontAwesomeIcon icon={faHome} color="#4d4d4e" />
           <span className="nav-text">HOME</span>
+          <span className="nav-tooltip">HOME</span>
         </NavLink>
         <NavLink
           to="/about"
@@ -52,6 +53,7 @@ const Sidebar = () => {
         >
           <FontAwesomeIcon icon={faUser} color="#4d4d4e" />
           <span className="nav-text">ABOUT</span>
+          <span className="nav-tooltip">ABOUT ME</span>
         </NavLink>
         <NavLink
           to="/portfolio"
@@ -62,6 +64,7 @@ const Sidebar = () => {
         >
           <FontAwesomeIcon icon={faSuitcase} color="#4d4d4e" />
           <span className="nav-text">PORTFOLIO</span>
+          <span className="nav-tooltip">PORTFOLIO</span>
         </NavLink>
         <NavLink
           to="/contact"
@@ -72,6 +75,7 @@ const Sidebar = () => {
         >
           <FontAwesomeIcon icon={faEnvelope} color="#4d4d4e" />
           <span className="nav-text">CONTACT</span>
+          <span className="nav-tooltip">CONTACT</span>
         </NavLink>
         <FontAwesomeIcon
           onClick={() => setShowNav(false)}

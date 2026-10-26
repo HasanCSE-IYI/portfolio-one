@@ -52,9 +52,9 @@ const ResumeModal = ({ isOpen, onClose }) => {
         <div className="resume-sheet">
           <header className="resume-header">
             <h1 className="name">Mahmud al Hasan</h1>
-            <p className="headline">Senior Backend Software Engineer (8+ Years) · Focused on .NET Core &amp; Modern Web APIs</p>
+            <p className="headline">Backend Software Engineer (8+ Years) · Focused on .NET Core &amp; Modern Web APIs</p>
             <div className="contact-row">
-              <span>📍 Bayazid, Chattogram, Bangladesh</span>
+              <span>📍 Public Mor, Bayazid, Chattogram, Bangladesh</span>
               <span>📞 +880 1727-328200</span>
               <span>✉️ mahmud.csem@gmail.com</span>
               <a
@@ -125,7 +125,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
             <div className="job-entry">
               <div className="job-header">
                 <div>
-                  <h3 className="job-title">Senior Backend / Full Stack Engineer</h3>
+                  <h3 className="job-title">Backend / Full Stack Engineer</h3>
                   <span className="company">Independent Engineering &amp; Client Platforms</span>
                 </div>
                 <span className="period">2016 – Present</span>
