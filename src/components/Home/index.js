@@ -5,7 +5,6 @@ import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
 import Logo from './Logo'
-import {EPSG3395} from "leaflet/src/geo/crs/CRS.EPSG3395";
 
 const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
@@ -33,9 +32,10 @@ const Home = () => {
   ]
 
   useEffect(() => {
-    return setTimeout(() => {
+    const timer = setTimeout(() => {
       setLetterClass('text-animate-hover')
     }, 4000)
+    return () => clearTimeout(timer)
   }, [])
 
   return (

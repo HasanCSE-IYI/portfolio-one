@@ -1,7 +1,15 @@
 import {
-  faGithub, faHackerrank, faLinkedin, faSkype
+  faGithub,
+  faHackerrank,
+  faLinkedin,
+  faSkype,
 } from '@fortawesome/free-brands-svg-icons'
-import { faEnvelope, faHome, faSuitcase, faUser } from '@fortawesome/free-solid-svg-icons'
+import {
+  faEnvelope,
+  faHome,
+  faSuitcase,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink } from 'react-router-dom'
 import LogoS from '../../assets/images/logo.svg'
@@ -12,23 +20,38 @@ const Sidebar = () => {
   return (
     <div className="nav-bar">
       <Link className="logo" to="/">
-        <img className='App-logo' src={LogoS} alt="Logo" />
-        <img className="sub-logo" src={LogoSubtitle} alt="slobodan" />
+        <img className="App-logo" src={LogoS} alt="Mahmud" />
+        <img className="sub-logo" src={LogoSubtitle} alt="Mahmud al Hasan" />
       </Link>
       <nav>
-        <NavLink exact="true" activeclassname="active" to="/">
+        <NavLink
+          end
+          to="/"
+          className={({ isActive }) => (isActive ? 'active' : undefined)}
+        >
           <FontAwesomeIcon icon={faHome} color="#4d4d4e" />
         </NavLink>
-        <NavLink activeclassname="active" className="about-link" to="/about">
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            isActive ? 'about-link active' : 'about-link'
+          }
+        >
           <FontAwesomeIcon icon={faUser} color="#4d4d4e" />
         </NavLink>
-        <NavLink activeclassname="active" className="portfolio-link" to="/portfolio">
+        <NavLink
+          to="/portfolio"
+          className={({ isActive }) =>
+            isActive ? 'portfolio-link active' : 'portfolio-link'
+          }
+        >
           <FontAwesomeIcon icon={faSuitcase} color="#4d4d4e" />
         </NavLink>
         <NavLink
-          activeclassname="active"
-          className="contact-link"
           to="/contact"
+          className={({ isActive }) =>
+            isActive ? 'contact-link active' : 'contact-link'
+          }
         >
           <FontAwesomeIcon icon={faEnvelope} color="#4d4d4e" />
         </NavLink>
@@ -62,7 +85,11 @@ const Sidebar = () => {
           </a>
         </li>
         <li>
-          <a href="skype:live:rauaha_1" rel="noreferrer" target="_blank">
+          <a
+            href="skype:live:rauaha_1"
+            rel="noreferrer"
+            target="_blank"
+          >
             <FontAwesomeIcon icon={faSkype} color="#4d4d4e" />
           </a>
         </li>

@@ -11,25 +11,32 @@ const Contact = () => {
   const form = useRef()
 
   useEffect(() => {
-    return setTimeout(() => {
+    const timer = setTimeout(() => {
       setLetterClass('text-animate-hover')
     }, 3000)
+    return () => clearTimeout(timer)
   }, [])
 
   const sendEmail = (e) => {
     e.preventDefault()
 
+    const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_ah887jc'
+    const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_6ohf9ai'
+    const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || '-z1plCY3kWdfs26uU'
+
     emailjs
       .sendForm(
-        'service_ah887jc', // gmail
-        'template_6ohf9ai',
+        serviceId,
+        templateId,
         form.current,
-        '-z1plCY3kWdfs26uU' // your-token
+        publicKey
       )
       .then(
         () => {
           alert('Message successfully sent!')
-          window.location.reload(false)
+          if (form.current) {
+            form.current.reset()
+          }
         },
         () => {
           alert('Failed to send the message, please try again')
