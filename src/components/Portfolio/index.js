@@ -33,6 +33,11 @@ const Portfolio = () => {
       ? portfolio
       : portfolio.filter((item) => item.category === activeCategory);
 
+  const getCategoryCount = (catId) => {
+    if (catId === 'all') return portfolio.length;
+    return portfolio.filter((item) => item.category === catId).length;
+  };
+
   return (
     <>
       <div className="container portfolio-page">
@@ -55,7 +60,8 @@ const Portfolio = () => {
                 className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
                 onClick={() => setActiveCategory(cat.id)}
               >
-                {cat.label}
+                <span>{cat.label}</span>
+                <span className="cat-count">({getCategoryCount(cat.id)})</span>
               </button>
             ))}
           </div>

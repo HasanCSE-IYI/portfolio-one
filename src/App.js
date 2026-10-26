@@ -4,17 +4,21 @@ import About from './components/About'
 import Contact from './components/Contact'
 import Layout from './components/Layout'
 import Portfolio from './components/Portfolio'
+import NotFound from './components/NotFound'
+import ScrollToTop from './components/ScrollToTop'
 import './App.scss'
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="portfolio" element={<Portfolio />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>

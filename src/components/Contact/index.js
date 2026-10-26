@@ -26,6 +26,8 @@ const Contact = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [selectedTier, setSelectedTier] = useState('')
   const [subject, setSubject] = useState('')
+  const [formFeedback, setFormFeedback] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useRef()
 
   useEffect(() => {
@@ -46,6 +48,8 @@ const Contact = () => {
 
   const sendEmail = (e) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    setFormFeedback(null)
 
     const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_ah887jc'
     const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_6ohf9ai'
@@ -60,13 +64,22 @@ const Contact = () => {
       )
       .then(
         () => {
-          alert('Message successfully sent!')
+          setIsSubmitting(false)
+          setFormFeedback({
+            type: 'success',
+            message: 'Message successfully sent! Mahmud will get back to you shortly.',
+          })
           if (form.current) {
             form.current.reset()
+            setSubject('')
           }
         },
         () => {
-          alert('Failed to send the message, please try again')
+          setIsSubmitting(false)
+          setFormFeedback({
+            type: 'error',
+            message: 'Unable to send message directly. Please contact directly via WhatsApp or email mahmud.csem@gmail.com.',
+          })
         }
       )
   }
@@ -147,6 +160,24 @@ const Contact = () => {
 
           <div className="contact-form-section">
             <h2 className="section-title">Send a Direct Message</h2>
+
+            {formFeedback && (
+              <div className={`form-feedback-toast ${formFeedback.type}`}>
+                <span className="toast-icon">
+                  {formFeedback.type === 'success' ? '✓' : '⚠️'}
+                </span>
+                <span className="toast-message">{formFeedback.message}</span>
+                <button
+                  type="button"
+                  className="toast-close"
+                  onClick={() => setFormFeedback(null)}
+                  aria-label="Close notification"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
             <div className="contact-form">
               <form ref={form} onSubmit={sendEmail}>
                 <ul>
@@ -175,7 +206,13 @@ const Contact = () => {
                     <textarea placeholder="Message" name="message" required></textarea>
                   </li>
                   <li>
-                    <input type="submit" className="flat-button" value="SEND MESSAGE" />
+                    <button
+                      type="submit"
+                      className="flat-button"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
+                    </button>
                   </li>
                 </ul>
               </form>

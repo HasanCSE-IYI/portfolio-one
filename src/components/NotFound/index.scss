@@ -1,0 +1,90 @@
+.not-found-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 40px 20px;
+
+  .not-found-card {
+    max-width: 540px;
+    width: 100%;
+    text-align: center;
+    background: rgba(17, 20, 28, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 48px 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+
+    .error-code {
+      font-size: clamp(64px, 12vw, 96px);
+      font-weight: 800;
+      font-family: var(--font-mono);
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      display: block;
+      margin-bottom: 12px;
+      letter-spacing: -2px;
+    }
+
+    .error-title {
+      font-size: clamp(24px, 4vw, 32px);
+      font-family: 'Coolvetica', var(--font-sans);
+      color: #f8fafc;
+      margin: 0 0 12px;
+    }
+
+    .error-desc {
+      color: #94a3b8;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 28px;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 10px 24px;
+        border-radius: 9999px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .btn-primary {
+        background: #f59e0b;
+        color: #0f172a;
+        box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+
+        &:hover {
+          background: #fbbf24;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+        }
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #e2e8f0;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(245, 158, 11, 0.4);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}
