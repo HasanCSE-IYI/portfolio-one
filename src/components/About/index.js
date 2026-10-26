@@ -34,13 +34,13 @@ const About = () => {
             />
           </h1>
           <p>
-            I am a Backend-focused Software Engineer with <strong>8+ years of experience</strong> building and deploying production-ready REST APIs, microservices, and web applications using <strong>Laravel, NestJS, Node.js, and the modern .NET ecosystem</strong>.
+            I am a Backend-focused Software Engineer with <strong>8+ years of experience</strong> building and deploying production-ready REST APIs, microservices, and web platforms primarily using <strong>Laravel, NestJS, and Node.js</strong>.
           </p>
           <p>
-            As a former Co-Founder of <strong>Doctor Dekhao</strong> (telemedicine startup), I led backend architecture for a 4-member engineering team—designing robust API contracts, modeling complex databases, and delivering high-performance telemedicine services under real-time constraints.
+            As a former Co-Founder of <strong>Doctor Dekhao</strong> (telemedicine startup), I led backend engineering for a 4-member team—designing robust API contracts, modeling relational schemas, and delivering high-performance telemedicine services under real-time constraints.
           </p>
           <p>
-            Currently, I am deeply focused on building enterprise-grade backend systems using <strong>C#, ASP.NET Core Web API, Entity Framework Core (Code First &amp; Migrations), JWT Authentication</strong>, along with cloud deployments on <strong>AWS, Docker, and Linux</strong>.
+            Expanding on my extensive backend foundation, I am <strong>now actively focused on the .NET ecosystem</strong>—building clean, modular Web APIs with <strong>C#, ASP.NET Core, and Entity Framework Core</strong> (Code-First &amp; Migrations), alongside cloud deployments on <strong>AWS, Docker, and Linux</strong>.
           </p>
           <div className="tech-tags">
             <span className="tag">.NET / C#</span>

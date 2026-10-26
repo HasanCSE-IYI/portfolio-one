@@ -66,7 +66,7 @@ const Home = () => {
               idx={22}
             />
           </h1>
-          <h2>Software Engineer (.NET / Backend) | 8+ Years Experience</h2>
+          <h2>Backend Software Engineer (8+ Years) | Laravel • NestJS • Focused on .NET</h2>
           <div className="cta-buttons">
             <Link to="/contact" className="flat-button">
               CONTACT ME

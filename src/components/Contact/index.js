@@ -95,7 +95,9 @@ const Contact = () => {
         <div className="info-map">
           Mahmud al Hasan
           <br />
-          Software Engineer (.NET / Backend)
+          Backend Software Engineer
+          <br />
+          (Laravel, NestJS • Focused on .NET)
           <br />
           Bayazid, Chattogram, Bangladesh
           <br />
