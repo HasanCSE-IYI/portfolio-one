@@ -163,28 +163,30 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="info-map">
-          Mahmud al Hasan
-          <br />
-          Backend Software Engineer
-          <br />
-          (Laravel, NestJS • Focused on .NET)
-          <br />
-          Bayazid, Chattogram, Bangladesh
-          <br />
-          Phone: +880 1727 328200
-          <br />
-          <br />
-          <span>mahmud.csem@gmail.com</span>
-        </div>
+        <div className="contact-aside">
+          <div className="info-map">
+            Mahmud al Hasan
+            <br />
+            Backend Software Engineer
+            <br />
+            (Laravel, NestJS • Focused on .NET)
+            <br />
+            Bayazid, Chattogram, Bangladesh
+            <br />
+            Phone: +880 1727 328200
+            <br />
+            <br />
+            <span>mahmud.csem@gmail.com</span>
+          </div>
 
-        <div className="map-wrap">
-          <MapContainer center={[22.3833, 91.8167]} zoom={13}>
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={[22.3833, 91.8167]}>
-              <Popup>Mahmud lives here in Bayazid, Chattogram :)</Popup>
-            </Marker>
-          </MapContainer>
+          <div className="map-wrap">
+            <MapContainer center={[22.3833, 91.8167]} zoom={13}>
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <Marker position={[22.3833, 91.8167]}>
+                <Popup>Mahmud lives here in Bayazid, Chattogram :)</Popup>
+              </Marker>
+            </MapContainer>
+          </div>
         </div>
       </div>
       <Loader type="pacman" />

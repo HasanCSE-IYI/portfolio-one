@@ -1,10 +1,28 @@
-// Contact Page Mobile-First Styles (Enhanced with Hasib & Nahian Concepts)
+// Contact Page Styles (Clean Modern Grid Architecture)
 .contact-page {
-  .contact-lead {
-    color: #9ca3af;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 10px 0 18px;
+  padding-bottom: 60px;
+
+  @media screen and (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1.25fr 0.85fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .text-zone {
+    width: 100%;
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
+
+    .contact-lead {
+      color: #9ca3af;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 0 18px;
+    }
   }
 
   // Quick Connect Bar
@@ -59,11 +77,20 @@
           background: rgba(255, 215, 0, 0.12);
         }
       }
+
+      &.github {
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #e5e7eb;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
     }
   }
 
   .section-title {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     color: #ffd700;
     font-weight: 600;
     margin: 20px 0 12px;
@@ -79,7 +106,7 @@
       grid-template-columns: 1fr;
       gap: 12px;
 
-      @media screen and (min-width: 768px) {
+      @media screen and (min-width: 600px) {
         grid-template-columns: repeat(3, 1fr);
       }
 
@@ -130,6 +157,51 @@
       }
     }
   }
+
+  // Contact Aside Column
+  .contact-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+
+    @media screen and (min-width: 1024px) {
+      margin-top: 0;
+      position: sticky;
+      top: 40px;
+    }
+
+    .info-map {
+      background: #14171d;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-left: 4px solid #ffd700;
+      border-radius: 8px;
+      padding: 18px 20px;
+      color: #fff;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      box-sizing: border-box;
+
+      span {
+        color: #ffd700;
+        font-weight: 600;
+        font-family: monospace;
+      }
+    }
+
+    .map-wrap {
+      width: 100%;
+      height: 280px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      .leaflet-container {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }
 
 .contact-form {
@@ -144,13 +216,19 @@
     li {
       padding: 0;
       margin: 0 0 14px;
-      position: relative;
     }
 
     li.half {
       width: 100%;
-      margin-left: 0;
-      float: none;
+
+      @media screen and (min-width: 600px) {
+        width: 49%;
+        display: inline-block;
+
+        &:last-of-type {
+          margin-left: 2%;
+        }
+      }
     }
   }
 
@@ -198,7 +276,7 @@
     color: #111317;
     font-size: 0.95rem;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     text-decoration: none;
     padding: 12px 24px;
     border: none;
@@ -207,9 +285,8 @@
     text-transform: uppercase;
     text-align: center;
     cursor: pointer;
-    width: 100%;
     min-height: 44px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
@@ -218,123 +295,6 @@
       background: #ffe34d;
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
       transform: translateY(-2px);
-    }
-  }
-}
-
-.info-map {
-  position: relative;
-  background: rgba(0, 0, 0, 0.75);
-  border-left: 4px solid #ffd700;
-  border-radius: 8px;
-  top: auto;
-  right: auto;
-  width: 100%;
-  padding: 16px 20px;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1.2rem;
-  font-weight: 300;
-  line-height: 1.6;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-
-  span {
-    font-size: 1.2rem;
-    color: #ffd700;
-    font-weight: 500;
-  }
-}
-
-.map-wrap {
-  position: relative;
-  width: 100%;
-  height: 280px;
-  float: none;
-  margin: 0 0 40px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 215, 0, 0.2);
-}
-
-.leaflet-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-// Desktop Contact Page (min-width: 992px)
-@media screen and (min-width: 992px) {
-  .contact-page {
-    .text-zone {
-      position: absolute;
-      left: 10%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 48%;
-      max-height: 90%;
-      overflow-y: auto;
-      padding-right: 20px;
-
-      &::-webkit-scrollbar {
-        width: 4px;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: rgba(255, 215, 0, 0.3);
-        border-radius: 4px;
-      }
-    }
-  }
-
-  .contact-form {
-    ul {
-      li.half {
-        width: 49%;
-        margin-left: 2%;
-        float: left;
-
-        &:first-child {
-          margin-left: 0;
-        }
-      }
-    }
-
-    .flat-button {
-      width: auto;
-      float: right;
-      padding: 10px 30px;
-    }
-  }
-
-  .map-wrap {
-    float: right;
-    width: 46%;
-    height: 100%;
-    margin-top: 0;
-    border-radius: 0;
-    border: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-  }
-
-  .info-map {
-    position: absolute;
-    background: #000;
-    top: 50px;
-    right: 20%;
-    z-index: 999;
-    width: 270px;
-    padding: 20px;
-    margin: 0;
-    border-radius: 6px;
-    border-left: 4px solid #ffd700;
-    font-size: 15px;
-
-    span {
-      font-size: 14px;
     }
   }
 }

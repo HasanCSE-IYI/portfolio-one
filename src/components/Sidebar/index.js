@@ -3,6 +3,7 @@ import {
   faGithub,
   faLinkedin,
   faSkype,
+  faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons'
 import {
   faBars,
@@ -99,6 +100,16 @@ const Sidebar = () => {
             aria-label="GitHub"
           >
             <FontAwesomeIcon icon={faGithub} color="#4d4d4e" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://wa.me/8801727328200"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="WhatsApp: +880 1727 328200"
+          >
+            <FontAwesomeIcon icon={faWhatsapp} color="#4d4d4e" />
           </a>
         </li>
         <li>
