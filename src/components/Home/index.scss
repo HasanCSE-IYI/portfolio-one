@@ -59,28 +59,60 @@
 
   h1 {
     color: #fff;
-    font-size: clamp(32px, 6vw, 54px);
-    line-height: 1.15;
+    font-size: clamp(30px, 5.8vw, 54px);
+    line-height: 1.2;
     margin: 0;
     font-family: 'Coolvetica', var(--font-sans);
     font-weight: 400;
 
-    img {
-      margin-left: 8px;
-      margin-right: 2px;
-      opacity: 0;
-      width: clamp(42px, 7vw, 66px);
-      height: auto;
-      vertical-align: -2px;
+    .greeting-line {
       display: inline-block;
-      animation: rotateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-      animation-delay: 0.42s;
-      filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.6));
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+      white-space: nowrap;
 
-      &:hover {
-        transform: scale(1.15) translateY(-4px) rotate(4deg);
-        filter: drop-shadow(0 0 26px rgba(245, 158, 11, 0.85));
+      .inline-space {
+        display: inline-block;
+        width: 0.25em;
+      }
+    }
+
+    .name-line {
+      display: inline-flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+
+      .first-name-unit {
+        display: inline-flex;
+        align-items: baseline;
+        white-space: nowrap;
+
+        img.name-logo-m {
+          margin-left: 0;
+          margin-right: -1px;
+          opacity: 0;
+          width: clamp(38px, 6.8vw, 62px);
+          height: auto;
+          vertical-align: -2px;
+          display: inline-block;
+          animation: rotateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation-delay: 0.42s;
+          filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+
+          &:hover {
+            transform: scale(1.15) translateY(-4px) rotate(4deg);
+            filter: drop-shadow(0 0 24px rgba(245, 158, 11, 0.85));
+          }
+        }
+      }
+
+      .name-sep {
+        display: inline-block;
+        width: 0.28em;
+      }
+
+      .last-name-unit {
+        display: inline-block;
+        white-space: nowrap;
       }
     }
   }

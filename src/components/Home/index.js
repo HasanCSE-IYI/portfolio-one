@@ -44,23 +44,8 @@ const Home = () => {
   const [activeCapability, setActiveCapability] = useState(0)
   const [isResumeOpen, setIsResumeOpen] = useState(false)
 
-  const nameArray = [
-    'a',
-    'h',
-    'm',
-    'u',
-    'd',
-    ' ',
-    'a',
-    'l',
-    ' ',
-    'H',
-    'a',
-    's',
-    'a',
-    'n',
-    ',',
-  ]
+  const firstNameArray = ['a', 'h', 'm', 'u', 'd']
+  const lastNameArray = ['a', 'l', ' ', 'H', 'a', 's', 'a', 'n', ',']
   const jobArray = [
     's',
     'o',
@@ -127,27 +112,43 @@ const Home = () => {
             </div>
 
             <h1>
-              <span className={letterClass}>H</span>
-              <span className={`${letterClass} _1`}>i</span>
-              <span className={`${letterClass} _2`}>,</span>
+              <span className="greeting-line">
+                <span className={letterClass}>H</span>
+                <span className={`${letterClass} _1`}>i</span>
+                <span className={`${letterClass} _2`}>,</span>
+                <span className="inline-space">&nbsp;</span>
+                <span className={`${letterClass} _3`}>I</span>
+                <span className={`${letterClass} _4`}>'</span>
+                <span className={`${letterClass} _5`}>m</span>
+              </span>
               <br />
-              <span className={`${letterClass} _3`}>I</span>
-              <span className={`${letterClass} _4`}>'</span>
-              <span className={`${letterClass} _5`}>m</span>
-              <img
-                src={LogoTitle}
-                alt="Mahmud al Hasan"
-              />
-              <AnimatedLetters
-                letterClass={letterClass}
-                strArray={nameArray}
-                idx={6}
-              />
+              <span className="name-line">
+                <span className="first-name-unit">
+                  <img
+                    src={LogoTitle}
+                    alt="M"
+                    className="name-logo-m"
+                  />
+                  <AnimatedLetters
+                    letterClass={letterClass}
+                    strArray={firstNameArray}
+                    idx={6}
+                  />
+                </span>
+                <span className="name-sep">&nbsp;</span>
+                <span className="last-name-unit">
+                  <AnimatedLetters
+                    letterClass={letterClass}
+                    strArray={lastNameArray}
+                    idx={11}
+                  />
+                </span>
+              </span>
               <br />
               <AnimatedLetters
                 letterClass={letterClass}
                 strArray={jobArray}
-                idx={22}
+                idx={21}
               />
             </h1>
 

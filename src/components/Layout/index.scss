@@ -3,30 +3,33 @@
   width: 100%;
   min-height: 100vh;
   position: relative;
-  padding-top: 60px;
+  padding-top: 68px;
+  padding-bottom: 88px; // Leaves ample space above mobile floating bottom dock
   overflow-x: hidden;
   box-sizing: border-box;
 
   @media screen and (min-width: 992px) {
-    padding-top: 0;
-    margin-left: 68px;
-    width: calc(100% - 68px);
-    overflow-y: auto;
+    padding-top: 92px; // Space for top floating glass capsule navbar
+    padding-bottom: 60px;
+    margin-left: 0;
+    width: 100%;
+    overflow-y: visible;
   }
 }
 
 .container {
   width: 100%;
+  max-width: 1240px;
   position: relative;
   margin: 0 auto;
-  padding: 20px 20px 60px;
+  padding: 16px 16px 40px;
   z-index: 1;
   opacity: 0;
   animation: fadeIn 0.8s 0.2s forwards;
   box-sizing: border-box;
 
   @media screen and (min-width: 992px) {
-    padding: 40px 60px 80px;
+    padding: 24px 40px 80px;
   }
 }
 
