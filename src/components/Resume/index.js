@@ -104,12 +104,17 @@ Bangla (Native / Fluent), English (Professional)
 ADDITIONAL
 Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; intra-university programming contests.
 
-PROFESSIONAL REFERENCE
-Habibur Rahman
+PROFESSIONAL REFERENCES
+1. Habibur Rahman
 Trainer | BASIS BITM (PHP with Laravel Framework)
 Head of IT Department | Sorejomin Barta
 www.sorejominbarta.com
-Phone: +880 1711-805110 | Email: habib2498922@gmail.com`;
+Phone: +880 1711-805110 | Email: habib2498922@gmail.com
+
+2. IFTEKHAR UDDIN MD. TANVIR
+MSc in Computer Science, MBA
+Head of IT (Ex) | Island Securities Ltd.
+Phone: +880 1919-316231 | Email: eng.iftekhar@gmail.com`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(plainTextResume).then(() => {
@@ -552,11 +557,11 @@ Phone: +880 1711-805110 | Email: habib2498922@gmail.com`;
           </div>
         </section>
 
-        {/* Section: Professional Reference */}
+        {/* Section: Professional References */}
         <section className="paper-section reference-section">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faUserTie} className="section-icon" />
-            <span>Professional Reference</span>
+            <span>Professional References</span>
           </h2>
           <div className="reference-card">
             <div className="ref-header">
@@ -596,6 +601,33 @@ Phone: +880 1711-805110 | Email: habib2498922@gmail.com`;
               >
                 <FontAwesomeIcon icon={faGlobe} className="ref-icon" />
                 <span>www.sorejominbarta.com ↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="reference-card">
+            <div className="ref-header">
+              <div className="ref-name-wrap">
+                <h3 className="ref-name">IFTEKHAR UDDIN MD. TANVIR</h3>
+                <span className="ref-role-pill">MSc in Computer Science, MBA</span>
+              </div>
+            </div>
+            <div className="ref-designations">
+              <div className="designation-item">
+                <span className="bullet-dot">▪</span>
+                <span>
+                  <strong>Head of IT (Ex)</strong> · Island Securities Ltd.
+                </span>
+              </div>
+            </div>
+            <div className="ref-contact-row">
+              <a href="tel:+8801919316231" className="ref-contact-link">
+                <FontAwesomeIcon icon={faPhone} className="ref-icon" />
+                <span>+880 1919-316231</span>
+              </a>
+              <a href="mailto:eng.iftekhar@gmail.com" className="ref-contact-link">
+                <FontAwesomeIcon icon={faEnvelope} className="ref-icon" />
+                <span>eng.iftekhar@gmail.com</span>
               </a>
             </div>
           </div>

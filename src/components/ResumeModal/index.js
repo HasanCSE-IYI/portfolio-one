@@ -340,7 +340,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
           </section>
 
           <section className="resume-section reference-section">
-            <h2 className="section-title">Professional Reference</h2>
+            <h2 className="section-title">Professional References</h2>
             <div className="reference-card">
               <div className="ref-header">
                 <div>
@@ -361,6 +361,26 @@ const ResumeModal = ({ isOpen, onClose }) => {
                 </a>
                 <a href="https://www.sorejominbarta.com" target="_blank" rel="noreferrer">
                   <FontAwesomeIcon icon={faGlobe} className="contact-icon" /> www.sorejominbarta.com ↗
+                </a>
+              </div>
+            </div>
+
+            <div className="reference-card" style={{ marginTop: '12px' }}>
+              <div className="ref-header">
+                <div>
+                  <h3 className="job-title">IFTEKHAR UDDIN MD. TANVIR</h3>
+                  <span className="ref-badge">MSc in Computer Science, MBA</span>
+                </div>
+              </div>
+              <ul className="achievements" style={{ marginTop: '6px', marginBottom: '8px' }}>
+                <li><strong>Head of IT (Ex)</strong> · Island Securities Ltd.</li>
+              </ul>
+              <div className="contact-row ref-modal-contacts">
+                <a href="tel:+8801919316231">
+                  <FontAwesomeIcon icon={faPhone} className="contact-icon" /> +880 1919-316231
+                </a>
+                <a href="mailto:eng.iftekhar@gmail.com">
+                  <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> eng.iftekhar@gmail.com
                 </a>
               </div>
             </div>

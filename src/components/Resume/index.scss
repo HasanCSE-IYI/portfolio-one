@@ -565,6 +565,10 @@
           padding: 16px 20px;
           transition: all 0.25s ease;
 
+          & + .reference-card {
+            margin-top: 16px;
+          }
+
           &:hover {
             background: rgba(255, 255, 255, 0.04);
             border-color: rgba(245, 158, 11, 0.35);
@@ -1051,6 +1055,10 @@
           border-radius: 4px !important;
           padding: 8px 12px !important;
           box-shadow: none !important;
+
+          & + .reference-card {
+            margin-top: 8px !important;
+          }
 
           .ref-header {
             display: flex !important;
