@@ -291,6 +291,10 @@
             flex-direction: column;
             gap: 3px;
             padding: 10px 12px;
+
+            .skill-label {
+              min-width: auto;
+            }
           }
 
           .skill-label {

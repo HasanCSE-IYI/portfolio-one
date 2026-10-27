@@ -57,6 +57,18 @@
         align-items: center;
         gap: 12px;
 
+        @media screen and (max-width: 600px) {
+          width: 100%;
+          justify-content: space-between;
+          gap: 8px;
+
+          .full-page-link,
+          .print-btn {
+            padding: 5px 10px;
+            font-size: 0.76rem;
+          }
+        }
+
         .full-page-link {
           color: #38bdf8;
           text-decoration: none;
@@ -114,6 +126,10 @@
       overflow-y: auto;
       color: #e5e7eb;
       font-family: var(--font-sans);
+
+      @media screen and (max-width: 600px) {
+        padding: 16px 14px;
+      }
 
       &::-webkit-scrollbar {
         width: 6px;

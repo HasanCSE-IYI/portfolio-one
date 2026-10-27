@@ -680,3 +680,65 @@
     }
   }
 }
+
+// Mobile Responsive Optimization (<= 480px: iPhone SE, Galaxy, compact phones)
+@media screen and (max-width: 480px) {
+  .modern-navbar .navbar-container {
+    padding: 0 10px;
+
+    .brand-zone {
+      gap: 8px;
+
+      .status-hire-capsule {
+        padding: 4px 8px;
+
+        .status-text {
+          font-size: 0.68rem;
+        }
+      }
+    }
+
+    .nav-actions {
+      gap: 6px;
+
+      .social-links {
+        display: none; // Kept accessible in the '...' quick connect dropdown
+      }
+
+      .spotlight-quick-btn {
+        padding: 5px 8px;
+
+        .spotlight-kbd {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .mobile-bottom-dock {
+    width: calc(100% - 16px);
+    height: 54px;
+    padding: 3px 4px;
+
+    .dock-item {
+      height: 44px;
+
+      .dock-icon {
+        font-size: 15px;
+      }
+
+      .dock-label {
+        font-size: 0.62rem;
+      }
+    }
+  }
+}
+
+// Extra Narrow Devices (<= 360px)
+@media screen and (max-width: 360px) {
+  .modern-navbar .navbar-container {
+    .brand-zone .status-hire-capsule .status-text {
+      display: none; // Leaves glowing live green beacon icon
+    }
+  }
+}
