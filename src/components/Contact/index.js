@@ -109,6 +109,15 @@ const Contact = () => {
     const subjectVal = subject || form.current?.subject?.value || 'Portfolio Contact'
     const messageVal = form.current?.message?.value || ''
 
+    const templateParams = {
+      name: nameVal,
+      email: emailVal,
+      subject: subjectVal,
+      message: messageVal,
+      user_name: nameVal,
+      user_email: emailVal,
+    }
+
     emailjs
       .sendForm(
         serviceId,
@@ -116,13 +125,17 @@ const Contact = () => {
         form.current,
         publicKey
       )
+      .catch(() => {
+        // Fallback to direct JSON send if FormData parsing fails in some environments
+        return emailjs.send(serviceId, templateId, templateParams, publicKey)
+      })
       .then(
         () => {
           setIsSubmitting(false)
           setFormFeedback({
             type: 'success',
             title: 'Message Delivered Successfully!',
-            message: 'Thank you for reaching out. Mahmud has received your message and will reply shortly.',
+            message: 'Thank you for reaching out! Mahmud has received your message and will reply shortly.',
           })
           if (form.current) {
             form.current.reset()
@@ -144,9 +157,9 @@ const Contact = () => {
 
           setFormFeedback({
             type: 'error',
-            title: 'Direct Dispatch Offline (Gmail Reconnection Required)',
+            title: 'Direct Dispatch Offline',
             message:
-              'The automated gateway is undergoing Gmail OAuth token renewal. Your message is safely preserved below—dispatch it with 1 click:',
+              'The automated gateway is currently unavailable. Your message is safely preserved below—dispatch it with 1 click:',
             mailtoUrl,
             whatsappUrl,
             formData: { name: nameVal, email: emailVal, subject: subjectVal, message: messageVal },
