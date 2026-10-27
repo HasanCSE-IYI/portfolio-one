@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Mahmud CV",
+  "name": "Mahmud al Hasan | Backend Software Engineer",
+  "description": "Backend Software Engineer portfolio specializing in ASP.NET Core, C#, Laravel, NestJS, and cloud infrastructure.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +19,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/portfolio-one/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "orientation": "portrait",
+  "theme_color": "#090b10",
+  "background_color": "#090b10",
+  "categories": ["portfolio", "technology", "developer"]
 }
