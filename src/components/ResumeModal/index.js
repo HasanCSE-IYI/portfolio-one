@@ -314,6 +314,29 @@ const ResumeModal = ({ isOpen, onClose }) => {
               Firefox Student Ambassador (volunteer) · Professional PHP with Laravel training, BASIS BITM · Intra-university programming contests
             </p>
           </section>
+
+          <section className="resume-section reference-section">
+            <h2 className="section-title">Professional Reference</h2>
+            <div className="reference-card">
+              <div className="ref-header">
+                <div>
+                  <h3 className="job-title">Habibur Rahman</h3>
+                  <span className="ref-badge">Professional Mentor &amp; Industry Trainer</span>
+                </div>
+              </div>
+              <ul className="achievements" style={{ marginTop: '6px', marginBottom: '8px' }}>
+                <li><strong>Trainer</strong> · BASIS BITM (PHP with Laravel Framework)</li>
+                <li><strong>Head of IT Department</strong> · Sorejomin Barta</li>
+              </ul>
+              <div className="contact-row ref-modal-contacts">
+                <a href="tel:+8801711805110">📞 +880 1711-805110</a>
+                <a href="mailto:habib2498922@gmail.com">✉️ habib2498922@gmail.com</a>
+                <a href="https://www.sorejominbarta.com" target="_blank" rel="noreferrer">
+                  🌐 www.sorejominbarta.com ↗
+                </a>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>

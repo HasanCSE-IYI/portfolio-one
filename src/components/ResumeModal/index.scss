@@ -312,6 +312,65 @@
             margin: 4px 0 0;
           }
         }
+
+        &.reference-section {
+          .reference-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #f59e0b;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 8px;
+
+            .ref-header {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              gap: 8px;
+
+              .job-title {
+                color: #fff;
+                font-size: 1.05rem;
+                font-weight: 700;
+                margin: 0;
+              }
+
+              .ref-badge {
+                font-family: var(--font-mono);
+                font-size: 0.72rem;
+                font-weight: 600;
+                color: #f59e0b;
+                background: rgba(245, 158, 11, 0.12);
+                border: 1px solid rgba(245, 158, 11, 0.3);
+                padding: 2px 8px;
+                border-radius: 999px;
+              }
+            }
+
+            .ref-modal-contacts {
+              margin-top: 10px;
+              padding-top: 8px;
+              border-top: 1px dashed rgba(255, 255, 255, 0.08);
+              display: flex;
+              flex-wrap: wrap;
+              gap: 12px;
+
+              a {
+                color: #38bdf8;
+                font-family: var(--font-mono);
+                font-size: 0.8rem;
+                text-decoration: none;
+                transition: color 0.2s ease;
+
+                &:hover {
+                  color: #7dd3fc;
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -424,6 +483,55 @@
               color: #4b5563 !important;
               font-size: 8.3pt !important;
               font-weight: 600 !important;
+            }
+
+            &.reference-section {
+              page-break-inside: avoid;
+              break-inside: avoid;
+
+              .reference-card {
+                border: 1px solid #d1d5db !important;
+                border-left: 3px solid #111827 !important;
+                background: #ffffff !important;
+                padding: 6px 10px !important;
+                margin-top: 4px !important;
+                border-radius: 4px !important;
+
+                .job-title {
+                  color: #111827 !important;
+                  font-size: 9.3pt !important;
+                }
+
+                .ref-badge {
+                  color: #4b5563 !important;
+                  background: #f3f4f6 !important;
+                  border: 1px solid #d1d5db !important;
+                  font-size: 7.5pt !important;
+                  padding: 1px 6px !important;
+                  border-radius: 999px !important;
+                }
+
+                .achievements {
+                  color: #1f2937 !important;
+                  font-size: 8.3pt !important;
+
+                  strong {
+                    color: #111827 !important;
+                  }
+                }
+
+                .ref-modal-contacts {
+                  margin-top: 4px !important;
+                  padding-top: 4px !important;
+                  border-top: 1px dashed #d1d5db !important;
+
+                  a {
+                    color: #1e40af !important;
+                    font-size: 8pt !important;
+                    text-decoration: none !important;
+                  }
+                }
+              }
             }
           }
         }

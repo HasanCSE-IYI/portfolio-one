@@ -14,6 +14,7 @@ import {
   faCalendarAlt,
   faMapMarkerAlt,
   faPhone,
+  faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -96,7 +97,14 @@ LANGUAGES
 Bangla (Native / Fluent), English (Professional)
 
 ADDITIONAL
-Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; intra-university programming contests.`;
+Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; intra-university programming contests.
+
+PROFESSIONAL REFERENCE
+Habibur Rahman
+Trainer | BASIS BITM (PHP with Laravel Framework)
+Head of IT Department | Sorejomin Barta
+www.sorejominbarta.com
+Phone: +880 1711-805110 | Email: habib2498922@gmail.com`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(plainTextResume).then(() => {
@@ -539,11 +547,53 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           </div>
         </section>
 
-        {/* Section: References */}
-        <section className="paper-section references-section">
-          <span className="references-text">
-            References available upon request.
-          </span>
+        {/* Section: Professional Reference */}
+        <section className="paper-section reference-section">
+          <h2 className="section-title">
+            <FontAwesomeIcon icon={faUserTie} className="section-icon" />
+            <span>Professional Reference</span>
+          </h2>
+          <div className="reference-card">
+            <div className="ref-header">
+              <div className="ref-name-wrap">
+                <h3 className="ref-name">Habibur Rahman</h3>
+                <span className="ref-role-pill">Professional Mentor &amp; Industry Trainer</span>
+              </div>
+            </div>
+            <div className="ref-designations">
+              <div className="designation-item">
+                <span className="bullet-dot">▪</span>
+                <span>
+                  <strong>Trainer</strong> · BASIS BITM (PHP with Laravel Framework)
+                </span>
+              </div>
+              <div className="designation-item">
+                <span className="bullet-dot">▪</span>
+                <span>
+                  <strong>Head of IT Department</strong> · Sorejomin Barta
+                </span>
+              </div>
+            </div>
+            <div className="ref-contact-row">
+              <a href="tel:+8801711805110" className="ref-contact-link">
+                <FontAwesomeIcon icon={faPhone} className="ref-icon" />
+                <span>+880 1711-805110</span>
+              </a>
+              <a href="mailto:habib2498922@gmail.com" className="ref-contact-link">
+                <FontAwesomeIcon icon={faEnvelope} className="ref-icon" />
+                <span>habib2498922@gmail.com</span>
+              </a>
+              <a
+                href="https://www.sorejominbarta.com"
+                target="_blank"
+                rel="noreferrer"
+                className="ref-contact-link"
+              >
+                <FontAwesomeIcon icon={faGlobe} className="ref-icon" />
+                <span>www.sorejominbarta.com ↗</span>
+              </a>
+            </div>
+          </div>
         </section>
       </article>
     </div>
