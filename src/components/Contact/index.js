@@ -14,13 +14,9 @@ import {
   faCheck,
   faExclamationTriangle,
   faTimes,
-  faMapMarkerAlt,
   faSatellite,
   faRoad,
-  faMoon,
   faCrosshairs,
-  faExternalLinkAlt,
-  faPhoneAlt,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -60,17 +56,6 @@ const MAP_LAYERS = {
     maxNativeZoom: 20,
     maxZoom: 21,
     attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Street',
-  },
-  dark: {
-    id: 'dark',
-    label: 'ডার্ক মোড',
-    title: 'ডার্ক থিম ম্যাপ (CartoDB Dark Matter)',
-    icon: faMoon,
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png',
-    subdomains: ['a', 'b', 'c', 'd'],
-    maxNativeZoom: 19,
-    maxZoom: 20,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> &copy; <a href="https://carto.com/" target="_blank" rel="noreferrer">CARTO</a>',
   },
 };
 
@@ -178,34 +163,12 @@ const Contact = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    if (markerRef.current) {
-      const timer = setTimeout(() => {
-        try {
-          markerRef.current.openPopup()
-        } catch (e) {
-          // ignore
-        }
-      }, 700)
-      return () => clearTimeout(timer)
-    }
-  }, [mapInstance])
-
   const handleRecenter = () => {
     if (mapInstance) {
       mapInstance.flyTo(BAYAZID_COORDS, 17, {
         duration: 1.2,
         easeLinearity: 0.25,
       })
-      if (markerRef.current) {
-        setTimeout(() => {
-          try {
-            markerRef.current.openPopup()
-          } catch (e) {
-            // ignore
-          }
-        }, 1250)
-      }
     }
   }
 
@@ -544,35 +507,20 @@ const Contact = () => {
 
         <div className="contact-aside">
           <div className="info-map">
-            <div className="info-map-header">
-              <span className="info-map-avatar-dot" aria-hidden="true"></span>
-              <div className="info-map-header-text">
-                <h3 className="info-map-name">Mahmud al Hasan</h3>
-                <p className="info-map-role">Backend Software Engineer (.NET & Cloud APIs)</p>
-              </div>
-            </div>
-
-            <div className="info-map-location">
-              <div className="location-landmark">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="pin-icon" />
-                <span className="primary-landmark">পাবলিক মোড়, বিএসআরএম গলি</span>
-              </div>
-              <div className="location-detail">
-                <div>Public Mor, BSRM Goli · Bayazid Bostami Road</div>
-                <div>Bayazid, Chattogram - 4210, Bangladesh</div>
-              </div>
-            </div>
-
-            <div className="info-map-contact-list">
-              <a href="tel:+8801727328200" className="contact-item phone">
-                <FontAwesomeIcon icon={faPhoneAlt} className="contact-icon" />
-                <span>+880 1727 328200</span>
-              </a>
-              <a href="mailto:mahmud.csem@gmail.com" className="contact-item email">
-                <FontAwesomeIcon icon={faEnvelope} className="contact-icon" />
-                <span>mahmud.csem@gmail.com</span>
-              </a>
-            </div>
+            Mahmud al Hasan
+            <br />
+            Backend Software Engineer
+            <br />
+            (Laravel, NestJS • Transitioning to .NET)
+            <br />
+            Bayazid, Chattogram, Bangladesh
+            <br />
+            Phone: <a href="tel:+8801727328200" className="phone-link">+880 1727 328200</a>
+            <br />
+            <br />
+            <a href="mailto:mahmud.csem@gmail.com" className="email-link">
+              <span>mahmud.csem@gmail.com</span>
+            </a>
           </div>
 
           <div className={`map-wrap layer-${activeMapLayer}`}>
@@ -600,8 +548,8 @@ const Contact = () => {
                 type="button"
                 className="recenter-btn"
                 onClick={handleRecenter}
-                title="পাবলিক মোড় ও বায়েজীদ লোকেশনে রিসেন্টার করুন"
-                aria-label="Recenter map on Public Mor, Bayazid"
+                title="বায়েজীদ লোকেশনে রিসেন্টার করুন"
+                aria-label="Recenter map on Bayazid, Chattogram"
               >
                 <FontAwesomeIcon icon={faCrosshairs} />
               </button>
@@ -627,27 +575,8 @@ const Contact = () => {
                 icon={redMarker3DIcon}
                 ref={markerRef}
               >
-                <Popup className="custom-location-popup" autoPan={false}>
-                  <div className="popup-card">
-                    <div className="popup-badge">
-                      <span className="live-dot-red"></span>
-                      <span>বর্তমান অবস্থান / Exact Pin</span>
-                    </div>
-                    <h3 className="popup-title">পাবলিক মোড়, বিএসআরএম গলি</h3>
-                    <p className="popup-sub">Public Mor, BSRM Goli · Bayazid Bostami Road</p>
-                    <div className="popup-meta">
-                      <span className="badge-chip">Bayazid, Chattogram - 4210</span>
-                      <span className="coords-chip">22.3911° N, 91.8177° E</span>
-                    </div>
-                    <a
-                      href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="popup-maps-btn"
-                    >
-                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Google Maps-এ সরাসরি দেখুন
-                    </a>
-                  </div>
+                <Popup>
+                  Mahmud al Hasan · Bayazid, Chattogram :)
                 </Popup>
               </Marker>
             </MapContainer>

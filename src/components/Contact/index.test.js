@@ -2,34 +2,41 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Contact from './index';
 
-test('renders contact page with restored address, multi-view map layers and pin details', () => {
+test('renders contact page with original info-map card content, no direct maps popup card, and no dark mode', () => {
   render(
     <MemoryRouter>
       <Contact />
     </MemoryRouter>
   );
 
-  // Check header and profession
-  expect(screen.getByText('Mahmud al Hasan')).toBeInTheDocument();
-  expect(screen.getByText('Backend Software Engineer (.NET & Cloud APIs)')).toBeInTheDocument();
+  // Check restored original card info inside .info-map
+  const infoMap = document.querySelector('.info-map');
+  expect(infoMap).toBeInTheDocument();
+  expect(infoMap).toHaveTextContent('Mahmud al Hasan');
+  expect(infoMap).toHaveTextContent('Backend Software Engineer');
+  expect(infoMap).toHaveTextContent('(Laravel, NestJS • Transitioning to .NET)');
+  expect(infoMap).toHaveTextContent('Bayazid, Chattogram, Bangladesh');
+  expect(infoMap).toHaveTextContent('+880 1727 328200');
+  expect(infoMap).toHaveTextContent('mahmud.csem@gmail.com');
 
-  // Check restored location details matching previous screenshot
-  const landmarkHeadings = screen.getAllByText(/পাবলিক মোড়, বিএসআরএম গলি/i);
-  expect(landmarkHeadings.length).toBeGreaterThanOrEqual(1);
+  // Verify unwanted street details from the screenshot card are NOT present
+  expect(screen.queryByText(/পাবলিক মোড়/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/পাবলিক মোড়/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/বিএসআরএম/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Public Mor/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/BSRM Goli/i)).not.toBeInTheDocument();
 
-  expect(screen.getByText(/Public Mor, BSRM Goli · Bayazid Bostami Road/i)).toBeInTheDocument();
-  expect(screen.getByText(/Bayazid, Chattogram - 4210, Bangladesh/i)).toBeInTheDocument();
+  // Verify "Google Maps-এ সরাসরি দেখার কার্ড" is NOT present
+  expect(screen.queryByText(/Google Maps-এ সরাসরি দেখুন/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Google Maps-এ দেখুন/i)).not.toBeInTheDocument();
 
-  // Check contact channels
-  expect(screen.getByText('+880 1727 328200')).toBeInTheDocument();
-  const emailElements = screen.getAllByText('mahmud.csem@gmail.com');
-  expect(emailElements.length).toBeGreaterThanOrEqual(1);
+  // Verify "ডার্ক মোড" is removed
+  expect(screen.queryByRole('tab', { name: /ডার্ক মোড/i })).not.toBeInTheDocument();
 
-  // Check multiple map view layer switcher buttons
+  // Verify only Satellite and Road Map tabs are present
   expect(screen.getByRole('tab', { name: /স্যাটেলাইট/i })).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: /রোড ম্যাপ/i })).toBeInTheDocument();
-  expect(screen.getByRole('tab', { name: /ডার্ক মোড/i })).toBeInTheDocument();
 
   // Check map recenter button
-  expect(screen.getByLabelText(/Recenter map on Public Mor, Bayazid/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Recenter map on Bayazid, Chattogram/i)).toBeInTheDocument();
 });
