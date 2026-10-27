@@ -103,7 +103,9 @@ const Home = () => {
             <p>• <strong>StoreApi</strong> [.NET 8 / EF Core] - JWT Auth &amp; Clean Architecture</p>
             <p>• <strong>Doctor Dekhao</strong> [Laravel / AWS] - Telemedicine API, 99.9% uptime</p>
             <p>• <strong>Mappi</strong> [Flutter GIS] - Offline vector navigation engine</p>
+            <p>• <strong>chittago</strong> [Kotlin / Android] - Offline MBTiles map engine</p>
             <p>• <strong>Hamd-Shop</strong> [Laravel / MySQL] - ACID transaction e-commerce</p>
+            <p>• <strong>saas-ai</strong> [Next.js / Edge] - Multi-modal AI streaming API</p>
           </div>
         )
         break
