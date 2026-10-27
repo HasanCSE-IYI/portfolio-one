@@ -11,6 +11,8 @@ import {
   faCode,
   faGlobe,
   faLayerGroup,
+  faCalendarAlt,
+  faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -266,17 +268,22 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item project-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Store API</h3>
-                <span className="tech-badge">ASP.NET Core · EF Core · SQLite · JWT</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Store API</h3>
+                  <span className="tech-badge">ASP.NET Core · EF Core · SQLite · JWT</span>
+                </div>
+                <div className="company-name">RESTful Product Inventory API &amp; Architecture</div>
               </div>
-              <a
-                href="https://github.com/HasanCSE-IYI/StoreApi"
-                target="_blank"
-                rel="noreferrer"
-                className="repo-link"
-              >
-                github.com/HasanCSE-IYI/StoreApi ↗
-              </a>
+              <div className="item-meta">
+                <a
+                  href="https://github.com/HasanCSE-IYI/StoreApi"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="repo-link"
+                >
+                  github.com/HasanCSE-IYI/StoreApi ↗
+                </a>
+              </div>
             </div>
             <ul className="bullet-list">
               <li>
@@ -303,12 +310,17 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">IT Operations &amp; Web Systems Engineer</h3>
-                <span className="company-name">EXONEXT &amp; SourcingPi</span>
+                <div className="role-heading">
+                  <h3 className="job-title">IT Operations &amp; Web Systems Engineer</h3>
+                  <span className="work-type-pill">Hybrid</span>
+                </div>
+                <div className="company-name">EXONEXT &amp; SourcingPi</div>
               </div>
               <div className="item-meta">
-                <span className="work-type">Hybrid</span>
-                <span className="work-period">Feb 2025 – Present</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Feb 2025 – Present
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -322,12 +334,17 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Front-End Support &amp; Content Developer</h3>
-                <span className="company-name">Independent Contractor</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Front-End Support &amp; Content Developer</h3>
+                  <span className="work-type-pill">Remote</span>
+                </div>
+                <div className="company-name">Independent Contractor</div>
               </div>
               <div className="item-meta">
-                <span className="work-type">Remote</span>
-                <span className="work-period">Feb 2025 – Aug 2026</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Feb 2025 – Aug 2026
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -340,11 +357,16 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Software Engineer</h3>
-                <span className="company-name">iGOT AI</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Software Engineer</h3>
+                </div>
+                <div className="company-name">iGOT AI</div>
               </div>
               <div className="item-meta">
-                <span className="work-period">Feb 2024 – Aug 2024</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Feb 2024 – Aug 2024
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -358,11 +380,16 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Software Engineer</h3>
-                <span className="company-name">BeWeddy &amp; BlessUp AI</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Software Engineer</h3>
+                </div>
+                <div className="company-name">BeWeddy &amp; BlessUp AI</div>
               </div>
               <div className="item-meta">
-                <span className="work-period">Feb 2022 – Dec 2023</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Feb 2022 – Dec 2023
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -377,11 +404,16 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Software Engineer (Ex-Co-Founder)</h3>
-                <span className="company-name">Doctor Dekhao (Telemedicine Startup)</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Software Engineer (Ex-Co-Founder)</h3>
+                </div>
+                <div className="company-name">Doctor Dekhao (Telemedicine Startup)</div>
               </div>
               <div className="item-meta">
-                <span className="work-period">Jun 2019 – Sep 2021</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Jun 2019 – Sep 2021
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -397,11 +429,16 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Software Engineer (R&amp;D)</h3>
-                <span className="company-name">DataShall Analytics Ltd.</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Software Engineer (R&amp;D)</h3>
+                </div>
+                <div className="company-name">DataShall Analytics Ltd.</div>
               </div>
               <div className="item-meta">
-                <span className="work-period">Sep 2018 – May 2019</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Sep 2018 – May 2019
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -416,11 +453,16 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">Mobile Application Developer</h3>
-                <span className="company-name">Talha Soft</span>
+                <div className="role-heading">
+                  <h3 className="job-title">Mobile Application Developer</h3>
+                </div>
+                <div className="company-name">Talha Soft</div>
               </div>
               <div className="item-meta">
-                <span className="work-period">Apr 2018 – Aug 2018</span>
+                <span className="work-period">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="cal-icon" />
+                  Apr 2018 – Aug 2018
+                </span>
               </div>
             </div>
             <ul className="bullet-list">
@@ -439,13 +481,18 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
           <div className="experience-item">
             <div className="item-header">
               <div className="item-title-group">
-                <h3 className="job-title">B.Sc. in Computer Science and Engineering (CSE)</h3>
-                <span className="company-name">
+                <div className="role-heading">
+                  <h3 className="job-title">B.Sc. in Computer Science and Engineering (CSE)</h3>
+                </div>
+                <div className="company-name">
                   Bangladesh University of Business and Technology
-                </span>
+                </div>
               </div>
               <div className="item-meta">
-                <span className="work-period">Dhaka, Bangladesh</span>
+                <span className="work-period location-pill">
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className="cal-icon" />
+                  Dhaka, Bangladesh
+                </span>
               </div>
             </div>
           </div>

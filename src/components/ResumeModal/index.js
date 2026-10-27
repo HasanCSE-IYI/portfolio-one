@@ -11,12 +11,15 @@ const ResumeModal = ({ isOpen, onClose }) => {
     };
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('resume-modal-open');
       window.addEventListener('keydown', handleKeyDown);
     } else {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('resume-modal-open');
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('resume-modal-open');
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose]);

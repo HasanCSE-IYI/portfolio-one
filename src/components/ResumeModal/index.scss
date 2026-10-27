@@ -210,10 +210,16 @@
           }
 
           .job-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: start;
+            gap: 12px;
             margin-bottom: 6px;
+
+            @media screen and (max-width: 600px) {
+              grid-template-columns: 1fr;
+              gap: 4px;
+            }
 
             .job-title {
               font-size: 0.98rem;
@@ -233,8 +239,13 @@
             .period {
               font-size: 0.82rem;
               font-family: var(--font-mono);
-              color: #9ca3af;
+              color: #f59e0b;
+              background: rgba(245, 158, 11, 0.1);
+              border: 1px solid rgba(245, 158, 11, 0.25);
+              padding: 2px 8px;
+              border-radius: 4px;
               white-space: nowrap;
+              text-align: right;
             }
           }
 
@@ -273,92 +284,92 @@
   }
 }
 
-// Print Styles for Clean A4 PDF Output
+// Print Styles for Clean A4 PDF Output (Scoped to Modal when open)
 @media print {
-  html,
-  body {
-    overflow: visible !important;
-    height: auto !important;
-    background: #ffffff !important;
-    color: #000000 !important;
-  }
-
-  .modern-navbar,
-  .mobile-bottom-dock,
-  .page {
+  // When modal is NOT open, never show modal in print
+  body:not(.resume-modal-open) .resume-modal-overlay {
     display: none !important;
   }
 
-  .resume-modal-overlay {
-    position: static !important;
-    inset: auto !important;
-    background: transparent !important;
-    padding: 0 !important;
-    display: block !important;
-    overflow: visible !important;
-    animation: none !important;
-
-    .modal-top-bar {
+  // When modal is explicitly open, hide background page and print modal
+  body.resume-modal-open {
+    .modern-navbar,
+    .mobile-bottom-dock,
+    .page {
       display: none !important;
     }
 
-    .resume-modal-content {
-      background: #ffffff !important;
-      border: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      max-height: none !important;
-      overflow: visible !important;
-    }
-
-    .resume-sheet {
-      color: #111111 !important;
+    .resume-modal-overlay {
+      position: static !important;
+      inset: auto !important;
+      background: transparent !important;
       padding: 0 !important;
+      display: block !important;
       overflow: visible !important;
+      animation: none !important;
 
-      .resume-header {
-        border-bottom: 2px solid #333333 !important;
-        .name {
-          color: #000000 !important;
-        }
-        .headline {
-          color: #374151 !important;
-        }
-        .contact-row {
-          color: #4b5563 !important;
-        }
+      .modal-top-bar {
+        display: none !important;
       }
 
-      .resume-section {
-        margin-bottom: 16px !important;
-        page-break-inside: avoid;
+      .resume-modal-content {
+        background: #ffffff !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
 
-        .section-title {
-          color: #111827 !important;
-          border-bottom: 1px solid #d1d5db !important;
-        }
+        .resume-sheet {
+          color: #111111 !important;
+          padding: 0 !important;
+          overflow: visible !important;
 
-        .summary-text,
-        .achievements,
-        .proj-desc,
-        .cat-items {
-          color: #374151 !important;
-        }
+          .resume-header {
+            border-bottom: 2px solid #333333 !important;
+            .name {
+              color: #000000 !important;
+            }
+            .headline {
+              color: #374151 !important;
+            }
+            .contact-row {
+              color: #4b5563 !important;
+            }
+          }
 
-        .job-title,
-        .cat-title,
-        .proj-name {
-          color: #111827 !important;
-        }
+          .resume-section {
+            margin-bottom: 16px !important;
+            page-break-inside: avoid;
 
-        .company {
-          color: #1e40af !important;
-        }
+            .section-title {
+              color: #111827 !important;
+              border-bottom: 1px solid #d1d5db !important;
+            }
 
-        .period {
-          color: #6b7280 !important;
+            .summary-text,
+            .achievements,
+            .proj-desc,
+            .cat-items {
+              color: #374151 !important;
+            }
+
+            .job-title,
+            .cat-title,
+            .proj-name {
+              color: #111827 !important;
+            }
+
+            .company {
+              color: #1e40af !important;
+            }
+
+            .period {
+              color: #6b7280 !important;
+            }
+          }
         }
       }
     }
