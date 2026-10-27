@@ -82,3 +82,28 @@
     }
   }
 }
+
+// Layout Print Enforcements (Prevents Page Freezing and Clipping)
+@media print {
+  .page {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    position: static !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}

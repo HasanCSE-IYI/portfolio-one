@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import {
   faGithub,
   faLinkedin,
-  faSkype,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons'
 import {
@@ -202,15 +201,6 @@ const Sidebar = () => {
                 >
                   <FontAwesomeIcon icon={faPhone} />
                   <span>Direct Call · +880 1727 328200</span>
-                </a>
-                <a
-                  href="skype:live:rauaha_1"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="dropdown-item"
-                >
-                  <FontAwesomeIcon icon={faSkype} />
-                  <span>Skype · live:rauaha_1</span>
                 </a>
                 <Link
                   to="/resume"

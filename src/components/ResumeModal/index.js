@@ -27,6 +27,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handlePrint = () => {
+    document.body.classList.add('resume-modal-open');
     window.print();
   };
 
@@ -171,9 +172,12 @@ const ResumeModal = ({ isOpen, onClose }) => {
               <div className="job-header">
                 <div>
                   <h3 className="job-title">IT Operations &amp; Web Systems Engineer</h3>
-                  <span className="company">EXONEXT &amp; SourcingPi</span>
+                  <div className="company-subline">
+                    <span className="company">EXONEXT &amp; SourcingPi</span>
+                    <span className="work-type-badge">Hybrid</span>
+                  </div>
                 </div>
-                <span className="period">Feb 2025 – Present | Hybrid</span>
+                <span className="period">Feb 2025 – Present</span>
               </div>
               <ul className="achievements">
                 <li>Administer IT infrastructure, network configuration, and system security for hybrid business operations.</li>
@@ -186,9 +190,12 @@ const ResumeModal = ({ isOpen, onClose }) => {
               <div className="job-header">
                 <div>
                   <h3 className="job-title">Front-End Support &amp; Content Developer</h3>
-                  <span className="company">Independent Contractor</span>
+                  <div className="company-subline">
+                    <span className="company">Independent Contractor</span>
+                    <span className="work-type-badge">Remote</span>
+                  </div>
                 </div>
-                <span className="period">Feb 2025 – Aug 2026 | Remote</span>
+                <span className="period">Feb 2025 – Aug 2026</span>
               </div>
               <ul className="achievements">
                 <li>Monitored, tested, and resolved web platform defects, reducing recurring errors and downtime.</li>
@@ -281,8 +288,12 @@ const ResumeModal = ({ isOpen, onClose }) => {
               <div className="job-header">
                 <div>
                   <h3 className="job-title">B.Sc. in Computer Science and Engineering (CSE)</h3>
-                  <span className="company">Bangladesh University of Business and Technology</span>
+                  <div className="company-subline">
+                    <span className="company">Bangladesh University of Business and Technology</span>
+                    <span className="location-tag">Dhaka, Bangladesh</span>
+                  </div>
                 </div>
+                <span className="period">Graduated</span>
               </div>
             </div>
           </section>

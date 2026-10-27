@@ -90,3 +90,30 @@ samp {
 ::-webkit-scrollbar-thumb:hover {
   background: #fbbf24;
 }
+
+/* Global Print Engine Reset: Enforces visible overflow and prevents blank/clipped prints */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 14mm 14mm;
+  }
+
+  html,
+  body,
+  #root,
+  .App {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #111827 !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 9.5pt !important;
+  }
+}
+

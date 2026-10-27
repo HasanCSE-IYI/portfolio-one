@@ -46,6 +46,46 @@
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- High-Priority Print & PDF Engine Reset: Guarantees Clean A4 Document Output Without Blank Pages -->
+    <style media="print">
+      @page {
+        size: A4 portrait;
+        margin: 12mm 14mm 14mm 14mm;
+      }
+      html, body, #root, .App, .page, .container, .resume-paper, .resume-sheet {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        position: static !important;
+        float: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        animation: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+      }
+      .modern-navbar, .mobile-bottom-dock, .resume-controls-bar, .modal-top-bar,
+      .cta-buttons, .dropdown-backdrop, .mobile-more-dropdown, .interactive-glow,
+      .stars-canvas, .sidebar, .nav-bar, footer {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+      }
+      body:not(.resume-modal-open) .resume-modal-overlay {
+        display: none !important;
+      }
+      body.resume-modal-open .page {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
