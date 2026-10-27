@@ -95,7 +95,7 @@ samp {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm 14mm 14mm 14mm;
+    margin: 10mm 12mm 10mm 12mm;
   }
 
   html,

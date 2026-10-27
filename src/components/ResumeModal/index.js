@@ -27,8 +27,13 @@ const ResumeModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handlePrint = () => {
+    const originalTitle = document.title;
+    document.title = 'Mahmud_Al_Hasan_CV_Backend_Software_Engineer';
     document.body.classList.add('resume-modal-open');
     window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1500);
   };
 
   return (
@@ -337,6 +342,16 @@ const ResumeModal = ({ isOpen, onClose }) => {
               </div>
             </div>
           </section>
+
+          {/* Executive Document Print Footer (Rendered in A4 Print & PDF Output) */}
+          <footer className="resume-print-footer" aria-hidden="true">
+            <div className="print-footer-line">
+              <span className="doc-id">Curriculum Vitae · Mahmud al Hasan</span>
+              <span className="doc-role">Software Engineer (.NET / Backend)</span>
+              <span className="doc-loc">Bayazid, Chattogram, Bangladesh</span>
+              <span className="doc-url">https://hasancse-iyi.github.io/portfolio-one/</span>
+            </div>
+          </footer>
         </div>
       </div>
     </div>

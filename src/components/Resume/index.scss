@@ -695,6 +695,10 @@
         }
       }
     }
+
+    .resume-print-footer {
+      display: none;
+    }
   }
 }
 
@@ -1132,6 +1136,35 @@
         .references-text {
           color: #6b7280 !important;
           font-size: 8pt !important;
+        }
+      }
+    }
+
+    .resume-print-footer {
+      display: block !important;
+      margin-top: 12px !important;
+      padding-top: 6px !important;
+      border-top: 1px solid #d1d5db !important;
+      page-break-inside: avoid;
+      break-inside: avoid;
+
+      .print-footer-line {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 4px 12px !important;
+        font-family: var(--font-mono) !important;
+        font-size: 7.2pt !important;
+        color: #6b7280 !important;
+
+        .doc-id {
+          font-weight: 700 !important;
+          color: #111827 !important;
+        }
+
+        .doc-url {
+          color: #1e40af !important;
         }
       }
     }

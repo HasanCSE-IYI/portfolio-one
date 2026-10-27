@@ -35,19 +35,27 @@ const Sidebar = () => {
       {/* Top Floating Glass Navbar (Desktop Floating Capsule & Mobile Slim Header) */}
       <header className="modern-navbar">
         <div className="navbar-container">
-          {/* Brand Logo & Name */}
-          <Link className="brand-logo" to="/">
-            <div className="logo-icon-wrap">
-              <img className="logo-img" src={LogoS} alt="Mahmud al Hasan" />
-            </div>
-            <div className="brand-text">
-              <span className="brand-name">Mahmud al Hasan</span>
-              <span className="brand-status">
-                <span className="status-dot"></span>
-                <span className="status-text">Available for hire</span>
+          {/* Brand Logo & Live Availability Status Capsule */}
+          <div className="brand-zone">
+            <Link className="brand-logo" to="/" aria-label="Home · Mahmud al Hasan">
+              <div className="logo-icon-wrap">
+                <img className="logo-img" src={LogoS} alt="Mahmud al Hasan Logo" />
+              </div>
+            </Link>
+
+            <Link
+              to="/contact"
+              className="status-hire-capsule"
+              aria-label="Available for hire · Click to open contact"
+              title="Open to backend & .NET engineering opportunities · Click to get in touch"
+            >
+              <span className="beacon-indicator">
+                <span className="beacon-ping"></span>
+                <span className="beacon-dot"></span>
               </span>
-            </div>
-          </Link>
+              <span className="status-text">Available for hire</span>
+            </Link>
+          </div>
 
           {/* Desktop Navigation Links */}
           <nav className="desktop-nav" aria-label="Desktop Navigation">

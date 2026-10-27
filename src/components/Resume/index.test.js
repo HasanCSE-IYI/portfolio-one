@@ -13,7 +13,7 @@ test('renders resume page with authentic credentials and sections', () => {
   const nameHeading = screen.getByRole('heading', { level: 1 });
   expect(nameHeading).toBeInTheDocument();
   expect(nameHeading.textContent.replace(/\u00a0/g, ' ')).toContain('Mahmud al Hasan');
-  expect(screen.getByText(/Software Engineer \(\.NET \/ Backend\)/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/Software Engineer \(\.NET \/ Backend\)/i).length).toBeGreaterThanOrEqual(1);
 
   // Check authentic work experience
   expect(screen.getByText(/EXONEXT & SourcingPi/i)).toBeInTheDocument();
