@@ -196,12 +196,12 @@
 
     .face2 {
       transform: rotateY(90deg) translateZ(90px);
-      color: #ff2d20;
+      color: #61dafb;
       @media screen and (min-width: 768px) {
         transform: rotateY(90deg) translateZ(120px);
       }
       svg {
-        filter: drop-shadow(0 0 10px #ff2d20) drop-shadow(0 0 22px rgba(255, 45, 32, 0.95)) drop-shadow(0 0 42px rgba(239, 68, 68, 0.75));
+        filter: drop-shadow(0 0 10px #61dafb) drop-shadow(0 0 24px rgba(97, 218, 251, 0.95)) drop-shadow(0 0 45px rgba(97, 218, 251, 0.75));
         animation: iconNeonPulse 3.4s ease-in-out infinite alternate;
       }
     }

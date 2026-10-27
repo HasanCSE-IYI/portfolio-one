@@ -1,10 +1,10 @@
 import {
   faAws,
   faDocker,
-  faLaravel,
   faLinux,
   faNodeJs,
   faPython,
+  faReact,
 } from '@fortawesome/free-brands-svg-icons'
 import {
   faBookOpen,
@@ -171,7 +171,7 @@ const About = () => {
                 <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
               </div>
               <div className="face2">
-                <FontAwesomeIcon icon={faLaravel} color="#ff2d20" title="Laravel Framework (8+ Years Foundation)" />
+                <FontAwesomeIcon icon={faReact} color="#61dafb" title="React &amp; Next.js Ecosystem" />
               </div>
               <div className="face3">
                 <FontAwesomeIcon icon={faNodeJs} color="#339933" title="Node.js / NestJS" />
