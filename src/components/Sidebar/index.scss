@@ -253,6 +253,47 @@
       }
     }
 
+    .spotlight-quick-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+
+      .spotlight-icon {
+        font-size: 0.8rem;
+        color: #f59e0b;
+      }
+
+      .spotlight-kbd {
+        font-size: 0.68rem;
+        color: #e2e8f0;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+
+      &:hover {
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.4);
+        color: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+      }
+
+      &:active {
+        transform: scale(0.96);
+      }
+    }
+
     .resume-pill-btn {
       display: none; // shown on desktop or tablet
     }
@@ -375,6 +416,23 @@
 
           svg {
             color: #f59e0b;
+          }
+        }
+
+        &.spotlight-item {
+          background: rgba(245, 158, 11, 0.08);
+          border: 1px solid rgba(245, 158, 11, 0.25);
+          color: #f59e0b;
+          font-weight: 600;
+
+          svg {
+            color: #f59e0b;
+          }
+
+          &:hover {
+            background: rgba(245, 158, 11, 0.2);
+            border-color: #f59e0b;
+            color: #fff;
           }
         }
 

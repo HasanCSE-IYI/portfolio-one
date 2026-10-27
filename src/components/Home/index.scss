@@ -345,6 +345,159 @@
             }
           }
         }
+
+        // Interactive CLI Console Zone
+        .terminal-cli-zone {
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px dashed rgba(245, 158, 11, 0.25);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .cli-history {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
+
+            &::-webkit-scrollbar {
+              width: 4px;
+            }
+            &::-webkit-scrollbar-thumb {
+              background: rgba(245, 158, 11, 0.3);
+              border-radius: 4px;
+            }
+
+            .history-block {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+
+              .history-prompt {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-family: var(--font-mono);
+                font-size: 0.78rem;
+                color: #f59e0b;
+
+                .prompt-sym {
+                  color: #22c55e;
+                  font-weight: 700;
+                }
+
+                .cmd-echo {
+                  color: #f1f5f9;
+                }
+              }
+
+              .cli-output {
+                font-family: var(--font-mono);
+                font-size: 0.76rem;
+                color: #cbd5e1;
+                line-height: 1.45;
+                background: rgba(0, 0, 0, 0.35);
+                padding: 6px 10px;
+                border-radius: 6px;
+                border-left: 2px solid #f59e0b;
+
+                p {
+                  margin: 2px 0;
+                }
+
+                .accent {
+                  color: #38bdf8;
+                }
+
+                a {
+                  color: #f59e0b;
+                  text-decoration: underline;
+                }
+
+                &.json-style {
+                  border-left-color: #10b981;
+                  color: #6ee7b7;
+                }
+
+                &.error {
+                  border-left-color: #ef4444;
+                  color: #fca5a5;
+                }
+              }
+            }
+          }
+
+          .cli-input-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color 0.2s ease;
+
+            &:focus-within {
+              border-color: #f59e0b;
+            }
+
+            .prompt-sym {
+              color: #22c55e;
+              font-family: var(--font-mono);
+              font-weight: 700;
+              font-size: 0.85rem;
+            }
+
+            .cli-terminal-input {
+              flex: 1;
+              background: transparent;
+              border: none;
+              outline: none;
+              color: #f1f5f9;
+              font-family: var(--font-mono);
+              font-size: 0.78rem;
+
+              &::placeholder {
+                color: #64748b;
+                font-size: 0.74rem;
+              }
+            }
+          }
+
+          .cli-quick-tags {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            font-family: var(--font-mono);
+
+            .quick-label {
+              font-size: 0.7rem;
+              color: #64748b;
+            }
+
+            button {
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              color: #94a3b8;
+              font-family: var(--font-mono);
+              font-size: 0.7rem;
+              padding: 2px 7px;
+              border-radius: 4px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:hover {
+                background: rgba(245, 158, 11, 0.15);
+                border-color: #f59e0b;
+                color: #f59e0b;
+              }
+            }
+          }
+        }
       }
     }
   }

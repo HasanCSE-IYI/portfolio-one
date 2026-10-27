@@ -48,6 +48,104 @@ const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
+  const [commandInput, setCommandInput] = useState('')
+  const [terminalHistory, setTerminalHistory] = useState([])
+
+  const executeCliCommand = (cmd) => {
+    const trimmed = cmd.trim().toLowerCase()
+    if (!trimmed) return
+
+    if (trimmed === 'clear') {
+      setTerminalHistory([])
+      setCommandInput('')
+      return
+    }
+
+    let result = null
+    switch (trimmed) {
+      case 'help':
+        result = (
+          <div className="cli-output">
+            <p>Available commands:</p>
+            <p>  <strong>skills</strong>           - Core &amp; expanding technical stack</p>
+            <p>  <strong>projects</strong>         - Top production GitHub repositories</p>
+            <p>  <strong>curl /api/health</strong> - Run live healthcheck probe</p>
+            <p>  <strong>contact</strong>          - Direct contact channels &amp; phone</p>
+            <p>  <strong>whoami</strong>           - Print engineering identity &amp; role</p>
+            <p>  <strong>clear</strong>            - Clear terminal history</p>
+          </div>
+        )
+        break
+      case 'skills':
+        result = (
+          <div className="cli-output">
+            <p><span className="accent">.NET Core:</span> C#, ASP.NET Core Web API, EF Core 8, JWT, LINQ</p>
+            <p><span className="accent">Backend:</span> Laravel (8+ yrs), NestJS, Node.js, Clean Architecture</p>
+            <p><span className="accent">Databases:</span> MySQL, MongoDB, SQLite, Redis</p>
+            <p><span className="accent">Cloud/DevOps:</span> AWS (EC2, S3, RDS), Docker, Linux (Ubuntu)</p>
+          </div>
+        )
+        break
+      case 'projects':
+        result = (
+          <div className="cli-output">
+            <p>• <strong>StoreApi</strong> [.NET 8 / EF Core] - JWT Auth &amp; Clean Architecture</p>
+            <p>• <strong>Doctor Dekhao</strong> [Laravel / AWS] - Telemedicine API, 99.9% uptime</p>
+            <p>• <strong>Mappi</strong> [Flutter GIS] - Offline vector navigation engine</p>
+            <p>• <strong>Hamd-Shop</strong> [Laravel / MySQL] - ACID transaction e-commerce</p>
+          </div>
+        )
+        break
+      case 'curl /api/health':
+      case 'health':
+        result = (
+          <div className="cli-output json-style">
+            <p>HTTP/2 200 OK (14ms)</p>
+            <p>&#123;</p>
+            <p>&nbsp;&nbsp;&quot;status&quot;: &quot;HEALTHY&quot;,</p>
+            <p>&nbsp;&nbsp;&quot;uptime&quot;: &quot;8+ Years Production&quot;,</p>
+            <p>&nbsp;&nbsp;&quot;activeFocus&quot;: &quot;.NET Core Web API &amp; C#&quot;,</p>
+            <p>&nbsp;&nbsp;&quot;availability&quot;: &quot;Open to Opportunities&quot;</p>
+            <p>&#125;</p>
+          </div>
+        )
+        break
+      case 'contact':
+        result = (
+          <div className="cli-output">
+            <p>Email: <a href="mailto:mahmud.csem@gmail.com">mahmud.csem@gmail.com</a></p>
+            <p>Phone: <a href="tel:+8801727328200">+880 1727-328200</a></p>
+            <p>WhatsApp: <a href="https://wa.me/8801727328200" target="_blank" rel="noreferrer">+880 1727-328200</a></p>
+            <p>GitHub: <a href="https://github.com/HasanCSE-IYI" target="_blank" rel="noreferrer">github.com/HasanCSE-IYI</a></p>
+          </div>
+        )
+        break
+      case 'whoami':
+        result = (
+          <div className="cli-output">
+            <p>Mahmud al Hasan — Backend Software Engineer (8+ Years Production Experience)</p>
+            <p>Foundation: Laravel &amp; NestJS · Target: ASP.NET Core Web API &amp; C#</p>
+          </div>
+        )
+        break
+      default:
+        result = (
+          <div className="cli-output error">
+            <p>Command not found: &apos;{trimmed}&apos;. Type &apos;<strong>help</strong>&apos; for list of commands.</p>
+          </div>
+        )
+        break
+    }
+
+    setTerminalHistory((prev) => [...prev, { command: cmd, result }])
+    setCommandInput('')
+  }
+
+  const handleRunCommand = (e) => {
+    e.preventDefault()
+    if (!commandInput.trim()) return
+    executeCliCommand(commandInput)
+  }
 
   const firstNameArray = ['a', 'h', 'm', 'u', 'd']
   const lastNameArray = ['a', 'l', ' ', 'H', 'a', 's', 'a', 'n', ',']
@@ -233,6 +331,46 @@ const Home = () => {
                 <div className="spec-row">
                   <span className="spec-key">SLA &amp; Latency:</span>
                   <span className="spec-val success">99.9% Uptime · &lt;60ms REST Latency</span>
+                </div>
+
+                {/* Interactive CLI Console Zone */}
+                <div className="terminal-cli-zone">
+                  {terminalHistory.length > 0 && (
+                    <div className="cli-history">
+                      {terminalHistory.map((item, hIdx) => (
+                        <div key={hIdx} className="history-block">
+                          <div className="history-prompt">
+                            <span className="prompt-sym">❯</span>
+                            <span className="cmd-echo">{item.command}</span>
+                          </div>
+                          {item.result}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleRunCommand} className="cli-input-form">
+                    <span className="prompt-sym">❯</span>
+                    <input
+                      type="text"
+                      className="cli-terminal-input"
+                      value={commandInput}
+                      onChange={(e) => setCommandInput(e.target.value)}
+                      placeholder="Type 'help', 'skills', 'projects', 'curl /api/health'..."
+                      aria-label="Interactive CLI command prompt"
+                      spellCheck="false"
+                      autoCapitalize="off"
+                      autoComplete="off"
+                    />
+                  </form>
+
+                  <div className="cli-quick-tags">
+                    <span className="quick-label">Quick run:</span>
+                    <button type="button" onClick={() => executeCliCommand('skills')}>skills</button>
+                    <button type="button" onClick={() => executeCliCommand('projects')}>projects</button>
+                    <button type="button" onClick={() => executeCliCommand('curl /api/health')}>curl health</button>
+                    <button type="button" onClick={() => executeCliCommand('help')}>help</button>
+                  </div>
                 </div>
               </div>
             </div>

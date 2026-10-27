@@ -13,15 +13,18 @@ import {
   faPhone,
   faSuitcase,
   faUser,
+  faSearch,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import LogoS from '../../assets/images/logo.svg'
 import ResumeModal from '../ResumeModal'
+import CommandPalette from '../CommandPalette'
 import './index.scss'
 
 const Sidebar = () => {
   const [isResumeOpen, setIsResumeOpen] = useState(false)
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false)
   const [showMoreMenu, setShowMoreMenu] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
@@ -33,6 +36,18 @@ const Sidebar = () => {
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Global keyboard shortcut: Cmd+K / Ctrl+K to toggle Command Palette
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setIsPaletteOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   // Close extra menu on route change
@@ -142,6 +157,18 @@ const Sidebar = () => {
               </a>
             </div>
 
+            {/* Quick Spotlight Trigger */}
+            <button
+              type="button"
+              className="spotlight-quick-btn"
+              onClick={() => setIsPaletteOpen(true)}
+              aria-label="Open Command Search (Cmd+K)"
+              title="Quick Search commands, pages & actions (⌘K / Ctrl+K)"
+            >
+              <FontAwesomeIcon icon={faSearch} className="spotlight-icon" />
+              <span className="spotlight-kbd">⌘K</span>
+            </button>
+
             {/* Resume Button */}
             <button
               type="button"
@@ -220,6 +247,17 @@ const Sidebar = () => {
                   <FontAwesomeIcon icon={faPhone} />
                   <span>Direct Call · +880 1727 328200</span>
                 </a>
+                <button
+                  type="button"
+                  className="dropdown-item spotlight-item"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    setIsPaletteOpen(true)
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSearch} />
+                  <span>Spotlight Search · ⌘K</span>
+                </button>
                 <Link
                   to="/resume"
                   className="dropdown-item resume-item"
@@ -283,6 +321,13 @@ const Sidebar = () => {
       <ResumeModal
         isOpen={isResumeOpen}
         onClose={() => setIsResumeOpen(false)}
+      />
+
+      {/* Global Command Palette (Apple Spotlight) */}
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+        onOpenResumeModal={() => setIsResumeOpen(true)}
       />
     </>
   )

@@ -12,7 +12,7 @@ import {
   faFilePdf,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
@@ -62,6 +62,11 @@ const PRINCIPLES = [
 const About = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [showPrinciples, setShowPrinciples] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const [rotation, setRotation] = useState({ x: -12, y: 20 })
+  const dragStartRef = useRef({ x: 0, y: 0 })
+  const startRotationRef = useRef({ x: -12, y: 20 })
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -69,6 +74,55 @@ const About = () => {
     }, 1800)
     return () => clearTimeout(timer)
   }, [])
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true)
+    setHasInteracted(true)
+    dragStartRef.current = { x: e.clientX, y: e.clientY }
+    startRotationRef.current = { ...rotation }
+  }
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return
+    const deltaX = e.clientX - dragStartRef.current.x
+    const deltaY = e.clientY - dragStartRef.current.y
+    setRotation({
+      x: startRotationRef.current.x - deltaY * 0.45,
+      y: startRotationRef.current.y + deltaX * 0.45,
+    })
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true)
+      setHasInteracted(true)
+      dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+      startRotationRef.current = { ...rotation }
+    }
+  }
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || e.touches.length !== 1) return
+    const deltaX = e.touches[0].clientX - dragStartRef.current.x
+    const deltaY = e.touches[0].clientY - dragStartRef.current.y
+    setRotation({
+      x: startRotationRef.current.x - deltaY * 0.45,
+      y: startRotationRef.current.y + deltaX * 0.45,
+    })
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
+
+  const handleResetCube = () => {
+    setHasInteracted(false)
+    setRotation({ x: -12, y: 20 })
+  }
 
   return (
     <>
@@ -87,9 +141,31 @@ const About = () => {
         </div>
 
         {/* Centered Grand 3D Interactive Tech Cube */}
-        <div className="stage-cube-cont">
+        <div
+          className={`stage-cube-cont ${isDragging ? 'dragging' : ''} ${hasInteracted ? 'user-controlled' : ''}`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          title="Click and drag to rotate the 3D cube"
+          role="region"
+          aria-label="Interactive 3D Tech Cube"
+        >
           <div className="cube-orbit-wrap">
-            <div className="cubespinner">
+            <div
+              className={`cubespinner ${hasInteracted ? 'interactive-mode' : ''}`}
+              style={
+                hasInteracted
+                  ? {
+                      animation: 'none',
+                      transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+                    }
+                  : undefined
+              }
+            >
               <div className="face1">
                 <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
               </div>
@@ -112,6 +188,22 @@ const About = () => {
                 <FontAwesomeIcon icon={faDocker} color="#2496ed" title="Docker Containerization" />
               </div>
             </div>
+          </div>
+          <div className="cube-hint-pill">
+            <span className="hint-icon">✋</span>
+            <span>{hasInteracted ? 'Drag freely to inspect ·' : 'Click & drag to rotate 3D cube'}</span>
+            {hasInteracted && (
+              <button
+                type="button"
+                className="cube-reset-btn"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleResetCube()
+                }}
+              >
+                Auto Spin ↺
+              </button>
+            )}
           </div>
         </div>
 
