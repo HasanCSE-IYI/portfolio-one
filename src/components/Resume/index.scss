@@ -79,6 +79,10 @@
         transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         border: 1px solid transparent;
 
+        &:active {
+          transform: scale(0.96);
+        }
+
         &.copy-btn {
           background: rgba(255, 255, 255, 0.05);
           color: #e2e8f0;
@@ -179,20 +183,41 @@
           align-items: center;
           gap: 6px;
 
+          .strip-icon {
+            font-size: 0.82rem;
+            color: #f59e0b;
+            flex-shrink: 0;
+          }
+
           &.link {
             color: #38bdf8;
             text-decoration: none;
             transition: color 0.2s ease;
 
+            .strip-icon {
+              color: #38bdf8;
+              transition: color 0.2s ease;
+            }
+
             &:hover {
               color: #7dd3fc;
               text-decoration: underline;
+
+              .strip-icon {
+                color: #7dd3fc;
+              }
             }
 
             &.whatsapp {
               color: #4ade80;
+              .strip-icon {
+                color: #4ade80;
+              }
               &:hover {
                 color: #86efac;
+                .strip-icon {
+                  color: #86efac;
+                }
               }
             }
           }
@@ -659,9 +684,24 @@
         gap: 3px 12px !important;
         margin-top: 4px !important;
 
-        .strip-item.link {
-          color: #1e40af !important;
-          text-decoration: none !important;
+        .strip-item {
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 4px !important;
+
+          .strip-icon {
+            color: #374151 !important;
+            font-size: 7.5pt !important;
+          }
+
+          &.link {
+            color: #1e40af !important;
+            text-decoration: none !important;
+
+            .strip-icon {
+              color: #1e40af !important;
+            }
+          }
         }
       }
     }

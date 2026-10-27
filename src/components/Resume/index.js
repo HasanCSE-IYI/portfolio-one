@@ -13,6 +13,7 @@ import {
   faLayerGroup,
   faCalendarAlt,
   faMapMarkerAlt,
+  faPhone,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -161,13 +162,16 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
 
           <div className="contact-strip">
             <span className="strip-item">
-              📍 Bayazid, Chattogram, Bangladesh
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="strip-icon" />
+              <span>Bayazid, Chattogram, Bangladesh</span>
             </span>
             <a href="tel:+8801727328200" className="strip-item link">
-              📞 +880 1727-328200
+              <FontAwesomeIcon icon={faPhone} className="strip-icon" />
+              <span>+880 1727-328200</span>
             </a>
             <a href="mailto:mahmud.csem@gmail.com" className="strip-item link">
-              ✉️ mahmud.csem@gmail.com
+              <FontAwesomeIcon icon={faEnvelope} className="strip-icon" />
+              <span>mahmud.csem@gmail.com</span>
             </a>
             <a
               href="https://www.linkedin.com/in/mahmud-al-hasan/"
@@ -175,7 +179,8 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
               rel="noreferrer"
               className="strip-item link"
             >
-              <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+              <FontAwesomeIcon icon={faLinkedin} className="strip-icon" />
+              <span>LinkedIn</span>
             </a>
             <a
               href="https://github.com/HasanCSE-IYI"
@@ -183,7 +188,8 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
               rel="noreferrer"
               className="strip-item link"
             >
-              <FontAwesomeIcon icon={faGithub} /> GitHub
+              <FontAwesomeIcon icon={faGithub} className="strip-icon" />
+              <span>GitHub</span>
             </a>
             <a
               href="https://wa.me/8801727328200"
@@ -191,7 +197,8 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
               rel="noreferrer"
               className="strip-item link whatsapp"
             >
-              <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+              <FontAwesomeIcon icon={faWhatsapp} className="strip-icon" />
+              <span>WhatsApp</span>
             </a>
           </div>
         </header>

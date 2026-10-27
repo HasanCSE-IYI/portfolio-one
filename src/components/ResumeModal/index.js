@@ -82,6 +82,13 @@ const ResumeModal = ({ isOpen, onClose }) => {
               >
                 GitHub
               </a>
+              <a
+                href="https://wa.me/8801727328200"
+                target="_blank"
+                rel="noreferrer"
+              >
+                WhatsApp
+              </a>
             </div>
           </header>
 
