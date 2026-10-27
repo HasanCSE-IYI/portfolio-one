@@ -1,6 +1,7 @@
 import {
   faAws,
   faDocker,
+  faLaravel,
   faLinux,
   faNodeJs,
   faPython,
@@ -169,11 +170,8 @@ const About = () => {
               <div className="face1">
                 <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
               </div>
-              <div className="face2 dotnet-face">
-                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#512bd4" aria-label=".NET &amp; C#">
-                  <title>.NET &amp; C# Backend</title>
-                  <path d="M24 8.618a8.877 8.877 0 0 0-.214-1.936c-.57-2.614-2.664-4.57-5.267-4.908A19.78 19.78 0 0 0 14.805 1.5H3.633a2.133 2.133 0 0 0-2.133 2.133v16.734a2.133 2.133 0 0 0 2.133 2.133h11.172c1.238 0 2.47-.09 3.714-.274 2.603-.338 4.697-2.294 5.267-4.908.147-.643.214-1.29.214-1.936V8.618zm-4.328 6.764c-.347 1.583-1.616 2.766-3.188 2.971-.851.125-1.714.187-2.576.187H5.828V5.46h8.08c.862 0 1.725.062 2.576.187 1.572.205 2.841 1.388 3.188 2.971.09.412.132.827.132 1.24v4.384c0 .413-.042.828-.132 1.24z" />
-                </svg>
+              <div className="face2">
+                <FontAwesomeIcon icon={faLaravel} color="#ff2d20" title="Laravel Framework (8+ Years Foundation)" />
               </div>
               <div className="face3">
                 <FontAwesomeIcon icon={faNodeJs} color="#339933" title="Node.js / NestJS" />
