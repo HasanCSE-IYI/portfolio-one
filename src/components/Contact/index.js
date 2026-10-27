@@ -13,6 +13,7 @@ import {
   faCopy,
   faCheck,
   faExclamationTriangle,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -63,10 +64,14 @@ const Contact = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [selectedTier, setSelectedTier] = useState('')
   const [subject, setSubject] = useState('')
+  const [emailText, setEmailText] = useState('')
+  const [messageText, setMessageText] = useState('')
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
   const form = useRef()
+
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -142,6 +147,8 @@ const Contact = () => {
             form.current.reset()
             setSubject('')
             setSelectedTier('')
+            setEmailText('')
+            setMessageText('')
           }
         },
         () => {
@@ -252,7 +259,13 @@ const Contact = () => {
           </div>
 
           <div className="contact-form-section">
-            <h2 className="section-title">Send a Direct Message</h2>
+            <div className="form-section-header">
+              <h2 className="section-title">Send a Direct Message</h2>
+              <div className="contact-sla-badge">
+                <span className="sla-dot"></span>
+                <span>Typical response: &lt; 4 hours · Direct WhatsApp available for urgent matters</span>
+              </div>
+            </div>
 
             {formFeedback && (
               <div
@@ -325,14 +338,26 @@ const Contact = () => {
                       required
                     />
                   </li>
-                  <li className="half">
-                    <input
-                      placeholder="Your Email"
-                      type="email"
-                      name="email"
-                      aria-label="Your Email"
-                      required
-                    />
+                  <li className="half email-input-col">
+                    <div className="input-wrap">
+                      <input
+                        placeholder="Your Email"
+                        type="email"
+                        name="email"
+                        value={emailText}
+                        onChange={(e) => setEmailText(e.target.value)}
+                        aria-label="Your Email"
+                        required
+                      />
+                      {emailText && (
+                        <span
+                          className={`email-validation-indicator ${isEmailValid ? 'valid' : 'invalid'}`}
+                          title={isEmailValid ? 'Valid email format' : 'Incomplete email address'}
+                        >
+                          <FontAwesomeIcon icon={isEmailValid ? faCheck : faTimes} />
+                        </span>
+                      )}
+                    </div>
                   </li>
                   <li>
                     <input
@@ -345,13 +370,20 @@ const Contact = () => {
                       required
                     />
                   </li>
-                  <li>
+                  <li className="message-input-col">
                     <textarea
                       placeholder="Message (Please describe your project, timeline, or engineering opportunity)"
                       name="message"
+                      value={messageText}
+                      onChange={(e) => setMessageText(e.target.value)}
                       aria-label="Your Message"
                       required
                     ></textarea>
+                    <div className="textarea-footer">
+                      <span className="char-count">
+                        {messageText.length} characters
+                      </span>
+                    </div>
                   </li>
                   <li>
                     <button

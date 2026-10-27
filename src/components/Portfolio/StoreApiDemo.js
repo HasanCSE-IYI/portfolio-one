@@ -126,6 +126,46 @@ SELECT last_insert_rowid();`,
         createdAt: "2026-10-26T12:00:00Z"
       }
     }
+  },
+  {
+    id: 'error-handling',
+    method: 'GET',
+    path: '/api/products/999',
+    name: 'RFC 7807 Exception (404 Not Found)',
+    authRequired: false,
+    curlCmd: `curl -X GET "https://api.store.local/api/products/999" \\
+  -H "Accept: application/problem+json"`,
+    csharpCode: `// ProductsController.cs & GlobalExceptionHandler.cs
+[HttpGet("{id:int}")]
+public async Task<ActionResult<ProductDto>> GetById(int id)
+{
+    var product = await _context.Products.FindAsync(id);
+    if (product == null)
+    {
+        // Handled via ASP.NET Core ProblemDetails (RFC 7807)
+        return Problem(
+            statusCode: StatusCodes.Status404NotFound,
+            title: "Product Not Found",
+            detail: $"Product with ID {id} was not found in the catalog."
+        );
+    }
+    return Ok(_mapper.Map<ProductDto>(product));
+}`,
+    sqlExecution: `SELECT [p].[Id], [p].[Name], [p].[Price], [p].[Stock]
+FROM [Products] AS [p]
+WHERE [p].[Id] = 999
+LIMIT 1;
+-- Query returned 0 records; triggering ProblemDetails response`,
+    responseStatus: '404 Not Found',
+    latency: '14ms',
+    responseData: {
+      type: "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+      title: "Product Not Found",
+      status: 404,
+      detail: "Product with ID 999 was not found in the catalog.",
+      instance: "/api/products/999",
+      traceId: "00-8b4e7246a362dbd66e300dabaed78-01"
+    }
   }
 ];
 
@@ -171,6 +211,10 @@ const StoreApiDemo = () => {
   };
 
   const isForbidden = activeEndpoint.authRequired && role !== 'Admin';
+  const isErrorStatus =
+    isForbidden ||
+    activeEndpoint.responseStatus.startsWith('4') ||
+    activeEndpoint.responseStatus.startsWith('5');
 
   return (
     <div className="store-api-demo">
@@ -288,7 +332,7 @@ const StoreApiDemo = () => {
                   <button className="copy-btn" onClick={handleCopyJson}>
                     {copiedJson ? '✓ Copied' : 'Copy JSON'}
                   </button>
-                  <span className={`status-pill ${isForbidden ? 'error' : 'success'}`}>
+                  <span className={`status-pill ${isErrorStatus ? 'error' : 'success'}`}>
                     {isForbidden ? '403 Forbidden' : activeEndpoint.responseStatus} ({activeEndpoint.latency})
                   </span>
                 </>

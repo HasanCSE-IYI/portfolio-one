@@ -22,7 +22,95 @@
       font-size: 1rem;
       max-width: 68ch;
       line-height: 1.6;
-      margin: 0 0 22px;
+      margin: 0 0 18px;
+    }
+
+    .portfolio-search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+
+      .search-input-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 260px;
+        max-width: 540px;
+        display: flex;
+        align-items: center;
+
+        .search-icon {
+          position: absolute;
+          left: 14px;
+          color: #94a3b8;
+          font-size: 0.88rem;
+          pointer-events: none;
+          transition: color 0.2s ease;
+        }
+
+        .search-input {
+          width: 100%;
+          background: rgba(18, 24, 34, 0.85);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 9999px;
+          padding: 10px 40px 10px 38px;
+          color: #f8fafc;
+          font-size: 0.88rem;
+          font-family: var(--font-sans);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+
+          &::placeholder {
+            color: #64748b;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #f59e0b;
+            background: rgba(22, 28, 40, 0.95);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4);
+
+            & + .search-icon {
+              color: #f59e0b;
+            }
+          }
+        }
+
+        .clear-search-btn {
+          position: absolute;
+          right: 12px;
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          font-size: 0.85rem;
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          transition: all 0.2s ease;
+
+          &:hover {
+            color: #f59e0b;
+            background: rgba(255, 255, 255, 0.08);
+          }
+        }
+      }
+
+      .search-count-badge {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: #94a3b8;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 9999px;
+      }
     }
 
     .category-filters {
@@ -373,7 +461,81 @@
               transform: translateY(-2px);
             }
           }
+
+          &.clone-btn {
+            background: rgba(255, 255, 255, 0.04);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 600;
+
+            .clone-icon {
+              font-size: 0.72rem;
+            }
+
+            &:hover {
+              color: #f8fafc;
+              border-color: rgba(245, 158, 11, 0.4);
+              background: rgba(245, 158, 11, 0.08);
+              transform: translateY(-2px);
+            }
+
+            &.copied {
+              background: rgba(34, 197, 94, 0.15);
+              border-color: #22c55e;
+              color: #4ade80;
+            }
+          }
         }
+      }
+    }
+  }
+
+  // No Results State
+  .no-results-card {
+    text-align: center;
+    padding: 48px 24px;
+    background: rgba(18, 24, 34, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px dashed rgba(245, 158, 11, 0.3);
+    border-radius: 16px;
+    margin: 20px 0 40px;
+
+    .no-results-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin: 0 0 8px;
+      font-family: var(--font-sans);
+    }
+
+    .no-results-desc {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin: 0 0 20px;
+
+      strong {
+        color: #f59e0b;
+      }
+    }
+
+    .reset-filters-btn {
+      background: #f59e0b;
+      color: #0f172a;
+      border: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        background: #fbbf24;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        transform: translateY(-2px);
       }
     }
   }

@@ -4,6 +4,10 @@ import {
   faFolder,
   faBolt,
   faExternalLinkAlt,
+  faSearch,
+  faTimes,
+  faCodeBranch,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import StoreApiDemo from './StoreApiDemo';
@@ -22,6 +26,8 @@ const Portfolio = () => {
   const [letterClass, setLetterClass] = useState('text-animate');
   const [portfolio] = useState(portfolioData.portfolio || []);
   const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [copiedRepoId, setCopiedRepoId] = useState(null);
   const [showSimulator, setShowSimulator] = useState(true);
 
   useEffect(() => {
@@ -34,10 +40,31 @@ const Portfolio = () => {
     };
   }, []);
 
-  const filteredPortfolio =
-    activeCategory === 'all'
-      ? portfolio
-      : portfolio.filter((item) => item.category === activeCategory);
+  const handleCopyRepoUrl = (id, url) => {
+    if (navigator.clipboard && url) {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopiedRepoId(id);
+        setTimeout(() => setCopiedRepoId(null), 2000);
+      });
+    }
+  };
+
+  const filteredPortfolio = portfolio.filter((item) => {
+    const matchesCategory =
+      activeCategory === 'all' || item.category === activeCategory;
+    if (!matchesCategory) return false;
+    if (!searchQuery.trim()) return true;
+
+    const q = searchQuery.toLowerCase().trim();
+    return (
+      (item.title && item.title.toLowerCase().includes(q)) ||
+      (item.description && item.description.toLowerCase().includes(q)) ||
+      (item.language && item.language.toLowerCase().includes(q)) ||
+      (item.role && item.role.toLowerCase().includes(q)) ||
+      (item.tags && item.tags.some((t) => t.toLowerCase().includes(q))) ||
+      (item.highlights && item.highlights.some((h) => h.toLowerCase().includes(q)))
+    );
+  });
 
   const getCategoryCount = (catId) => {
     if (catId === 'all') return portfolio.length;
@@ -58,6 +85,35 @@ const Portfolio = () => {
           <p className="portfolio-subheading">
             Curated production backend architectures, GIS mobile engines, and cloud microservices directly from GitHub.
           </p>
+
+          <div className="portfolio-search-bar">
+            <div className="search-input-wrap">
+              <FontAwesomeIcon icon={faSearch} className="search-icon" aria-hidden="true" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search by keyword, tech, or architecture (e.g. C#, MySQL, Redis, Docker, JWT)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search repositories"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="clear-search-btn"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search query"
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              )}
+            </div>
+            <span className="search-count-badge">
+              {searchQuery
+                ? `Found ${filteredPortfolio.length} of ${portfolio.length} repos`
+                : `${portfolio.length} Production Repositories`}
+            </span>
+          </div>
 
           <div className="category-filters">
             {CATEGORIES.map((cat) => (
@@ -157,15 +213,31 @@ const Portfolio = () => {
 
                   <div className="card-actions">
                     {port.url && (
-                      <a
-                        href={port.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="action-btn primary"
-                      >
-                        <span>GitHub Repository</span>
-                        <FontAwesomeIcon icon={faExternalLinkAlt} className="ext-icon" aria-hidden="true" />
-                      </a>
+                      <>
+                        <a
+                          href={port.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="action-btn primary"
+                        >
+                          <span>GitHub Repo</span>
+                          <FontAwesomeIcon icon={faExternalLinkAlt} className="ext-icon" aria-hidden="true" />
+                        </a>
+                        <button
+                          type="button"
+                          className={`action-btn clone-btn ${copiedRepoId === (port.id || idx) ? 'copied' : ''}`}
+                          onClick={() => handleCopyRepoUrl(port.id || idx, port.url)}
+                          title="Copy Git repository URL"
+                          aria-label="Copy Git clone URL"
+                        >
+                          <FontAwesomeIcon
+                            icon={copiedRepoId === (port.id || idx) ? faCheck : faCodeBranch}
+                            className="clone-icon"
+                            aria-hidden="true"
+                          />
+                          <span>{copiedRepoId === (port.id || idx) ? 'Copied!' : 'Clone URL'}</span>
+                        </button>
+                      </>
                     )}
                     {port.hasInteractiveDemo && (
                       <button
@@ -186,6 +258,25 @@ const Portfolio = () => {
             );
           })}
         </div>
+
+        {filteredPortfolio.length === 0 && (
+          <div className="no-results-card">
+            <p className="no-results-title">No matching repositories found</p>
+            <p className="no-results-desc">
+              No projects matched &ldquo;<strong>{searchQuery}</strong>&rdquo; in the selected category.
+            </p>
+            <button
+              type="button"
+              className="reset-filters-btn"
+              onClick={() => {
+                setSearchQuery('');
+                setActiveCategory('all');
+              }}
+            >
+              Reset Filters &amp; Show All
+            </button>
+          </div>
+        )}
 
         {/* Quick Repository Links */}
         <div className="project-links">
