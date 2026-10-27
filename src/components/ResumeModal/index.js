@@ -1,5 +1,18 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faMapMarkerAlt,
+  faPhone,
+  faEnvelope,
+  faPrint,
+  faGlobe,
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faGithub,
+  faLinkedin,
+  faWhatsapp,
+} from '@fortawesome/free-brands-svg-icons';
 import './index.scss';
 
 const ResumeModal = ({ isOpen, onClose }) => {
@@ -55,7 +68,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
               ↗ Open Full Page
             </Link>
             <button className="print-btn" onClick={handlePrint}>
-              🖨️ Print / Save PDF
+              <FontAwesomeIcon icon={faPrint} /> Print / Save PDF
             </button>
             <button className="close-btn" onClick={onClose} aria-label="Close modal">
               ✕
@@ -70,29 +83,35 @@ const ResumeModal = ({ isOpen, onClose }) => {
               Software Engineer (.NET / Backend) · 8+ Years Production Experience
             </p>
             <div className="contact-row">
-              <span>📍 Bayazid, Chattogram, Bangladesh</span>
-              <span>📞 +880 1727-328200</span>
-              <span>✉️ mahmud.csem@gmail.com</span>
+              <span>
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="contact-icon" /> Bayazid, Chattogram, Bangladesh
+              </span>
+              <a href="tel:+8801727328200">
+                <FontAwesomeIcon icon={faPhone} className="contact-icon" /> +880 1727-328200
+              </a>
+              <a href="mailto:mahmud.csem@gmail.com">
+                <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> mahmud.csem@gmail.com
+              </a>
               <a
                 href="https://www.linkedin.com/in/mahmud-al-hasan/"
                 target="_blank"
                 rel="noreferrer"
               >
-                LinkedIn
+                <FontAwesomeIcon icon={faLinkedin} className="contact-icon" /> LinkedIn
               </a>
               <a
                 href="https://github.com/HasanCSE-IYI"
                 target="_blank"
                 rel="noreferrer"
               >
-                GitHub
+                <FontAwesomeIcon icon={faGithub} className="contact-icon" /> GitHub
               </a>
               <a
                 href="https://wa.me/8801727328200"
                 target="_blank"
                 rel="noreferrer"
               >
-                WhatsApp
+                <FontAwesomeIcon icon={faWhatsapp} className="contact-icon" /> WhatsApp
               </a>
             </div>
           </header>
@@ -334,10 +353,14 @@ const ResumeModal = ({ isOpen, onClose }) => {
                 <li><strong>Head of IT Department</strong> · Sorejomin Barta</li>
               </ul>
               <div className="contact-row ref-modal-contacts">
-                <a href="tel:+8801711805110">📞 +880 1711-805110</a>
-                <a href="mailto:habib2498922@gmail.com">✉️ habib2498922@gmail.com</a>
+                <a href="tel:+8801711805110">
+                  <FontAwesomeIcon icon={faPhone} className="contact-icon" /> +880 1711-805110
+                </a>
+                <a href="mailto:habib2498922@gmail.com">
+                  <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> habib2498922@gmail.com
+                </a>
                 <a href="https://www.sorejominbarta.com" target="_blank" rel="noreferrer">
-                  🌐 www.sorejominbarta.com ↗
+                  <FontAwesomeIcon icon={faGlobe} className="contact-icon" /> www.sorejominbarta.com ↗
                 </a>
               </div>
             </div>
