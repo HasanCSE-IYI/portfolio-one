@@ -238,7 +238,9 @@
           gap: 8px;
 
           .folder-icon {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
+            color: #f59e0b;
+            opacity: 0.9;
           }
         }
 
@@ -326,6 +328,21 @@
           align-items: center;
           gap: 6px;
           transition: all 0.25s ease;
+
+          .ext-icon {
+            font-size: 0.74rem;
+            opacity: 0.85;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .sim-icon {
+            font-size: 0.8rem;
+            color: #f59e0b;
+          }
+
+          &:hover .ext-icon {
+            transform: translate(2px, -2px);
+          }
 
           &:active {
             transform: scale(0.97);

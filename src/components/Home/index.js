@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faMapMarkerAlt,
+  faArrowRight,
+  faFilePdf,
+  faLayerGroup,
+} from '@fortawesome/free-solid-svg-icons'
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
 import RequestPipeline from '../RequestPipeline'
-import ResumeModal from '../ResumeModal'
 import './index.scss'
 import portfolioData from '../../data/portfolio.json'
 
@@ -42,7 +48,6 @@ const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
-  const [isResumeOpen, setIsResumeOpen] = useState(false)
 
   const firstNameArray = ['a', 'h', 'm', 'u', 'd']
   const lastNameArray = ['a', 'l', ' ', 'H', 'a', 's', 'a', 'n', ',']
@@ -107,7 +112,7 @@ const Home = () => {
                 Open to Opportunities · Backend Software Engineer
               </span>
               <span className="location-clock">
-                📍 Bayazid, Chattogram, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="clock-loc-icon" /> Bayazid, Chattogram, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
               </span>
             </div>
 
@@ -162,23 +167,25 @@ const Home = () => {
             {/* Focus Chain */}
             <div className="focus-chain">
               <span className="chain-item">C# &amp; ASP.NET Core</span>
-              <span className="chain-arrow">➔</span>
+              <FontAwesomeIcon icon={faArrowRight} className="chain-arrow" />
               <span className="chain-item">EF Core &amp; SQL</span>
-              <span className="chain-arrow">➔</span>
+              <FontAwesomeIcon icon={faArrowRight} className="chain-arrow" />
               <span className="chain-item">Laravel &amp; NestJS</span>
-              <span className="chain-arrow">➔</span>
+              <FontAwesomeIcon icon={faArrowRight} className="chain-arrow" />
               <span className="chain-item">AWS Cloud &amp; Docker</span>
             </div>
 
             <div className="cta-buttons">
               <Link to="/contact" className="flat-button">
-                CONTACT ME
+                <span>CONTACT ME</span>
               </Link>
               <Link to="/resume" className="flat-button button-cv">
-                VIEW / DOWNLOAD CV 📄
+                <FontAwesomeIcon icon={faFilePdf} className="btn-icon" />
+                <span>VIEW / DOWNLOAD CV</span>
               </Link>
               <Link to="/portfolio" className="flat-button button-secondary">
-                VIEW ARCHITECTURE &amp; SIMULATOR
+                <FontAwesomeIcon icon={faLayerGroup} className="btn-icon" />
+                <span>VIEW ARCHITECTURE &amp; SIMULATOR</span>
               </Link>
             </div>
           </div>
@@ -273,12 +280,6 @@ const Home = () => {
         {/* Systems in Motion: REST API Request Lifecycle Pipeline */}
         <RequestPipeline />
       </div>
-
-      {/* Full Executive Resume / CV Modal */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-      />
     </>
   )
 }

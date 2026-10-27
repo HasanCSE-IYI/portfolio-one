@@ -12,6 +12,7 @@ import {
   faPaperPlane,
   faCopy,
   faCheck,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -264,7 +265,7 @@ const Contact = () => {
                     {formFeedback.type === 'success' ? (
                       <FontAwesomeIcon icon={faCheck} />
                     ) : (
-                      '⚠️'
+                      <FontAwesomeIcon icon={faExclamationTriangle} />
                     )}
                   </span>
                   <div className="toast-header-text">

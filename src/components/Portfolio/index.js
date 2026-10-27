@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFolder,
+  faBolt,
+  faExternalLinkAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import StoreApiDemo from './StoreApiDemo';
 import './index.scss';
@@ -116,8 +122,8 @@ const Portfolio = () => {
                 <div className="card-body">
                   <div className="card-top">
                     <h3 className="card-title">
-                      <span className="folder-icon" aria-hidden="true">📁</span>
-                      {title}
+                      <FontAwesomeIcon icon={faFolder} className="folder-icon" aria-hidden="true" />
+                      <span>{title}</span>
                     </h3>
                     {port.role && (
                       <p className="card-role">
@@ -157,18 +163,21 @@ const Portfolio = () => {
                         rel="noreferrer"
                         className="action-btn primary"
                       >
-                        GitHub Repository ↗
+                        <span>GitHub Repository</span>
+                        <FontAwesomeIcon icon={faExternalLinkAlt} className="ext-icon" aria-hidden="true" />
                       </a>
                     )}
                     {port.hasInteractiveDemo && (
                       <button
+                        type="button"
                         className="action-btn secondary"
                         onClick={() => {
                           setShowSimulator(true);
                           window.scrollTo({ top: 180, behavior: 'smooth' });
                         }}
                       >
-                        ⚡ Live Simulator
+                        <FontAwesomeIcon icon={faBolt} className="sim-icon" aria-hidden="true" />
+                        <span>Live Simulator</span>
                       </button>
                     )}
                   </div>
