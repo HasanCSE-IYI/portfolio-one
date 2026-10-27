@@ -86,16 +86,6 @@ const About = () => {
         <div className="stage-cube-cont">
           <div className="cube-orbit-wrap">
             <div className="cubespinner">
-              {/* Inner Radiant Light Core and Volumetric Photon Beams */}
-              <div className="cube-light-emitter" aria-hidden="true">
-                <div className="cube-plasma-core"></div>
-                <div className="cube-inner-corona"></div>
-                <div className="cube-light-beam beam-horiz"></div>
-                <div className="cube-light-beam beam-vert"></div>
-                <div className="cube-light-beam beam-diag1"></div>
-                <div className="cube-light-beam beam-diag2"></div>
-              </div>
-
               <div className="face1">
                 <FontAwesomeIcon icon={faLinux} color="#fcc624" title="Linux Environment" />
               </div>

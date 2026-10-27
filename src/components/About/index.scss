@@ -5,19 +5,23 @@
   margin: 0 auto;
 
   .about-header {
-    text-align: center;
-    margin-bottom: 10px;
+    text-align: left;
+    margin-bottom: 20px;
 
     h1 {
       margin: 0 0 10px;
       font-size: clamp(32px, 6vw, 48px);
+      font-family: 'Coolvetica', var(--font-sans);
+      color: #f59e0b;
     }
 
     .about-subtitle {
-      color: #9ca3af;
+      color: #94a3b8;
       font-size: 1.05rem;
       font-family: var(--font-sans);
       margin: 0;
+      max-width: 68ch;
+      line-height: 1.6;
     }
   }
 
@@ -80,208 +84,46 @@
       transform-origin: 120px 120px 0;
     }
 
-    // Inner Radiant Light Emitter & Volumetric Photon Beams
-    .cube-light-emitter {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      transform-style: preserve-3d;
-      pointer-events: none;
-      z-index: 1;
-
-      .cube-plasma-core {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 60px;
-        height: 60px;
-        margin-left: -30px;
-        margin-top: -30px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle at center,
-          #ffffff 0%,
-          #fef08a 25%,
-          #f59e0b 55%,
-          #d97706 75%,
-          transparent 100%
-        );
-        box-shadow:
-          0 0 25px 12px rgba(255, 255, 255, 0.95),
-          0 0 55px 25px rgba(245, 158, 11, 0.85),
-          0 0 95px 45px rgba(217, 119, 6, 0.6),
-          0 0 140px 70px rgba(245, 158, 11, 0.35);
-        animation: corePlasmaPulse 3.5s ease-in-out infinite alternate;
-        transform: translateZ(0);
-
-        @media screen and (min-width: 768px) {
-          width: 80px;
-          height: 80px;
-          margin-left: -40px;
-          margin-top: -40px;
-          box-shadow:
-            0 0 35px 16px rgba(255, 255, 255, 0.95),
-            0 0 75px 35px rgba(245, 158, 11, 0.9),
-            0 0 125px 60px rgba(217, 119, 6, 0.65),
-            0 0 180px 90px rgba(245, 158, 11, 0.4);
-        }
-      }
-
-      .cube-inner-corona {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 130px;
-        height: 130px;
-        margin-left: -65px;
-        margin-top: -65px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(245, 158, 11, 0.45) 0%,
-          rgba(56, 189, 248, 0.25) 45%,
-          transparent 70%
-        );
-        filter: blur(10px);
-        animation: coronaSpin 8s linear infinite;
-        transform: translateZ(0);
-
-        @media screen and (min-width: 768px) {
-          width: 180px;
-          height: 180px;
-          margin-left: -90px;
-          margin-top: -90px;
-        }
-      }
-
-      .cube-light-beam {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        background: linear-gradient(
-          90deg,
-          transparent 0%,
-          rgba(255, 255, 255, 0.95) 45%,
-          rgba(245, 158, 11, 0.85) 55%,
-          transparent 100%
-        );
-        filter: blur(2px);
-        pointer-events: none;
-
-        &.beam-horiz {
-          width: 260px;
-          height: 6px;
-          margin-left: -130px;
-          margin-top: -3px;
-          animation: beamFlarePulse 2.8s ease-in-out infinite alternate;
-
-          @media screen and (min-width: 768px) {
-            width: 360px;
-            height: 8px;
-            margin-left: -180px;
-            margin-top: -4px;
-          }
-        }
-
-        &.beam-vert {
-          width: 6px;
-          height: 260px;
-          margin-left: -3px;
-          margin-top: -130px;
-          background: linear-gradient(
-            180deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.95) 45%,
-            rgba(56, 189, 248, 0.85) 55%,
-            transparent 100%
-          );
-          animation: beamFlarePulse 3.2s ease-in-out infinite alternate-reverse;
-
-          @media screen and (min-width: 768px) {
-            width: 8px;
-            height: 360px;
-            margin-left: -4px;
-            margin-top: -180px;
-          }
-        }
-
-        &.beam-diag1 {
-          width: 240px;
-          height: 4px;
-          margin-left: -120px;
-          margin-top: -2px;
-          transform: rotate(45deg);
-          opacity: 0.75;
-          animation: beamFlarePulse 3.8s ease-in-out infinite;
-
-          @media screen and (min-width: 768px) {
-            width: 320px;
-            height: 5px;
-            margin-left: -160px;
-          }
-        }
-
-        &.beam-diag2 {
-          width: 240px;
-          height: 4px;
-          margin-left: -120px;
-          margin-top: -2px;
-          transform: rotate(-45deg);
-          opacity: 0.75;
-          animation: beamFlarePulse 3.4s ease-in-out infinite alternate;
-
-          @media screen and (min-width: 768px) {
-            width: 320px;
-            height: 5px;
-            margin-left: -160px;
-          }
-        }
-      }
-    }
-
-    // 3D Crystal Faces
-    div[class^="face"] {
+    div {
       position: absolute;
       width: 180px;
       height: 180px;
-      border: 1.5px solid rgba(245, 158, 11, 0.55);
-      background: rgba(15, 23, 42, 0.28);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(245, 158, 11, 0.45);
+      background: rgba(15, 23, 42, 0.22);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       text-align: center;
       font-size: 80px;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow:
-        0 0 35px rgba(245, 158, 11, 0.35),
-        inset 0 0 35px rgba(245, 158, 11, 0.4),
-        inset 0 0 20px rgba(255, 255, 255, 0.35);
-      border-radius: 14px;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.22), inset 0 0 20px rgba(56, 189, 248, 0.16), inset 0 0 35px rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
       @media screen and (min-width: 768px) {
         width: 240px;
         height: 240px;
         font-size: 110px;
-        box-shadow:
-          0 0 45px rgba(245, 158, 11, 0.4),
-          inset 0 0 45px rgba(245, 158, 11, 0.45),
-          inset 0 0 25px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 35px rgba(245, 158, 11, 0.25), inset 0 0 25px rgba(56, 189, 248, 0.2), inset 0 0 45px rgba(255, 255, 255, 0.06);
       }
 
       svg {
-        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+        filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.25));
+        transition: transform 0.3s ease;
       }
 
       &:hover {
         border-color: #f59e0b;
-        box-shadow:
-          0 0 50px rgba(245, 158, 11, 0.55),
-          inset 0 0 40px rgba(56, 189, 248, 0.45),
-          inset 0 0 30px rgba(255, 255, 255, 0.5);
+        box-shadow: 0 0 40px rgba(245, 158, 11, 0.4), inset 0 0 30px rgba(56, 189, 248, 0.3);
+      }
+    }
+
+    .flutter-face {
+      svg {
+        width: 1em;
+        height: 1em;
+        display: block;
       }
     }
 
@@ -619,7 +461,9 @@
   // About CV CTA
   .about-cv-cta {
     margin-top: 36px;
-    text-align: center;
+    text-align: left;
+    display: flex;
+    justify-content: flex-start;
 
     .about-cv-btn {
       background: rgba(245, 158, 11, 0.12);
@@ -692,38 +536,7 @@
   }
 }
 
-// Inner Radiant Light & Glowing Logo Animations
-@keyframes corePlasmaPulse {
-  0% {
-    transform: translateZ(0) scale(0.9);
-    opacity: 0.88;
-  }
-  100% {
-    transform: translateZ(0) scale(1.15);
-    opacity: 1;
-  }
-}
-
-@keyframes coronaSpin {
-  0% {
-    transform: translateZ(0) rotate(0deg);
-  }
-  100% {
-    transform: translateZ(0) rotate(360deg);
-  }
-}
-
-@keyframes beamFlarePulse {
-  0% {
-    opacity: 0.55;
-    transform: scaleX(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scaleX(1.18);
-  }
-}
-
+// Glowing Logo Animations
 @keyframes iconNeonPulse {
   0% {
     transform: scale(0.97);

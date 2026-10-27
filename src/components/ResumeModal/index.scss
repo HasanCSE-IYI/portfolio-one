@@ -374,33 +374,56 @@
           }
 
           .resume-section {
-            margin-bottom: 16px !important;
-            page-break-inside: avoid;
+            margin-bottom: 11px !important;
+            page-break-inside: auto;
+            break-inside: auto;
 
             .section-title {
               color: #111827 !important;
-              border-bottom: 1px solid #d1d5db !important;
+              border-bottom: 1.5px solid #111827 !important;
+              font-size: 10.2pt !important;
+              font-weight: 700 !important;
+              margin-top: 6px !important;
+              margin-bottom: 5px !important;
+              padding-bottom: 2px !important;
+              page-break-after: avoid;
+              break-after: avoid;
+            }
+
+            .job-entry,
+            .project-entry {
+              margin-bottom: 7px !important;
+              page-break-inside: avoid;
+              break-inside: avoid;
             }
 
             .summary-text,
             .achievements,
             .proj-desc,
             .cat-items {
-              color: #374151 !important;
+              color: #1f2937 !important;
+              font-size: 8.5pt !important;
+              line-height: 1.35 !important;
             }
 
             .job-title,
             .cat-title,
             .proj-name {
               color: #111827 !important;
+              font-size: 9.3pt !important;
+              font-weight: 700 !important;
             }
 
             .company {
               color: #1e40af !important;
+              font-size: 8.8pt !important;
+              font-weight: 600 !important;
             }
 
             .period {
-              color: #6b7280 !important;
+              color: #4b5563 !important;
+              font-size: 8.3pt !important;
+              font-weight: 600 !important;
             }
           }
         }
