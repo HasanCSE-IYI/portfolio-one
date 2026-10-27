@@ -16,8 +16,11 @@ import {
   faTimes,
   faMapMarkerAlt,
   faSatellite,
+  faRoad,
+  faMoon,
   faCrosshairs,
   faExternalLinkAlt,
+  faPhoneAlt,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -30,8 +33,46 @@ import './index.scss'
 // Fix Leaflet's default marker icon missing in Webpack production builds
 delete L.Icon.Default.prototype._getIconUrl;
 
-// Exact coordinates for residence in Bayazid, Chattogram
-const BAYAZID_COORDS = [22.3972, 91.8150];
+// Exact coordinates from Google Maps: Public Mor, BSRM Goli, Bayazid Bostami Road, Bayazid, Chattogram
+// Link: https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9
+const BAYAZID_COORDS = [22.391135, 91.817740];
+
+// Multiple Map Layer Configurations for High-Definition Clarity & Place Details
+const MAP_LAYERS = {
+  hybrid: {
+    id: 'hybrid',
+    label: 'স্যাটেলাইট',
+    title: 'HD স্যাটেলাইট ও রোড লেবেল (Google Hybrid)',
+    icon: faSatellite,
+    url: 'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 21,
+    attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Satellite',
+  },
+  street: {
+    id: 'street',
+    label: 'রোড ম্যাপ',
+    title: 'ক্লিয়ার রাস্তা ও স্থান নাম (Google Street)',
+    icon: faRoad,
+    url: 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 21,
+    attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Street',
+  },
+  dark: {
+    id: 'dark',
+    label: 'ডার্ক মোড',
+    title: 'ডার্ক থিম ম্যাপ (CartoDB Dark Matter)',
+    icon: faMoon,
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png',
+    subdomains: ['a', 'b', 'c', 'd'],
+    maxNativeZoom: 19,
+    maxZoom: 20,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> &copy; <a href="https://carto.com/" target="_blank" rel="noreferrer">CARTO</a>',
+  },
+};
 
 // 3D Clear Red Pin Marker with volumetric lighting, specular highlight & ground cast shadow
 const redMarker3DIcon = L.divIcon({
@@ -123,6 +164,7 @@ const Contact = () => {
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
+  const [activeMapLayer, setActiveMapLayer] = useState('hybrid')
   const [mapInstance, setMapInstance] = useState(null)
   const markerRef = useRef(null)
   const form = useRef()
@@ -503,53 +545,66 @@ const Contact = () => {
         <div className="contact-aside">
           <div className="info-map">
             <div className="info-map-header">
-              <span className="info-map-avatar-dot"></span>
-              <div>
+              <span className="info-map-avatar-dot" aria-hidden="true"></span>
+              <div className="info-map-header-text">
                 <h3 className="info-map-name">Mahmud al Hasan</h3>
                 <p className="info-map-role">Backend Software Engineer (.NET & Cloud APIs)</p>
               </div>
             </div>
+
             <div className="info-map-location">
               <div className="location-landmark">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="pin-icon" />
-                <span className="primary-landmark">বায়েজীদ, চট্টগ্রাম</span>
+                <span className="primary-landmark">পাবলিক মোড়, বিএসআরএম গলি</span>
               </div>
               <div className="location-detail">
-                Bayazid, Chattogram - 4210, Bangladesh
+                <div>Public Mor, BSRM Goli · Bayazid Bostami Road</div>
+                <div>Bayazid, Chattogram - 4210, Bangladesh</div>
               </div>
             </div>
-            <div className="info-map-contact-row">
-              <a href="tel:+8801727328200" className="contact-item">
-                📞 +880 1727 328200
+
+            <div className="info-map-contact-list">
+              <a href="tel:+8801727328200" className="contact-item phone">
+                <FontAwesomeIcon icon={faPhoneAlt} className="contact-icon" />
+                <span>+880 1727 328200</span>
               </a>
               <a href="mailto:mahmud.csem@gmail.com" className="contact-item email">
-                ✉️ mahmud.csem@gmail.com
+                <FontAwesomeIcon icon={faEnvelope} className="contact-icon" />
+                <span>mahmud.csem@gmail.com</span>
               </a>
             </div>
           </div>
 
-          <div className="map-wrap satellite-active">
+          <div className={`map-wrap layer-${activeMapLayer}`}>
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
-              <div className="map-location-tag">
-                <span className="live-radar-dot"></span>
-                <span>বায়েজীদ, চট্টগ্রাম (Bayazid, Chattogram)</span>
+              <div className="map-layer-selector" role="tablist" aria-label="Map Layer Selector">
+                {Object.values(MAP_LAYERS).map((layer) => (
+                  <button
+                    key={layer.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeMapLayer === layer.id}
+                    aria-label={layer.label}
+                    className={`map-layer-tab ${activeMapLayer === layer.id ? 'active' : ''}`}
+                    onClick={() => setActiveMapLayer(layer.id)}
+                    title={layer.title}
+                  >
+                    <FontAwesomeIcon icon={layer.icon} className="tab-icon" />
+                    <span className="tab-label">{layer.label}</span>
+                  </button>
+                ))}
               </div>
-              <div className="map-view-actions">
-                <div className="satellite-hd-badge">
-                  <FontAwesomeIcon icon={faSatellite} />
-                  <span>HD স্যাটেলাইট ভিউ</span>
-                </div>
-                <button
-                  type="button"
-                  className="recenter-btn"
-                  onClick={handleRecenter}
-                  title="বায়েজীদে রিসেন্টার করুন"
-                  aria-label="Recenter map on Bayazid, Chattogram"
-                >
-                  <FontAwesomeIcon icon={faCrosshairs} />
-                </button>
-              </div>
+
+              <button
+                type="button"
+                className="recenter-btn"
+                onClick={handleRecenter}
+                title="পাবলিক মোড় ও বায়েজীদ লোকেশনে রিসেন্টার করুন"
+                aria-label="Recenter map on Public Mor, Bayazid"
+              >
+                <FontAwesomeIcon icon={faCrosshairs} />
+              </button>
             </div>
 
             <MapContainer
@@ -559,11 +614,12 @@ const Contact = () => {
               whenCreated={setMapInstance}
             >
               <TileLayer
-                attribution='&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Satellite'
-                url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
-                subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-                maxNativeZoom={20}
-                maxZoom={21}
+                key={activeMapLayer}
+                attribution={MAP_LAYERS[activeMapLayer]?.attribution || MAP_LAYERS.hybrid.attribution}
+                url={MAP_LAYERS[activeMapLayer]?.url || MAP_LAYERS.hybrid.url}
+                subdomains={MAP_LAYERS[activeMapLayer]?.subdomains || MAP_LAYERS.hybrid.subdomains}
+                maxNativeZoom={MAP_LAYERS[activeMapLayer]?.maxNativeZoom || 20}
+                maxZoom={MAP_LAYERS[activeMapLayer]?.maxZoom || 21}
               />
 
               <Marker
@@ -575,21 +631,21 @@ const Contact = () => {
                   <div className="popup-card">
                     <div className="popup-badge">
                       <span className="live-dot-red"></span>
-                      <span>বর্তমান অবস্থান / Location</span>
+                      <span>বর্তমান অবস্থান / Exact Pin</span>
                     </div>
-                    <h3 className="popup-title">বায়েজীদ, চট্টগ্রাম</h3>
-                    <p className="popup-sub">Bayazid, Chattogram - 4210, Bangladesh</p>
+                    <h3 className="popup-title">পাবলিক মোড়, বিএসআরএম গলি</h3>
+                    <p className="popup-sub">Public Mor, BSRM Goli · Bayazid Bostami Road</p>
                     <div className="popup-meta">
-                      <span className="badge-chip">চট্টগ্রাম বিভাগ, বাংলাদেশ</span>
-                      <span className="coords-chip">22.3972° N, 91.8150° E</span>
+                      <span className="badge-chip">Bayazid, Chattogram - 4210</span>
+                      <span className="coords-chip">22.3911° N, 91.8177° E</span>
                     </div>
                     <a
-                      href="https://www.google.com/maps/search/?api=1&query=22.3972,91.8150"
+                      href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="popup-maps-btn"
                     >
-                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Google Maps-এ দেখুন
+                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Google Maps-এ সরাসরি দেখুন
                     </a>
                   </div>
                 </Popup>

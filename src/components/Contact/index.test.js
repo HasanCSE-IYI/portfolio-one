@@ -2,23 +2,34 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Contact from './index';
 
-test('renders contact page with location info stopping at Bayazid for security', () => {
+test('renders contact page with restored address, multi-view map layers and pin details', () => {
   render(
     <MemoryRouter>
       <Contact />
     </MemoryRouter>
   );
 
-  // Check location headings and badges (all stopping at Bayazid for privacy/security)
-  const bayazidHeadings = screen.getAllByText(/বায়েজীদ, চট্টগ্রাম/i);
-  expect(bayazidHeadings.length).toBeGreaterThanOrEqual(1);
+  // Check header and profession
+  expect(screen.getByText('Mahmud al Hasan')).toBeInTheDocument();
+  expect(screen.getByText('Backend Software Engineer (.NET & Cloud APIs)')).toBeInTheDocument();
 
+  // Check restored location details matching previous screenshot
+  const landmarkHeadings = screen.getAllByText(/পাবলিক মোড়, বিএসআরএম গলি/i);
+  expect(landmarkHeadings.length).toBeGreaterThanOrEqual(1);
+
+  expect(screen.getByText(/Public Mor, BSRM Goli · Bayazid Bostami Road/i)).toBeInTheDocument();
   expect(screen.getByText(/Bayazid, Chattogram - 4210, Bangladesh/i)).toBeInTheDocument();
-  expect(screen.getByText(/HD স্যাটেলাইট ভিউ/i)).toBeInTheDocument();
 
-  // Strict Security/Privacy Assertion: Exact sensitive street names must NOT appear in any rendered text
-  expect(screen.queryByText(/পাবলিক মোড়/i)).not.toBeInTheDocument();
-  expect(screen.queryByText(/বিএসআরএম/i)).not.toBeInTheDocument();
-  expect(screen.queryByText(/Public Mor/i)).not.toBeInTheDocument();
-  expect(screen.queryByText(/BSRM Goli/i)).not.toBeInTheDocument();
+  // Check contact channels
+  expect(screen.getByText('+880 1727 328200')).toBeInTheDocument();
+  const emailElements = screen.getAllByText('mahmud.csem@gmail.com');
+  expect(emailElements.length).toBeGreaterThanOrEqual(1);
+
+  // Check multiple map view layer switcher buttons
+  expect(screen.getByRole('tab', { name: /স্যাটেলাইট/i })).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: /রোড ম্যাপ/i })).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: /ডার্ক মোড/i })).toBeInTheDocument();
+
+  // Check map recenter button
+  expect(screen.getByLabelText(/Recenter map on Public Mor, Bayazid/i)).toBeInTheDocument();
 });
