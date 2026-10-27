@@ -2,11 +2,11 @@ import React, { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './components/Home'
+import Resume from './components/Resume'
 import ScrollToTop from './components/ScrollToTop'
 import './App.scss'
 
 const About = lazy(() => import('./components/About'))
-const Resume = lazy(() => import('./components/Resume'))
 const Contact = lazy(() => import('./components/Contact'))
 const Portfolio = lazy(() => import('./components/Portfolio'))
 const NotFound = lazy(() => import('./components/NotFound'))

@@ -10,9 +10,9 @@ test('renders resume page with authentic credentials and sections', () => {
   );
 
   // Check header & name
-  const nameElement = document.querySelector('.full-name');
-  expect(nameElement).toBeInTheDocument();
-  expect(nameElement.textContent.replace(/\u00a0/g, ' ')).toContain('Mahmud al Hasan');
+  const nameHeading = screen.getByRole('heading', { level: 1 });
+  expect(nameHeading).toBeInTheDocument();
+  expect(nameHeading.textContent.replace(/\u00a0/g, ' ')).toContain('Mahmud al Hasan');
   expect(screen.getByText(/Software Engineer \(\.NET \/ Backend\)/i)).toBeInTheDocument();
 
   // Check authentic work experience

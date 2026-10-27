@@ -278,7 +278,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
               <div className="job-header">
                 <div>
                   <h3 className="job-title">B.Sc. in Computer Science and Engineering (CSE)</h3>
-                  <span className="company">Bangladesh University of Business and Technology (BUBT)</span>
+                  <span className="company">Bangladesh University of Business and Technology</span>
                 </div>
               </div>
             </div>

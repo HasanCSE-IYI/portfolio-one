@@ -24,12 +24,23 @@
   margin: 0 auto;
   padding: 16px 16px 40px;
   z-index: 1;
-  opacity: 0;
-  animation: fadeIn 0.8s 0.2s forwards;
+  opacity: 1;
+  animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 
   @media screen and (min-width: 992px) {
     padding: 24px 40px 80px;
+  }
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

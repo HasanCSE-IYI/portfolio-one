@@ -86,7 +86,7 @@ WORK EXPERIENCE
 
 EDUCATION
 B.Sc. in Computer Science and Engineering
-Bangladesh University of Business and Technology (BUBT)
+Bangladesh University of Business and Technology
 
 LANGUAGES
 Bangla (Native / Fluent), English (Professional)
@@ -441,7 +441,7 @@ Firefox Student Ambassador (volunteer); PHP with Laravel training, BASIS BITM; i
               <div className="item-title-group">
                 <h3 className="job-title">B.Sc. in Computer Science and Engineering (CSE)</h3>
                 <span className="company-name">
-                  Bangladesh University of Business and Technology (BUBT)
+                  Bangladesh University of Business and Technology
                 </span>
               </div>
               <div className="item-meta">
