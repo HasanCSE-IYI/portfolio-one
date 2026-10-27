@@ -106,7 +106,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
@@ -116,6 +116,12 @@
       @page {
         size: A4 portrait;
         margin: 10mm 12mm 10mm 12mm;
+      }
+      * {
+        -webkit-font-smoothing: subpixel-antialiased !important;
+        text-rendering: geometricPrecision !important;
+        image-rendering: -webkit-optimize-contrast !important;
+        image-rendering: crisp-edges !important;
       }
       html, body, #root, .App, .page, .container, .resume-paper, .resume-sheet {
         overflow: visible !important;
