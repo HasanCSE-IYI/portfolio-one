@@ -23,7 +23,17 @@ import './index.scss'
 const Sidebar = () => {
   const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [showMoreMenu, setShowMoreMenu] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
+
+  // Track window scroll for dynamic glass depth
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 16)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Close extra menu on route change
   useEffect(() => {
@@ -33,7 +43,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Top Floating Glass Navbar (Desktop Floating Capsule & Mobile Slim Header) */}
-      <header className="modern-navbar">
+      <header className={`modern-navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="navbar-container">
           {/* Brand Logo & Live Availability Status Capsule */}
           <div className="brand-zone">

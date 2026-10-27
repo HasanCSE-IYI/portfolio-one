@@ -6,6 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="theme-color" content="#090b10" />
+    <!-- Single Page Apps for GitHub Pages redirect receiver & legacy hash cleaner -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages (https://github.com/rafgraph/spa-github-pages)
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        } else if (l.hash && l.hash.indexOf('#/') === 0) {
+          // Seamlessly clean legacy hash URLs (e.g. /portfolio-one/#/resume -> /portfolio-one/resume)
+          var cleanPath = l.hash.slice(2);
+          var basePath = l.pathname.replace(/\/+$/, '');
+          window.history.replaceState(null, null,
+              basePath + (cleanPath ? '/' + cleanPath : '') + l.search
+          );
+        }
+      }(window.location))
+    </script>
     <title>Mahmud al Hasan | Backend Software Engineer (Laravel, Node.js &amp; .NET)</title>
     <link rel="canonical" href="https://hasancse-iyi.github.io/portfolio-one/" />
     <meta
