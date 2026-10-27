@@ -16,7 +16,6 @@ import {
   faTimes,
   faMapMarkerAlt,
   faSatellite,
-  faLayerGroup,
   faCrosshairs,
   faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons'
@@ -31,37 +30,64 @@ import './index.scss'
 // Fix Leaflet's default marker icon missing in Webpack production builds
 delete L.Icon.Default.prototype._getIconUrl;
 
-// Exact coordinates for Public Mor, BSRM Goli, Bayazid, Chattogram
-const PUBLIC_MOR_COORDS = [22.3972, 91.8150];
+// Exact coordinates for residence in Bayazid, Chattogram
+const BAYAZID_COORDS = [22.3972, 91.8150];
 
-// Ultra-sharp vector Red Pin Marker for exact location marking
-const redMarkerIcon = L.divIcon({
-  className: 'custom-red-pin-wrapper',
+// 3D Clear Red Pin Marker with volumetric lighting, specular highlight & ground cast shadow
+const redMarker3DIcon = L.divIcon({
+  className: 'custom-red-pin-3d-wrapper',
   html: `
-    <div class="red-pin-container">
-      <div class="red-pin-beacon"></div>
-      <div class="red-pin-shape">
-        <svg viewBox="0 0 32 44" width="32" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="pin-3d-container">
+      <div class="pin-3d-beacon"></div>
+      <div class="pin-3d-body">
+        <svg viewBox="0 0 48 64" width="46" height="60" fill="none" xmlns="http://www.w3.org/2000/svg" class="pin-3d-svg">
           <defs>
-            <linearGradient id="redPinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ff3b30"/>
-              <stop offset="45%" stop-color="#ef4444"/>
-              <stop offset="100%" stop-color="#b91c1c"/>
+            <radialGradient id="groundShadow3D" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#000000" stop-opacity="0.65"/>
+              <stop offset="60%" stop-color="#000000" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="bodyGradient3D" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff453a"/>
+              <stop offset="30%" stop-color="#ef4444"/>
+              <stop offset="70%" stop-color="#dc2626"/>
+              <stop offset="100%" stop-color="#881337"/>
             </linearGradient>
-            <filter id="redShadow" x="-30%" y="-15%" width="160%" height="150%">
-              <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.65"/>
+            <radialGradient id="specularDome3D" cx="35%" cy="28%" r="65%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+              <stop offset="25%" stop-color="#fca5a5" stop-opacity="0.6"/>
+              <stop offset="55%" stop-color="#ef4444" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#4c0519" stop-opacity="0.85"/>
+            </radialGradient>
+            <linearGradient id="lensRing3D" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="40%" stop-color="#f1f5f9"/>
+              <stop offset="100%" stop-color="#94a3b8"/>
+            </linearGradient>
+            <radialGradient id="coreRuby3D" cx="35%" cy="32%" r="60%">
+              <stop offset="0%" stop-color="#ff7b72"/>
+              <stop offset="45%" stop-color="#dc2626"/>
+              <stop offset="100%" stop-color="#581c87"/>
+            </radialGradient>
+            <filter id="castShadow3D" x="-30%" y="-20%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="4" stdDeviation="4.5" flood-color="#000000" flood-opacity="0.65"/>
             </filter>
           </defs>
-          <path d="M16 0C7.163 0 0 7.163 0 16C0 26.5 16 44 16 44S32 26.5 32 16C32 7.163 24.837 0 16 0Z" fill="url(#redPinGrad)" filter="url(#redShadow)" stroke="#ffffff" stroke-width="1.6"/>
-          <circle cx="16" cy="15" r="7" fill="#ffffff"/>
-          <circle cx="16" cy="15" r="3.8" fill="#ef4444"/>
+          <ellipse cx="24" cy="58" rx="14" ry="4" fill="url(#groundShadow3D)"/>
+          <g filter="url(#castShadow3D)">
+            <path d="M24 2C13.5 2 5 10.5 5 21C5 33 24 56 24 56S43 33 43 21C43 10.5 34.5 2 24 2Z" fill="url(#bodyGradient3D)" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M24 2C13.5 2 5 10.5 5 21C5 33 24 56 24 56S43 33 43 21C43 10.5 34.5 2 24 2Z" fill="url(#specularDome3D)"/>
+            <circle cx="24" cy="20.5" r="9" fill="url(#lensRing3D)" stroke="#ffffff" stroke-width="1"/>
+            <circle cx="24" cy="20.5" r="5.6" fill="url(#coreRuby3D)"/>
+            <ellipse cx="22" cy="18.5" rx="2" ry="1.2" fill="#ffffff" opacity="0.95"/>
+          </g>
         </svg>
       </div>
     </div>
   `,
-  iconSize: [32, 44],
-  iconAnchor: [16, 44],
-  popupAnchor: [0, -44],
+  iconSize: [46, 60],
+  iconAnchor: [23, 56],
+  popupAnchor: [0, -56],
 });
 
 L.Icon.Default.mergeOptions({
@@ -97,7 +123,6 @@ const Contact = () => {
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
-  const [mapView, setMapView] = useState('satellite')
   const [mapInstance, setMapInstance] = useState(null)
   const markerRef = useRef(null)
   const form = useRef()
@@ -126,7 +151,7 @@ const Contact = () => {
 
   const handleRecenter = () => {
     if (mapInstance) {
-      mapInstance.flyTo(PUBLIC_MOR_COORDS, 17, {
+      mapInstance.flyTo(BAYAZID_COORDS, 17, {
         duration: 1.2,
         easeLinearity: 0.25,
       })
@@ -487,11 +512,9 @@ const Contact = () => {
             <div className="info-map-location">
               <div className="location-landmark">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="pin-icon" />
-                <span className="primary-landmark">পাবলিক মোড়, বিএসআরএম গলি</span>
+                <span className="primary-landmark">বায়েজীদ, চট্টগ্রাম</span>
               </div>
               <div className="location-detail">
-                Public Mor, BSRM Goli · Bayazid Bostami Road
-                <br />
                 Bayazid, Chattogram - 4210, Bangladesh
               </div>
             </div>
@@ -505,38 +528,24 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className={`map-wrap ${mapView === 'satellite' ? 'satellite-active' : 'street-active'}`}>
+          <div className="map-wrap satellite-active">
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
               <div className="map-location-tag">
                 <span className="live-radar-dot"></span>
-                <span>পাবলিক মোড়, বিএসআরএম গলি</span>
+                <span>বায়েজীদ, চট্টগ্রাম (Bayazid, Chattogram)</span>
               </div>
               <div className="map-view-actions">
-                <button
-                  type="button"
-                  className={`view-toggle-btn ${mapView === 'satellite' ? 'active' : ''}`}
-                  onClick={() => setMapView('satellite')}
-                  title="উচ্চ রেজ্যুলেশন স্যাটেলাইট ভিউ"
-                >
+                <div className="satellite-hd-badge">
                   <FontAwesomeIcon icon={faSatellite} />
-                  <span>স্যাটেলাইট</span>
-                </button>
-                <button
-                  type="button"
-                  className={`view-toggle-btn ${mapView === 'street' ? 'active' : ''}`}
-                  onClick={() => setMapView('street')}
-                  title="ভেক্টর স্ট্রিট ম্যাপ ভিউ"
-                >
-                  <FontAwesomeIcon icon={faLayerGroup} />
-                  <span>ম্যাপ</span>
-                </button>
+                  <span>HD স্যাটেলাইট ভিউ</span>
+                </div>
                 <button
                   type="button"
                   className="recenter-btn"
                   onClick={handleRecenter}
-                  title="পাবলিক মোড়ে রিলোকেট করুন"
-                  aria-label="Recenter map on Public Mor, BSRM Goli"
+                  title="বায়েজীদে রিসেন্টার করুন"
+                  aria-label="Recenter map on Bayazid, Chattogram"
                 >
                   <FontAwesomeIcon icon={faCrosshairs} />
                 </button>
@@ -544,43 +553,34 @@ const Contact = () => {
             </div>
 
             <MapContainer
-              center={PUBLIC_MOR_COORDS}
+              center={BAYAZID_COORDS}
               zoom={17}
               scrollWheelZoom={false}
               whenCreated={setMapInstance}
             >
-              {mapView === 'satellite' ? (
-                <TileLayer
-                  key="google-satellite-hybrid"
-                  attribution='&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Satellite'
-                  url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
-                  subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-                  maxZoom={20}
-                />
-              ) : (
-                <TileLayer
-                  key="osm-street-map"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  maxZoom={19}
-                />
-              )}
+              <TileLayer
+                attribution='&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Satellite'
+                url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+                subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                maxNativeZoom={20}
+                maxZoom={21}
+              />
 
               <Marker
-                position={PUBLIC_MOR_COORDS}
-                icon={redMarkerIcon}
+                position={BAYAZID_COORDS}
+                icon={redMarker3DIcon}
                 ref={markerRef}
               >
                 <Popup className="custom-location-popup" autoPan={false}>
                   <div className="popup-card">
                     <div className="popup-badge">
                       <span className="live-dot-red"></span>
-                      <span>বর্তমান অবস্থান / Exact Location</span>
+                      <span>বর্তমান অবস্থান / Location</span>
                     </div>
-                    <h3 className="popup-title">পাবলিক মোড়, বিএসআরএম গলি</h3>
-                    <p className="popup-sub">Public Mor, BSRM Goli · Bayazid</p>
+                    <h3 className="popup-title">বায়েজীদ, চট্টগ্রাম</h3>
+                    <p className="popup-sub">Bayazid, Chattogram - 4210, Bangladesh</p>
                     <div className="popup-meta">
-                      <span className="badge-chip">বায়েজীদ, চট্টগ্রাম ৪২১০</span>
+                      <span className="badge-chip">চট্টগ্রাম বিভাগ, বাংলাদেশ</span>
                       <span className="coords-chip">22.3972° N, 91.8150° E</span>
                     </div>
                     <a

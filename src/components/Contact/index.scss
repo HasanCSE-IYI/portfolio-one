@@ -380,40 +380,26 @@
           pointer-events: auto;
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
           background: rgba(15, 20, 28, 0.88);
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
           border: 1px solid rgba(255, 255, 255, 0.15);
-          padding: 4px;
+          padding: 5px 10px;
           border-radius: 10px;
           box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
 
-          .view-toggle-btn {
+          .satellite-hd-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: transparent;
-            border: 1px solid transparent;
-            color: #94a3b8;
+            gap: 7px;
             font-size: 1.2rem;
             font-weight: 600;
-            padding: 5px 10px;
-            border-radius: 7px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-
-            &:hover {
-              color: #ffffff;
-              background: rgba(255, 255, 255, 0.08);
-            }
-
-            &.active {
-              background: #ef4444;
-              color: #ffffff;
-              border-color: #ef4444;
-              box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
-            }
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            padding: 3px 10px;
+            border-radius: 6px;
           }
 
           .recenter-btn {
@@ -515,54 +501,57 @@
         }
       }
 
-      // Satellite view: completely pure unfiltered true color HD resolution
-      &.satellite-active {
-        .leaflet-tile {
-          filter: none !important;
-        }
-      }
-
-      // Street view: stylish modern dark mode invert
-      &.street-active {
-        .leaflet-tile {
-          filter: brightness(0.68) invert(1) contrast(2.4) hue-rotate(200deg) saturate(0.35) brightness(0.85);
-        }
+      // Pure unfiltered HD satellite tiles
+      .leaflet-tile {
+        filter: none !important;
       }
     }
 
-    // Custom Red Pin Marker Vector Styling
-    .custom-red-pin-wrapper {
+    // 3D Clear Red Pin Marker Vector Styling
+    .custom-red-pin-3d-wrapper {
       background: transparent !important;
       border: none !important;
 
-      .red-pin-container {
+      .pin-3d-container {
         position: relative;
-        width: 32px;
-        height: 44px;
+        width: 46px;
+        height: 60px;
+        perspective: 800px;
 
-        .red-pin-beacon {
+        // 3D Isometric Ground Pulsing Beacon
+        .pin-3d-beacon {
           position: absolute;
-          bottom: -4px;
+          bottom: 0px;
           left: 50%;
-          transform: translateX(-50%);
-          width: 24px;
-          height: 10px;
+          transform: translateX(-50%) rotateX(65deg);
+          width: 34px;
+          height: 18px;
           border-radius: 50%;
-          background: rgba(239, 68, 68, 0.5);
-          box-shadow: 0 0 14px 4px rgba(239, 68, 68, 0.8);
-          animation: pinBeaconPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          border: 2px solid rgba(239, 68, 68, 0.9);
+          background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0) 70%);
+          box-shadow: 0 0 16px 4px rgba(239, 68, 68, 0.7);
+          animation: pin3DBeaconPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
         }
 
-        .red-pin-shape {
+        // 3D Pin Body with subtle floating physics
+        .pin-3d-body {
           position: relative;
           z-index: 2;
-          animation: pinFloat 3s ease-in-out infinite;
-          transform-origin: bottom center;
-          transition: transform 0.2s ease;
+          animation: pin3DFloat 3.2s ease-in-out infinite;
+          transform-origin: 23px 56px;
+          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.65));
+
+          .pin-3d-svg {
+            display: block;
+            width: 46px;
+            height: 60px;
+            overflow: visible;
+          }
         }
 
-        &:hover .red-pin-shape {
-          transform: scale(1.15) translateY(-2px);
+        &:hover .pin-3d-body {
+          transform: translateY(-4px) scale(1.12);
         }
       }
     }
@@ -1054,5 +1043,29 @@
   }
   50% {
     transform: translateY(-4px);
+  }
+}
+
+@keyframes pin3DBeaconPulse {
+  0% {
+    transform: translateX(-50%) rotateX(65deg) scale(0.5);
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(-50%) rotateX(65deg) scale(1.8);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(-50%) rotateX(65deg) scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes pin3DFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
   }
 }

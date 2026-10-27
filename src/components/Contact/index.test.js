@@ -2,19 +2,23 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Contact from './index';
 
-test('renders contact page with location info and map landmarks', () => {
+test('renders contact page with location info stopping at Bayazid for security', () => {
   render(
     <MemoryRouter>
       <Contact />
     </MemoryRouter>
   );
 
-  // Check landmark markers and headings
-  const landmarkElements = screen.getAllByText(/পাবলিক মোড়, বিএসআরএম গলি/i);
-  expect(landmarkElements.length).toBeGreaterThanOrEqual(1);
+  // Check location headings and badges (all stopping at Bayazid for privacy/security)
+  const bayazidHeadings = screen.getAllByText(/বায়েজীদ, চট্টগ্রাম/i);
+  expect(bayazidHeadings.length).toBeGreaterThanOrEqual(1);
 
-  expect(screen.getByText(/Public Mor, BSRM Goli · Bayazid Bostami Road/i)).toBeInTheDocument();
   expect(screen.getByText(/Bayazid, Chattogram - 4210, Bangladesh/i)).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /স্যাটেলাইট/i })).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /ম্যাপ/i })).toBeInTheDocument();
+  expect(screen.getByText(/HD স্যাটেলাইট ভিউ/i)).toBeInTheDocument();
+
+  // Strict Security/Privacy Assertion: Exact sensitive street names must NOT appear in any rendered text
+  expect(screen.queryByText(/পাবলিক মোড়/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/বিএসআরএম/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Public Mor/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/BSRM Goli/i)).not.toBeInTheDocument();
 });
