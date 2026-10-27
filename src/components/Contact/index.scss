@@ -35,7 +35,7 @@
     .quick-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
@@ -44,11 +44,24 @@
       background: #181b20;
       color: #e5e7eb;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+      .channel-icon {
+        font-size: 0.95rem;
+        transition: transform 0.2s ease;
+      }
 
       &:hover {
         border-color: #f59e0b;
         transform: translateY(-2px);
+
+        .channel-icon {
+          transform: scale(1.15);
+        }
+      }
+
+      &:active {
+        transform: scale(0.96);
       }
 
       &.whatsapp {
@@ -256,53 +269,152 @@
 
   .form-feedback-toast {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 12px;
-    padding: 12px 18px;
-    border-radius: 10px;
-    margin-bottom: 16px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
     font-size: 0.92rem;
-    animation: fadeIn 0.3s ease;
+    animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    .toast-top-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+
+      .toast-icon {
+        font-size: 1.25rem;
+        line-height: 1.2;
+        flex-shrink: 0;
+      }
+
+      .toast-header-text {
+        flex: 1;
+
+        .toast-title {
+          font-size: 0.98rem;
+          font-weight: 700;
+          display: block;
+          margin-bottom: 4px;
+        }
+
+        .toast-message {
+          margin: 0;
+          line-height: 1.5;
+          font-size: 0.88rem;
+          opacity: 0.92;
+        }
+      }
+
+      .toast-close {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
 
     &.success {
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.4);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
       color: #86efac;
 
       .toast-icon {
         color: #22c55e;
-        font-weight: 700;
-        font-size: 1.1rem;
+      }
+      .toast-title {
+        color: #4ade80;
       }
     }
 
     &.error {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.35);
       color: #fca5a5;
 
       .toast-icon {
-        color: #ef4444;
-        font-weight: 700;
-        font-size: 1.1rem;
+        color: #f87171;
       }
-    }
+      .toast-title {
+        color: #fca5a5;
+      }
 
-    .toast-message {
-      flex: 1;
-      line-height: 1.4;
-    }
+      .toast-fallback-tray {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-top: 12px;
+        border-top: 1px dashed rgba(239, 68, 68, 0.25);
+        margin-top: 4px;
 
-    .toast-close {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 2px 6px;
+        .fallback-action-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          padding: 8px 14px;
+          border-radius: 8px;
+          font-family: var(--font-sans);
+          font-size: 0.84rem;
+          font-weight: 600;
+          text-decoration: none;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          border: 1px solid transparent;
 
-      &:hover {
-        color: #fff;
+          &:active {
+            transform: scale(0.96);
+          }
+
+          &.mail-client-btn {
+            background: rgba(245, 158, 11, 0.18);
+            border-color: rgba(245, 158, 11, 0.45);
+            color: #f59e0b;
+
+            &:hover {
+              background: #f59e0b;
+              color: #0f172a;
+              transform: translateY(-1.5px);
+              box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            }
+          }
+
+          &.whatsapp-send-btn {
+            background: rgba(34, 197, 94, 0.16);
+            border-color: rgba(34, 197, 94, 0.45);
+            color: #4ade80;
+
+            &:hover {
+              background: #22c55e;
+              color: #0f172a;
+              transform: translateY(-1.5px);
+              box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+            }
+          }
+
+          &.copy-msg-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #f1f5f9;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.14);
+              color: #fff;
+              transform: translateY(-1.5px);
+            }
+          }
+        }
       }
     }
   }
@@ -390,17 +502,27 @@
     text-transform: uppercase;
     text-align: center;
     cursor: pointer;
-    min-height: 46px;
+    min-height: 48px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+
+    .send-icon {
+      font-size: 0.95rem;
+      transition: transform 0.2s ease;
+    }
 
     &:hover:not(:disabled) {
       background: #fbbf24;
       box-shadow: 0 6px 22px rgba(245, 158, 11, 0.45);
       transform: translateY(-2px);
+
+      .send-icon {
+        transform: translateX(3px) translateY(-1px);
+      }
     }
 
     &:active:not(:disabled) {
@@ -408,10 +530,26 @@
     }
 
     &:disabled {
-      opacity: 0.6;
+      opacity: 0.7;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
+
+    .submit-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(15, 23, 42, 0.3);
+      border-top-color: #0f172a;
+      border-radius: 50%;
+      display: inline-block;
+      animation: spinSpinner 0.7s linear infinite;
+    }
+  }
+}
+
+@keyframes spinSpinner {
+  to {
+    transform: rotate(360deg);
   }
 }

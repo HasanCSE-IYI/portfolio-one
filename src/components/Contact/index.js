@@ -6,6 +6,18 @@ import iconMarker from 'leaflet/dist/images/marker-icon.png'
 import iconMarker2x from 'leaflet/dist/images/marker-icon-2x.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 import emailjs from '@emailjs/browser'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faEnvelope,
+  faPaperPlane,
+  faCopy,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faGithub,
+  faLinkedin,
+  faWhatsapp,
+} from '@fortawesome/free-brands-svg-icons'
 import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
 
@@ -52,6 +64,7 @@ const Contact = () => {
   const [subject, setSubject] = useState('')
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [copiedMessage, setCopiedMessage] = useState(false)
   const form = useRef()
 
   useEffect(() => {
@@ -70,6 +83,18 @@ const Contact = () => {
     }
   }
 
+  const handleCopyFullMessage = () => {
+    if (!formFeedback?.formData) return
+    const { name, email, subject: sub, message } = formFeedback.formData
+    const textToCopy = `Sender: ${name} (${email})\nSubject: ${sub}\n\n${message}`
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        setCopiedMessage(true)
+        setTimeout(() => setCopiedMessage(false), 2400)
+      })
+    }
+  }
+
   const sendEmail = (e) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -78,6 +103,11 @@ const Contact = () => {
     const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_ah887jc'
     const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_6ohf9ai'
     const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || '-z1plCY3kWdfs26uU'
+
+    const nameVal = form.current?.name?.value || ''
+    const emailVal = form.current?.email?.value || ''
+    const subjectVal = subject || form.current?.subject?.value || 'Portfolio Contact'
+    const messageVal = form.current?.message?.value || ''
 
     emailjs
       .sendForm(
@@ -91,18 +121,35 @@ const Contact = () => {
           setIsSubmitting(false)
           setFormFeedback({
             type: 'success',
-            message: 'Message successfully sent! Mahmud will get back to you shortly.',
+            title: 'Message Delivered Successfully!',
+            message: 'Thank you for reaching out. Mahmud has received your message and will reply shortly.',
           })
           if (form.current) {
             form.current.reset()
             setSubject('')
+            setSelectedTier('')
           }
         },
         () => {
           setIsSubmitting(false)
+          const mailtoUrl = `mailto:mahmud.csem@gmail.com?subject=${encodeURIComponent(
+            subjectVal
+          )}&body=${encodeURIComponent(
+            `Hi Mahmud,\n\nName: ${nameVal}\nEmail: ${emailVal}\n\nMessage:\n${messageVal}`
+          )}`
+
+          const whatsappUrl = `https://wa.me/8801727328200?text=${encodeURIComponent(
+            `Hi Mahmud,\n\nName: ${nameVal}\nEmail: ${emailVal}\nSubject: ${subjectVal}\n\nMessage:\n${messageVal}`
+          )}`
+
           setFormFeedback({
             type: 'error',
-            message: 'Unable to send message directly. Please contact directly via WhatsApp or email mahmud.csem@gmail.com.',
+            title: 'Direct Dispatch Offline (Gmail Reconnection Required)',
+            message:
+              'The automated gateway is undergoing Gmail OAuth token renewal. Your message is safely preserved below—dispatch it with 1 click:',
+            mailtoUrl,
+            whatsappUrl,
+            formData: { name: nameVal, email: emailVal, subject: subjectVal, message: messageVal },
           })
         }
       )
@@ -124,37 +171,45 @@ const Contact = () => {
             Have a backend engineering opportunity, system architecture challenge, or project in mind? Pick whatever channel is most convenient:
           </p>
 
-          {/* Quick Connect Channels (Inspired by Al Nahian's quick reach bar) */}
+          {/* Quick Connect Channels */}
           <div className="quick-connect-bar">
             <a
               href="https://wa.me/8801727328200"
               target="_blank"
               rel="noreferrer"
               className="quick-link whatsapp"
+              title="Chat directly on WhatsApp"
             >
-              💬 WhatsApp (+880 1727-328200)
+              <FontAwesomeIcon icon={faWhatsapp} className="channel-icon" />
+              <span>WhatsApp · +880 1727 328200</span>
             </a>
             <a
               href="mailto:mahmud.csem@gmail.com"
               className="quick-link email"
+              title="Send an email to mahmud.csem@gmail.com"
             >
-              ✉️ mahmud.csem@gmail.com
+              <FontAwesomeIcon icon={faEnvelope} className="channel-icon" />
+              <span>mahmud.csem@gmail.com</span>
             </a>
             <a
               href="https://www.linkedin.com/in/mahmud-al-hasan/"
               target="_blank"
               rel="noreferrer"
               className="quick-link linkedin"
+              title="Connect on LinkedIn"
             >
-              💼 LinkedIn Profile
+              <FontAwesomeIcon icon={faLinkedin} className="channel-icon" />
+              <span>LinkedIn Profile</span>
             </a>
             <a
               href="https://github.com/HasanCSE-IYI"
               target="_blank"
               rel="noreferrer"
               className="quick-link github"
+              title="View GitHub Repositories"
             >
-              🐙 GitHub Repositories
+              <FontAwesomeIcon icon={faGithub} className="channel-icon" />
+              <span>GitHub Repositories</span>
             </a>
           </div>
 
@@ -186,19 +241,61 @@ const Contact = () => {
             <h2 className="section-title">Send a Direct Message</h2>
 
             {formFeedback && (
-              <div className={`form-feedback-toast ${formFeedback.type}`}>
-                <span className="toast-icon">
-                  {formFeedback.type === 'success' ? '✓' : '⚠️'}
-                </span>
-                <span className="toast-message">{formFeedback.message}</span>
-                <button
-                  type="button"
-                  className="toast-close"
-                  onClick={() => setFormFeedback(null)}
-                  aria-label="Close notification"
-                >
-                  ✕
-                </button>
+              <div
+                className={`form-feedback-toast ${formFeedback.type}`}
+                role="alert"
+                aria-live="polite"
+              >
+                <div className="toast-top-row">
+                  <span className="toast-icon">
+                    {formFeedback.type === 'success' ? (
+                      <FontAwesomeIcon icon={faCheck} />
+                    ) : (
+                      '⚠️'
+                    )}
+                  </span>
+                  <div className="toast-header-text">
+                    <strong className="toast-title">{formFeedback.title}</strong>
+                    <p className="toast-message">{formFeedback.message}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="toast-close"
+                    onClick={() => setFormFeedback(null)}
+                    aria-label="Close notification"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {formFeedback.type === 'error' && formFeedback.mailtoUrl && (
+                  <div className="toast-fallback-tray">
+                    <a
+                      href={formFeedback.mailtoUrl}
+                      className="fallback-action-btn mail-client-btn"
+                    >
+                      <FontAwesomeIcon icon={faEnvelope} />
+                      <span>1-Click Send via Email App</span>
+                    </a>
+                    <a
+                      href={formFeedback.whatsappUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="fallback-action-btn whatsapp-send-btn"
+                    >
+                      <FontAwesomeIcon icon={faWhatsapp} />
+                      <span>1-Click Send via WhatsApp</span>
+                    </a>
+                    <button
+                      type="button"
+                      className="fallback-action-btn copy-msg-btn"
+                      onClick={handleCopyFullMessage}
+                    >
+                      <FontAwesomeIcon icon={copiedMessage ? faCheck : faCopy} />
+                      <span>{copiedMessage ? 'Copied to Clipboard!' : 'Copy Full Message'}</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
@@ -236,7 +333,7 @@ const Contact = () => {
                   </li>
                   <li>
                     <textarea
-                      placeholder="Message"
+                      placeholder="Message (Please describe your project, timeline, or engineering opportunity)"
                       name="message"
                       aria-label="Your Message"
                       required
@@ -245,10 +342,20 @@ const Contact = () => {
                   <li>
                     <button
                       type="submit"
-                      className="flat-button"
+                      className={`flat-button submit-btn ${isSubmitting ? 'submitting' : ''}`}
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
+                      {isSubmitting ? (
+                        <>
+                          <span className="submit-spinner"></span>
+                          <span>DISPATCHING MESSAGE...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FontAwesomeIcon icon={faPaperPlane} className="send-icon" />
+                          <span>SEND DIRECT MESSAGE</span>
+                        </>
+                      )}
                     </button>
                   </li>
                 </ul>
