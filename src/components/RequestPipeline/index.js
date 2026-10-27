@@ -72,6 +72,18 @@ const RequestPipeline = () => {
 
   const activeStep = PIPELINE_STEPS.find((s) => s.id === activeStepId) || PIPELINE_STEPS[1];
 
+  const handleNodeKeyDown = (e, idx) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextIdx = (idx + 1) % PIPELINE_STEPS.length;
+      setActiveStepId(PIPELINE_STEPS[nextIdx].id);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prevIdx = (idx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
+      setActiveStepId(PIPELINE_STEPS[prevIdx].id);
+    }
+  };
+
   return (
     <div className="request-pipeline">
       <div className="pipeline-header">
@@ -83,12 +95,17 @@ const RequestPipeline = () => {
       </div>
 
       <div className="pipeline-flow-cont">
-        <div className="pipeline-nodes">
+        <div className="pipeline-nodes" role="tablist" aria-label="API Pipeline Stages">
           {PIPELINE_STEPS.map((step, idx) => (
             <React.Fragment key={step.id}>
               <button
+                type="button"
+                role="tab"
+                aria-selected={activeStepId === step.id}
                 className={`pipeline-node-btn ${activeStepId === step.id ? 'active' : ''}`}
                 onClick={() => setActiveStepId(step.id)}
+                onKeyDown={(e) => handleNodeKeyDown(e, idx)}
+                title={`Stage ${step.step}: ${step.name} (${step.badge})`}
               >
                 <span className="step-num">{step.step}</span>
                 <span className="step-name">{step.name}</span>
