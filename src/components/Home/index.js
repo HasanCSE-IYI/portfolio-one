@@ -57,7 +57,7 @@ const Home = () => {
   const [terminalHistory, setTerminalHistory] = useState([])
   const [pastCommands, setPastCommands] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
-  const terminalBottomRef = useRef(null)
+  const cliHistoryRef = useRef(null)
 
   const executeCliCommand = (cmd) => {
     const trimmed = cmd.trim().toLowerCase()
@@ -152,10 +152,10 @@ const Home = () => {
     setCommandInput('')
   }
 
-  // Auto-scroll terminal when new output arrives
+  // Auto-scroll inside terminal history container only when new output arrives
   useEffect(() => {
-    if (terminalBottomRef.current && typeof terminalBottomRef.current.scrollIntoView === 'function') {
-      terminalBottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    if (terminalHistory.length > 0 && cliHistoryRef.current) {
+      cliHistoryRef.current.scrollTop = cliHistoryRef.current.scrollHeight
     }
   }, [terminalHistory])
 
@@ -378,7 +378,7 @@ const Home = () => {
                 {/* Interactive CLI Console Zone */}
                 <div className="terminal-cli-zone">
                   {terminalHistory.length > 0 && (
-                    <div className="cli-history">
+                    <div className="cli-history" ref={cliHistoryRef}>
                       {terminalHistory.map((item, hIdx) => (
                         <div key={hIdx} className="history-block">
                           <div className="history-prompt">
@@ -415,7 +415,6 @@ const Home = () => {
                     <button type="button" onClick={() => executeCliCommand('whoami')}>whoami</button>
                     <button type="button" onClick={() => executeCliCommand('help')}>help</button>
                   </div>
-                  <div ref={terminalBottomRef} />
                 </div>
               </div>
             </div>

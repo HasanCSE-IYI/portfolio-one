@@ -4,6 +4,17 @@ import { useLocation } from 'react-router-dom'
 const ScrollToTop = () => {
   const { pathname } = useLocation()
 
+  // Prevent browser from automatically restoring scroll position on page reload
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      try {
+        window.history.scrollRestoration = 'manual'
+      } catch {
+        // ignore in environments without history API support
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       try {
