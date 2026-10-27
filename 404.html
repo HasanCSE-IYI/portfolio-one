@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mahmud al Hasan | Portfolio</title>
+    <script type="text/javascript">
+      // Single Page App redirect for GitHub Pages
+      // Redirects direct routes like /portfolio-one/resume -> /portfolio-one/#/resume
+      (function () {
+        var pathSegmentsToKeep = 1; // repository name "/portfolio-one"
+        var location = window.location;
+        var pathname = location.pathname;
+        
+        // Extract segments after repository path
+        var segments = pathname.slice(1).split('/').slice(pathSegmentsToKeep);
+        var subRoute = segments.join('/');
+
+        var redirectUrl =
+          location.protocol +
+          '//' +
+          location.hostname +
+          (location.port ? ':' + location.port : '') +
+          '/' +
+          pathname.slice(1).split('/')[0] +
+          '/#' +
+          (subRoute ? '/' + subRoute : '/') +
+          (location.search ? '?' + location.search.slice(1) : '') +
+          location.hash;
+
+        location.replace(redirectUrl);
+      })();
+    </script>
+  </head>
+  <body style="background-color: #090b10; color: #f59e0b; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <p>Loading...</p>
+  </body>
+</html>
