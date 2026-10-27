@@ -208,13 +208,43 @@
     .map-wrap {
       width: 100%;
       height: 280px;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      position: relative;
+      z-index: 1;
 
       .leaflet-container {
         width: 100%;
         height: 100%;
+        background: #0f141c;
+        z-index: 1;
+
+        .leaflet-popup-content-wrapper {
+          background: rgba(15, 20, 28, 0.96);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          color: #f8fafc;
+          border: 1px solid rgba(245, 158, 11, 0.4);
+          border-radius: 8px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+          font-family: var(--font-sans);
+          font-size: 0.86rem;
+          font-weight: 500;
+          line-height: 1.4;
+        }
+
+        .leaflet-popup-tip {
+          background: rgba(15, 20, 28, 0.96);
+        }
+
+        a.leaflet-popup-close-button {
+          color: #f59e0b;
+          padding: 4px 6px;
+          &:hover {
+            color: #fbbf24;
+          }
+        }
       }
     }
   }

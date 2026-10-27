@@ -4,7 +4,7 @@
   min-height: 100vh;
   position: relative;
   padding-top: 68px;
-  padding-bottom: 88px; // Leaves ample space above mobile floating bottom dock
+  padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); // Leaves ample space above mobile floating bottom dock
   overflow-x: hidden;
   box-sizing: border-box;
 

@@ -43,6 +43,8 @@
 
   .pipeline-flow-cont {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
     padding-bottom: 1rem;
     margin-bottom: 1.5rem;
 

@@ -210,6 +210,15 @@
     }
   }
 
+  // Backdrop for dismiss on outside click
+  .dropdown-backdrop {
+    pointer-events: auto;
+    position: fixed;
+    inset: 0;
+    z-index: 1004;
+    background: transparent;
+  }
+
   // Mobile More Dropdown Panel
   .mobile-more-dropdown {
     pointer-events: auto;
@@ -327,7 +336,7 @@
 // Modern Floating Bottom Island Dock (Mobile & Tablet)
 .mobile-bottom-dock {
   position: fixed;
-  bottom: 14px;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 24px);

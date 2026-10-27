@@ -1,9 +1,32 @@
 import { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
+import iconMarker from 'leaflet/dist/images/marker-icon.png'
+import iconMarker2x from 'leaflet/dist/images/marker-icon-2x.png'
+import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 import emailjs from '@emailjs/browser'
 import AnimatedLetters from '../AnimatedLetters'
 import './index.scss'
+
+// Fix Leaflet's default marker icon missing in Webpack production builds
+delete L.Icon.Default.prototype._getIconUrl;
+
+const defaultMarkerIcon = L.icon({
+  iconUrl: iconMarker,
+  iconRetinaUrl: iconMarker2x,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+L.Icon.Default.mergeOptions({
+  iconUrl: iconMarker,
+  iconRetinaUrl: iconMarker2x,
+  shadowUrl: iconShadow,
+});
 
 const COLLABORATION_TIERS = [
   {
@@ -183,13 +206,20 @@ const Contact = () => {
               <form ref={form} onSubmit={sendEmail}>
                 <ul>
                   <li className="half">
-                    <input placeholder="Your Name" type="text" name="name" required />
+                    <input
+                      placeholder="Your Name"
+                      type="text"
+                      name="name"
+                      aria-label="Your Name"
+                      required
+                    />
                   </li>
                   <li className="half">
                     <input
                       placeholder="Your Email"
                       type="email"
                       name="email"
+                      aria-label="Your Email"
                       required
                     />
                   </li>
@@ -200,11 +230,17 @@ const Contact = () => {
                       name="subject"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
+                      aria-label="Message Subject"
                       required
                     />
                   </li>
                   <li>
-                    <textarea placeholder="Message" name="message" required></textarea>
+                    <textarea
+                      placeholder="Message"
+                      name="message"
+                      aria-label="Your Message"
+                      required
+                    ></textarea>
                   </li>
                   <li>
                     <button
@@ -238,10 +274,17 @@ const Contact = () => {
           </div>
 
           <div className="map-wrap">
-            <MapContainer center={[22.3833, 91.8167]} zoom={13}>
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <Marker position={[22.3833, 91.8167]}>
-                <Popup>Mahmud al Hasan · Bayazid (Near Public Mor), Chattogram :)</Popup>
+            <MapContainer
+              center={[22.3833, 91.8167]}
+              zoom={13}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[22.3833, 91.8167]} icon={defaultMarkerIcon}>
+                <Popup>Mahmud al Hasan lives here in Public Mor, Bayazid, Chattogram :)</Popup>
               </Marker>
             </MapContainer>
           </div>

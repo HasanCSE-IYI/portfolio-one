@@ -143,75 +143,82 @@ const Sidebar = () => {
 
         {/* Mobile Dropdown for Extra Contact Links */}
         {showMoreMenu && (
-          <div className="mobile-more-dropdown">
-            <div className="dropdown-header">
-              <span>Quick Connect &amp; Channels</span>
-              <button
-                type="button"
-                className="close-dropdown-btn"
-                onClick={() => setShowMoreMenu(false)}
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
+          <>
+            <div
+              className="dropdown-backdrop"
+              onClick={() => setShowMoreMenu(false)}
+              aria-hidden="true"
+            />
+            <div className="mobile-more-dropdown">
+              <div className="dropdown-header">
+                <span>Quick Connect &amp; Channels</span>
+                <button
+                  type="button"
+                  className="close-dropdown-btn"
+                  onClick={() => setShowMoreMenu(false)}
+                  aria-label="Close menu"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="dropdown-links">
+                <a
+                  href="https://github.com/HasanCSE-IYI"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faGithub} />
+                  <span>GitHub · /HasanCSE-IYI</span>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/mahmud-al-hasan/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faLinkedin} />
+                  <span>LinkedIn · /mahmud-al-hasan</span>
+                </a>
+                <a
+                  href="https://wa.me/8801727328200"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faWhatsapp} />
+                  <span>WhatsApp · +880 1727 328200</span>
+                </a>
+                <a
+                  href="tel:+8801727328200"
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faPhone} />
+                  <span>Direct Call · +880 1727 328200</span>
+                </a>
+                <a
+                  href="skype:live:rauaha_1"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faSkype} />
+                  <span>Skype · live:rauaha_1</span>
+                </a>
+                <button
+                  type="button"
+                  className="dropdown-item resume-item"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    setIsResumeOpen(true)
+                  }}
+                >
+                  <FontAwesomeIcon icon={faFileAlt} />
+                  <span>View Full Executive Resume</span>
+                </button>
+              </div>
             </div>
-            <div className="dropdown-links">
-              <a
-                href="https://github.com/HasanCSE-IYI"
-                target="_blank"
-                rel="noreferrer"
-                className="dropdown-item"
-              >
-                <FontAwesomeIcon icon={faGithub} />
-                <span>GitHub · /HasanCSE-IYI</span>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/mahmud-al-hasan/"
-                target="_blank"
-                rel="noreferrer"
-                className="dropdown-item"
-              >
-                <FontAwesomeIcon icon={faLinkedin} />
-                <span>LinkedIn · /mahmud-al-hasan</span>
-              </a>
-              <a
-                href="https://wa.me/8801727328200"
-                target="_blank"
-                rel="noreferrer"
-                className="dropdown-item"
-              >
-                <FontAwesomeIcon icon={faWhatsapp} />
-                <span>WhatsApp · +880 1727 328200</span>
-              </a>
-              <a
-                href="tel:+8801727328200"
-                className="dropdown-item"
-              >
-                <FontAwesomeIcon icon={faPhone} />
-                <span>Direct Call · +880 1727 328200</span>
-              </a>
-              <a
-                href="skype:live:rauaha_1"
-                target="_blank"
-                rel="noreferrer"
-                className="dropdown-item"
-              >
-                <FontAwesomeIcon icon={faSkype} />
-                <span>Skype · live:rauaha_1</span>
-              </a>
-              <button
-                type="button"
-                className="dropdown-item resume-item"
-                onClick={() => {
-                  setShowMoreMenu(false)
-                  setIsResumeOpen(true)
-                }}
-              >
-                <FontAwesomeIcon icon={faFileAlt} />
-                <span>View Full Executive Resume</span>
-              </button>
-            </div>
-          </div>
+          </>
         )}
       </header>
 
