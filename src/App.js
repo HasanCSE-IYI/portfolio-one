@@ -6,6 +6,7 @@ import ScrollToTop from './components/ScrollToTop'
 import './App.scss'
 
 const About = lazy(() => import('./components/About'))
+const Resume = lazy(() => import('./components/Resume'))
 const Contact = lazy(() => import('./components/Contact'))
 const Portfolio = lazy(() => import('./components/Portfolio'))
 const NotFound = lazy(() => import('./components/NotFound'))
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="resume" element={<Resume />} />
             <Route path="contact" element={<Contact />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="*" element={<NotFound />} />

@@ -68,6 +68,13 @@ const Sidebar = () => {
               <span>About</span>
             </NavLink>
             <NavLink
+              to="/resume"
+              className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+            >
+              <FontAwesomeIcon icon={faFileAlt} className="nav-icon" />
+              <span>Resume</span>
+            </NavLink>
+            <NavLink
               to="/portfolio"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
             >
@@ -205,17 +212,14 @@ const Sidebar = () => {
                   <FontAwesomeIcon icon={faSkype} />
                   <span>Skype · live:rauaha_1</span>
                 </a>
-                <button
-                  type="button"
+                <Link
+                  to="/resume"
                   className="dropdown-item resume-item"
-                  onClick={() => {
-                    setShowMoreMenu(false)
-                    setIsResumeOpen(true)
-                  }}
+                  onClick={() => setShowMoreMenu(false)}
                 >
                   <FontAwesomeIcon icon={faFileAlt} />
                   <span>View Full Executive Resume</span>
-                </button>
+                </Link>
               </div>
             </div>
           </>
@@ -242,6 +246,14 @@ const Sidebar = () => {
           <span className="dock-label">About</span>
         </NavLink>
         <NavLink
+          to="/resume"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Resume"
+        >
+          <FontAwesomeIcon icon={faFileAlt} className="dock-icon" />
+          <span className="dock-label">Resume</span>
+        </NavLink>
+        <NavLink
           to="/portfolio"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Portfolio"
@@ -257,15 +269,6 @@ const Sidebar = () => {
           <FontAwesomeIcon icon={faEnvelope} className="dock-icon" />
           <span className="dock-label">Contact</span>
         </NavLink>
-        <button
-          type="button"
-          className="dock-item cv-btn"
-          onClick={() => setIsResumeOpen(true)}
-          aria-label="View Resume"
-        >
-          <FontAwesomeIcon icon={faFileAlt} className="dock-icon" />
-          <span className="dock-label">Resume</span>
-        </button>
       </nav>
 
       {/* Global Executive Resume Modal */}

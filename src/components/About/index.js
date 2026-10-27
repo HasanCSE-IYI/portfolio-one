@@ -7,6 +7,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import AnimatedLetters from '../AnimatedLetters'
 import ResumeModal from '../ResumeModal'
 import './index.scss'
@@ -195,13 +196,12 @@ const About = () => {
 
           {/* Direct Resume / CV Trigger */}
           <div className="about-cv-cta">
-            <button
-              type="button"
+            <Link
+              to="/resume"
               className="about-cv-btn"
-              onClick={() => setIsResumeOpen(true)}
             >
               📄 VIEW / DOWNLOAD EXECUTIVE CV (PDF)
-            </button>
+            </Link>
           </div>
         </div>
       </div>

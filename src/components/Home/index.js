@@ -174,13 +174,9 @@ const Home = () => {
               <Link to="/contact" className="flat-button">
                 CONTACT ME
               </Link>
-              <button
-                type="button"
-                className="flat-button button-cv"
-                onClick={() => setIsResumeOpen(true)}
-              >
+              <Link to="/resume" className="flat-button button-cv">
                 VIEW / DOWNLOAD CV 📄
-              </button>
+              </Link>
               <Link to="/portfolio" className="flat-button button-secondary">
                 VIEW ARCHITECTURE &amp; SIMULATOR
               </Link>
