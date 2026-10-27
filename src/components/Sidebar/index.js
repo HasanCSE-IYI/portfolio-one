@@ -27,7 +27,16 @@ const Sidebar = () => {
   const [isPaletteOpen, setIsPaletteOpen] = useState(false)
   const [showMoreMenu, setShowMoreMenu] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMac, setIsMac] = useState(true)
   const location = useLocation()
+
+  // Detect client platform for Spotlight shortcut badge (⌘K vs Ctrl K)
+  useEffect(() => {
+    if (typeof navigator !== 'undefined') {
+      const isApple = /Mac|iPod|iPhone|iPad/i.test(navigator.userAgent || navigator.platform || '')
+      setIsMac(isApple)
+    }
+  }, [])
 
   // Track window scroll for dynamic glass depth
   useEffect(() => {
@@ -162,11 +171,11 @@ const Sidebar = () => {
               type="button"
               className="spotlight-quick-btn"
               onClick={() => setIsPaletteOpen(true)}
-              aria-label="Open Command Search (Cmd+K)"
+              aria-label="Open Command Search (Cmd+K / Ctrl+K)"
               title="Quick Search commands, pages & actions (⌘K / Ctrl+K)"
             >
               <FontAwesomeIcon icon={faSearch} className="spotlight-icon" />
-              <span className="spotlight-kbd">⌘K</span>
+              <span className="spotlight-kbd">{isMac ? '⌘K' : 'Ctrl K'}</span>
             </button>
 
             {/* Resume Button */}
@@ -256,7 +265,7 @@ const Sidebar = () => {
                   }}
                 >
                   <FontAwesomeIcon icon={faSearch} />
-                  <span>Spotlight Search · ⌘K</span>
+                  <span>Spotlight Search · {isMac ? '⌘K' : 'Ctrl K'}</span>
                 </button>
                 <Link
                   to="/resume"

@@ -247,6 +247,44 @@
         background: #0f141c;
         z-index: 1;
 
+        .leaflet-tile {
+          filter: brightness(0.62) invert(1) contrast(2.6) hue-rotate(200deg) saturate(0.3) brightness(0.78);
+        }
+
+        .leaflet-control-zoom {
+          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          border-radius: 8px !important;
+          overflow: hidden;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+
+          a {
+            background-color: rgba(15, 20, 28, 0.9) !important;
+            color: #f8fafc !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: background 0.2s ease, color 0.2s ease;
+
+            &:hover {
+              background-color: rgba(245, 158, 11, 0.25) !important;
+              color: #f59e0b !important;
+            }
+          }
+        }
+
+        .leaflet-control-attribution {
+          background: rgba(10, 14, 20, 0.85) !important;
+          color: #94a3b8 !important;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          font-size: 0.68rem;
+          border-top-left-radius: 6px;
+
+          a {
+            color: #f59e0b !important;
+          }
+        }
+
         .leaflet-popup-content-wrapper {
           background: rgba(15, 20, 28, 0.96);
           backdrop-filter: blur(12px);
