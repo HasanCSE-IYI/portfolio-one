@@ -14,6 +14,11 @@ import {
   faCheck,
   faExclamationTriangle,
   faTimes,
+  faMapMarkerAlt,
+  faSatellite,
+  faLayerGroup,
+  faCrosshairs,
+  faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -26,14 +31,37 @@ import './index.scss'
 // Fix Leaflet's default marker icon missing in Webpack production builds
 delete L.Icon.Default.prototype._getIconUrl;
 
-const defaultMarkerIcon = L.icon({
-  iconUrl: iconMarker,
-  iconRetinaUrl: iconMarker2x,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+// Exact coordinates for Public Mor, BSRM Goli, Bayazid, Chattogram
+const PUBLIC_MOR_COORDS = [22.3972, 91.8150];
+
+// Ultra-sharp vector Red Pin Marker for exact location marking
+const redMarkerIcon = L.divIcon({
+  className: 'custom-red-pin-wrapper',
+  html: `
+    <div class="red-pin-container">
+      <div class="red-pin-beacon"></div>
+      <div class="red-pin-shape">
+        <svg viewBox="0 0 32 44" width="32" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="redPinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff3b30"/>
+              <stop offset="45%" stop-color="#ef4444"/>
+              <stop offset="100%" stop-color="#b91c1c"/>
+            </linearGradient>
+            <filter id="redShadow" x="-30%" y="-15%" width="160%" height="150%">
+              <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.65"/>
+            </filter>
+          </defs>
+          <path d="M16 0C7.163 0 0 7.163 0 16C0 26.5 16 44 16 44S32 26.5 32 16C32 7.163 24.837 0 16 0Z" fill="url(#redPinGrad)" filter="url(#redShadow)" stroke="#ffffff" stroke-width="1.6"/>
+          <circle cx="16" cy="15" r="7" fill="#ffffff"/>
+          <circle cx="16" cy="15" r="3.8" fill="#ef4444"/>
+        </svg>
+      </div>
+    </div>
+  `,
+  iconSize: [32, 44],
+  iconAnchor: [16, 44],
+  popupAnchor: [0, -44],
 });
 
 L.Icon.Default.mergeOptions({
@@ -69,6 +97,9 @@ const Contact = () => {
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
+  const [mapView, setMapView] = useState('satellite')
+  const [mapInstance, setMapInstance] = useState(null)
+  const markerRef = useRef(null)
   const form = useRef()
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
@@ -79,6 +110,37 @@ const Contact = () => {
     }, 1800)
     return () => clearTimeout(timer)
   }, [])
+
+  useEffect(() => {
+    if (markerRef.current) {
+      const timer = setTimeout(() => {
+        try {
+          markerRef.current.openPopup()
+        } catch (e) {
+          // ignore
+        }
+      }, 700)
+      return () => clearTimeout(timer)
+    }
+  }, [mapInstance])
+
+  const handleRecenter = () => {
+    if (mapInstance) {
+      mapInstance.flyTo(PUBLIC_MOR_COORDS, 17, {
+        duration: 1.2,
+        easeLinearity: 0.25,
+      })
+      if (markerRef.current) {
+        setTimeout(() => {
+          try {
+            markerRef.current.openPopup()
+          } catch (e) {
+            // ignore
+          }
+        }, 1250)
+      }
+    }
+  }
 
   const handleSelectTier = (tierTitle) => {
     setSelectedTier(tierTitle)
@@ -415,32 +477,122 @@ const Contact = () => {
 
         <div className="contact-aside">
           <div className="info-map">
-            Mahmud al Hasan
-            <br />
-            Backend Software Engineer
-            <br />
-            (Laravel, NestJS • Transitioning to .NET)
-            <br />
-            Bayazid, Chattogram, Bangladesh
-            <br />
-            Phone: +880 1727 328200
-            <br />
-            <br />
-            <span>mahmud.csem@gmail.com</span>
+            <div className="info-map-header">
+              <span className="info-map-avatar-dot"></span>
+              <div>
+                <h3 className="info-map-name">Mahmud al Hasan</h3>
+                <p className="info-map-role">Backend Software Engineer (.NET & Cloud APIs)</p>
+              </div>
+            </div>
+            <div className="info-map-location">
+              <div className="location-landmark">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="pin-icon" />
+                <span className="primary-landmark">পাবলিক মোড়, বিএসআরএম গলি</span>
+              </div>
+              <div className="location-detail">
+                Public Mor, BSRM Goli · Bayazid Bostami Road
+                <br />
+                Bayazid, Chattogram - 4210, Bangladesh
+              </div>
+            </div>
+            <div className="info-map-contact-row">
+              <a href="tel:+8801727328200" className="contact-item">
+                📞 +880 1727 328200
+              </a>
+              <a href="mailto:mahmud.csem@gmail.com" className="contact-item email">
+                ✉️ mahmud.csem@gmail.com
+              </a>
+            </div>
           </div>
 
-          <div className="map-wrap">
+          <div className={`map-wrap ${mapView === 'satellite' ? 'satellite-active' : 'street-active'}`}>
+            {/* Map Top Floating Header Controls */}
+            <div className="map-glass-controls">
+              <div className="map-location-tag">
+                <span className="live-radar-dot"></span>
+                <span>পাবলিক মোড়, বিএসআরএম গলি</span>
+              </div>
+              <div className="map-view-actions">
+                <button
+                  type="button"
+                  className={`view-toggle-btn ${mapView === 'satellite' ? 'active' : ''}`}
+                  onClick={() => setMapView('satellite')}
+                  title="উচ্চ রেজ্যুলেশন স্যাটেলাইট ভিউ"
+                >
+                  <FontAwesomeIcon icon={faSatellite} />
+                  <span>স্যাটেলাইট</span>
+                </button>
+                <button
+                  type="button"
+                  className={`view-toggle-btn ${mapView === 'street' ? 'active' : ''}`}
+                  onClick={() => setMapView('street')}
+                  title="ভেক্টর স্ট্রিট ম্যাপ ভিউ"
+                >
+                  <FontAwesomeIcon icon={faLayerGroup} />
+                  <span>ম্যাপ</span>
+                </button>
+                <button
+                  type="button"
+                  className="recenter-btn"
+                  onClick={handleRecenter}
+                  title="পাবলিক মোড়ে রিলোকেট করুন"
+                  aria-label="Recenter map on Public Mor, BSRM Goli"
+                >
+                  <FontAwesomeIcon icon={faCrosshairs} />
+                </button>
+              </div>
+            </div>
+
             <MapContainer
-              center={[22.3972, 91.8150]}
-              zoom={15}
+              center={PUBLIC_MOR_COORDS}
+              zoom={17}
               scrollWheelZoom={false}
+              whenCreated={setMapInstance}
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[22.3972, 91.8150]} icon={defaultMarkerIcon}>
-                <Popup>Mahmud al Hasan lives here in Public Mor, Bayazid, Chattogram :)</Popup>
+              {mapView === 'satellite' ? (
+                <TileLayer
+                  key="google-satellite-hybrid"
+                  attribution='&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Satellite'
+                  url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+                  subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                  maxZoom={20}
+                />
+              ) : (
+                <TileLayer
+                  key="osm-street-map"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  maxZoom={19}
+                />
+              )}
+
+              <Marker
+                position={PUBLIC_MOR_COORDS}
+                icon={redMarkerIcon}
+                ref={markerRef}
+              >
+                <Popup className="custom-location-popup" autoPan={false}>
+                  <div className="popup-card">
+                    <div className="popup-badge">
+                      <span className="live-dot-red"></span>
+                      <span>বর্তমান অবস্থান / Exact Location</span>
+                    </div>
+                    <h3 className="popup-title">পাবলিক মোড়, বিএসআরএম গলি</h3>
+                    <p className="popup-sub">Public Mor, BSRM Goli · Bayazid</p>
+                    <div className="popup-meta">
+                      <span className="badge-chip">বায়েজীদ, চট্টগ্রাম ৪২১০</span>
+                      <span className="coords-chip">22.3972° N, 91.8150° E</span>
+                    </div>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=22.3972,91.8150"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="popup-maps-btn"
+                    >
+                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Google Maps-এ দেখুন
+                    </a>
+                  </div>
+                </Popup>
               </Marker>
             </MapContainer>
           </div>
