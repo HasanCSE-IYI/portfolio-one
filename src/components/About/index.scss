@@ -1,7 +1,7 @@
-// About Page Styles (Centered Grand 3D Luminous Glass Cube & Modern Architecture)
+// About Page Styles (Centered Grand 3D Luminous Glass Cube & Apple Design Showcase)
 .about-page {
   padding-bottom: 60px;
-  max-width: 1000px;
+  max-width: 1040px;
   margin: 0 auto;
 
   .about-header {
@@ -13,6 +13,7 @@
       font-size: clamp(32px, 6vw, 48px);
       font-family: 'Coolvetica', var(--font-sans);
       color: #f59e0b;
+      letter-spacing: 0.5px;
     }
 
     .about-subtitle {
@@ -28,7 +29,7 @@
   // Centered Grand 3D Cube Container
   .stage-cube-cont {
     width: 100%;
-    height: 300px;
+    height: 310px;
     position: relative;
     margin: 25px auto 35px;
     display: flex;
@@ -44,7 +45,7 @@
     }
 
     @media screen and (min-width: 768px) {
-      height: 380px;
+      height: 390px;
       margin: 35px auto 45px;
     }
 
@@ -53,17 +54,17 @@
       content: '';
       position: absolute;
       bottom: 20px;
-      width: 200px;
-      height: 32px;
+      width: 220px;
+      height: 34px;
       border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.35) 0%, rgba(56, 189, 248, 0.18) 45%, transparent 70%);
-      filter: blur(8px);
+      background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.4) 0%, rgba(56, 189, 248, 0.22) 45%, transparent 70%);
+      filter: blur(10px);
       animation: floorShadowBob 4s ease-in-out infinite;
       pointer-events: none;
 
       @media screen and (min-width: 768px) {
-        width: 260px;
-        height: 40px;
+        width: 280px;
+        height: 42px;
         bottom: 25px;
       }
     }
@@ -76,17 +77,17 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 14px;
+    padding: 7px 16px;
     border-radius: 9999px;
-    background: rgba(15, 23, 42, 0.78);
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    font-size: 0.8rem;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    font-size: 0.82rem;
     color: #cbd5e1;
     font-family: var(--font-sans);
     pointer-events: auto;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
     .hint-icon {
       font-size: 0.95rem;
@@ -95,20 +96,25 @@
     }
 
     .cube-reset-btn {
-      background: rgba(245, 158, 11, 0.18);
-      border: 1px solid rgba(245, 158, 11, 0.45);
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
       color: #fbbf24;
       border-radius: 9999px;
-      padding: 2px 10px;
+      padding: 3px 11px;
       font-size: 0.74rem;
       font-weight: 600;
       cursor: pointer;
       font-family: var(--font-sans);
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        background: rgba(245, 158, 11, 0.35);
-        color: #ffffff;
+        background: #f59e0b;
+        color: #0f172a;
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+      }
+
+      &:active {
+        transform: scale(0.95);
       }
     }
   }
@@ -145,16 +151,16 @@
       width: 180px;
       height: 180px;
       border: 1.5px solid rgba(245, 158, 11, 0.45);
-      background: rgba(15, 23, 42, 0.22);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.28);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       text-align: center;
       font-size: 80px;
       display: flex;
       justify-content: center;
       align-items: center;
       box-shadow: 0 0 25px rgba(245, 158, 11, 0.22), inset 0 0 20px rgba(56, 189, 248, 0.16), inset 0 0 35px rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
+      border-radius: 16px;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
       @media screen and (min-width: 768px) {
@@ -264,12 +270,15 @@
     width: 100%;
 
     .bio-card {
-      background: #14171d;
+      background: rgba(16, 21, 31, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 16px 40px rgba(0, 0, 0, 0.45);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       p {
         font-size: 1.05rem;
@@ -290,78 +299,91 @@
 
   // Philosophy Section
   .philosophy-section {
-    margin: 20px 0 28px;
+    margin: 24px 0 32px;
 
     .philosophy-toggle-btn {
-      background: #181b20;
+      background: rgba(22, 28, 40, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 10px 20px;
-      border-radius: 6px;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.3);
+      padding: 10px 22px;
+      border-radius: 9999px;
       font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
 
       .toggle-icon {
         font-size: 0.8rem;
-        transition: transform 0.2s ease;
+        transition: transform 0.25s ease;
       }
 
       &:hover {
         background: #f59e0b;
-        color: #111317;
-        box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+        color: #0f172a;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: scale(0.96);
       }
     }
 
     .principles-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 16px;
+      gap: 16px;
+      margin-top: 18px;
 
       @media screen and (min-width: 768px) {
         grid-template-columns: repeat(3, 1fr);
       }
 
       .principle-card {
-        background: #14171d;
+        background: rgba(16, 21, 31, 0.76);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 8px;
-        padding: 16px;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        padding: 18px 20px;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
         &:hover {
-          transform: translateY(-2px);
-          border-color: rgba(245, 158, 11, 0.3);
+          transform: translateY(-3px);
+          border-color: rgba(245, 158, 11, 0.4);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 16px rgba(245, 158, 11, 0.15);
         }
 
         .principle-title {
-          font-size: 0.92rem;
+          font-size: 0.94rem;
           font-weight: 700;
           color: #fff;
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-bottom: 8px;
+          margin-bottom: 10px;
 
           .dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #22c55e;
-            box-shadow: 0 0 6px #22c55e;
+            box-shadow: 0 0 8px #22c55e;
+            flex-shrink: 0;
           }
         }
 
         .principle-summary {
-          font-size: 0.82rem;
-          color: #9ca3af;
-          line-height: 1.5;
+          font-size: 0.84rem;
+          color: #94a3b8;
+          line-height: 1.55;
           margin: 0;
         }
       }
@@ -369,16 +391,16 @@
   }
 
   .tech-groups {
-    margin-top: 24px;
+    margin-top: 28px;
 
     .group-label {
       font-size: 0.8rem;
       font-family: var(--font-mono);
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: #f59e0b;
-      margin-top: 18px;
-      margin-bottom: 10px;
+      margin-top: 20px;
+      margin-bottom: 12px;
     }
 
     .tech-tags {
@@ -386,31 +408,37 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 0;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
 
       .tag {
         font-size: 0.84rem;
         font-family: var(--font-mono);
         color: #d1d5db;
-        background: #181b20;
+        background: rgba(24, 30, 42, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 6px 12px;
-        border-radius: 4px;
-        transition: all 0.2s ease;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 
         &.highlight {
           color: #f59e0b;
-          background: rgba(245, 158, 11, 0.1);
-          border-color: rgba(245, 158, 11, 0.35);
+          background: rgba(245, 158, 11, 0.12);
+          border-color: rgba(245, 158, 11, 0.4);
           font-weight: 600;
         }
 
         &:hover {
           background: #f59e0b;
-          color: #111317;
+          color: #0f172a;
           border-color: #f59e0b;
           transform: translateY(-2px);
-          box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+          box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+        }
+
+        &:active {
+          transform: scale(0.96);
         }
       }
     }
@@ -418,8 +446,8 @@
 
   // Curated Engineering Library Section
   .books-section {
-    margin-top: 40px;
-    padding-top: 30px;
+    margin-top: 44px;
+    padding-top: 32px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 
     .books-header {
@@ -427,10 +455,10 @@
 
       .section-eyebrow {
         font-family: var(--font-mono);
-        font-size: 0.72rem;
+        font-size: 0.74rem;
         color: #f59e0b;
         font-weight: 700;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
         display: block;
         margin-bottom: 6px;
@@ -438,83 +466,101 @@
 
       h3 {
         font-family: var(--font-sans);
-        font-size: 1.35rem;
+        font-size: 1.45rem;
         font-weight: 700;
         color: #f8fafc;
         margin: 0 0 6px 0;
       }
 
       p {
-        font-size: 0.92rem;
+        font-size: 0.94rem;
         color: #94a3b8;
         margin: 0;
-        line-height: 1.5;
+        line-height: 1.55;
       }
     }
 
     .books-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
 
       .book-card {
-        background: rgba(18, 22, 29, 0.75);
+        background: rgba(16, 21, 31, 0.78);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 10px;
-        padding: 16px 18px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 28px rgba(0, 0, 0, 0.4);
+        border-radius: 14px;
+        padding: 20px 22px;
         display: flex;
         flex-direction: column;
-        transition: all 0.25s ease;
+        transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #f59e0b, #38bdf8);
+          opacity: 0.8;
+        }
 
         &:hover {
-          transform: translateY(-3px);
-          border-color: rgba(245, 158, 11, 0.4);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+          transform: translateY(-4px);
+          border-color: rgba(245, 158, 11, 0.45);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(245, 158, 11, 0.15);
         }
 
         .book-top {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 10px;
+          margin-bottom: 12px;
 
           .book-tag {
             font-family: var(--font-mono);
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 3px 8px;
-            border-radius: 4px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-weight: 600;
           }
 
           .book-icon {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #38bdf8;
-            opacity: 0.85;
+            opacity: 0.9;
           }
         }
 
         .book-title {
           font-family: var(--font-sans);
-          font-size: 1rem;
+          font-size: 1.05rem;
           font-weight: 700;
           color: #f1f5f9;
           margin: 0 0 4px 0;
-          line-height: 1.3;
+          line-height: 1.35;
         }
 
         .book-author {
           font-family: var(--font-mono);
-          font-size: 0.76rem;
+          font-size: 0.78rem;
           color: #f59e0b;
-          margin-bottom: 10px;
+          margin-bottom: 12px;
         }
 
         .book-takeaway {
           font-family: var(--font-sans);
-          font-size: 0.84rem;
+          font-size: 0.86rem;
           color: #94a3b8;
-          line-height: 1.5;
+          line-height: 1.55;
           margin: 0;
           flex-grow: 1;
         }
@@ -524,27 +570,28 @@
 
   // About CV CTA
   .about-cv-cta {
-    margin-top: 36px;
+    margin-top: 40px;
     text-align: left;
     display: flex;
     justify-content: flex-start;
 
     .about-cv-btn {
-      background: rgba(245, 158, 11, 0.12);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25));
       border: 1.5px solid #f59e0b;
       color: #f59e0b;
       font-family: var(--font-sans);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
       letter-spacing: 0.05em;
-      padding: 13px 28px;
-      border-radius: 8px;
+      padding: 13px 30px;
+      border-radius: 9999px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 
       .cv-btn-icon {
         font-size: 1.1rem;
@@ -553,7 +600,7 @@
       &:hover {
         background: #f59e0b;
         color: #0f172a;
-        box-shadow: 0 0 24px rgba(245, 158, 11, 0.45);
+        box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45);
         transform: translateY(-2px);
       }
 

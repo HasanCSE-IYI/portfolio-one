@@ -14,6 +14,7 @@ import {
   faTimes,
   faArrowRight,
   faCode,
+  faFolder,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -21,8 +22,9 @@ import {
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
 import './index.scss';
+import portfolioData from '../../data/portfolio.json';
 
-const COMMANDS = [
+const BASE_COMMANDS = [
   // Navigation
   {
     id: 'nav-home',
@@ -130,6 +132,17 @@ const COMMANDS = [
   },
 ];
 
+const PROJECT_COMMANDS = (portfolioData.portfolio || []).map((port) => ({
+  id: `proj-${port.id}`,
+  category: 'Projects & Repositories',
+  title: port.title,
+  subtitle: `${port.language} · ${port.categoryLabel} ${port.metrics ? '• ' + port.metrics : ''}`,
+  icon: faFolder,
+  action: (navigate) => navigate('/portfolio'),
+}));
+
+const ALL_COMMANDS = [...BASE_COMMANDS, ...PROJECT_COMMANDS];
+
 const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -139,7 +152,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   const navigate = useNavigate();
 
   // Filter commands by title, subtitle, or category
-  const filteredCommands = COMMANDS.filter((cmd) => {
+  const filteredCommands = ALL_COMMANDS.filter((cmd) => {
     if (!query.trim()) return true;
     const q = query.toLowerCase().trim();
     return (
@@ -217,7 +230,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   useEffect(() => {
     if (listRef.current) {
       const activeElement = listRef.current.querySelector('.command-item.selected');
-      if (activeElement) {
+      if (activeElement && typeof activeElement.scrollIntoView === 'function') {
         activeElement.scrollIntoView({ block: 'nearest' });
       }
     }
@@ -237,7 +250,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
             ref={inputRef}
             type="text"
             className="palette-input"
-            placeholder="Type a command or search (e.g. Resume, WhatsApp, C#, Store API)..."
+            placeholder="Type a command or search (e.g. Mappi, Store API, Resume, WhatsApp)..."
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -295,7 +308,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
           ) : (
             <div className="palette-empty">
               <p>No matching commands found for &ldquo;<strong>{query}</strong>&rdquo;</p>
-              <span>Try searching for &quot;Resume&quot;, &quot;Contact&quot;, &quot;GitHub&quot;, or &quot;Store API&quot;</span>
+              <span>Try searching for &quot;Store API&quot;, &quot;Mappi&quot;, &quot;Resume&quot;, &quot;Contact&quot;, or &quot;GitHub&quot;</span>
             </div>
           )}
         </div>

@@ -203,11 +203,21 @@ const Portfolio = () => {
 
                   {port.tags && port.tags.length > 0 && (
                     <div className="card-tags">
-                      {port.tags.map((tag, tIdx) => (
-                        <span className="tag-pill" key={tIdx}>
-                          {tag}
-                        </span>
-                      ))}
+                      {port.tags.map((tag, tIdx) => {
+                        const isTagActive = searchQuery.trim().toLowerCase() === tag.toLowerCase()
+                        return (
+                          <button
+                            type="button"
+                            className={`tag-pill ${isTagActive ? 'active' : ''}`}
+                            key={tIdx}
+                            onClick={() => setSearchQuery(isTagActive ? '' : tag)}
+                            title={isTagActive ? `Clear filter: ${tag}` : `Filter projects by ${tag}`}
+                            aria-label={`Filter by ${tag}`}
+                          >
+                            {tag}
+                          </button>
+                        )
+                      })}
                     </div>
                   )}
 

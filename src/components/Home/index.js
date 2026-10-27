@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -6,6 +6,7 @@ import {
   faArrowRight,
   faFilePdf,
   faLayerGroup,
+  faTerminal,
 } from '@fortawesome/free-solid-svg-icons'
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
@@ -20,6 +21,7 @@ const CAPABILITIES = [
     summary: 'Clean Architecture, ASP.NET Core Web API, EF Core (Code-First & Migrations), and JWT Role-Based Authorization.',
     project: 'Store API',
     link: '/portfolio',
+    codeHint: 'Repository Pattern · Unit of Work · EF Core LINQ',
   },
   {
     name: 'High-Concurrency Telemedicine',
@@ -27,6 +29,7 @@ const CAPABILITIES = [
     summary: 'Led 4-member backend team, designed relational schemas, and maintained 99.9% uptime real-time consultations.',
     project: 'Doctor Dekhao',
     link: '/portfolio',
+    codeHint: 'Zero-Downtime Migrations · Real-Time Doctor Sync',
   },
   {
     name: 'Cloud Infrastructure & DevOps',
@@ -34,6 +37,7 @@ const CAPABILITIES = [
     summary: 'Automated containerized microservices on AWS (EC2, RDS, S3), Docker, and production Linux environments.',
     project: 'AWS / Docker',
     link: '/about',
+    codeHint: 'Docker Multi-Stage · Nginx Reverse Proxy · AWS S3',
   },
   {
     name: 'Event-Driven Data Pipelines',
@@ -41,6 +45,7 @@ const CAPABILITIES = [
     summary: 'Asynchronous task processing with Celery, Redis queues, and high-volume data ingestion pipelines.',
     project: 'Shuni Live',
     link: '/portfolio',
+    codeHint: 'Scrapy Crawler · Celery Workers · Redis Pub/Sub',
   },
 ]
 
@@ -50,10 +55,16 @@ const Home = () => {
   const [activeCapability, setActiveCapability] = useState(0)
   const [commandInput, setCommandInput] = useState('')
   const [terminalHistory, setTerminalHistory] = useState([])
+  const [pastCommands, setPastCommands] = useState([])
+  const [historyIndex, setHistoryIndex] = useState(-1)
+  const terminalBottomRef = useRef(null)
 
   const executeCliCommand = (cmd) => {
     const trimmed = cmd.trim().toLowerCase()
     if (!trimmed) return
+
+    setPastCommands((prev) => [...prev, cmd])
+    setHistoryIndex(-1)
 
     if (trimmed === 'clear') {
       setTerminalHistory([])
@@ -141,6 +152,34 @@ const Home = () => {
     setCommandInput('')
   }
 
+  // Auto-scroll terminal when new output arrives
+  useEffect(() => {
+    if (terminalBottomRef.current && typeof terminalBottomRef.current.scrollIntoView === 'function') {
+      terminalBottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [terminalHistory])
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (pastCommands.length === 0) return
+      const nextIndex = historyIndex === -1 ? pastCommands.length - 1 : Math.max(0, historyIndex - 1)
+      setHistoryIndex(nextIndex)
+      setCommandInput(pastCommands[nextIndex])
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (historyIndex === -1) return
+      const nextIndex = historyIndex + 1
+      if (nextIndex >= pastCommands.length) {
+        setHistoryIndex(-1)
+        setCommandInput('')
+      } else {
+        setHistoryIndex(nextIndex)
+        setCommandInput(pastCommands[nextIndex])
+      }
+    }
+  }
+
   const handleRunCommand = (e) => {
     e.preventDefault()
     if (!commandInput.trim()) return
@@ -177,7 +216,7 @@ const Home = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Live ticking local time (Inspired by Al Nahian's local time widget)
+  // Live ticking local time (Dhaka, Bangladesh GMT+6)
   useEffect(() => {
     const updateTime = () => {
       const now = new Date()
@@ -221,7 +260,7 @@ const Home = () => {
                 <span className={`${letterClass} _2`}>,</span>
                 <span className="inline-space">&nbsp;</span>
                 <span className={`${letterClass} _3`}>I</span>
-                <span className={`${letterClass} _4`}>'</span>
+                <span className={`${letterClass} _4`}>&apos;</span>
                 <span className={`${letterClass} _5`}>m</span>
               </span>
               <br />
@@ -288,16 +327,19 @@ const Home = () => {
             </div>
           </div>
 
-          {/* System Specification Terminal */}
+          {/* System Specification & Interactive macOS/Unix Terminal */}
           <div className="hero-spec">
             <div className="terminal-card">
               <div className="terminal-header">
                 <div className="terminal-dots">
-                  <span className="dot red"></span>
-                  <span className="dot yellow"></span>
-                  <span className="dot green"></span>
+                  <span className="dot red" title="Close"></span>
+                  <span className="dot yellow" title="Minimize"></span>
+                  <span className="dot green" title="Expand"></span>
                 </div>
-                <span className="terminal-title">mahmud-al-hasan@backend-engineer:~$ specs --summary</span>
+                <div className="terminal-title-wrap">
+                  <FontAwesomeIcon icon={faTerminal} className="terminal-icon-mini" />
+                  <span className="terminal-title">mahmud-al-hasan@backend-core:~$</span>
+                </div>
               </div>
               <div className="terminal-body">
                 <div className="spec-row">
@@ -356,6 +398,7 @@ const Home = () => {
                       className="cli-terminal-input"
                       value={commandInput}
                       onChange={(e) => setCommandInput(e.target.value)}
+                      onKeyDown={handleKeyDown}
                       placeholder="Type 'help', 'skills', 'projects', 'curl /api/health'..."
                       aria-label="Interactive CLI command prompt"
                       spellCheck="false"
@@ -369,8 +412,10 @@ const Home = () => {
                     <button type="button" onClick={() => executeCliCommand('skills')}>skills</button>
                     <button type="button" onClick={() => executeCliCommand('projects')}>projects</button>
                     <button type="button" onClick={() => executeCliCommand('curl /api/health')}>curl health</button>
+                    <button type="button" onClick={() => executeCliCommand('whoami')}>whoami</button>
                     <button type="button" onClick={() => executeCliCommand('help')}>help</button>
                   </div>
+                  <div ref={terminalBottomRef} />
                 </div>
               </div>
             </div>
@@ -388,7 +433,7 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Interactive Architecture Capabilities (Inspired by Muttakin Hasib's Capabilities section) */}
+        {/* Interactive Architecture Capabilities */}
         <div className="capabilities-section">
           <div className="capabilities-header">
             <span className="section-eyebrow">SYSTEM DOMAINS &amp; ARCHITECTURAL PATTERNS</span>
@@ -401,15 +446,22 @@ const Home = () => {
                 className={`capability-node ${activeCapability === idx ? 'active' : ''}`}
                 key={idx}
                 onClick={() => setActiveCapability(idx)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && setActiveCapability(idx)}
               >
                 <div className="cap-top">
                   <span className="cap-tag">{cap.tag}</span>
-                  <Link to={cap.link} className="cap-trace">
+                  <Link to={cap.link} className="cap-trace" onClick={(e) => e.stopPropagation()}>
                     Traced to: {cap.project} ↗
                   </Link>
                 </div>
                 <h4 className="cap-title">{cap.name}</h4>
                 <p className="cap-summary">{cap.summary}</p>
+                <div className="cap-code-hint">
+                  <span className="hint-label">Implementation:</span>
+                  <code className="hint-code">{cap.codeHint}</code>
+                </div>
               </div>
             ))}
           </div>

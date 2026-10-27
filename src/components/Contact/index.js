@@ -83,6 +83,9 @@ const Contact = () => {
   const handleSelectTier = (tierTitle) => {
     setSelectedTier(tierTitle)
     setSubject(`[Engagement] ${tierTitle}`)
+    if (!messageText.trim()) {
+      setMessageText(`Hi Mahmud,\n\nI would like to explore working with you regarding "${tierTitle}". Here are the details of our requirements: `)
+    }
     const messageInput = document.querySelector('textarea[name="message"]')
     if (messageInput) {
       messageInput.focus()

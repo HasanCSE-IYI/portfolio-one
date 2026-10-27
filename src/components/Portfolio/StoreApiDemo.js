@@ -291,6 +291,11 @@ const StoreApiDemo = () => {
       <div className="demo-workspace">
         <div className="code-column">
           <div className="panel-header">
+            <div className="window-dots">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
+            </div>
             <div className="tab-switch">
               <button
                 className={`tab-btn ${viewTab === 'csharp' ? 'active' : ''}`}
@@ -325,6 +330,11 @@ const StoreApiDemo = () => {
 
         <div className="output-column">
           <div className="panel-header">
+            <div className="window-dots">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
+            </div>
             <span>HTTP Response Inspector</span>
             <div className="header-actions">
               {hasExecuted && (
