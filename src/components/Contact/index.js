@@ -19,8 +19,6 @@ import {
   faMountain,
   faTrafficLight,
   faBus,
-  faBicycle,
-  faLayerGroup,
   faCrosshairs,
   faExpand,
   faCompress,
@@ -28,10 +26,6 @@ import {
   faLocationDot,
   faPlus,
   faMinus,
-  faCity,
-  faStreetView,
-  faFire,
-  faWind,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -82,65 +76,24 @@ const MAP_TYPES = {
   },
 };
 
-// 7 Google Map Details & Overlays (from official Google Maps app drawer)
-// Designed to apply across all 3 Map Types
+// 2 High-Value Google Map Details & Overlays (Traffic and Transit)
+// Dynamically applied across all 3 Map Types
 const MAP_DETAILS = {
   traffic: {
     id: 'traffic',
     label: 'Traffic',
-    title: 'Google Live Real-Time Traffic Congestion (2x Retina)',
+    title: 'Google Live Real-Time Traffic Congestion (2x Retina HD)',
     icon: faTrafficLight,
     suffix: 'traffic',
-    bannerText: 'Google Live Traffic: Real-time traffic flow active around Bayazid',
+    bannerText: 'Google Live Traffic: Real-time traffic flow active on Bayazid roads',
   },
   transit: {
     id: 'transit',
     label: 'Transit',
-    title: 'Google Public Transit, Bus & Metro Network (2x Retina)',
+    title: 'Google Public Transit & Bus Network (2x Retina HD)',
     icon: faBus,
     suffix: 'transit',
-    bannerText: 'Google Transit: Public bus routes and transit network active',
-  },
-  biking: {
-    id: 'biking',
-    label: 'Biking',
-    title: 'Google Dedicated Cycling Routes & Bike Paths (2x Retina)',
-    icon: faBicycle,
-    suffix: 'bicycle',
-    bannerText: 'Google Cycling: Dedicated cycling routes & trails active',
-  },
-  buildings3d: {
-    id: 'buildings3d',
-    label: '3D Buildings',
-    title: 'Google 3D Raised Buildings & Isometric Structures',
-    icon: faCity,
-    suffix: '3d',
-    bannerText: 'Google 3D Buildings: Raised structural elevations active',
-  },
-  streetview: {
-    id: 'streetview',
-    label: 'Street View',
-    title: 'Google Street View 360° Interactive Panoramic Tour',
-    icon: faStreetView,
-    suffix: null,
-    bannerText: 'Google Street View: 360° panoramic explorer ready at Bayazid',
-    link: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=22.391135,91.817740',
-  },
-  wildfires: {
-    id: 'wildfires',
-    label: 'Wildfires',
-    title: 'Satellite Wildfire & Thermal Hazard Monitoring',
-    icon: faFire,
-    suffix: null,
-    bannerText: 'Wildfire Thermal Satellite: 0 active hazards in Chattogram Division',
-  },
-  airquality: {
-    id: 'airquality',
-    label: 'Air quality',
-    title: 'Live Air Quality Index (AQI) & Environmental Monitoring',
-    icon: faWind,
-    suffix: null,
-    bannerText: 'Air Quality: AQI 142 (Moderate) • Bayazid Station Monitoring',
+    bannerText: 'Google Public Transit: Bus routes and stations active around Bayazid',
   },
 };
 
@@ -244,7 +197,6 @@ const Contact = () => {
   const [copiedMessage, setCopiedMessage] = useState(false)
   const [activeBaseType, setActiveBaseType] = useState('satellite')
   const [activeDetail, setActiveDetail] = useState(null)
-  const [isLayersDrawerOpen, setIsLayersDrawerOpen] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInstance, setMapInstance] = useState(null)
   const markerRef = useRef(null)
@@ -668,7 +620,7 @@ const Contact = () => {
           </div>
 
           <div className={`map-wrap layer-${activeBaseType} ${isFullscreen ? 'is-fullscreen' : ''}`}>
-            {/* Dedicated Modern Exit Full View Button */}
+            {/* Harmonious Modern Exit Full View Button */}
             {isFullscreen && (
               <button
                 type="button"
@@ -677,97 +629,18 @@ const Contact = () => {
                 title="Exit Full View (Esc)"
                 aria-label="Exit Full View"
               >
-                <FontAwesomeIcon icon={faTimes} className="exit-icon" />
+                <span className="exit-icon-wrap" aria-hidden="true">
+                  <FontAwesomeIcon icon={faTimes} className="exit-icon" />
+                </span>
                 <span className="exit-label">Exit Full View</span>
                 <kbd className="exit-kbd">ESC</kbd>
               </button>
             )}
 
-            {/* Google Maps Authentic Layer Drawer matching screenshot */}
-            {isLayersDrawerOpen && (
-              <div className="google-layers-drawer" role="dialog" aria-label="Map type and details">
-                <div className="drawer-header">
-                  <div className="drawer-title-group">
-                    <FontAwesomeIcon icon={faLayerGroup} className="drawer-header-icon" />
-                    <h3 className="drawer-title">Map type</h3>
-                  </div>
-                  <button
-                    type="button"
-                    className="drawer-close-btn"
-                    onClick={() => setIsLayersDrawerOpen(false)}
-                    aria-label="Close Map Details Drawer"
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                </div>
-
-                {/* Map Types Section (3 Base Types) */}
-                <div className="drawer-map-types" role="group" aria-label="Map Types">
-                  {Object.values(MAP_TYPES).map((type) => {
-                    const isSelected = activeBaseType === type.id
-                    return (
-                      <button
-                        key={type.id}
-                        type="button"
-                        aria-pressed={isSelected}
-                        aria-label={`Select ${type.label} map type`}
-                        className={`type-card ${isSelected ? 'active' : ''}`}
-                        onClick={() => setActiveBaseType(type.id)}
-                      >
-                        <div className={`type-card-thumb thumb-${type.id}`}>
-                          <FontAwesomeIcon icon={type.icon} className="thumb-icon" />
-                          {isSelected && <span className="type-check-dot">✓</span>}
-                        </div>
-                        <span className="type-card-label">{type.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <div className="drawer-divider"></div>
-
-                {/* Map Details Section (7 Map Details) */}
-                <div className="drawer-details-header">
-                  <h3 className="drawer-title">Map details</h3>
-                  {activeDetail && (
-                    <button
-                      type="button"
-                      className="drawer-clear-detail-btn"
-                      onClick={() => setActiveDetail(null)}
-                    >
-                      Clear Detail
-                    </button>
-                  )}
-                </div>
-
-                <div className="drawer-map-details-grid" role="group" aria-label="Map Details">
-                  {Object.values(MAP_DETAILS).map((detail) => {
-                    const isActive = activeDetail === detail.id
-                    return (
-                      <button
-                        key={detail.id}
-                        type="button"
-                        aria-pressed={isActive}
-                        aria-label={`Toggle ${detail.label}`}
-                        className={`detail-item-btn ${isActive ? 'active' : ''}`}
-                        onClick={() => handleToggleDetail(detail.id)}
-                        title={detail.title}
-                      >
-                        <div className={`detail-icon-circle circle-${detail.id}`}>
-                          <FontAwesomeIcon icon={detail.icon} className="detail-icon" />
-                          {isActive && <span className="detail-badge-check">✓</span>}
-                        </div>
-                        <span className="detail-label">{detail.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
-              <div className="map-layer-selector" role="tablist" aria-label="Map Types">
+              <div className="map-layer-selector" role="tablist" aria-label="Map Types and Details">
+                {/* 3 Base Map Types */}
                 {Object.values(MAP_TYPES).map((type) => (
                   <button
                     key={type.id}
@@ -784,20 +657,28 @@ const Contact = () => {
                   </button>
                 ))}
 
-                {/* Google Maps Layer & Details Drawer Toggle Button */}
-                <button
-                  type="button"
-                  className={`map-layer-tab drawer-toggle-btn ${isLayersDrawerOpen || activeDetail ? 'active-highlight' : ''}`}
-                  onClick={() => setIsLayersDrawerOpen((prev) => !prev)}
-                  title="Google Map Details & Layers"
-                  aria-label="Map Details and Layers"
-                >
-                  <FontAwesomeIcon icon={faLayerGroup} className="tab-icon" />
-                  <span className="tab-label">Layers</span>
-                  {activeDetail && (
-                    <span className="active-detail-dot" title={`Active: ${MAP_DETAILS[activeDetail]?.label}`}></span>
-                  )}
-                </button>
+                <span className="control-divider" aria-hidden="true"></span>
+
+                {/* 2 Core Map Details: Traffic & Transit */}
+                {Object.values(MAP_DETAILS).map((detail) => {
+                  const isActive = activeDetail === detail.id
+                  return (
+                    <button
+                      key={detail.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-label={detail.label}
+                      className={`map-layer-tab detail-tab ${isActive ? 'active' : ''}`}
+                      onClick={() => handleToggleDetail(detail.id)}
+                      title={detail.title}
+                    >
+                      <FontAwesomeIcon icon={detail.icon} className="tab-icon" />
+                      <span className="tab-label">{detail.label}</span>
+                      {isActive && <span className="tab-active-dot" aria-hidden="true"></span>}
+                    </button>
+                  )
+                })}
               </div>
 
               <div className="map-actions-group">
@@ -822,44 +703,12 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Quick Map Details Strip */}
-            <div className="map-quick-details-strip" role="tablist" aria-label="Google Map Details">
-              {Object.values(MAP_DETAILS).map((detail) => {
-                const isActive = activeDetail === detail.id
-                return (
-                  <button
-                    key={detail.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    aria-label={detail.label}
-                    className={`quick-detail-pill ${isActive ? 'active' : ''}`}
-                    onClick={() => handleToggleDetail(detail.id)}
-                    title={detail.title}
-                  >
-                    <FontAwesomeIcon icon={detail.icon} className="pill-icon" />
-                    <span className="pill-label">{detail.label}</span>
-                  </button>
-                )
-              })}
-            </div>
-
             {/* Active Detail Notification Banner */}
             {activeDetail && (
               <div className={`map-active-detail-banner banner-${activeDetail}`} role="status">
                 <div className="banner-content">
                   <FontAwesomeIcon icon={MAP_DETAILS[activeDetail].icon} className="banner-icon" />
                   <span className="banner-text">{MAP_DETAILS[activeDetail].bannerText}</span>
-                  {MAP_DETAILS[activeDetail].link && (
-                    <a
-                      href={MAP_DETAILS[activeDetail].link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="banner-action-link"
-                    >
-                      Open 360° View ↗
-                    </a>
-                  )}
                 </div>
                 <button
                   type="button"
@@ -895,41 +744,23 @@ const Contact = () => {
               </button>
             </div>
 
-            {/* Subtle Sleek Coordinate Pill at Bottom-Left covering attribution & placeholders completely */}
-            <div className="map-subtle-coord-pill" role="status" aria-label="Location and Coordinates">
-              <div className="pill-radar-dot" aria-hidden="true">
-                <span className="radar-core"></span>
-                <span className="radar-ping"></span>
-              </div>
-              <div className="pill-info-cluster">
-                <div className="pill-location-line">
-                  <span className="loc-bn">বায়জিদ, চট্টগ্রাম</span>
-                  <span className="loc-sep">•</span>
-                  <span className="loc-en">Bayazid, Chattogram</span>
-                </div>
-                <div className="pill-meta-line">
-                  <span className="pill-coords">22.3911° N, 91.8177° E</span>
-                  <span className="pill-mode-tag">
-                    {MAP_TYPES[activeBaseType]?.label}
-                    {activeDetail ? ` • ${MAP_DETAILS[activeDetail]?.label}` : ''}
-                  </span>
-                  <span className="pill-retina-tag">2x Retina HD</span>
-                </div>
-              </div>
+            {/* Slim Bottom Floating Coordinates & Google Maps Pill */}
+            <div className="map-bottom-pill" role="status" aria-label="Location and Coordinates">
+              <span className="live-radar-dot" aria-hidden="true"></span>
+              <span className="coords-text">22.3911° N, 91.8177° E · Bayazid, Chattogram</span>
+              <span className="pill-divider" aria-hidden="true"></span>
+              <a
+                href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
+                target="_blank"
+                rel="noreferrer"
+                className="pill-google-link"
+                title="Open Bayazid in Google Maps"
+                aria-label="Open Bayazid in Google Maps"
+              >
+                <FontAwesomeIcon icon={faDirections} className="google-icon" />
+                <span>Google Maps</span>
+              </a>
             </div>
-
-            {/* Bottom Right Direct Google Maps Pill */}
-            <a
-              href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
-              target="_blank"
-              rel="noreferrer"
-              className="map-google-action-pill"
-              title="Open Bayazid in Google Maps"
-              aria-label="Open Bayazid in Google Maps"
-            >
-              <FontAwesomeIcon icon={faDirections} className="google-icon" />
-              <span>Google Maps</span>
-            </a>
 
             <MapContainer
               center={BAYAZID_COORDS}
