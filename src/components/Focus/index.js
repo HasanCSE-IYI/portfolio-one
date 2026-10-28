@@ -184,10 +184,14 @@ const Focus = () => {
     };
   }, [analyserRef, isPlaying]);
 
-  // Format MM:SS
+  // Format MM:SS or H:MM:SS
   const formatTime = (secs) => {
-    const m = Math.floor(secs / 60);
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
     const s = secs % 60;
+    if (h > 0) {
+      return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 

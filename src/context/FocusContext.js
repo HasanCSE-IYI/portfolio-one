@@ -507,9 +507,13 @@ export const FocusProvider = ({ children }) => {
     if (typeof document === 'undefined') return;
 
     if (timerStatus === 'running' || timerStatus === 'paused') {
-      const timeStr = timerMode === 'stopwatch'
-        ? `${Math.floor(stopwatchSeconds / 60).toString().padStart(2, '0')}:${(stopwatchSeconds % 60).toString().padStart(2, '0')}`
-        : `${Math.floor(timeRemaining / 60).toString().padStart(2, '0')}:${(timeRemaining % 60).toString().padStart(2, '0')}`;
+      const secs = timerMode === 'stopwatch' ? stopwatchSeconds : timeRemaining;
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = secs % 60;
+      const timeStr = h > 0
+        ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+        : `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 
       const prefix = timerStatus === 'paused' ? '⏸️ ' : timerPhase === 'break' ? '☕ ' : '⏳ ';
       document.title = `(${prefix}${timeStr}) Focus Station · Mahmud al Hasan`;
