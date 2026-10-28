@@ -135,6 +135,38 @@ L.Icon.Default.mergeOptions({
   shadowUrl: iconShadow,
 });
 
+// Helper for Bangladesh Standard Time (BST = UTC+6)
+const getBSTTime = () => {
+  try {
+    return new Date().toLocaleTimeString('en-US', {
+      timeZone: 'Asia/Dhaka',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  } catch (e) {
+    const d = new Date();
+    const utc = d.getTime() + d.getTimezoneOffset() * 60000;
+    const bstDate = new Date(utc + 6 * 3600000);
+    return bstDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  }
+};
+
+// Weather icon helper mapping WMO weather codes to emojis
+const getWeatherIcon = (code, isDay = 1) => {
+  if (code === 0) return isDay ? '☀️' : '🌙';
+  if (code <= 3) return isDay ? '🌤️' : '☁️';
+  if (code <= 48) return '🌫️';
+  if (code <= 67) return '🌧️';
+  if (code <= 77) return '❄️';
+  if (code <= 82) return '🌦️';
+  return '⛈️';
+};
+
 const COLLABORATION_TIERS = [
   {
     title: 'Full-Time Backend Software Engineer',
@@ -166,7 +198,37 @@ const Contact = () => {
   const [activeDetail, setActiveDetail] = useState(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInstance, setMapInstance] = useState(null)
+  const [localTime, setLocalTime] = useState(getBSTTime)
+  const [weather, setWeather] = useState({ temp: 28, icon: '🌤️' })
   const form = useRef()
+
+  // Update live BST time & fetch real-time weather in Bayazid, Chattogram
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLocalTime(getBSTTime())
+    }, 30000)
+
+    let isMounted = true
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=22.3911&longitude=91.8177&current_weather=true')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isMounted && data?.current_weather) {
+          const { temperature, weathercode, is_day } = data.current_weather
+          setWeather({
+            temp: Math.round(temperature),
+            icon: getWeatherIcon(weathercode, is_day),
+          })
+        }
+      })
+      .catch(() => {
+        // Fallback default
+      })
+
+    return () => {
+      isMounted = false
+      clearInterval(timer)
+    }
+  }, [])
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
 
@@ -605,8 +667,8 @@ const Contact = () => {
 
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
-              {/* Left: 3 Base Map Types in Segmented Capsule */}
-              <div className="map-layer-selector" role="tablist" aria-label="Map Base Types">
+              {/* Unified Map Types & Traffic Detail Segmented Capsule */}
+              <div className="map-layer-selector" role="tablist" aria-label="Map Types and Traffic">
                 {Object.values(MAP_TYPES).map((type) => (
                   <button
                     key={type.id}
@@ -622,24 +684,27 @@ const Contact = () => {
                     <span className="tab-label">{type.label}</span>
                   </button>
                 ))}
-              </div>
 
-              {/* Right: Modern Actions Group with Traffic Toggle */}
-              <div className="map-actions-group">
+                <span className="control-divider" aria-hidden="true"></span>
+
+                {/* Traffic Overlay Toggle Integrated inside Map Capsule */}
                 <button
                   type="button"
                   role="tab"
                   aria-selected={activeDetail === 'traffic'}
                   aria-label="Traffic"
-                  className={`map-action-btn traffic-toggle-btn ${activeDetail === 'traffic' ? 'active-traffic' : ''}`}
+                  className={`map-layer-tab detail-tab ${activeDetail === 'traffic' ? 'active' : ''}`}
                   onClick={() => handleToggleDetail('traffic')}
                   title={MAP_DETAILS.traffic.title}
                 >
-                  <FontAwesomeIcon icon={MAP_DETAILS.traffic.icon} className="btn-icon" />
-                  <span className="traffic-label">Traffic</span>
-                  {activeDetail === 'traffic' && <span className="traffic-live-dot" aria-hidden="true"></span>}
+                  <FontAwesomeIcon icon={MAP_DETAILS.traffic.icon} className="tab-icon" />
+                  <span className="tab-label">Traffic</span>
+                  {activeDetail === 'traffic' && <span className="tab-active-dot" aria-hidden="true"></span>}
                 </button>
+              </div>
 
+              {/* Right: Actions Group (Recenter & Fullscreen) */}
+              <div className="map-actions-group">
                 <button
                   type="button"
                   className="map-action-btn recenter-btn"
@@ -703,11 +768,28 @@ const Contact = () => {
               </button>
             </div>
 
-            {/* Slim Bottom Floating Coordinates & Google Maps Pill */}
-            <div className="map-bottom-pill" role="status" aria-label="Location and Coordinates">
+            {/* Slim Bottom Floating Coordinates, BST Time, Weather & Google Maps Pill */}
+            <div className="map-bottom-pill" role="status" aria-label="Location, Local Time and Weather">
               <span className="live-radar-dot" aria-hidden="true"></span>
               <span className="coords-text">22.3911° N, 91.8177° E · Bayazid, Chattogram</span>
+
               <span className="pill-divider" aria-hidden="true"></span>
+
+              <div className="pill-meta-group" title="Current Local Time in Bayazid (BST · UTC+6)">
+                <span className="meta-icon" aria-hidden="true">🕒</span>
+                <span className="meta-time">{localTime}</span>
+                <span className="meta-tz">BST · UTC+6</span>
+              </div>
+
+              <span className="pill-divider" aria-hidden="true"></span>
+
+              <div className="pill-meta-group pill-weather" title="Live Temperature in Bayazid, Chattogram">
+                <span className="meta-weather-icon" aria-hidden="true">{weather.icon}</span>
+                <span className="meta-weather-temp">{weather.temp}°C</span>
+              </div>
+
+              <span className="pill-divider" aria-hidden="true"></span>
+
               <a
                 href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
                 target="_blank"
@@ -726,6 +808,9 @@ const Contact = () => {
               zoom={17}
               scrollWheelZoom={false}
               zoomControl={false}
+              zoomSnap={0.5}
+              zoomDelta={0.5}
+              wheelPxPerZoomLevel={120}
               whenCreated={setMapInstance}
             >
               <TileLayer
@@ -733,8 +818,12 @@ const Contact = () => {
                 attribution=""
                 url={currentTileUrl}
                 subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                tileSize={256}
                 maxNativeZoom={MAP_TYPES[activeBaseType]?.maxNativeZoom || 20}
                 maxZoom={MAP_TYPES[activeBaseType]?.maxZoom || 22}
+                updateWhenIdle={false}
+                updateWhenZooming={false}
+                keepBuffer={6}
               />
 
               <Marker

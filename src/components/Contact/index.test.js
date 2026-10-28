@@ -27,13 +27,15 @@ test('renders contact page with 3 Map Types, Traffic detail toggle, removed Tran
   // Verify "ডার্ক মোড" is removed
   expect(screen.queryByRole('tab', { name: /ডার্ক মোড/i })).not.toBeInTheDocument();
 
-  // Verify the 3 Base Google Map Types are present with English names
+  // Verify the 3 Base Google Map Types & Traffic are present together in the unified tablist
+  const tabList = screen.getByRole('tablist', { name: /Map Types and Traffic/i });
+  expect(tabList).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: /^Satellite$/i })).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: /^Roadmap$/i })).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: /^Terrain$/i })).toBeInTheDocument();
-
-  // Verify core Google Map Detail (Traffic) is present with English name
   expect(screen.getByRole('tab', { name: /^Traffic$/i })).toBeInTheDocument();
+  expect(tabList).toContainElement(screen.getByRole('tab', { name: /^Satellite$/i }));
+  expect(tabList).toContainElement(screen.getByRole('tab', { name: /^Traffic$/i }));
 
   // Verify Transit is completely removed
   expect(screen.queryByRole('tab', { name: /^Transit$/i })).not.toBeInTheDocument();
@@ -64,9 +66,13 @@ test('renders contact page with 3 Map Types, Traffic detail toggle, removed Tran
   fireEvent.click(roadmapTab);
   expect(screen.getByText(/Google Live Traffic: Real-time traffic flow active/i)).toBeInTheDocument();
 
-  // Check slim bottom floating pill (Bengali text removed, English coordinates and location present)
+  // Check slim bottom floating pill (English coordinates and location present)
   expect(screen.queryByText(/বায়জিদ, চট্টগ্রাম/i)).not.toBeInTheDocument();
   expect(screen.getByText(/22.3911° N, 91.8177° E · Bayazid, Chattogram/i)).toBeInTheDocument();
+
+  // Check live BST time & weather temperature in the bottom pill
+  expect(screen.getByText(/BST · UTC\+6/i)).toBeInTheDocument();
+  expect(screen.getByText(/°C/i)).toBeInTheDocument();
 
   // Check integrated Google Maps link in the bottom pill
   expect(screen.getByRole('link', { name: /Open Bayazid in Google Maps/i })).toBeInTheDocument();
