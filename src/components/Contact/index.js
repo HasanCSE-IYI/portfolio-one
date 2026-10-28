@@ -16,7 +16,10 @@ import {
   faTimes,
   faSatellite,
   faRoad,
+  faMountain,
   faCrosshairs,
+  faExpand,
+  faCompress,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -33,14 +36,14 @@ delete L.Icon.Default.prototype._getIconUrl;
 // Link: https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9
 const BAYAZID_COORDS = [22.391135, 91.817740];
 
-// Multiple Map Layer Configurations for High-Definition Clarity & Place Details
+// Multiple High-Resolution Google Map Layer Configurations with 2x Retina Clarity
 const MAP_LAYERS = {
   hybrid: {
     id: 'hybrid',
     label: 'স্যাটেলাইট',
-    title: 'HD স্যাটেলাইট ও রোড লেবেল (Google Hybrid)',
+    title: 'HD স্যাটেলাইট ও রোড লেবেল (Google Hybrid 2x Retina)',
     icon: faSatellite,
-    url: 'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     maxNativeZoom: 20,
     maxZoom: 21,
@@ -49,13 +52,24 @@ const MAP_LAYERS = {
   street: {
     id: 'street',
     label: 'রোড ম্যাপ',
-    title: 'ক্লিয়ার রাস্তা ও স্থান নাম (Google Street)',
+    title: 'ক্লিয়ার রাস্তা ও স্থান নাম (Google Street 2x Retina)',
     icon: faRoad,
-    url: 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&scale=2',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     maxNativeZoom: 20,
     maxZoom: 21,
     attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Street',
+  },
+  terrain: {
+    id: 'terrain',
+    label: 'টেরেন',
+    title: 'ভূপ্রকৃতি ও পাহাড়ী টপোগ্রাফি (Google Terrain 2x Retina)',
+    icon: faMountain,
+    url: 'https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}&scale=2',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 21,
+    attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Terrain',
   },
 };
 
@@ -150,11 +164,53 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
   const [activeMapLayer, setActiveMapLayer] = useState('hybrid')
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInstance, setMapInstance] = useState(null)
   const markerRef = useRef(null)
   const form = useRef()
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
+
+  const toggleFullscreen = () => {
+    setIsFullscreen((prev) => !prev)
+  }
+
+  // Reflow map tiles when toggling fullscreen
+  useEffect(() => {
+    if (mapInstance) {
+      const timer = setTimeout(() => {
+        try {
+          mapInstance.invalidateSize()
+        } catch (e) {
+          // ignore
+        }
+      }, 200)
+      return () => clearTimeout(timer)
+    }
+  }, [isFullscreen, mapInstance])
+
+  // Support ESC key to exit fullscreen
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isFullscreen])
+
+  // Prevent background scroll when map is fullscreen
+  useEffect(() => {
+    if (isFullscreen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isFullscreen])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -523,7 +579,7 @@ const Contact = () => {
             </a>
           </div>
 
-          <div className={`map-wrap layer-${activeMapLayer}`}>
+          <div className={`map-wrap layer-${activeMapLayer} ${isFullscreen ? 'is-fullscreen' : ''}`}>
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
               <div className="map-layer-selector" role="tablist" aria-label="Map Layer Selector">
@@ -544,15 +600,32 @@ const Contact = () => {
                 ))}
               </div>
 
-              <button
-                type="button"
-                className="recenter-btn"
-                onClick={handleRecenter}
-                title="বায়েজীদ লোকেশনে রিসেন্টার করুন"
-                aria-label="Recenter map on Bayazid, Chattogram"
-              >
-                <FontAwesomeIcon icon={faCrosshairs} />
-              </button>
+              <div className="map-actions-group">
+                <button
+                  type="button"
+                  className="map-action-btn recenter-btn"
+                  onClick={handleRecenter}
+                  title="বায়েজীদ লোকেশনে রিসেন্টার করুন"
+                  aria-label="Recenter map on Bayazid, Chattogram"
+                >
+                  <FontAwesomeIcon icon={faCrosshairs} />
+                </button>
+                <button
+                  type="button"
+                  className={`map-action-btn fullscreen-btn ${isFullscreen ? 'active-fullscreen' : ''}`}
+                  onClick={toggleFullscreen}
+                  title={isFullscreen ? 'ফুলস্ক্রিন বন্ধ করুন (Esc)' : 'পূর্ণ পর্দায় ম্যাপ দেখুন (Fullscreen)'}
+                  aria-label={isFullscreen ? 'Exit Fullscreen' : 'View Fullscreen Map'}
+                >
+                  <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} />
+                </button>
+              </div>
+            </div>
+
+            {/* Bottom Floating Info Pill */}
+            <div className="map-bottom-pill">
+              <span className="live-radar-dot" aria-hidden="true"></span>
+              <span className="coords-text">22.3911° N, 91.8177° E · বায়েজীদ, চট্টগ্রাম</span>
             </div>
 
             <MapContainer
