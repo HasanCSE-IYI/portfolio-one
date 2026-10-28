@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import iconMarker from 'leaflet/dist/images/marker-icon.png'
@@ -18,12 +18,10 @@ import {
   faRoad,
   faMountain,
   faTrafficLight,
-  faBus,
   faCrosshairs,
   faExpand,
   faCompress,
   faDirections,
-  faLocationDot,
   faPlus,
   faMinus,
 } from '@fortawesome/free-solid-svg-icons'
@@ -76,7 +74,7 @@ const MAP_TYPES = {
   },
 };
 
-// 2 High-Value Google Map Details & Overlays (Traffic and Transit)
+// Core Google Map Detail & Overlay (Live Traffic)
 // Dynamically applied across all 3 Map Types
 const MAP_DETAILS = {
   traffic: {
@@ -86,14 +84,6 @@ const MAP_DETAILS = {
     icon: faTrafficLight,
     suffix: 'traffic',
     bannerText: 'Google Live Traffic: Real-time traffic flow active on Bayazid roads',
-  },
-  transit: {
-    id: 'transit',
-    label: 'Transit',
-    title: 'Google Public Transit & Bus Network (2x Retina HD)',
-    icon: faBus,
-    suffix: 'transit',
-    bannerText: 'Google Public Transit: Bus routes and stations active around Bayazid',
   },
 };
 
@@ -105,61 +95,38 @@ const getTileUrl = (baseId, detailId) => {
   return `https://{s}.google.com/vt/lyrs=${base.lyrs}${suffix}&x={x}&y={y}&z={z}&scale=2`;
 };
 
-// 3D Clear Red Pin Marker with volumetric lighting, specular highlight & ground cast shadow
-const redMarker3DIcon = L.divIcon({
-  className: 'custom-red-pin-3d-wrapper',
+// Modern Compact Red Pin Marker with subtle radar pulse and high-fidelity vector styling
+const redMarkerModernIcon = L.divIcon({
+  className: 'custom-modern-pin-wrapper',
   html: `
-    <div class="pin-3d-container">
-      <div class="pin-3d-beacon"></div>
-      <div class="pin-3d-body">
-        <svg viewBox="0 0 48 64" width="46" height="60" fill="none" xmlns="http://www.w3.org/2000/svg" class="pin-3d-svg">
+    <div class="modern-pin-container">
+      <div class="modern-pin-pulse" aria-hidden="true"></div>
+      <div class="modern-pin-body">
+        <svg viewBox="0 0 28 36" width="28" height="36" fill="none" xmlns="http://www.w3.org/2000/svg" class="modern-pin-svg">
           <defs>
-            <radialGradient id="groundShadow3D" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#000000" stop-opacity="0.65"/>
-              <stop offset="60%" stop-color="#000000" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-            </radialGradient>
-            <linearGradient id="bodyGradient3D" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ff453a"/>
-              <stop offset="30%" stop-color="#ef4444"/>
-              <stop offset="70%" stop-color="#dc2626"/>
-              <stop offset="100%" stop-color="#881337"/>
+            <linearGradient id="modernPinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff4757"/>
+              <stop offset="35%" stop-color="#ef4444"/>
+              <stop offset="75%" stop-color="#dc2626"/>
+              <stop offset="100%" stop-color="#991b1b"/>
             </linearGradient>
-            <radialGradient id="specularDome3D" cx="35%" cy="28%" r="65%">
-              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-              <stop offset="25%" stop-color="#fca5a5" stop-opacity="0.6"/>
-              <stop offset="55%" stop-color="#ef4444" stop-opacity="0"/>
-              <stop offset="100%" stop-color="#4c0519" stop-opacity="0.85"/>
-            </radialGradient>
-            <linearGradient id="lensRing3D" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="40%" stop-color="#f1f5f9"/>
-              <stop offset="100%" stop-color="#94a3b8"/>
-            </linearGradient>
-            <radialGradient id="coreRuby3D" cx="35%" cy="32%" r="60%">
-              <stop offset="0%" stop-color="#ff7b72"/>
-              <stop offset="45%" stop-color="#dc2626"/>
-              <stop offset="100%" stop-color="#581c87"/>
-            </radialGradient>
-            <filter id="castShadow3D" x="-30%" y="-20%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="4" stdDeviation="4.5" flood-color="#000000" flood-opacity="0.65"/>
+            <filter id="pinShadow" x="-30%" y="-20%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.55"/>
             </filter>
           </defs>
-          <ellipse cx="24" cy="58" rx="14" ry="4" fill="url(#groundShadow3D)"/>
-          <g filter="url(#castShadow3D)">
-            <path d="M24 2C13.5 2 5 10.5 5 21C5 33 24 56 24 56S43 33 43 21C43 10.5 34.5 2 24 2Z" fill="url(#bodyGradient3D)" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M24 2C13.5 2 5 10.5 5 21C5 33 24 56 24 56S43 33 43 21C43 10.5 34.5 2 24 2Z" fill="url(#specularDome3D)"/>
-            <circle cx="24" cy="20.5" r="9" fill="url(#lensRing3D)" stroke="#ffffff" stroke-width="1"/>
-            <circle cx="24" cy="20.5" r="5.6" fill="url(#coreRuby3D)"/>
-            <ellipse cx="22" cy="18.5" rx="2" ry="1.2" fill="#ffffff" opacity="0.95"/>
+          <ellipse cx="14" cy="34" rx="7" ry="2" fill="#000000" opacity="0.4"/>
+          <g filter="url(#pinShadow)">
+            <path d="M14 1C6.82 1 1 6.82 1 14C1 23.2 14 34 14 34S27 23.2 27 14C27 6.82 21.18 1 14 1Z" fill="url(#modernPinGrad)" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round"/>
+            <circle cx="14" cy="13.5" r="4.5" fill="#ffffff"/>
+            <circle cx="14" cy="13.5" r="2.2" fill="#dc2626"/>
+            <ellipse cx="11.5" cy="8" rx="2.5" ry="1.2" fill="#ffffff" opacity="0.55"/>
           </g>
         </svg>
       </div>
     </div>
   `,
-  iconSize: [46, 60],
-  iconAnchor: [23, 56],
-  popupAnchor: [0, -56],
+  iconSize: [28, 36],
+  iconAnchor: [14, 34],
 });
 
 L.Icon.Default.mergeOptions({
@@ -199,7 +166,6 @@ const Contact = () => {
   const [activeDetail, setActiveDetail] = useState(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInstance, setMapInstance] = useState(null)
-  const markerRef = useRef(null)
   const form = useRef()
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
@@ -639,8 +605,8 @@ const Contact = () => {
 
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
-              <div className="map-layer-selector" role="tablist" aria-label="Map Types and Details">
-                {/* 3 Base Map Types */}
+              {/* Left: 3 Base Map Types in Segmented Capsule */}
+              <div className="map-layer-selector" role="tablist" aria-label="Map Base Types">
                 {Object.values(MAP_TYPES).map((type) => (
                   <button
                     key={type.id}
@@ -656,32 +622,24 @@ const Contact = () => {
                     <span className="tab-label">{type.label}</span>
                   </button>
                 ))}
-
-                <span className="control-divider" aria-hidden="true"></span>
-
-                {/* 2 Core Map Details: Traffic & Transit */}
-                {Object.values(MAP_DETAILS).map((detail) => {
-                  const isActive = activeDetail === detail.id
-                  return (
-                    <button
-                      key={detail.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={isActive}
-                      aria-label={detail.label}
-                      className={`map-layer-tab detail-tab ${isActive ? 'active' : ''}`}
-                      onClick={() => handleToggleDetail(detail.id)}
-                      title={detail.title}
-                    >
-                      <FontAwesomeIcon icon={detail.icon} className="tab-icon" />
-                      <span className="tab-label">{detail.label}</span>
-                      {isActive && <span className="tab-active-dot" aria-hidden="true"></span>}
-                    </button>
-                  )
-                })}
               </div>
 
+              {/* Right: Modern Actions Group with Traffic Toggle */}
               <div className="map-actions-group">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeDetail === 'traffic'}
+                  aria-label="Traffic"
+                  className={`map-action-btn traffic-toggle-btn ${activeDetail === 'traffic' ? 'active-traffic' : ''}`}
+                  onClick={() => handleToggleDetail('traffic')}
+                  title={MAP_DETAILS.traffic.title}
+                >
+                  <FontAwesomeIcon icon={MAP_DETAILS.traffic.icon} className="btn-icon" />
+                  <span className="traffic-label">Traffic</span>
+                  {activeDetail === 'traffic' && <span className="traffic-live-dot" aria-hidden="true"></span>}
+                </button>
+
                 <button
                   type="button"
                   className="map-action-btn recenter-btn"
@@ -691,6 +649,7 @@ const Contact = () => {
                 >
                   <FontAwesomeIcon icon={faCrosshairs} />
                 </button>
+
                 <button
                   type="button"
                   className={`map-action-btn fullscreen-btn ${isFullscreen ? 'active-fullscreen' : ''}`}
@@ -780,79 +739,9 @@ const Contact = () => {
 
               <Marker
                 position={BAYAZID_COORDS}
-                icon={redMarker3DIcon}
-                ref={markerRef}
-              >
-                <Popup className="modern-glass-popup" autoPan={true} offset={[0, -20]} maxWidth={320} minWidth={280}>
-                  <div className="modern-popup-card">
-                    <div className="popup-card-glow" aria-hidden="true"></div>
-
-                    <div className="popup-header">
-                      <div className="popup-avatar-ring">
-                        <span className="popup-avatar-text">MH</span>
-                        <span className="popup-status-dot" title="Available for engineering opportunities"></span>
-                      </div>
-                      <div className="popup-title-group">
-                        <div className="popup-name-line">
-                          <h4 className="popup-dev-name">Mahmud al Hasan</h4>
-                          <span className="popup-verified-badge" title="Verified Backend Engineer">
-                            <FontAwesomeIcon icon={faCheck} />
-                          </span>
-                        </div>
-                        <span className="popup-dev-designation">Backend Software Engineer</span>
-                      </div>
-                    </div>
-
-                    <div className="popup-divider"></div>
-
-                    <div className="popup-body">
-                      <div className="popup-info-row location">
-                        <FontAwesomeIcon icon={faLocationDot} className="info-icon pin" />
-                        <div className="location-text-col">
-                          <span className="location-title">Bayazid, Chattogram</span>
-                          <span className="location-sub">Chattogram Division, Bangladesh</span>
-                        </div>
-                      </div>
-
-                      <div className="popup-info-row coords">
-                        <FontAwesomeIcon icon={faCrosshairs} className="info-icon coords" />
-                        <code className="coords-code">22.391135° N, 91.817740° E</code>
-                      </div>
-
-                      <div className="popup-tech-pills">
-                        <span className="tech-pill">.NET Core</span>
-                        <span className="tech-pill">Laravel</span>
-                        <span className="tech-pill">NestJS</span>
-                        <span className="tech-pill">MySQL</span>
-                        <span className="tech-pill">REST APIs</span>
-                      </div>
-                    </div>
-
-                    <div className="popup-actions">
-                      <a
-                        href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="popup-action-btn primary"
-                        title="Open in Google Maps"
-                      >
-                        <FontAwesomeIcon icon={faDirections} />
-                        <span>Directions</span>
-                      </a>
-                      <a
-                        href="https://wa.me/8801727328200"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="popup-action-btn secondary"
-                        title="Chat on WhatsApp"
-                      >
-                        <FontAwesomeIcon icon={faWhatsapp} />
-                        <span>WhatsApp</span>
-                      </a>
-                    </div>
-                  </div>
-                </Popup>
-              </Marker>
+                icon={redMarkerModernIcon}
+                interactive={false}
+              />
             </MapContainer>
           </div>
         </div>

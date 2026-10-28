@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Contact from './index';
 
-test('renders contact page with 3 Map Types, Traffic and Transit details, slim English coordinates pill, and harmonious Exit Full View button', () => {
+test('renders contact page with 3 Map Types, Traffic detail toggle, removed Transit and marker popup card, slim English coordinates pill, and modern sleek UI', () => {
   render(
     <MemoryRouter>
       <Contact />
@@ -32,9 +32,11 @@ test('renders contact page with 3 Map Types, Traffic and Transit details, slim E
   expect(screen.getByRole('tab', { name: /^Roadmap$/i })).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: /^Terrain$/i })).toBeInTheDocument();
 
-  // Verify core Google Map Details (Traffic and Transit) are present with English names
+  // Verify core Google Map Detail (Traffic) is present with English name
   expect(screen.getByRole('tab', { name: /^Traffic$/i })).toBeInTheDocument();
-  expect(screen.getByRole('tab', { name: /^Transit$/i })).toBeInTheDocument();
+
+  // Verify Transit is completely removed
+  expect(screen.queryByRole('tab', { name: /^Transit$/i })).not.toBeInTheDocument();
 
   // Verify removed details are NOT present
   expect(screen.queryByRole('tab', { name: /^Biking$/i })).not.toBeInTheDocument();
@@ -43,6 +45,10 @@ test('renders contact page with 3 Map Types, Traffic and Transit details, slim E
   expect(screen.queryByRole('tab', { name: /^Street View$/i })).not.toBeInTheDocument();
   expect(screen.queryByRole('tab', { name: /^Wildfires$/i })).not.toBeInTheDocument();
   expect(screen.queryByRole('tab', { name: /^Air quality$/i })).not.toBeInTheDocument();
+
+  // Verify marker popup card is completely removed
+  expect(screen.queryByText(/Verified Backend Engineer/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Chattogram Division, Bangladesh/i)).not.toBeInTheDocument();
 
   // Check modern Zoom In and Zoom Out controls
   expect(screen.getByRole('button', { name: /Zoom in/i })).toBeInTheDocument();

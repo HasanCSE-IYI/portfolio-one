@@ -396,20 +396,7 @@
           padding: 3px;
           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
           gap: 3px;
-          overflow-x: auto;
-          max-width: calc(100% - 85px);
-          scrollbar-width: none;
-          &::-webkit-scrollbar {
-            display: none;
-          }
-
-          .control-divider {
-            width: 1px;
-            height: 14px;
-            background: rgba(255, 255, 255, 0.18);
-            margin: 0 2px;
-            flex-shrink: 0;
-          }
+          flex-shrink: 0;
 
           .map-layer-tab {
             flex-shrink: 0;
@@ -443,25 +430,6 @@
               box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
             }
 
-            &.detail-tab {
-              color: #94a3b8;
-
-              &.active {
-                background: rgba(59, 130, 246, 0.22);
-                border-color: rgba(59, 130, 246, 0.55);
-                color: #60a5fa;
-                box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
-              }
-
-              .tab-active-dot {
-                width: 5px;
-                height: 5px;
-                border-radius: 50%;
-                background: #60a5fa;
-                box-shadow: 0 0 6px #60a5fa;
-              }
-            }
-
             @media screen and (max-width: 480px) {
               padding: 4px 7px;
               font-size: 0.7rem;
@@ -476,6 +444,57 @@
           align-items: center;
           gap: 6px;
           flex-shrink: 0;
+
+          .traffic-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            height: 30px;
+            border-radius: 999px;
+            background: rgba(14, 20, 30, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #94a3b8;
+            font-size: 0.74rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
+
+            .btn-icon {
+              font-size: 0.76rem;
+              transition: transform 0.2s ease;
+            }
+
+            &:hover {
+              color: #f8fafc;
+              background: rgba(255, 255, 255, 0.08);
+              border-color: rgba(255, 255, 255, 0.25);
+            }
+
+            &.active-traffic {
+              background: rgba(59, 130, 246, 0.22);
+              border-color: rgba(59, 130, 246, 0.6);
+              color: #60a5fa;
+              box-shadow: 0 0 14px rgba(59, 130, 246, 0.35);
+
+              .traffic-live-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #60a5fa;
+                box-shadow: 0 0 8px #60a5fa;
+              }
+            }
+
+            @media screen and (max-width: 420px) {
+              padding: 4px 7px;
+              font-size: 0.7rem;
+            }
+          }
 
           .map-action-btn {
             display: inline-flex;
@@ -772,282 +791,6 @@
         }
       }
 
-      // Modern Glassmorphism Marker Popup
-      .modern-glass-popup {
-        .leaflet-popup-content-wrapper {
-          background: transparent !important;
-          border: none !important;
-          box-shadow: none !important;
-          padding: 0 !important;
-          border-radius: 16px !important;
-        }
-
-        .leaflet-popup-content {
-          margin: 0 !important;
-          line-height: normal !important;
-        }
-
-        .leaflet-popup-tip-container {
-          margin-top: -1px;
-          .leaflet-popup-tip {
-            background: rgba(14, 20, 30, 0.96) !important;
-            border: 1px solid rgba(245, 158, 11, 0.4) !important;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
-          }
-        }
-
-        a.leaflet-popup-close-button {
-          top: 10px !important;
-          right: 10px !important;
-          width: 22px !important;
-          height: 22px !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          background: rgba(255, 255, 255, 0.1) !important;
-          border-radius: 50% !important;
-          color: #f59e0b !important;
-          font-size: 1.05rem !important;
-          padding: 0 !important;
-          transition: all 0.2s ease !important;
-          z-index: 10 !important;
-
-          &:hover {
-            background: #f59e0b !important;
-            color: #0f172a !important;
-            transform: scale(1.1) !important;
-          }
-        }
-
-        .modern-popup-card {
-          position: relative;
-          background: rgba(14, 20, 30, 0.96);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(245, 158, 11, 0.4);
-          border-radius: 16px;
-          padding: 14px 16px;
-          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 0 24px rgba(245, 158, 11, 0.18);
-          overflow: hidden;
-          color: #f8fafc;
-          font-family: inherit;
-
-          .popup-card-glow {
-            position: absolute;
-            top: -24px;
-            right: -24px;
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0) 70%);
-            pointer-events: none;
-          }
-
-          .popup-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-
-            .popup-avatar-ring {
-              position: relative;
-              width: 38px;
-              height: 38px;
-              border-radius: 50%;
-              background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-              padding: 2px;
-              flex-shrink: 0;
-
-              .popup-avatar-text {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-                background: #0f141c;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 800;
-                font-size: 0.88rem;
-                color: #fbbf24;
-                font-family: var(--font-mono, monospace);
-              }
-
-              .popup-status-dot {
-                position: absolute;
-                bottom: 1px;
-                right: 1px;
-                width: 9px;
-                height: 9px;
-                border-radius: 50%;
-                background: #22c55e;
-                border: 2px solid #0f141c;
-                box-shadow: 0 0 6px #22c55e;
-              }
-            }
-
-            .popup-title-group {
-              display: flex;
-              flex-direction: column;
-              gap: 2px;
-
-              .popup-name-line {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-
-                .popup-dev-name {
-                  margin: 0;
-                  font-size: 0.95rem;
-                  font-weight: 700;
-                  color: #ffffff;
-                  letter-spacing: 0.3px;
-                }
-
-                .popup-verified-badge {
-                  width: 15px;
-                  height: 15px;
-                  border-radius: 50%;
-                  background: #38bdf8;
-                  color: #0c1427;
-                  display: inline-flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 0.58rem;
-                  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
-                }
-              }
-
-              .popup-dev-designation {
-                font-size: 0.74rem;
-                color: #94a3b8;
-                font-weight: 500;
-              }
-            }
-          }
-
-          .popup-divider {
-            height: 1px;
-            background: linear-gradient(90deg, rgba(245, 158, 11, 0.3) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
-            margin-bottom: 10px;
-          }
-
-          .popup-body {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-            margin-bottom: 12px;
-
-            .popup-info-row {
-              display: flex;
-              align-items: flex-start;
-              gap: 8px;
-              font-size: 0.76rem;
-              color: #cbd5e1;
-
-              .info-icon {
-                font-size: 0.82rem;
-                margin-top: 2px;
-                flex-shrink: 0;
-
-                &.pin {
-                  color: #ef4444;
-                }
-
-                &.coords {
-                  color: #38bdf8;
-                }
-              }
-
-              .location-text-col {
-                display: flex;
-                flex-direction: column;
-
-                .location-title {
-                  font-weight: 600;
-                  color: #f1f5f9;
-                }
-
-                .location-sub {
-                  font-size: 0.68rem;
-                  color: #94a3b8;
-                }
-              }
-
-              .coords-code {
-                font-family: var(--font-mono, monospace);
-                font-size: 0.72rem;
-                color: #38bdf8;
-                background: rgba(56, 189, 248, 0.1);
-                padding: 2px 6px;
-                border-radius: 4px;
-                border: 1px solid rgba(56, 189, 248, 0.2);
-              }
-            }
-
-            .popup-tech-pills {
-              display: flex;
-              flex-wrap: wrap;
-              gap: 5px;
-              margin-top: 3px;
-
-              .tech-pill {
-                font-size: 0.66rem;
-                font-family: var(--font-mono, monospace);
-                padding: 2px 6px;
-                border-radius: 5px;
-                background: rgba(245, 158, 11, 0.12);
-                border: 1px solid rgba(245, 158, 11, 0.3);
-                color: #fbbf24;
-                font-weight: 600;
-              }
-            }
-          }
-
-          .popup-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-
-            .popup-action-btn {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              gap: 5px;
-              padding: 6px 10px;
-              border-radius: 7px;
-              font-size: 0.72rem;
-              font-weight: 600;
-              text-decoration: none;
-              transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-
-              &.primary {
-                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-                color: #0f172a;
-                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
-
-                &:hover {
-                  transform: translateY(-1px);
-                  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.5);
-                  background: #fbbf24;
-                }
-              }
-
-              &.secondary {
-                background: rgba(34, 197, 94, 0.14);
-                color: #4ade80;
-                border: 1px solid rgba(34, 197, 94, 0.35);
-
-                &:hover {
-                  background: rgba(34, 197, 94, 0.25);
-                  transform: translateY(-1px);
-                  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-                }
-              }
-            }
-          }
-        }
-      }
-
       // Pure unfiltered HD satellite & 2x Retina tiles
       .leaflet-tile {
         filter: none !important;
@@ -1056,51 +799,51 @@
       }
     }
 
-    // 3D Clear Red Pin Marker Vector Styling
-    .custom-red-pin-3d-wrapper {
+    // Modern Sleek Red Pin Marker Vector Styling (Compact 28x36)
+    .custom-modern-pin-wrapper {
       background: transparent !important;
       border: none !important;
 
-      .pin-3d-container {
+      .modern-pin-container {
         position: relative;
-        width: 46px;
-        height: 60px;
-        perspective: 800px;
+        width: 28px;
+        height: 36px;
+        cursor: pointer;
 
-        // 3D Isometric Ground Pulsing Beacon
-        .pin-3d-beacon {
+        // Ground Radar Pulsing Beacon
+        .modern-pin-pulse {
           position: absolute;
-          bottom: 0px;
+          bottom: -1px;
           left: 50%;
           transform: translateX(-50%) rotateX(65deg);
-          width: 34px;
-          height: 18px;
+          width: 22px;
+          height: 11px;
           border-radius: 50%;
-          border: 2px solid rgba(239, 68, 68, 0.9);
-          background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0) 70%);
-          box-shadow: 0 0 16px 4px rgba(239, 68, 68, 0.7);
-          animation: pin3DBeaconPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+          border: 1.5px solid rgba(239, 68, 68, 0.75);
+          background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.4) 0%, rgba(239, 68, 68, 0) 70%);
+          box-shadow: 0 0 10px 2px rgba(239, 68, 68, 0.5);
+          animation: modernPinPulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+          pointer-events: none;
         }
 
-        // 3D Pin Body with subtle floating physics
-        .pin-3d-body {
+        // Modern Pin Body with subtle hover lift
+        .modern-pin-body {
           position: relative;
           z-index: 2;
-          animation: pin3DFloat 3.2s ease-in-out infinite;
-          transform-origin: 23px 56px;
-          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.65));
+          transform-origin: 14px 34px;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+          filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
 
-          .pin-3d-svg {
+          .modern-pin-svg {
             display: block;
-            width: 46px;
-            height: 60px;
+            width: 28px;
+            height: 36px;
             overflow: visible;
           }
         }
 
-        &:hover .pin-3d-body {
-          transform: translateY(-4px) scale(1.12);
+        &:hover .modern-pin-body {
+          transform: translateY(-3px) scale(1.1);
         }
       }
     }
@@ -1504,27 +1247,18 @@
   }
 }
 
-@keyframes pin3DBeaconPulse {
+@keyframes modernPinPulse {
   0% {
-    transform: translateX(-50%) rotateX(65deg) scale(0.5);
-    opacity: 1;
+    transform: translateX(-50%) rotateX(65deg) scale(0.6);
+    opacity: 0.9;
   }
-  60% {
+  70% {
     transform: translateX(-50%) rotateX(65deg) scale(1.8);
     opacity: 0.2;
   }
   100% {
-    transform: translateX(-50%) rotateX(65deg) scale(2.2);
+    transform: translateX(-50%) rotateX(65deg) scale(2.4);
     opacity: 0;
-  }
-}
-
-@keyframes pin3DFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
   }
 }
 
