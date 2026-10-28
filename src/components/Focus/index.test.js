@@ -56,6 +56,38 @@ describe('Focus Station Page', () => {
 
     // Coding streams
     expect(screen.getByText(/Curated Coding Streams/i)).toBeInTheDocument();
+
+    // New ambient synthesizers
+    expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mountain Wind/i)).toBeInTheDocument();
+    expect(screen.getByText(/Morning Birds/i)).toBeInTheDocument();
+
+    // Today's Focus Log card
+    expect(screen.getByText(/Today's Focus Log/i)).toBeInTheDocument();
+  });
+
+  test('filters sounds via search input and resets on clear', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const searchInput = screen.getByLabelText(/Search sounds/i);
+    expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mechanical Keys/i)).toBeInTheDocument();
+
+    // Type query "waves"
+    fireEvent.change(searchInput, { target: { value: 'waves' } });
+    expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Mechanical Keys/i)).not.toBeInTheDocument();
+
+    // Click clear search button
+    const clearBtn = screen.getByLabelText(/Clear search/i);
+    fireEvent.click(clearBtn);
+    expect(screen.getByText(/Mechanical Keys/i)).toBeInTheDocument();
   });
 
   test('toggles timer mode and updates dial readout', () => {

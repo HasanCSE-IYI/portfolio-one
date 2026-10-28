@@ -5,14 +5,19 @@ const FocusContext = createContext(null);
 export const SOUND_DEFINITIONS = [
   { id: 'brown', name: 'Brown Noise', category: 'Noise', icon: '🌊', desc: 'Warm deep low-frequency sound for deep focus' },
   { id: 'pink', name: 'Pink Noise', category: 'Noise', icon: '💨', desc: 'Balanced 1/f soothing static waterfall' },
+  { id: 'white', name: 'White Noise', category: 'Noise', icon: '📻', desc: 'Crisp wideband static for acoustic isolation' },
   { id: 'rain', name: 'Gentle Rain', category: 'Nature', icon: '🌧️', desc: 'Soothing rain drops on a glass window' },
   { id: 'thunder', name: 'Distant Thunder', category: 'Nature', icon: '⚡', desc: 'Deep rolling rumbles over the hills' },
-  { id: 'binaural', name: 'Binaural Alpha (10Hz)', category: 'Brainwave', icon: '🧠', desc: '10 Hz frequency for cognitive flow and coding' },
-  { id: 'cafe', name: 'Coffee Shop', category: 'Ambience', icon: '☕', desc: 'Warm café murmur and ceramic clinking' },
+  { id: 'waves', name: 'Ocean Waves', category: 'Nature', icon: '🌊', desc: 'Rhythmic ocean swells washing ashore' },
+  { id: 'wind', name: 'Mountain Wind', category: 'Nature', icon: '🍃', desc: 'Howling alpine gust sweeping through peaks' },
   { id: 'forest', name: 'Forest Breeze', category: 'Nature', icon: '🌲', desc: 'Gentle wind rustling through pine trees' },
   { id: 'campfire', name: 'Campfire', category: 'Nature', icon: '🔥', desc: 'Soothing crackling wood and warm embers' },
-  { id: 'keyboard', name: 'Mechanical Keys', category: 'Coding', icon: '⌨️', desc: 'Rhythmic Cherry MX programmer typing' },
+  { id: 'birds', name: 'Morning Birds', category: 'Nature', icon: '🐦', desc: 'Gentle melodious birdsong in morning light' },
   { id: 'crickets', name: 'Night Crickets', category: 'Nature', icon: '🦗', desc: 'Peaceful evening crickets under stars' },
+  { id: 'binaural', name: 'Binaural Alpha (10Hz)', category: 'Brainwave', icon: '🧠', desc: '10 Hz frequency for cognitive flow and coding' },
+  { id: 'cafe', name: 'Coffee Shop', category: 'Ambience', icon: '☕', desc: 'Warm café murmur and ceramic clinking' },
+  { id: 'keyboard', name: 'Mechanical Keys', category: 'Coding', icon: '⌨️', desc: 'Rhythmic Cherry MX programmer typing' },
+  { id: 'clock', name: 'Tick-Tock Clock', category: 'Coding', icon: '⏱️', desc: 'Steady 1 Hz rhythmic pacing click' },
 ];
 
 export const FOCUS_PRESETS = [
@@ -43,6 +48,27 @@ export const FOCUS_PRESETS = [
     icon: '🌲',
     desc: 'Forest breeze + Campfire embers',
     mix: { forest: 55, campfire: 35, rain: 20 },
+  },
+  {
+    id: 'coastal-dawn',
+    name: 'Coastal Code Sanctuary',
+    icon: '🌊',
+    desc: 'Ocean waves + Gentle rain + Binaural alpha flow',
+    mix: { waves: 65, rain: 40, binaural: 35 },
+  },
+  {
+    id: 'nordic-cabin',
+    name: 'Nordic Mountain Cabin',
+    icon: '🏔️',
+    desc: 'Mountain wind + Campfire + Distant thunder',
+    mix: { wind: 55, campfire: 45, thunder: 25 },
+  },
+  {
+    id: 'morning-garden',
+    name: 'Morning Garden Flow',
+    icon: '🐦',
+    desc: 'Morning birds + Forest breeze + Brown noise',
+    mix: { birds: 60, forest: 50, brown: 30 },
   },
   {
     id: 'binaural-code',
@@ -112,14 +138,50 @@ export const FocusProvider = ({ children }) => {
   // Zen / Immersive Fullscreen State
   const [isZenMode, setIsZenMode] = useState(false);
 
-  // Persist Current Task to storage
+  // Persist Current Task to storage & track in ref for timer
+  const currentTaskRef = useRef(currentTask);
   useEffect(() => {
+    currentTaskRef.current = currentTask;
     try {
       localStorage.setItem('focus_current_task', currentTask);
     } catch {
       // ignore
     }
   }, [currentTask]);
+
+  // Pomodoro Session History State
+  const [sessionHistory, setSessionHistory] = useState(() => {
+    try {
+      const saved = localStorage.getItem('focus_session_history');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const logCompletedSession = useCallback((taskName, minutes, modeLabel) => {
+    const newEntry = {
+      id: Date.now(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      task: taskName || 'Deep Work Sprint',
+      minutes,
+      mode: modeLabel,
+    };
+    setSessionHistory((prev) => {
+      const updated = [newEntry, ...prev.slice(0, 9)];
+      try {
+        localStorage.setItem('focus_session_history', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+  }, []);
+
+  const clearSessionHistory = useCallback(() => {
+    setSessionHistory([]);
+    try {
+      localStorage.removeItem('focus_session_history');
+    } catch {}
+  }, []);
 
   // Audio Context Initialization (Lazy on first interaction)
   const initAudioEngine = useCallback(() => {
@@ -342,6 +404,199 @@ export const FocusProvider = ({ children }) => {
       stopFn = () => {
         if (thunderTimer) clearTimeout(thunderTimer);
       };
+    } else if (soundId === 'white') {
+      // Pure White Noise static
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+      const dataL = buffer.getChannelData(0);
+      const dataR = buffer.getChannelData(1);
+      for (let i = 0; i < bufferSize; i++) {
+        dataL[i] = (Math.random() * 2 - 1) * 0.16;
+        dataR[i] = (Math.random() * 2 - 1) * 0.16;
+      }
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(4500, ctx.currentTime);
+
+      noiseSource.connect(filter);
+      filter.connect(gainNode);
+      noiseSource.start(0);
+
+      stopFn = () => {
+        try { noiseSource.stop(); } catch {}
+      };
+    } else if (soundId === 'waves') {
+      // Ocean Waves: Brown noise with periodic swell LFO on filter and gain
+      const bufferSize = ctx.sampleRate * 3;
+      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+      const dataL = buffer.getChannelData(0);
+      const dataR = buffer.getChannelData(1);
+      let lastOutL = 0.0, lastOutR = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const whiteL = Math.random() * 2 - 1;
+        const whiteR = Math.random() * 2 - 1;
+        lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
+        lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
+        dataL[i] = lastOutL * 3.2;
+        dataR[i] = lastOutR * 3.2;
+      }
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(320, ctx.currentTime);
+
+      const swellGain = ctx.createGain();
+      swellGain.gain.setValueAtTime(0.3, ctx.currentTime);
+
+      const lfo = ctx.createOscillator();
+      const lfoFilterGain = ctx.createGain();
+      const lfoAmpGain = ctx.createGain();
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(0.09, ctx.currentTime);
+      lfoFilterGain.gain.setValueAtTime(280, ctx.currentTime);
+      lfoAmpGain.gain.setValueAtTime(0.35, ctx.currentTime);
+
+      lfo.connect(lfoFilterGain);
+      lfoFilterGain.connect(filter.frequency);
+
+      lfo.connect(lfoAmpGain);
+      lfoAmpGain.connect(swellGain.gain);
+
+      noiseSource.connect(filter);
+      filter.connect(swellGain);
+      swellGain.connect(gainNode);
+
+      noiseSource.start(0);
+      lfo.start(0);
+
+      stopFn = () => {
+        try {
+          noiseSource.stop();
+          lfo.stop();
+        } catch {}
+      };
+    } else if (soundId === 'wind') {
+      // Alpine Mountain Wind: Pink noise through modulated resonant bandpass
+      const bufferSize = ctx.sampleRate * 3;
+      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+      const dataL = buffer.getChannelData(0);
+      const dataR = buffer.getChannelData(1);
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const whiteL = Math.random() * 2 - 1;
+        b0 = 0.99886 * b0 + whiteL * 0.0555179;
+        b1 = 0.99332 * b1 + whiteL * 0.0750759;
+        b2 = 0.96900 * b2 + whiteL * 0.1538520;
+        b3 = 0.86650 * b3 + whiteL * 0.3104856;
+        b4 = 0.55000 * b4 + whiteL * 0.5329522;
+        b5 = -0.7616 * b5 - whiteL * 0.0168980;
+        dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.18;
+        dataR[i] = dataL[i];
+        b6 = whiteL * 0.115926;
+      }
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(450, ctx.currentTime);
+      filter.Q.setValueAtTime(2.2, ctx.currentTime);
+
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(0.14, ctx.currentTime);
+      lfoGain.gain.setValueAtTime(220, ctx.currentTime);
+
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+
+      noiseSource.connect(filter);
+      filter.connect(gainNode);
+
+      noiseSource.start(0);
+      lfo.start(0);
+
+      stopFn = () => {
+        try {
+          noiseSource.stop();
+          lfo.stop();
+        } catch {}
+      };
+    } else if (soundId === 'birds') {
+      // Morning Birds: Intermittent melodic sine bursts with frequency chirps
+      let birdTimer = null;
+      const triggerBirdSong = () => {
+        if (!audioCtxRef.current) return;
+        const now = ctx.currentTime;
+        const count = 2 + Math.floor(Math.random() * 3);
+        for (let c = 0; c < count; c++) {
+          const chirpStart = now + c * 0.12;
+          const osc = ctx.createOscillator();
+          const chirpGain = ctx.createGain();
+
+          osc.type = 'sine';
+          const baseFreq = 2600 + Math.random() * 600;
+          osc.frequency.setValueAtTime(baseFreq, chirpStart);
+          osc.frequency.linearRampToValueAtTime(baseFreq + 800, chirpStart + 0.05);
+          osc.frequency.exponentialRampToValueAtTime(baseFreq - 200, chirpStart + 0.09);
+
+          chirpGain.gain.setValueAtTime(0.001, chirpStart);
+          chirpGain.gain.linearRampToValueAtTime(0.18, chirpStart + 0.02);
+          chirpGain.gain.exponentialRampToValueAtTime(0.001, chirpStart + 0.09);
+
+          osc.connect(chirpGain);
+          chirpGain.connect(gainNode);
+
+          osc.start(chirpStart);
+          osc.stop(chirpStart + 0.1);
+        }
+        birdTimer = setTimeout(triggerBirdSong, 2500 + Math.random() * 4500);
+      };
+
+      birdTimer = setTimeout(triggerBirdSong, 800);
+      stopFn = () => {
+        if (birdTimer) clearTimeout(birdTimer);
+      };
+    } else if (soundId === 'clock') {
+      // Tick-Tock Clock: Alternating 1-second cadence tick
+      let clockTimer = null;
+      let isTick = true;
+      const triggerClock = () => {
+        if (!audioCtxRef.current) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const clickGain = ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(isTick ? 1200 : 900, now);
+        isTick = !isTick;
+
+        clickGain.gain.setValueAtTime(0.3, now);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+
+        osc.connect(clickGain);
+        clickGain.connect(gainNode);
+
+        osc.start(now);
+        osc.stop(now + 0.03);
+
+        clockTimer = setTimeout(triggerClock, 1000);
+      };
+
+      triggerClock();
+      stopFn = () => {
+        if (clockTimer) clearTimeout(clockTimer);
+      };
     }
 
     return { gainNode, stopFn };
@@ -487,6 +742,8 @@ export const FocusProvider = ({ children }) => {
             playChime();
             if (timerPhase === 'focus') {
               setCompletedSessions((c) => c + 1);
+              const mins = TIMER_MODES[timerMode]?.focusMinutes || 25;
+              logCompletedSession(currentTaskRef.current, mins, TIMER_MODES[timerMode]?.label || 'Focus');
               setTimerPhase('break');
               return (TIMER_MODES[timerMode]?.breakMinutes || 5) * 60;
             } else {
@@ -500,7 +757,7 @@ export const FocusProvider = ({ children }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timerStatus, timerMode, timerPhase, playChime]);
+  }, [timerStatus, timerMode, timerPhase, playChime, logCompletedSession]);
 
   // Synchronize browser tab title with active Pomodoro countdown
   useEffect(() => {
@@ -583,6 +840,8 @@ export const FocusProvider = ({ children }) => {
         completedSessions,
         currentTask,
         setCurrentTask,
+        sessionHistory,
+        clearSessionHistory,
 
         // YouTube
         activeYouTube,

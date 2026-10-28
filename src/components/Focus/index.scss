@@ -303,6 +303,33 @@
           color: #fff;
         }
       }
+
+      .share-mix-btn {
+        background: rgba(14, 165, 233, 0.14);
+        border: 1px solid rgba(14, 165, 233, 0.35);
+        color: #38bdf8;
+        font-size: 0.76rem;
+        font-weight: 600;
+        border-radius: 9999px;
+        padding: 6px 12px;
+        cursor: pointer;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: rgba(14, 165, 233, 0.25);
+          color: #fff;
+        }
+
+        &.copied {
+          background: rgba(16, 185, 129, 0.2);
+          border-color: #10b981;
+          color: #34d399;
+        }
+      }
     }
 
     // Zen Mode Toggle Button
@@ -678,6 +705,121 @@
     }
   }
 
+  // History / Productivity Log Card
+  .history-card {
+    .header-icon.purple {
+      color: #a855f7;
+    }
+
+    .history-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .history-count-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #a855f7;
+        background: rgba(168, 85, 247, 0.12);
+        padding: 3px 9px;
+        border-radius: 9999px;
+        border: 1px solid rgba(168, 85, 247, 0.25);
+      }
+
+      .history-clear-btn {
+        background: transparent;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        padding: 4px;
+        font-size: 0.85rem;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #f87171;
+        }
+      }
+    }
+
+    .history-empty-state {
+      padding: 12px 6px;
+      p {
+        font-size: 0.82rem;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.5;
+      }
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 4px;
+
+      .history-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 12px;
+        background: rgba(15, 23, 42, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        transition: border-color 0.2s ease;
+
+        &:hover {
+          border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .history-item-left {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          min-width: 0;
+
+          .history-time {
+            font-size: 0.74rem;
+            font-family: monospace;
+            color: #94a3b8;
+            white-space: nowrap;
+          }
+
+          .history-task {
+            font-size: 0.82rem;
+            color: #e2e8f0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .history-item-right {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-shrink: 0;
+
+          .history-duration {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #f59e0b;
+          }
+
+          .history-mode-tag {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 7px;
+            border-radius: 9999px;
+          }
+        }
+      }
+    }
+  }
+
   // Right Column: Synthesized Ambient Soundboard
   .soundboard-card {
     .soundboard-header {
@@ -715,6 +857,62 @@
       }
     }
 
+    // Sound Search Bar
+    .sound-search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+
+      .sound-search-icon {
+        position: absolute;
+        left: 14px;
+        color: #64748b;
+        font-size: 0.85rem;
+        pointer-events: none;
+      }
+
+      .sound-search-input {
+        width: 100%;
+        background: rgba(15, 23, 42, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 9px 38px 9px 38px;
+        color: #f8fafc;
+        font-size: 0.85rem;
+        outline: none;
+        transition: all 0.2s ease;
+
+        &::placeholder {
+          color: #64748b;
+        }
+
+        &:focus {
+          border-color: #f59e0b;
+          background: rgba(15, 23, 42, 0.9);
+          box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        }
+      }
+
+      .sound-search-clear {
+        position: absolute;
+        right: 12px;
+        background: transparent;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        padding: 4px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: #f8fafc;
+        }
+      }
+    }
+
     // Category Filter Bar
     .category-filter-bar {
       display: flex;
@@ -727,6 +925,9 @@
       scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 
       .cat-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         background: rgba(30, 41, 59, 0.5);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 9999px;
@@ -738,6 +939,12 @@
         text-transform: capitalize;
         transition: all 0.2s ease;
 
+        .cat-count {
+          font-size: 0.72rem;
+          opacity: 0.75;
+          font-weight: normal;
+        }
+
         &:hover {
           color: #fff;
           background: rgba(51, 65, 85, 0.7);
@@ -748,6 +955,43 @@
           border-color: #f59e0b;
           color: #0f172a;
           font-weight: 700;
+
+          .cat-count {
+            opacity: 0.9;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    // Sound Empty State
+    .sound-empty-state {
+      padding: 32px 16px;
+      text-align: center;
+      background: rgba(15, 23, 42, 0.35);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+
+      p {
+        color: #94a3b8;
+        font-size: 0.88rem;
+        margin-bottom: 12px;
+      }
+
+      .clear-search-link {
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: #f59e0b;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #f59e0b;
+          color: #0f172a;
         }
       }
     }

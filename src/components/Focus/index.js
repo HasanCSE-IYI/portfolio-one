@@ -18,6 +18,10 @@ import {
   faEye,
   faEyeSlash,
   faMusic,
+  faMagnifyingGlass,
+  faLink,
+  faHistory,
+  faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
@@ -33,6 +37,8 @@ import './index.scss';
 const Focus = () => {
   const [letterClass, setLetterClass] = useState('text-animate');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [soundSearch, setSoundSearch] = useState('');
+  const [shareCopied, setShareCopied] = useState(false);
   const [customYtId, setCustomYtId] = useState('');
   const [ytError, setYtError] = useState(false);
   const canvasRef = useRef(null);
@@ -65,6 +71,8 @@ const Focus = () => {
     completedSessions,
     currentTask,
     setCurrentTask,
+    sessionHistory,
+    clearSessionHistory,
 
     activeYouTube,
     setActiveYouTube,
@@ -208,11 +216,69 @@ const Focus = () => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - timerProgress * circumference;
 
-  // Filter soundboard categories
+  // Filter soundboard categories & search
   const categories = ['all', 'Noise', 'Nature', 'Ambience', 'Brainwave', 'Coding'];
-  const filteredSounds = activeCategory === 'all'
-    ? SOUND_DEFINITIONS
-    : SOUND_DEFINITIONS.filter((s) => s.category.toLowerCase() === activeCategory.toLowerCase());
+
+  const getCategoryCount = (cat) => {
+    if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
+    return SOUND_DEFINITIONS.filter((s) => s.category.toLowerCase() === cat.toLowerCase()).length;
+  };
+
+  const filteredSounds = SOUND_DEFINITIONS.filter((s) => {
+    const matchesCat = activeCategory === 'all' || s.category.toLowerCase() === activeCategory.toLowerCase();
+    const query = soundSearch.trim().toLowerCase();
+    const matchesSearch = !query ||
+      s.name.toLowerCase().includes(query) ||
+      s.desc.toLowerCase().includes(query) ||
+      s.category.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  // Handle Share / Copy Mix Link
+  const handleShareMix = () => {
+    const mixStr = Object.entries(volumes)
+      .filter(([_, v]) => v > 0)
+      .map(([k, v]) => `${k}:${v}`)
+      .join(',');
+
+    const base = `${window.location.origin}${window.location.pathname}`;
+    const shareUrl = mixStr ? `${base}#/focus?mix=${encodeURIComponent(mixStr)}` : `${base}#/focus`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        setShareCopied(true);
+        setTimeout(() => setShareCopied(false), 2500);
+      }).catch(() => {});
+    }
+  };
+
+  // Auto-load mix from URL parameters
+  useEffect(() => {
+    try {
+      let mixParam = null;
+      if (window.location.search) {
+        mixParam = new URLSearchParams(window.location.search).get('mix');
+      }
+      if (!mixParam && window.location.hash.includes('?')) {
+        const hashQuery = window.location.hash.split('?')[1];
+        if (hashQuery) {
+          mixParam = new URLSearchParams(hashQuery).get('mix');
+        }
+      }
+      if (mixParam) {
+        const decoded = decodeURIComponent(mixParam);
+        decoded.split(',').forEach((part) => {
+          const [soundId, volStr] = part.split(':');
+          const vol = parseInt(volStr, 10);
+          if (soundId && !isNaN(vol) && vol >= 0 && vol <= 100) {
+            setSoundVolume(soundId, vol);
+          }
+        });
+      }
+    } catch {
+      // ignore
+    }
+  }, [setSoundVolume]);
 
   // Handle custom YouTube input
   const handlePlayCustomYt = (e) => {
@@ -403,14 +469,25 @@ const Focus = () => {
             })}
 
             {activeSoundsCount > 0 && (
-              <button
-                type="button"
-                className="clear-mix-btn"
-                onClick={clearAllSounds}
-                title="Mute and reset all sound layers"
-              >
-                Clear Mix
-              </button>
+              <>
+                <button
+                  type="button"
+                  className={`share-mix-btn ${shareCopied ? 'copied' : ''}`}
+                  onClick={handleShareMix}
+                  title="Copy shareable link to this custom sound mix"
+                >
+                  <FontAwesomeIcon icon={shareCopied ? faCheck : faLink} />
+                  <span>{shareCopied ? 'Link Copied!' : 'Share Mix'}</span>
+                </button>
+                <button
+                  type="button"
+                  className="clear-mix-btn"
+                  onClick={clearAllSounds}
+                  title="Mute and reset all sound layers"
+                >
+                  Clear Mix
+                </button>
+              </>
             )}
           </div>
 
@@ -578,6 +655,52 @@ const Focus = () => {
                 />
               </div>
             </div>
+
+            {/* Focus Session Log / History Card */}
+            <div className="focus-card history-card">
+              <div className="card-top-header">
+                <div className="header-title-group">
+                  <FontAwesomeIcon icon={faHistory} className="header-icon purple" />
+                  <h3>Today's Focus Log</h3>
+                </div>
+                <div className="history-header-actions">
+                  <span className="history-count-badge">
+                    {sessionHistory.length} completed
+                  </span>
+                  {sessionHistory.length > 0 && (
+                    <button
+                      type="button"
+                      className="history-clear-btn"
+                      onClick={clearSessionHistory}
+                      title="Clear session history"
+                    >
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {sessionHistory.length === 0 ? (
+                <div className="history-empty-state">
+                  <p>No completed intervals yet today. Lock into a Pomodoro sprint to log your engineering achievements!</p>
+                </div>
+              ) : (
+                <div className="history-list">
+                  {sessionHistory.map((item) => (
+                    <div key={item.id} className="history-item">
+                      <div className="history-item-left">
+                        <span className="history-time">{item.time}</span>
+                        <span className="history-task">{item.task}</span>
+                      </div>
+                      <div className="history-item-right">
+                        <span className="history-duration">{item.minutes}m</span>
+                        <span className="history-mode-tag">{item.mode}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right Column: Multi-Track Soundboard & YouTube Lo-Fi Stream */}
@@ -594,71 +717,115 @@ const Focus = () => {
                 </span>
               </div>
 
-              {/* Sound Categories Tabs */}
-              <div className="category-filter-bar">
-                {categories.map((cat) => (
+              {/* Sound Search Bar */}
+              <div className="sound-search-wrap">
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="sound-search-icon" />
+                <input
+                  type="text"
+                  value={soundSearch}
+                  onChange={(e) => setSoundSearch(e.target.value)}
+                  placeholder="Search sounds (e.g. rain, ocean, waves, keys, wind, birds)..."
+                  className="sound-search-input"
+                  aria-label="Search sounds"
+                />
+                {soundSearch && (
                   <button
-                    key={cat}
                     type="button"
-                    className={`cat-pill ${activeCategory === cat.toLowerCase() ? 'active' : ''}`}
-                    onClick={() => setActiveCategory(cat.toLowerCase())}
+                    className="sound-search-clear"
+                    onClick={() => setSoundSearch('')}
+                    aria-label="Clear search"
                   >
-                    {cat}
+                    <FontAwesomeIcon icon={faTimes} />
                   </button>
-                ))}
+                )}
               </div>
 
-              {/* Soundboard Tiles Grid */}
-              <div className="sound-tiles-grid">
-                {filteredSounds.map((sound) => {
-                  const vol = volumes[sound.id] || 0;
-                  const isActive = vol > 0 && isPlaying;
+              {/* Sound Categories Tabs with Item Counts */}
+              <div className="category-filter-bar">
+                {categories.map((cat) => {
+                  const count = getCategoryCount(cat);
+                  const isCur = activeCategory === cat.toLowerCase();
                   return (
-                    <div
-                      key={sound.id}
-                      className={`sound-tile ${isActive ? 'is-active' : ''}`}
+                    <button
+                      key={cat}
+                      type="button"
+                      className={`cat-pill ${isCur ? 'active' : ''}`}
+                      onClick={() => setActiveCategory(cat.toLowerCase())}
                     >
-                      <div
-                        className="tile-top-row"
-                        onClick={() => toggleSound(sound.id)}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`Toggle ${sound.name}`}
-                        aria-pressed={isActive}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            toggleSound(sound.id);
-                          }
-                        }}
-                      >
-                        <div className="tile-icon-avatar">
-                          <span>{sound.icon}</span>
-                        </div>
-                        <div className="tile-title-col">
-                          <span className="sound-name">{sound.name}</span>
-                          <span className="sound-desc">{sound.desc}</span>
-                        </div>
-                        <span className={`sound-level-badge ${vol > 0 ? 'audible' : ''}`}>
-                          {vol > 0 ? `${vol}%` : 'OFF'}
-                        </span>
-                      </div>
-
-                      <div className="tile-slider-row">
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          value={vol}
-                          onChange={(e) => setSoundVolume(sound.id, e.target.value)}
-                          className="sound-volume-slider"
-                          aria-label={`${sound.name} volume`}
-                        />
-                      </div>
-                    </div>
+                      <span>{cat}</span>
+                      <span className="cat-count">({count})</span>
+                    </button>
                   );
                 })}
               </div>
+
+              {/* Soundboard Tiles Grid */}
+              {filteredSounds.length === 0 ? (
+                <div className="sound-empty-state">
+                  <p>No ambient sounds match "{soundSearch}".</p>
+                  <button
+                    type="button"
+                    className="clear-search-link"
+                    onClick={() => {
+                      setSoundSearch('');
+                      setActiveCategory('all');
+                    }}
+                  >
+                    Reset filter & search
+                  </button>
+                </div>
+              ) : (
+                <div className="sound-tiles-grid">
+                  {filteredSounds.map((sound) => {
+                    const vol = volumes[sound.id] || 0;
+                    const isActive = vol > 0 && isPlaying;
+                    return (
+                      <div
+                        key={sound.id}
+                        className={`sound-tile ${isActive ? 'is-active' : ''}`}
+                      >
+                        <div
+                          className="tile-top-row"
+                          onClick={() => toggleSound(sound.id)}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`Toggle ${sound.name}`}
+                          aria-pressed={isActive}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              toggleSound(sound.id);
+                            }
+                          }}
+                        >
+                          <div className="tile-icon-avatar">
+                            <span>{sound.icon}</span>
+                          </div>
+                          <div className="tile-title-col">
+                            <span className="sound-name">{sound.name}</span>
+                            <span className="sound-desc">{sound.desc}</span>
+                          </div>
+                          <span className={`sound-level-badge ${vol > 0 ? 'audible' : ''}`}>
+                            {vol > 0 ? `${vol}%` : 'OFF'}
+                          </span>
+                        </div>
+
+                        <div className="tile-slider-row">
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={vol}
+                            onChange={(e) => setSoundVolume(sound.id, e.target.value)}
+                            className="sound-volume-slider"
+                            aria-label={`${sound.name} volume`}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* YouTube Developer Beats & Streams */}
