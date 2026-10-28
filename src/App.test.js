@@ -12,4 +12,7 @@ test('renders portfolio app navigation and header', () => {
   // Check that the main navigation or home text renders
   const contactLinks = screen.getAllByRole('link', { name: /contact/i });
   expect(contactLinks.length).toBeGreaterThan(0);
+
+  const focusLinks = screen.getAllByRole('link', { name: /focus/i });
+  expect(focusLinks.length).toBeGreaterThan(0);
 });

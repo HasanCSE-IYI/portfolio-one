@@ -15,6 +15,7 @@ import {
   faArrowRight,
   faCode,
   faFolder,
+  faHeadphones,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -59,6 +60,14 @@ const BASE_COMMANDS = [
     action: (navigate) => navigate('/portfolio'),
   },
   {
+    id: 'nav-focus',
+    category: 'Navigation',
+    title: 'Go to Focus Station',
+    subtitle: 'Deep work ambient soundscapes, Pomodoro interval timer & lo-fi beats',
+    icon: faHeadphones,
+    action: (navigate) => navigate('/focus'),
+  },
+  {
     id: 'nav-contact',
     category: 'Navigation',
     title: 'Go to Contact',
@@ -83,6 +92,14 @@ const BASE_COMMANDS = [
     subtitle: 'Simulate C# controller, EF Core queries & JWT RBAC live',
     icon: faCode,
     action: (navigate) => navigate('/portfolio'),
+  },
+  {
+    id: 'act-focus-station',
+    category: 'Quick Actions',
+    title: 'Launch Focus Station & Flow Timer',
+    subtitle: 'Start deep engineering session with Pomodoro timer & ambient synth',
+    icon: faHeadphones,
+    action: (navigate) => navigate('/focus'),
   },
   {
     id: 'act-copy-email',

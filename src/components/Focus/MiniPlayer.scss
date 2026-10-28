@@ -1,0 +1,214 @@
+// Global Persistent Floating Mini-Player for Focus Session
+.focus-mini-player {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 950;
+  animation: miniPlayerSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media screen and (max-width: 991px) {
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
+    left: 16px;
+    margin: 0 auto;
+    max-width: 420px;
+    width: auto;
+  }
+
+  .mini-player-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: rgba(13, 17, 24, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 9999px;
+    padding: 8px 14px 8px 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(245, 158, 11, 0.2);
+    box-sizing: border-box;
+  }
+
+  // Meta Section (Beacons, Name, Timer Readout)
+  .mini-meta-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+
+    .mini-pulse-beacon {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: miniPulse 1.8s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    .mini-text-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex-wrap: nowrap;
+
+      .mini-source-line {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+
+        .source-icon {
+          font-size: 0.85rem;
+
+          &.gold {
+            color: #f59e0b;
+          }
+          &.red {
+            color: #ef4444;
+          }
+        }
+
+        .source-name {
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #f8fafc;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 130px;
+
+          @media screen and (max-width: 480px) {
+            max-width: 90px;
+          }
+        }
+      }
+
+      .mini-timer-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(245, 158, 11, 0.14);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 9999px;
+        padding: 2px 8px;
+
+        .timer-icon {
+          font-size: 0.72rem;
+          color: #f59e0b;
+        }
+
+        .timer-readout {
+          font-size: 0.76rem;
+          font-weight: 800;
+          font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+          color: #f8fafc;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .phase-indicator {
+          font-size: 0.64rem;
+          font-weight: 700;
+          color: #f59e0b;
+          letter-spacing: 0.04em;
+        }
+      }
+    }
+  }
+
+  // Mini Controls Row
+  .mini-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+
+    .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.18s ease;
+
+      &:hover {
+        background: rgba(51, 65, 85, 1);
+        color: #fff;
+        transform: scale(1.08);
+      }
+
+      &.sound-toggle {
+        &.playing {
+          background: #10b981;
+          color: #0f172a;
+          border-color: #10b981;
+          box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+      }
+
+      &.timer-toggle {
+        &.running {
+          background: #f59e0b;
+          color: #0f172a;
+          border-color: #f59e0b;
+          box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+      }
+
+      &.expand-link {
+        color: #38bdf8;
+        border-color: rgba(56, 189, 248, 0.3);
+
+        &:hover {
+          background: #38bdf8;
+          color: #0f172a;
+        }
+      }
+
+      &.stop-btn {
+        color: #f87171;
+        border-color: rgba(239, 68, 68, 0.25);
+
+        &:hover {
+          background: #ef4444;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+@keyframes miniPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+}
+
+@keyframes miniPlayerSlideIn {
+  from {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

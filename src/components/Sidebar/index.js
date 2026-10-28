@@ -14,6 +14,7 @@ import {
   faSuitcase,
   faUser,
   faSearch,
+  faHeadphones,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink, useLocation } from 'react-router-dom'
@@ -121,6 +122,13 @@ const Sidebar = () => {
             >
               <FontAwesomeIcon icon={faSuitcase} className="nav-icon" />
               <span>Portfolio</span>
+            </NavLink>
+            <NavLink
+              to="/focus"
+              className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+            >
+              <FontAwesomeIcon icon={faHeadphones} className="nav-icon" />
+              <span>Focus</span>
             </NavLink>
             <NavLink
               to="/contact"
@@ -268,6 +276,14 @@ const Sidebar = () => {
                   <span>Spotlight Search · {isMac ? '⌘K' : 'Ctrl K'}</span>
                 </button>
                 <Link
+                  to="/focus"
+                  className="dropdown-item"
+                  onClick={() => setShowMoreMenu(false)}
+                >
+                  <FontAwesomeIcon icon={faHeadphones} />
+                  <span>Focus Station · Lo-Fi &amp; Pomodoro</span>
+                </Link>
+                <Link
                   to="/resume"
                   className="dropdown-item resume-item"
                   onClick={() => setShowMoreMenu(false)}
@@ -315,6 +331,14 @@ const Sidebar = () => {
         >
           <FontAwesomeIcon icon={faSuitcase} className="dock-icon" />
           <span className="dock-label">Works</span>
+        </NavLink>
+        <NavLink
+          to="/focus"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Focus"
+        >
+          <FontAwesomeIcon icon={faHeadphones} className="dock-icon" />
+          <span className="dock-label">Focus</span>
         </NavLink>
         <NavLink
           to="/contact"
