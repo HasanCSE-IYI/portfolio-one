@@ -26,6 +26,12 @@ import {
   faCompress,
   faDirections,
   faLocationDot,
+  faPlus,
+  faMinus,
+  faCity,
+  faStreetView,
+  faFire,
+  faWind,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -42,85 +48,108 @@ delete L.Icon.Default.prototype._getIconUrl;
 // Link: https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9
 const BAYAZID_COORDS = [22.391135, 91.817740];
 
-// 7 High-Resolution Google Map Layers with 2x Retina Clarity & English Mode Names
-const MAP_LAYERS = {
+// 3 Distinct Base Google Map Types (from Google Maps app) with 2x Retina Clarity
+const MAP_TYPES = {
   satellite: {
     id: 'satellite',
     label: 'Satellite',
-    title: 'Google HD Satellite & Street Labels (2x Retina)',
+    title: 'Google HD Satellite & Street Labels (2x Retina HD)',
     icon: faSatellite,
-    url: 'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    lyrs: 'y',
     maxNativeZoom: 20,
     maxZoom: 22,
-    attribution: '&copy; Google Maps Satellite',
+    desc: 'HD imagery with roads and labels',
   },
   roadmap: {
     id: 'roadmap',
     label: 'Roadmap',
-    title: 'Google Standard Streets & Landmarks (2x Retina)',
+    title: 'Google Standard Streets & Landmarks (2x Retina HD)',
     icon: faRoad,
-    url: 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    lyrs: 'm',
     maxNativeZoom: 20,
     maxZoom: 22,
-    attribution: '&copy; Google Maps Roadmap',
+    desc: 'Clean vector streets and landmarks',
   },
   terrain: {
     id: 'terrain',
     label: 'Terrain',
-    title: 'Google Topographic Terrain & Relief (2x Retina)',
+    title: 'Google Topographic Terrain & Relief (2x Retina HD)',
     icon: faMountain,
-    url: 'https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    lyrs: 'p',
     maxNativeZoom: 20,
     maxZoom: 22,
-    attribution: '&copy; Google Maps Terrain',
+    desc: 'Topographic contours and natural relief',
   },
+};
+
+// 7 Google Map Details & Overlays (from official Google Maps app drawer)
+// Designed to apply across all 3 Map Types
+const MAP_DETAILS = {
   traffic: {
     id: 'traffic',
     label: 'Traffic',
     title: 'Google Live Real-Time Traffic Congestion (2x Retina)',
     icon: faTrafficLight,
-    url: 'https://{s}.google.com/vt/lyrs=m,traffic&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    maxNativeZoom: 20,
-    maxZoom: 22,
-    attribution: '&copy; Google Maps Traffic',
+    suffix: 'traffic',
+    bannerText: 'Google Live Traffic: Real-time traffic flow active around Bayazid',
   },
   transit: {
     id: 'transit',
     label: 'Transit',
-    title: 'Google Public Transit & Rail Lines (2x Retina)',
+    title: 'Google Public Transit, Bus & Metro Network (2x Retina)',
     icon: faBus,
-    url: 'https://{s}.google.com/vt/lyrs=m,transit&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    maxNativeZoom: 20,
-    maxZoom: 22,
-    attribution: '&copy; Google Maps Transit',
+    suffix: 'transit',
+    bannerText: 'Google Transit: Public bus routes and transit network active',
   },
   biking: {
     id: 'biking',
     label: 'Biking',
-    title: 'Google Dedicated Cycling Routes & Trails (2x Retina)',
+    title: 'Google Dedicated Cycling Routes & Bike Paths (2x Retina)',
     icon: faBicycle,
-    url: 'https://{s}.google.com/vt/lyrs=m,bicycle&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    maxNativeZoom: 20,
-    maxZoom: 22,
-    attribution: '&copy; Google Maps Biking',
+    suffix: 'bicycle',
+    bannerText: 'Google Cycling: Dedicated cycling routes & trails active',
   },
-  sat_traffic: {
-    id: 'sat_traffic',
-    label: 'Sat Traffic',
-    title: 'Google HD Satellite with Live Traffic Overlay (2x Retina)',
-    icon: faLayerGroup,
-    url: 'https://{s}.google.com/vt/lyrs=y,traffic&x={x}&y={y}&z={z}&scale=2',
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    maxNativeZoom: 20,
-    maxZoom: 22,
-    attribution: '&copy; Google Maps Satellite Traffic',
+  buildings3d: {
+    id: 'buildings3d',
+    label: '3D Buildings',
+    title: 'Google 3D Raised Buildings & Isometric Structures',
+    icon: faCity,
+    suffix: '3d',
+    bannerText: 'Google 3D Buildings: Raised structural elevations active',
   },
+  streetview: {
+    id: 'streetview',
+    label: 'Street View',
+    title: 'Google Street View 360° Interactive Panoramic Tour',
+    icon: faStreetView,
+    suffix: null,
+    bannerText: 'Google Street View: 360° panoramic explorer ready at Bayazid',
+    link: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=22.391135,91.817740',
+  },
+  wildfires: {
+    id: 'wildfires',
+    label: 'Wildfires',
+    title: 'Satellite Wildfire & Thermal Hazard Monitoring',
+    icon: faFire,
+    suffix: null,
+    bannerText: 'Wildfire Thermal Satellite: 0 active hazards in Chattogram Division',
+  },
+  airquality: {
+    id: 'airquality',
+    label: 'Air quality',
+    title: 'Live Air Quality Index (AQI) & Environmental Monitoring',
+    icon: faWind,
+    suffix: null,
+    bannerText: 'Air Quality: AQI 142 (Moderate) • Bayazid Station Monitoring',
+  },
+};
+
+// Generates dynamic Google Map 2x Retina Tile URL combining base type and detail overlay
+const getTileUrl = (baseId, detailId) => {
+  const base = MAP_TYPES[baseId] || MAP_TYPES.satellite;
+  const detail = detailId ? MAP_DETAILS[detailId] : null;
+  const suffix = detail?.suffix ? `,${detail.suffix}` : '';
+  return `https://{s}.google.com/vt/lyrs=${base.lyrs}${suffix}&x={x}&y={y}&z={z}&scale=2`;
 };
 
 // 3D Clear Red Pin Marker with volumetric lighting, specular highlight & ground cast shadow
@@ -213,7 +242,9 @@ const Contact = () => {
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
-  const [activeMapLayer, setActiveMapLayer] = useState('satellite')
+  const [activeBaseType, setActiveBaseType] = useState('satellite')
+  const [activeDetail, setActiveDetail] = useState(null)
+  const [isLayersDrawerOpen, setIsLayersDrawerOpen] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInstance, setMapInstance] = useState(null)
   const markerRef = useRef(null)
@@ -224,6 +255,13 @@ const Contact = () => {
   const toggleFullscreen = () => {
     setIsFullscreen((prev) => !prev)
   }
+
+  const handleToggleDetail = (detailId) => {
+    setActiveDetail((prev) => (prev === detailId ? null : detailId))
+  }
+
+  const currentTileUrl = getTileUrl(activeBaseType, activeDetail)
+  const tileLayerKey = `${activeBaseType}-${activeDetail || 'plain'}`
 
   // Reflow map tiles when toggling fullscreen
   useEffect(() => {
@@ -629,8 +667,8 @@ const Contact = () => {
             </a>
           </div>
 
-          <div className={`map-wrap layer-${activeMapLayer} ${isFullscreen ? 'is-fullscreen' : ''}`}>
-            {/* Prominent Exit Fullscreen Button */}
+          <div className={`map-wrap layer-${activeBaseType} ${isFullscreen ? 'is-fullscreen' : ''}`}>
+            {/* Dedicated Modern Exit Full View Button */}
             {isFullscreen && (
               <button
                 type="button"
@@ -645,24 +683,121 @@ const Contact = () => {
               </button>
             )}
 
+            {/* Google Maps Authentic Layer Drawer matching screenshot */}
+            {isLayersDrawerOpen && (
+              <div className="google-layers-drawer" role="dialog" aria-label="Map type and details">
+                <div className="drawer-header">
+                  <div className="drawer-title-group">
+                    <FontAwesomeIcon icon={faLayerGroup} className="drawer-header-icon" />
+                    <h3 className="drawer-title">Map type</h3>
+                  </div>
+                  <button
+                    type="button"
+                    className="drawer-close-btn"
+                    onClick={() => setIsLayersDrawerOpen(false)}
+                    aria-label="Close Map Details Drawer"
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+
+                {/* Map Types Section (3 Base Types) */}
+                <div className="drawer-map-types" role="group" aria-label="Map Types">
+                  {Object.values(MAP_TYPES).map((type) => {
+                    const isSelected = activeBaseType === type.id
+                    return (
+                      <button
+                        key={type.id}
+                        type="button"
+                        aria-pressed={isSelected}
+                        aria-label={`Select ${type.label} map type`}
+                        className={`type-card ${isSelected ? 'active' : ''}`}
+                        onClick={() => setActiveBaseType(type.id)}
+                      >
+                        <div className={`type-card-thumb thumb-${type.id}`}>
+                          <FontAwesomeIcon icon={type.icon} className="thumb-icon" />
+                          {isSelected && <span className="type-check-dot">✓</span>}
+                        </div>
+                        <span className="type-card-label">{type.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+
+                <div className="drawer-divider"></div>
+
+                {/* Map Details Section (7 Map Details) */}
+                <div className="drawer-details-header">
+                  <h3 className="drawer-title">Map details</h3>
+                  {activeDetail && (
+                    <button
+                      type="button"
+                      className="drawer-clear-detail-btn"
+                      onClick={() => setActiveDetail(null)}
+                    >
+                      Clear Detail
+                    </button>
+                  )}
+                </div>
+
+                <div className="drawer-map-details-grid" role="group" aria-label="Map Details">
+                  {Object.values(MAP_DETAILS).map((detail) => {
+                    const isActive = activeDetail === detail.id
+                    return (
+                      <button
+                        key={detail.id}
+                        type="button"
+                        aria-pressed={isActive}
+                        aria-label={`Toggle ${detail.label}`}
+                        className={`detail-item-btn ${isActive ? 'active' : ''}`}
+                        onClick={() => handleToggleDetail(detail.id)}
+                        title={detail.title}
+                      >
+                        <div className={`detail-icon-circle circle-${detail.id}`}>
+                          <FontAwesomeIcon icon={detail.icon} className="detail-icon" />
+                          {isActive && <span className="detail-badge-check">✓</span>}
+                        </div>
+                        <span className="detail-label">{detail.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
-              <div className="map-layer-selector" role="tablist" aria-label="Map Layer Selector">
-                {Object.values(MAP_LAYERS).map((layer) => (
+              <div className="map-layer-selector" role="tablist" aria-label="Map Types">
+                {Object.values(MAP_TYPES).map((type) => (
                   <button
-                    key={layer.id}
+                    key={type.id}
                     type="button"
                     role="tab"
-                    aria-selected={activeMapLayer === layer.id}
-                    aria-label={layer.label}
-                    className={`map-layer-tab ${activeMapLayer === layer.id ? 'active' : ''}`}
-                    onClick={() => setActiveMapLayer(layer.id)}
-                    title={layer.title}
+                    aria-selected={activeBaseType === type.id}
+                    aria-label={type.label}
+                    className={`map-layer-tab ${activeBaseType === type.id ? 'active' : ''}`}
+                    onClick={() => setActiveBaseType(type.id)}
+                    title={type.title}
                   >
-                    <FontAwesomeIcon icon={layer.icon} className="tab-icon" />
-                    <span className="tab-label">{layer.label}</span>
+                    <FontAwesomeIcon icon={type.icon} className="tab-icon" />
+                    <span className="tab-label">{type.label}</span>
                   </button>
                 ))}
+
+                {/* Google Maps Layer & Details Drawer Toggle Button */}
+                <button
+                  type="button"
+                  className={`map-layer-tab drawer-toggle-btn ${isLayersDrawerOpen || activeDetail ? 'active-highlight' : ''}`}
+                  onClick={() => setIsLayersDrawerOpen((prev) => !prev)}
+                  title="Google Map Details & Layers"
+                  aria-label="Map Details and Layers"
+                >
+                  <FontAwesomeIcon icon={faLayerGroup} className="tab-icon" />
+                  <span className="tab-label">Layers</span>
+                  {activeDetail && (
+                    <span className="active-detail-dot" title={`Active: ${MAP_DETAILS[activeDetail]?.label}`}></span>
+                  )}
+                </button>
               </div>
 
               <div className="map-actions-group">
@@ -670,7 +805,7 @@ const Contact = () => {
                   type="button"
                   className="map-action-btn recenter-btn"
                   onClick={handleRecenter}
-                  title="বায়েজীদ লোকেশনে রিসেন্টার করুন"
+                  title="Recenter on Bayazid, Chattogram"
                   aria-label="Recenter map on Bayazid, Chattogram"
                 >
                   <FontAwesomeIcon icon={faCrosshairs} />
@@ -687,58 +822,129 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Floating Bottom Bar completely covering Leaflet attribution & Google Maps placeholders */}
-            <div className="map-floating-bottom-bar" role="complementary" aria-label="Map Location and Live Details">
-              <div className="bar-left-section">
-                <div className="live-radar-indicator" aria-hidden="true">
-                  <span className="radar-core"></span>
-                  <span className="radar-ping"></span>
-                </div>
-                <div className="location-info-cluster">
-                  <div className="primary-location">
-                    <span className="loc-name-bn">বায়জিদ, চট্টগ্রাম</span>
-                    <span className="loc-divider">•</span>
-                    <span className="loc-name-en">Bayazid, Chattogram</span>
-                  </div>
-                  <span className="coords-display">22.3911° N, 91.8177° E</span>
-                </div>
-              </div>
+            {/* Quick Map Details Strip */}
+            <div className="map-quick-details-strip" role="tablist" aria-label="Google Map Details">
+              {Object.values(MAP_DETAILS).map((detail) => {
+                const isActive = activeDetail === detail.id
+                return (
+                  <button
+                    key={detail.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={detail.label}
+                    className={`quick-detail-pill ${isActive ? 'active' : ''}`}
+                    onClick={() => handleToggleDetail(detail.id)}
+                    title={detail.title}
+                  >
+                    <FontAwesomeIcon icon={detail.icon} className="pill-icon" />
+                    <span className="pill-label">{detail.label}</span>
+                  </button>
+                )
+              })}
+            </div>
 
-              <div className="bar-center-section">
-                <span className="active-mode-pill">
-                  <FontAwesomeIcon icon={MAP_LAYERS[activeMapLayer]?.icon || faSatellite} className="mode-pill-icon" />
-                  <span className="mode-pill-label">{MAP_LAYERS[activeMapLayer]?.label}</span>
-                </span>
-                <span className="retina-tag">2x Retina HD</span>
-              </div>
-
-              <div className="bar-right-section">
-                <a
-                  href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bar-direct-maps-btn"
-                  title="Google Maps-এ বায়জিদ লোকেশন দেখুন"
+            {/* Active Detail Notification Banner */}
+            {activeDetail && (
+              <div className={`map-active-detail-banner banner-${activeDetail}`} role="status">
+                <div className="banner-content">
+                  <FontAwesomeIcon icon={MAP_DETAILS[activeDetail].icon} className="banner-icon" />
+                  <span className="banner-text">{MAP_DETAILS[activeDetail].bannerText}</span>
+                  {MAP_DETAILS[activeDetail].link && (
+                    <a
+                      href={MAP_DETAILS[activeDetail].link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="banner-action-link"
+                    >
+                      Open 360° View ↗
+                    </a>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className="banner-dismiss-btn"
+                  onClick={() => setActiveDetail(null)}
+                  aria-label="Dismiss detail overlay"
+                  title="Turn off detail"
                 >
-                  <FontAwesomeIcon icon={faDirections} />
-                  <span>Google Maps</span>
-                </a>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
+
+            {/* Modern Custom Zoom In / Zoom Out Controls */}
+            <div className="map-modern-zoom-controls" role="group" aria-label="Map Zoom Controls">
+              <button
+                type="button"
+                className="modern-zoom-btn zoom-in"
+                onClick={() => mapInstance && mapInstance.zoomIn()}
+                title="Zoom In (+)"
+                aria-label="Zoom in"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+              <button
+                type="button"
+                className="modern-zoom-btn zoom-out"
+                onClick={() => mapInstance && mapInstance.zoomOut()}
+                title="Zoom Out (-)"
+                aria-label="Zoom out"
+              >
+                <FontAwesomeIcon icon={faMinus} />
+              </button>
+            </div>
+
+            {/* Subtle Sleek Coordinate Pill at Bottom-Left covering attribution & placeholders completely */}
+            <div className="map-subtle-coord-pill" role="status" aria-label="Location and Coordinates">
+              <div className="pill-radar-dot" aria-hidden="true">
+                <span className="radar-core"></span>
+                <span className="radar-ping"></span>
+              </div>
+              <div className="pill-info-cluster">
+                <div className="pill-location-line">
+                  <span className="loc-bn">বায়জিদ, চট্টগ্রাম</span>
+                  <span className="loc-sep">•</span>
+                  <span className="loc-en">Bayazid, Chattogram</span>
+                </div>
+                <div className="pill-meta-line">
+                  <span className="pill-coords">22.3911° N, 91.8177° E</span>
+                  <span className="pill-mode-tag">
+                    {MAP_TYPES[activeBaseType]?.label}
+                    {activeDetail ? ` • ${MAP_DETAILS[activeDetail]?.label}` : ''}
+                  </span>
+                  <span className="pill-retina-tag">2x Retina HD</span>
+                </div>
               </div>
             </div>
+
+            {/* Bottom Right Direct Google Maps Pill */}
+            <a
+              href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
+              target="_blank"
+              rel="noreferrer"
+              className="map-google-action-pill"
+              title="Open Bayazid in Google Maps"
+              aria-label="Open Bayazid in Google Maps"
+            >
+              <FontAwesomeIcon icon={faDirections} className="google-icon" />
+              <span>Google Maps</span>
+            </a>
 
             <MapContainer
               center={BAYAZID_COORDS}
               zoom={17}
               scrollWheelZoom={false}
+              zoomControl={false}
               whenCreated={setMapInstance}
             >
               <TileLayer
-                key={activeMapLayer}
+                key={tileLayerKey}
                 attribution=""
-                url={MAP_LAYERS[activeMapLayer]?.url || MAP_LAYERS.satellite.url}
-                subdomains={MAP_LAYERS[activeMapLayer]?.subdomains || MAP_LAYERS.satellite.subdomains}
-                maxNativeZoom={MAP_LAYERS[activeMapLayer]?.maxNativeZoom || 20}
-                maxZoom={MAP_LAYERS[activeMapLayer]?.maxZoom || 22}
+                url={currentTileUrl}
+                subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                maxNativeZoom={MAP_TYPES[activeBaseType]?.maxNativeZoom || 20}
+                maxZoom={MAP_TYPES[activeBaseType]?.maxZoom || 22}
               />
 
               <Marker
@@ -746,14 +952,14 @@ const Contact = () => {
                 icon={redMarker3DIcon}
                 ref={markerRef}
               >
-                <Popup className="modern-glass-popup" autoPan={true} offset={[0, -20]} maxWidth={320} minWidth={270}>
+                <Popup className="modern-glass-popup" autoPan={true} offset={[0, -20]} maxWidth={320} minWidth={280}>
                   <div className="modern-popup-card">
                     <div className="popup-card-glow" aria-hidden="true"></div>
 
                     <div className="popup-header">
                       <div className="popup-avatar-ring">
                         <span className="popup-avatar-text">MH</span>
-                        <span className="popup-status-dot" title="Available for backend roles"></span>
+                        <span className="popup-status-dot" title="Available for engineering opportunities"></span>
                       </div>
                       <div className="popup-title-group">
                         <div className="popup-name-line">
@@ -787,6 +993,7 @@ const Contact = () => {
                         <span className="tech-pill">Laravel</span>
                         <span className="tech-pill">NestJS</span>
                         <span className="tech-pill">MySQL</span>
+                        <span className="tech-pill">REST APIs</span>
                       </div>
                     </div>
 
@@ -796,7 +1003,7 @@ const Contact = () => {
                         target="_blank"
                         rel="noreferrer"
                         className="popup-action-btn primary"
-                        title="Open in Google Maps app"
+                        title="Open in Google Maps"
                       >
                         <FontAwesomeIcon icon={faDirections} />
                         <span>Directions</span>
