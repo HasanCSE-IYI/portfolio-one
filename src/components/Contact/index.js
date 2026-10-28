@@ -17,9 +17,15 @@ import {
   faSatellite,
   faRoad,
   faMountain,
+  faTrafficLight,
+  faBus,
+  faBicycle,
+  faLayerGroup,
   faCrosshairs,
   faExpand,
   faCompress,
+  faDirections,
+  faLocationDot,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -36,40 +42,84 @@ delete L.Icon.Default.prototype._getIconUrl;
 // Link: https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9
 const BAYAZID_COORDS = [22.391135, 91.817740];
 
-// Multiple High-Resolution Google Map Layer Configurations with 2x Retina Clarity
+// 7 High-Resolution Google Map Layers with 2x Retina Clarity & English Mode Names
 const MAP_LAYERS = {
-  hybrid: {
-    id: 'hybrid',
-    label: 'স্যাটেলাইট',
-    title: 'HD স্যাটেলাইট ও রোড লেবেল (Google Hybrid 2x Retina)',
+  satellite: {
+    id: 'satellite',
+    label: 'Satellite',
+    title: 'Google HD Satellite & Street Labels (2x Retina)',
     icon: faSatellite,
     url: 'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     maxNativeZoom: 20,
-    maxZoom: 21,
-    attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Satellite',
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Satellite',
   },
-  street: {
-    id: 'street',
-    label: 'রোড ম্যাপ',
-    title: 'ক্লিয়ার রাস্তা ও স্থান নাম (Google Street 2x Retina)',
+  roadmap: {
+    id: 'roadmap',
+    label: 'Roadmap',
+    title: 'Google Standard Streets & Landmarks (2x Retina)',
     icon: faRoad,
     url: 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&scale=2',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     maxNativeZoom: 20,
-    maxZoom: 21,
-    attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Street',
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Roadmap',
   },
   terrain: {
     id: 'terrain',
-    label: 'টেরেন',
-    title: 'ভূপ্রকৃতি ও পাহাড়ী টপোগ্রাফি (Google Terrain 2x Retina)',
+    label: 'Terrain',
+    title: 'Google Topographic Terrain & Relief (2x Retina)',
     icon: faMountain,
     url: 'https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}&scale=2',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     maxNativeZoom: 20,
-    maxZoom: 21,
-    attribution: '&copy; <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Google Maps</a> Terrain',
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Terrain',
+  },
+  traffic: {
+    id: 'traffic',
+    label: 'Traffic',
+    title: 'Google Live Real-Time Traffic Congestion (2x Retina)',
+    icon: faTrafficLight,
+    url: 'https://{s}.google.com/vt/lyrs=m,traffic&x={x}&y={y}&z={z}&scale=2',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Traffic',
+  },
+  transit: {
+    id: 'transit',
+    label: 'Transit',
+    title: 'Google Public Transit & Rail Lines (2x Retina)',
+    icon: faBus,
+    url: 'https://{s}.google.com/vt/lyrs=m,transit&x={x}&y={y}&z={z}&scale=2',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Transit',
+  },
+  biking: {
+    id: 'biking',
+    label: 'Biking',
+    title: 'Google Dedicated Cycling Routes & Trails (2x Retina)',
+    icon: faBicycle,
+    url: 'https://{s}.google.com/vt/lyrs=m,bicycle&x={x}&y={y}&z={z}&scale=2',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Biking',
+  },
+  sat_traffic: {
+    id: 'sat_traffic',
+    label: 'Sat Traffic',
+    title: 'Google HD Satellite with Live Traffic Overlay (2x Retina)',
+    icon: faLayerGroup,
+    url: 'https://{s}.google.com/vt/lyrs=y,traffic&x={x}&y={y}&z={z}&scale=2',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    maxNativeZoom: 20,
+    maxZoom: 22,
+    attribution: '&copy; Google Maps Satellite Traffic',
   },
 };
 
@@ -163,7 +213,7 @@ const Contact = () => {
   const [formFeedback, setFormFeedback] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
-  const [activeMapLayer, setActiveMapLayer] = useState('hybrid')
+  const [activeMapLayer, setActiveMapLayer] = useState('satellite')
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInstance, setMapInstance] = useState(null)
   const markerRef = useRef(null)
@@ -580,6 +630,21 @@ const Contact = () => {
           </div>
 
           <div className={`map-wrap layer-${activeMapLayer} ${isFullscreen ? 'is-fullscreen' : ''}`}>
+            {/* Prominent Exit Fullscreen Button */}
+            {isFullscreen && (
+              <button
+                type="button"
+                className="map-fullscreen-exit-btn"
+                onClick={toggleFullscreen}
+                title="Exit Full View (Esc)"
+                aria-label="Exit Full View"
+              >
+                <FontAwesomeIcon icon={faTimes} className="exit-icon" />
+                <span className="exit-label">Exit Full View</span>
+                <kbd className="exit-kbd">ESC</kbd>
+              </button>
+            )}
+
             {/* Map Top Floating Header Controls */}
             <div className="map-glass-controls">
               <div className="map-layer-selector" role="tablist" aria-label="Map Layer Selector">
@@ -614,7 +679,7 @@ const Contact = () => {
                   type="button"
                   className={`map-action-btn fullscreen-btn ${isFullscreen ? 'active-fullscreen' : ''}`}
                   onClick={toggleFullscreen}
-                  title={isFullscreen ? 'ফুলস্ক্রিন বন্ধ করুন (Esc)' : 'পূর্ণ পর্দায় ম্যাপ দেখুন (Fullscreen)'}
+                  title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'View Fullscreen Map'}
                   aria-label={isFullscreen ? 'Exit Fullscreen' : 'View Fullscreen Map'}
                 >
                   <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} />
@@ -622,10 +687,43 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Bottom Floating Info Pill */}
-            <div className="map-bottom-pill">
-              <span className="live-radar-dot" aria-hidden="true"></span>
-              <span className="coords-text">22.3911° N, 91.8177° E · বায়েজীদ, চট্টগ্রাম</span>
+            {/* Floating Bottom Bar completely covering Leaflet attribution & Google Maps placeholders */}
+            <div className="map-floating-bottom-bar" role="complementary" aria-label="Map Location and Live Details">
+              <div className="bar-left-section">
+                <div className="live-radar-indicator" aria-hidden="true">
+                  <span className="radar-core"></span>
+                  <span className="radar-ping"></span>
+                </div>
+                <div className="location-info-cluster">
+                  <div className="primary-location">
+                    <span className="loc-name-bn">বায়জিদ, চট্টগ্রাম</span>
+                    <span className="loc-divider">•</span>
+                    <span className="loc-name-en">Bayazid, Chattogram</span>
+                  </div>
+                  <span className="coords-display">22.3911° N, 91.8177° E</span>
+                </div>
+              </div>
+
+              <div className="bar-center-section">
+                <span className="active-mode-pill">
+                  <FontAwesomeIcon icon={MAP_LAYERS[activeMapLayer]?.icon || faSatellite} className="mode-pill-icon" />
+                  <span className="mode-pill-label">{MAP_LAYERS[activeMapLayer]?.label}</span>
+                </span>
+                <span className="retina-tag">2x Retina HD</span>
+              </div>
+
+              <div className="bar-right-section">
+                <a
+                  href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bar-direct-maps-btn"
+                  title="Google Maps-এ বায়জিদ লোকেশন দেখুন"
+                >
+                  <FontAwesomeIcon icon={faDirections} />
+                  <span>Google Maps</span>
+                </a>
+              </div>
             </div>
 
             <MapContainer
@@ -636,11 +734,11 @@ const Contact = () => {
             >
               <TileLayer
                 key={activeMapLayer}
-                attribution={MAP_LAYERS[activeMapLayer]?.attribution || MAP_LAYERS.hybrid.attribution}
-                url={MAP_LAYERS[activeMapLayer]?.url || MAP_LAYERS.hybrid.url}
-                subdomains={MAP_LAYERS[activeMapLayer]?.subdomains || MAP_LAYERS.hybrid.subdomains}
+                attribution=""
+                url={MAP_LAYERS[activeMapLayer]?.url || MAP_LAYERS.satellite.url}
+                subdomains={MAP_LAYERS[activeMapLayer]?.subdomains || MAP_LAYERS.satellite.subdomains}
                 maxNativeZoom={MAP_LAYERS[activeMapLayer]?.maxNativeZoom || 20}
-                maxZoom={MAP_LAYERS[activeMapLayer]?.maxZoom || 21}
+                maxZoom={MAP_LAYERS[activeMapLayer]?.maxZoom || 22}
               />
 
               <Marker
@@ -648,8 +746,73 @@ const Contact = () => {
                 icon={redMarker3DIcon}
                 ref={markerRef}
               >
-                <Popup>
-                  Mahmud al Hasan · Bayazid, Chattogram :)
+                <Popup className="modern-glass-popup" autoPan={true} offset={[0, -20]} maxWidth={320} minWidth={270}>
+                  <div className="modern-popup-card">
+                    <div className="popup-card-glow" aria-hidden="true"></div>
+
+                    <div className="popup-header">
+                      <div className="popup-avatar-ring">
+                        <span className="popup-avatar-text">MH</span>
+                        <span className="popup-status-dot" title="Available for backend roles"></span>
+                      </div>
+                      <div className="popup-title-group">
+                        <div className="popup-name-line">
+                          <h4 className="popup-dev-name">Mahmud al Hasan</h4>
+                          <span className="popup-verified-badge" title="Verified Backend Engineer">
+                            <FontAwesomeIcon icon={faCheck} />
+                          </span>
+                        </div>
+                        <span className="popup-dev-designation">Backend Software Engineer</span>
+                      </div>
+                    </div>
+
+                    <div className="popup-divider"></div>
+
+                    <div className="popup-body">
+                      <div className="popup-info-row location">
+                        <FontAwesomeIcon icon={faLocationDot} className="info-icon pin" />
+                        <div className="location-text-col">
+                          <span className="location-title">Bayazid, Chattogram</span>
+                          <span className="location-sub">Chattogram Division, Bangladesh</span>
+                        </div>
+                      </div>
+
+                      <div className="popup-info-row coords">
+                        <FontAwesomeIcon icon={faCrosshairs} className="info-icon coords" />
+                        <code className="coords-code">22.391135° N, 91.817740° E</code>
+                      </div>
+
+                      <div className="popup-tech-pills">
+                        <span className="tech-pill">.NET Core</span>
+                        <span className="tech-pill">Laravel</span>
+                        <span className="tech-pill">NestJS</span>
+                        <span className="tech-pill">MySQL</span>
+                      </div>
+                    </div>
+
+                    <div className="popup-actions">
+                      <a
+                        href="https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="popup-action-btn primary"
+                        title="Open in Google Maps app"
+                      >
+                        <FontAwesomeIcon icon={faDirections} />
+                        <span>Directions</span>
+                      </a>
+                      <a
+                        href="https://wa.me/8801727328200"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="popup-action-btn secondary"
+                        title="Chat on WhatsApp"
+                      >
+                        <FontAwesomeIcon icon={faWhatsapp} />
+                        <span>WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
                 </Popup>
               </Marker>
             </MapContainer>
