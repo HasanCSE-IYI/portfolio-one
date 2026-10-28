@@ -2,6 +2,22 @@ import React, { createContext, useContext, useState, useEffect, useRef, useCallb
 
 const FocusContext = createContext(null);
 
+export const BRAINWAVE_MODES = {
+  alpha: { id: 'alpha', label: 'Alpha', hz: 10, icon: '🧠', tag: '10Hz Flow', desc: 'Flow State & Creative Architecture', carrier: 200 },
+  beta: { id: 'beta', label: 'Beta', hz: 18, icon: '⚡', tag: '18Hz Focus', desc: 'Active Problem Solving & Debugging', carrier: 220 },
+  theta: { id: 'theta', label: 'Theta', hz: 6, icon: '🌌', tag: '6Hz Insight', desc: 'Deep Intuition & Algorithmic Design', carrier: 180 },
+  gamma: { id: 'gamma', label: 'Gamma', hz: 40, icon: '💎', tag: '40Hz Peak', desc: 'Peak Cognitive Synthesis & Logic', carrier: 240 },
+  delta: { id: 'delta', label: 'Delta', hz: 2, icon: '🌙', tag: '2Hz Rest', desc: 'Deep Mental Recovery & Restoration', carrier: 150 },
+};
+
+export const AMBIENT_THEMES = [
+  { id: 'obsidian', name: 'Obsidian Dark', icon: '🌑', desc: 'Apple dark glassmorphism with subtle warm amber accents' },
+  { id: 'aurora', name: 'Nordic Aurora', icon: '🌌', desc: 'Ethereal emerald and cyan northern lights mesh' },
+  { id: 'cyberpunk', name: 'Cyberpunk Tokyo', icon: '⚡', desc: 'Midnight Tokyo neon purple and amber horizon' },
+  { id: 'nebula', name: 'Deep Nebula', icon: '🪐', desc: 'Cosmic deep space sapphire and violet stellar shimmer' },
+  { id: 'sunset', name: 'Pacific Sunset', icon: '🌅', desc: 'Warm Cupertino dusk peach, coral and gold ambient glow' },
+];
+
 export const SOUND_DEFINITIONS = [
   { id: 'brown', name: 'Brown Noise', category: 'Noise', icon: '🌊', desc: 'Warm deep low-frequency sound for deep focus' },
   { id: 'pink', name: 'Pink Noise', category: 'Noise', icon: '💨', desc: 'Balanced 1/f soothing static waterfall' },
@@ -183,6 +199,97 @@ export const FocusProvider = ({ children }) => {
     } catch {}
   }, []);
 
+  // Multi-State Brainwave Tuner (Alpha, Beta, Theta, Gamma, Delta)
+  const [brainwaveMode, setBrainwaveMode] = useState('alpha');
+  const brainwaveModeRef = useRef('alpha');
+  const binauralNodesRef = useRef(null);
+
+  const changeBrainwaveMode = useCallback((newMode) => {
+    setBrainwaveMode(newMode);
+    brainwaveModeRef.current = newMode;
+    const info = BRAINWAVE_MODES[newMode] || BRAINWAVE_MODES.alpha;
+    if (binauralNodesRef.current && audioCtxRef.current) {
+      const { oscL, oscR } = binauralNodesRef.current;
+      const now = audioCtxRef.current.currentTime;
+      try {
+        oscL.frequency.cancelScheduledValues(now);
+        oscR.frequency.cancelScheduledValues(now);
+        oscL.frequency.linearRampToValueAtTime(info.carrier, now + 1.0);
+        oscR.frequency.linearRampToValueAtTime(info.carrier + info.hz, now + 1.0);
+      } catch {}
+    }
+  }, []);
+
+  // Vinyl Tape Warmth Effect State
+  const [isVinylWarmth, setIsVinylWarmth] = useState(false);
+  const vinylNodeRef = useRef(null);
+
+  // Custom User Mix Presets (persisted in localStorage)
+  const [userPresets, setUserPresets] = useState(() => {
+    try {
+      const saved = localStorage.getItem('focus_user_presets');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const saveUserPreset = useCallback((name) => {
+    if (!name || !name.trim()) return;
+    const currentMix = {};
+    SOUND_DEFINITIONS.forEach((s) => {
+      if (volumes[s.id] > 0) currentMix[s.id] = volumes[s.id];
+    });
+    const newPreset = {
+      id: `custom-${Date.now()}`,
+      name: name.trim(),
+      icon: '✨',
+      desc: 'Custom developer soundscape',
+      mix: currentMix,
+      isCustom: true,
+    };
+    setUserPresets((prev) => {
+      const updated = [newPreset, ...prev];
+      try {
+        localStorage.setItem('focus_user_presets', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+    setActivePreset(newPreset.id);
+  }, [volumes]);
+
+  const deleteUserPreset = useCallback((id) => {
+    setUserPresets((prev) => {
+      const updated = prev.filter((p) => p.id !== id);
+      try {
+        localStorage.setItem('focus_user_presets', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+    setActivePreset((prev) => (prev === id ? null : prev));
+  }, []);
+
+  // Apple-style Mindful Box Breathing (4s Inhale, 4s Hold, 4s Exhale, 4s Hold)
+  const [isBreathingMode, setIsBreathingMode] = useState(false);
+  const [breathingPhase, setBreathingPhase] = useState('inhale');
+  const [breathingSeconds, setBreathingSeconds] = useState(4);
+
+  // Ambient Dynamic Backdrops (Obsidian, Aurora, Cyberpunk, Nebula, Sunset)
+  const [ambientTheme, setAmbientTheme] = useState(() => {
+    try {
+      return localStorage.getItem('focus_ambient_theme') || 'obsidian';
+    } catch {
+      return 'obsidian';
+    }
+  });
+
+  const changeAmbientTheme = useCallback((themeId) => {
+    setAmbientTheme(themeId);
+    try {
+      localStorage.setItem('focus_ambient_theme', themeId);
+    } catch {}
+  }, []);
+
   // Audio Context Initialization (Lazy on first interaction)
   const initAudioEngine = useCallback(() => {
     if (audioCtxRef.current) return audioCtxRef.current;
@@ -290,7 +397,8 @@ export const FocusProvider = ({ children }) => {
         try { noiseSource.stop(); } catch {}
       };
     } else if (soundId === 'binaural') {
-      // 10 Hz Binaural Alpha Beat: 210 Hz Left, 200 Hz Right
+      // Dynamic Binaural Beat (Alpha, Beta, Theta, Gamma, Delta)
+      const mode = BRAINWAVE_MODES[brainwaveModeRef.current] || BRAINWAVE_MODES.alpha;
       const oscL = ctx.createOscillator();
       const oscR = ctx.createOscillator();
       const panL = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
@@ -298,8 +406,10 @@ export const FocusProvider = ({ children }) => {
 
       oscL.type = 'sine';
       oscR.type = 'sine';
-      oscL.frequency.setValueAtTime(200, ctx.currentTime);
-      oscR.frequency.setValueAtTime(210, ctx.currentTime);
+      oscL.frequency.setValueAtTime(mode.carrier, ctx.currentTime);
+      oscR.frequency.setValueAtTime(mode.carrier + mode.hz, ctx.currentTime);
+
+      binauralNodesRef.current = { oscL, oscR };
 
       if (panL && panR) {
         panL.pan.setValueAtTime(-1, ctx.currentTime);
@@ -318,6 +428,7 @@ export const FocusProvider = ({ children }) => {
 
       stopFn = () => {
         try { oscL.stop(); oscR.stop(); } catch {}
+        binauralNodesRef.current = null;
       };
     } else if (soundId === 'crickets') {
       // Modulated High-Frequency Crickets Chirp
@@ -725,9 +836,82 @@ export const FocusProvider = ({ children }) => {
     if (isPlaying) {
       Object.values(soundNodesRef.current).forEach((s) => s.stopFn());
       soundNodesRef.current = {};
+      binauralNodesRef.current = null;
       setIsPlaying(false);
     }
   };
+
+  // Vinyl Tape Warmth Synthesizer Engine
+  useEffect(() => {
+    if (!audioCtxRef.current || !masterGainRef.current) return;
+    const ctx = audioCtxRef.current;
+
+    if (isVinylWarmth && isPlaying) {
+      if (vinylNodeRef.current) return;
+      try {
+        const bufferSize = ctx.sampleRate * 2;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          if (Math.random() < 0.0008) {
+            data[i] = (Math.random() * 2 - 1) * 0.7;
+          } else {
+            data[i] = (Math.random() * 2 - 1) * 0.015;
+          }
+        }
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.loop = true;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2200, ctx.currentTime);
+        filter.Q.setValueAtTime(1.4, ctx.currentTime);
+
+        const vGain = ctx.createGain();
+        vGain.gain.setValueAtTime(0.1, ctx.currentTime);
+
+        source.connect(filter);
+        filter.connect(vGain);
+        vGain.connect(masterGainRef.current);
+        source.start(0);
+
+        vinylNodeRef.current = { source, vGain };
+      } catch {}
+    } else {
+      if (vinylNodeRef.current) {
+        try {
+          vinylNodeRef.current.source.stop();
+        } catch {}
+        vinylNodeRef.current = null;
+      }
+    }
+  }, [isVinylWarmth, isPlaying]);
+
+  // Mindfulness Box Breathing Tick Engine (4s Inhale -> 4s Hold -> 4s Exhale -> 4s Hold)
+  useEffect(() => {
+    if (!isBreathingMode) return;
+
+    const timer = setInterval(() => {
+      setBreathingSeconds((prev) => {
+        if (prev <= 1) {
+          setBreathingPhase((curPhase) => {
+            let nextPhase = 'inhale';
+            if (curPhase === 'inhale') nextPhase = 'hold-in';
+            else if (curPhase === 'hold-in') nextPhase = 'exhale';
+            else if (curPhase === 'exhale') nextPhase = 'hold-out';
+            else if (curPhase === 'hold-out') nextPhase = 'inhale';
+            playChime();
+            return nextPhase;
+          });
+          return 4;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isBreathingMode, playChime]);
 
   // Timer Tick Engine
   useEffect(() => {
@@ -850,6 +1034,29 @@ export const FocusProvider = ({ children }) => {
         setIsYtPlaying,
         isYtFolded,
         setIsYtFolded,
+
+        // Brainwave Tuner
+        brainwaveMode,
+        changeBrainwaveMode,
+
+        // Vinyl Tape Warmth
+        isVinylWarmth,
+        setIsVinylWarmth,
+
+        // User Presets
+        userPresets,
+        saveUserPreset,
+        deleteUserPreset,
+
+        // Mindfulness Box Breathing
+        isBreathingMode,
+        setIsBreathingMode,
+        breathingPhase,
+        breathingSeconds,
+
+        // Ambient Backdrop Theme
+        ambientTheme,
+        changeAmbientTheme,
 
         // Zen Mode
         isZenMode,

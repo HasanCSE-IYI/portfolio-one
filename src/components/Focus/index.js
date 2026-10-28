@@ -22,6 +22,11 @@ import {
   faLink,
   faHistory,
   faTrashCan,
+  faRecordVinyl,
+  faSpa,
+  faKeyboard,
+  faPlus,
+  faWaveSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
@@ -29,6 +34,8 @@ import {
   useFocus,
   SOUND_DEFINITIONS,
   FOCUS_PRESETS,
+  BRAINWAVE_MODES,
+  AMBIENT_THEMES,
   YOUTUBE_CHANNELS,
   TIMER_MODES,
 } from '../../context/FocusContext';
@@ -39,6 +46,9 @@ const Focus = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [soundSearch, setSoundSearch] = useState('');
   const [shareCopied, setShareCopied] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [newPresetName, setNewPresetName] = useState('');
+  const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [customYtId, setCustomYtId] = useState('');
   const [ytError, setYtError] = useState(false);
   const canvasRef = useRef(null);
@@ -74,6 +84,24 @@ const Focus = () => {
     sessionHistory,
     clearSessionHistory,
 
+    brainwaveMode,
+    changeBrainwaveMode,
+
+    isVinylWarmth,
+    setIsVinylWarmth,
+
+    userPresets,
+    saveUserPreset,
+    deleteUserPreset,
+
+    isBreathingMode,
+    setIsBreathingMode,
+    breathingPhase,
+    breathingSeconds,
+
+    ambientTheme,
+    changeAmbientTheme,
+
     activeYouTube,
     setActiveYouTube,
     isYtFolded,
@@ -102,23 +130,56 @@ const Focus = () => {
     };
   }, [timerStatus]);
 
-  // Keyboard shortcut: F for Zen mode, Esc to exit
+  // Global Keyboard Shortcuts (Space, M, F, B, T, R, ?, Esc)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      if (e.key.toLowerCase() === 'f' && !isZenMode) {
-        setIsZenMode(true);
-      } else if (e.key === 'Escape' && isZenMode) {
-        setIsZenMode(false);
+
+      const key = e.key.toLowerCase();
+      if (key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        toggleMasterPlay();
+      } else if (key === 'm') {
+        setIsMuted(!isMuted);
+      } else if (key === 'f') {
+        setIsZenMode(!isZenMode);
+      } else if (key === 'b') {
+        setIsBreathingMode(!isBreathingMode);
+      } else if (key === 't') {
+        if (timerStatus === 'running') pauseTimer();
+        else startTimer();
+      } else if (key === 'r') {
+        resetTimer();
+      } else if (key === '?' || (e.shiftKey && key === '/')) {
+        setShowShortcutsModal(!showShortcutsModal);
+      } else if (e.key === 'Escape') {
+        if (showShortcutsModal) setShowShortcutsModal(false);
+        else if (showSaveModal) setShowSaveModal(false);
+        else if (isBreathingMode) setIsBreathingMode(false);
+        else if (isZenMode) setIsZenMode(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isZenMode, setIsZenMode]);
+  }, [
+    isZenMode,
+    setIsZenMode,
+    isBreathingMode,
+    setIsBreathingMode,
+    isMuted,
+    setIsMuted,
+    timerStatus,
+    startTimer,
+    pauseTimer,
+    resetTimer,
+    toggleMasterPlay,
+    showShortcutsModal,
+    showSaveModal,
+  ]);
 
-  // Prevent background scroll in Zen Mode
+  // Prevent background scroll in Zen Mode or Breathing Mode
   useEffect(() => {
-    if (isZenMode) {
+    if (isZenMode || isBreathingMode) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -126,9 +187,9 @@ const Focus = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isZenMode]);
+  }, [isZenMode, isBreathingMode]);
 
-  // Real-Time Canvas Audio Frequency Visualizer
+  // Real-Time Canvas Audio Frequency Visualizer (Retina High-DPI & Organic Breath)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -137,13 +198,16 @@ const Focus = () => {
 
     const handleResize = () => {
       if (canvas.parentElement) {
-        canvas.width = canvas.parentElement.clientWidth || 440;
-        canvas.height = 70;
+        const clientWidth = canvas.parentElement.clientWidth || 440;
+        const clientHeight = 74;
+        canvas.width = clientWidth;
+        canvas.height = clientHeight;
       }
     };
     handleResize();
     window.addEventListener('resize', handleResize);
 
+    let idleTime = 0;
     const renderWave = () => {
       const analyser = analyserRef.current;
       const width = canvas.width;
@@ -160,25 +224,34 @@ const Focus = () => {
         let x = 0;
 
         for (let i = 0; i < bufferLength; i++) {
-          const barHeight = (dataArray[i] / 255) * height * 0.9;
+          const barHeight = (dataArray[i] / 255) * height * 0.92;
           const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight);
-          gradient.addColorStop(0, 'rgba(245, 158, 11, 0.15)');
-          gradient.addColorStop(1, 'rgba(56, 189, 248, 0.85)');
+          gradient.addColorStop(0, 'rgba(245, 158, 11, 0.2)');
+          gradient.addColorStop(0.5, 'rgba(6, 182, 212, 0.85)');
+          gradient.addColorStop(1, 'rgba(168, 85, 247, 0.95)');
 
           ctx.fillStyle = gradient;
           ctx.beginPath();
-          ctx.roundRect(x, height - barHeight, barWidth - 2, barHeight, [2, 2, 0, 0]);
+          if (ctx.roundRect) {
+            ctx.roundRect(x, height - barHeight, barWidth - 2, barHeight, [3, 3, 0, 0]);
+          } else {
+            ctx.rect(x, height - barHeight, barWidth - 2, barHeight);
+          }
           ctx.fill();
 
           x += barWidth;
         }
       } else {
-        // Subtle resting baseline
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-        ctx.lineWidth = 1.5;
+        // Serene ambient sine ripple when idle/paused
+        idleTime += 0.03;
         ctx.beginPath();
         ctx.moveTo(0, height / 2);
-        ctx.lineTo(width, height / 2);
+        for (let x = 0; x < width; x += 4) {
+          const y = height / 2 + Math.sin(x * 0.025 + idleTime) * Math.sin(idleTime * 0.4) * 5;
+          ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.28)';
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       }
 
@@ -309,7 +382,14 @@ const Focus = () => {
 
   return (
     <>
-      <div className={`container focus-page ${isZenMode ? 'zen-mode-active' : ''}`}>
+      <div className={`container focus-page theme-${ambientTheme} ${isZenMode ? 'zen-mode-active' : ''}`}>
+        {/* Dynamic Ambient Mesh Glow Background */}
+        <div className="ambient-backdrop-mesh" aria-hidden="true">
+          <div className="mesh-glow orb-1"></div>
+          <div className="mesh-glow orb-2"></div>
+          <div className="mesh-glow orb-3"></div>
+        </div>
+
         {/* Zen Mode Immersive Overlay */}
         {isZenMode && (
           <div className="zen-overlay">
@@ -375,13 +455,195 @@ const Focus = () => {
           </div>
         )}
 
+        {/* Apple Mindfulness Box Breathing Fullscreen Experience */}
+        {isBreathingMode && (
+          <div className="mindful-breathing-overlay">
+            <button
+              type="button"
+              className="breathing-exit-btn"
+              onClick={() => setIsBreathingMode(false)}
+              aria-label="Exit Mindful Breathing (Esc)"
+              title="Exit Mindful Breathing (Esc)"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+              <span>Exit Reset</span>
+              <kbd>ESC</kbd>
+            </button>
+
+            <div className="breathing-stage">
+              <div className="breathing-kicker-badge">
+                <span>NEURAL MINDFULNESS RESET</span>
+              </div>
+
+              {/* Glowing Concentric Breathing Circle */}
+              <div className={`breathing-circle-wrap phase-${breathingPhase}`}>
+                <div className="breathing-aura-outer"></div>
+                <div className="breathing-aura-mid"></div>
+                <div className="breathing-circle-core">
+                  <span className="breathing-countdown">{breathingSeconds}</span>
+                  <span className="breathing-action-label">
+                    {breathingPhase === 'inhale' && 'Inhale Slowly'}
+                    {breathingPhase === 'hold-in' && 'Hold Breath'}
+                    {breathingPhase === 'exhale' && 'Exhale Gently'}
+                    {breathingPhase === 'hold-out' && 'Rest & Hold'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="box-guide-diagram">
+                <span className={`box-edge top ${breathingPhase === 'inhale' ? 'active' : ''}`}>Inhale 4s</span>
+                <span className={`box-edge right ${breathingPhase === 'hold-in' ? 'active' : ''}`}>Hold 4s</span>
+                <span className={`box-edge bottom ${breathingPhase === 'exhale' ? 'active' : ''}`}>Exhale 4s</span>
+                <span className={`box-edge left ${breathingPhase === 'hold-out' ? 'active' : ''}`}>Hold 4s</span>
+              </div>
+
+              <p className="breathing-subtext">
+                Box Breathing regulates autonomic vagal tone, reduces cortisol, and re-primes your prefrontal cortex for deep architectural problem solving.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Save Custom Preset Modal */}
+        {showSaveModal && (
+          <div className="modal-backdrop" onClick={() => setShowSaveModal(false)}>
+            <div className="preset-save-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-top">
+                <h3>Save Custom Soundscape</h3>
+                <button
+                  type="button"
+                  className="modal-close-btn"
+                  onClick={() => setShowSaveModal(false)}
+                  aria-label="Close save modal"
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+              <p className="modal-desc">
+                Save your active mix of {activeSoundsCount} ambient sound layers directly to your personal soundscape library.
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (newPresetName.trim()) {
+                    saveUserPreset(newPresetName.trim());
+                    setNewPresetName('');
+                    setShowSaveModal(false);
+                  }
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="e.g. Midnight Microservices Flow"
+                  value={newPresetName}
+                  onChange={(e) => setNewPresetName(e.target.value)}
+                  autoFocus
+                  maxLength={40}
+                  className="modal-input"
+                  aria-label="Custom soundscape preset name"
+                />
+                <div className="modal-actions-row">
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => setShowSaveModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn-save"
+                    disabled={!newPresetName.trim()}
+                  >
+                    Save Preset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Keyboard Shortcuts HUD Modal */}
+        {showShortcutsModal && (
+          <div className="modal-backdrop" onClick={() => setShowShortcutsModal(false)}>
+            <div className="shortcuts-hud-card" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-top">
+                <div className="header-title-group">
+                  <FontAwesomeIcon icon={faKeyboard} className="header-icon gold" />
+                  <h3>Studio Keyboard Shortcuts</h3>
+                </div>
+                <button
+                  type="button"
+                  className="modal-close-btn"
+                  onClick={() => setShowShortcutsModal(false)}
+                  aria-label="Close shortcuts modal"
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+
+              <div className="shortcuts-list">
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Toggle Master Ambience</span>
+                  <div className="keys"><kbd>Space</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Mute / Unmute Audio</span>
+                  <div className="keys"><kbd>M</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Zen Fullscreen Mode</span>
+                  <div className="keys"><kbd>F</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Mindful Box Breathing</span>
+                  <div className="keys"><kbd>B</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Start / Pause Pomodoro</span>
+                  <div className="keys"><kbd>T</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Reset Pomodoro Dial</span>
+                  <div className="keys"><kbd>R</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Toggle Shortcuts Help</span>
+                  <div className="keys"><kbd>?</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Exit Fullscreen or Modal</span>
+                  <div className="keys"><kbd>ESC</kbd></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Regular Focus Page Surface */}
         <div className="focus-header-zone">
           <div className="header-meta-row">
             <span className="focus-kicker-badge">
               <span className="kicker-pulse"></span>
-              <span>ENGINEERING FLOW STATE</span>
+              <span>ENGINEERING FLOW STATE · STUDIO</span>
             </span>
+
+            {/* Ambient Studio Theme Switcher */}
+            <div className="theme-switcher-bar" role="toolbar" aria-label="Ambient Backdrops">
+              {AMBIENT_THEMES.map((th) => (
+                <button
+                  key={th.id}
+                  type="button"
+                  className={`theme-chip ${ambientTheme === th.id ? 'active' : ''}`}
+                  onClick={() => changeAmbientTheme(th.id)}
+                  title={th.desc}
+                >
+                  <span className="th-icon">{th.icon}</span>
+                  <span className="th-name">{th.name.split(' ')[0]}</span>
+                </button>
+              ))}
+            </div>
+
             <div className="focus-status-badge">
               <span className={`status-indicator ${isPlaying || timerStatus === 'running' ? 'active' : ''}`}></span>
               <span>
@@ -414,7 +676,7 @@ const Focus = () => {
               className={`master-play-btn ${isPlaying ? 'playing' : ''}`}
               onClick={toggleMasterPlay}
               aria-label={isPlaying ? 'Pause All Ambient Sounds' : 'Play All Ambient Sounds'}
-              title={isPlaying ? 'Pause All Sounds' : 'Play All Sounds'}
+              title={isPlaying ? 'Pause All Sounds (Space)' : 'Play All Sounds (Space)'}
             >
               <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} className="play-icon" />
               <span>{isPlaying ? 'PAUSE AMBIENCE' : 'START AMBIENCE'}</span>
@@ -425,7 +687,7 @@ const Focus = () => {
                 type="button"
                 className="mute-btn"
                 onClick={() => setIsMuted(!isMuted)}
-                title={isMuted ? 'Unmute' : 'Mute'}
+                title={isMuted ? 'Unmute (M)' : 'Mute (M)'}
                 aria-label={isMuted ? 'Unmute master volume' : 'Mute master volume'}
               >
                 <FontAwesomeIcon icon={isMuted ? faVolumeXmark : faVolumeHigh} />
@@ -444,6 +706,29 @@ const Focus = () => {
               />
               <span className="vol-percent">{isMuted ? '0%' : `${masterVolume}%`}</span>
             </div>
+
+            {/* Analog Tape Warmth Effect Button */}
+            <button
+              type="button"
+              className={`analog-warmth-btn ${isVinylWarmth ? 'active' : ''}`}
+              onClick={() => setIsVinylWarmth(!isVinylWarmth)}
+              title="Toggle analog tape saturation & subtle vinyl warmth"
+            >
+              <FontAwesomeIcon icon={faRecordVinyl} className={isVinylWarmth ? 'spin-icon' : ''} />
+              <span>Analog Tape</span>
+            </button>
+
+            {/* Mindful Box Breathing Trigger */}
+            <button
+              type="button"
+              className={`mindful-btn ${isBreathingMode ? 'active' : ''}`}
+              onClick={() => setIsBreathingMode(true)}
+              title="Open Mindful Box Breathing Reset (B)"
+            >
+              <FontAwesomeIcon icon={faSpa} />
+              <span>Mindful Breath</span>
+              <kbd>B</kbd>
+            </button>
           </div>
 
           {/* Quick Presets Strip */}
@@ -468,8 +753,47 @@ const Focus = () => {
               );
             })}
 
+            {/* Custom User Presets */}
+            {userPresets.map((preset) => {
+              const isActive = activePreset === preset.id;
+              return (
+                <div key={preset.id} className="user-preset-chip-wrap">
+                  <button
+                    type="button"
+                    className={`preset-pill user-preset ${isActive ? 'active' : ''}`}
+                    onClick={() => applyPreset(preset)}
+                    title={preset.desc}
+                  >
+                    <span className="preset-icon">{preset.icon}</span>
+                    <span className="preset-name">{preset.name}</span>
+                    {isActive && <span className="preset-active-dot"></span>}
+                  </button>
+                  <button
+                    type="button"
+                    className="delete-preset-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteUserPreset(preset.id);
+                    }}
+                    title="Delete custom preset"
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+              );
+            })}
+
             {activeSoundsCount > 0 && (
               <>
+                <button
+                  type="button"
+                  className="save-preset-btn"
+                  onClick={() => setShowSaveModal(true)}
+                  title="Save current mix as custom preset"
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                  <span>Save Preset</span>
+                </button>
                 <button
                   type="button"
                   className={`share-mix-btn ${shareCopied ? 'copied' : ''}`}
@@ -491,18 +815,32 @@ const Focus = () => {
             )}
           </div>
 
-          {/* Zen Fullscreen Button */}
-          <button
-            type="button"
-            className="zen-mode-toggle-btn"
-            onClick={() => setIsZenMode(true)}
-            title="Enter Zen Fullscreen Mode (Press F)"
-            aria-label="Enter Zen Fullscreen Mode"
-          >
-            <FontAwesomeIcon icon={faExpand} />
-            <span className="btn-label">Zen Mode</span>
-            <kbd>F</kbd>
-          </button>
+          <div className="ribbon-right">
+            {/* Keyboard Shortcuts Button */}
+            <button
+              type="button"
+              className="shortcuts-hud-btn"
+              onClick={() => setShowShortcutsModal(true)}
+              title="Keyboard Shortcuts (?)"
+              aria-label="Keyboard Shortcuts"
+            >
+              <FontAwesomeIcon icon={faKeyboard} />
+              <kbd>?</kbd>
+            </button>
+
+            {/* Zen Fullscreen Button */}
+            <button
+              type="button"
+              className="zen-mode-toggle-btn"
+              onClick={() => setIsZenMode(true)}
+              title="Enter Zen Fullscreen Mode (Press F)"
+              aria-label="Enter Zen Fullscreen Mode"
+            >
+              <FontAwesomeIcon icon={faExpand} />
+              <span className="btn-label">Zen Mode</span>
+              <kbd>F</kbd>
+            </button>
+          </div>
         </div>
 
         {/* Main Workspace Grid: Timer & Visualizer (Left) vs Sounds & YouTube (Right) */}
@@ -758,6 +1096,41 @@ const Focus = () => {
                   );
                 })}
               </div>
+
+              {/* Multi-State Brainwave Tuner Panel */}
+              {(activeCategory === 'all' || activeCategory === 'brainwave') && !soundSearch && (
+                <div className="brainwave-tuner-panel">
+                  <div className="tuner-header">
+                    <div className="tuner-title-group">
+                      <FontAwesomeIcon icon={faWaveSquare} className="tuner-icon cyan" />
+                      <span className="tuner-title">Neural Frequency Architecture</span>
+                    </div>
+                    <span className="current-hz-badge">
+                      {BRAINWAVE_MODES[brainwaveMode]?.icon} {BRAINWAVE_MODES[brainwaveMode]?.tag} ({BRAINWAVE_MODES[brainwaveMode]?.hz} Hz)
+                    </span>
+                  </div>
+                  <div className="brainwave-modes-grid" role="radiogroup" aria-label="Brainwave Frequency Modes">
+                    {Object.values(BRAINWAVE_MODES).map((mode) => (
+                      <button
+                        key={mode.id}
+                        type="button"
+                        role="radio"
+                        aria-label={`${mode.label} ${mode.hz} Hz`}
+                        aria-checked={brainwaveMode === mode.id}
+                        className={`bw-mode-pill ${brainwaveMode === mode.id ? 'active' : ''}`}
+                        onClick={() => changeBrainwaveMode(mode.id)}
+                        title={mode.desc}
+                      >
+                        <span className="bw-icon">{mode.icon}</span>
+                        <div className="bw-info">
+                          <span className="bw-name">{mode.label}</span>
+                          <span className="bw-hz">{mode.hz} Hz</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Soundboard Tiles Grid */}
               {filteredSounds.length === 0 ? (

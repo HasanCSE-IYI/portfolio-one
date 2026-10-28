@@ -132,6 +132,48 @@ describe('Focus Station Page', () => {
 
     expect(screen.queryByText(/Exit Zen Mode/i)).not.toBeInTheDocument();
   });
+
+  test('enters and exits Apple Mindful Box Breathing session', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const mindfulBtn = screen.getByText(/Mindful Breath/i);
+    fireEvent.click(mindfulBtn);
+
+    // Breathing overlay should be visible
+    expect(screen.getByText(/NEURAL MINDFULNESS RESET/i)).toBeInTheDocument();
+    expect(screen.getByText(/Inhale Slowly/i)).toBeInTheDocument();
+
+    // Exit Breathing mode
+    const exitBtn = screen.getByRole('button', { name: /Exit Mindful Breathing/i });
+    fireEvent.click(exitBtn);
+
+    expect(screen.queryByText(/NEURAL MINDFULNESS RESET/i)).not.toBeInTheDocument();
+  });
+
+  test('renders brainwave tuner modes and allows mode selection', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    expect(screen.getByText(/Neural Frequency Architecture/i)).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /Beta 18 Hz/i })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /Theta 6 Hz/i })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /Gamma 40 Hz/i })).toBeInTheDocument();
+
+    const betaPill = screen.getByRole('radio', { name: /Beta 18 Hz/i });
+    fireEvent.click(betaPill);
+    expect(betaPill).toHaveAttribute('aria-checked', 'true');
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {
