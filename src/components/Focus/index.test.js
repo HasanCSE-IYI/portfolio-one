@@ -174,6 +174,42 @@ describe('Focus Station Page', () => {
     fireEvent.click(betaPill);
     expect(betaPill).toHaveAttribute('aria-checked', 'true');
   });
+
+  test('conforms to WCAG and Apple dialog accessibility best practices', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Open Mindful Breathing overlay
+    const mindfulBtn = screen.getByLabelText(/Open Mindful Box Breathing/i);
+    fireEvent.click(mindfulBtn);
+    const breathingDialog = screen.getByRole('dialog', { name: /Apple Mindful Box Breathing/i });
+    expect(breathingDialog).toHaveAttribute('aria-modal', 'true');
+
+    // Close via Exit button
+    fireEvent.click(screen.getByLabelText(/Exit Mindful Breathing/i));
+    expect(screen.queryByRole('dialog', { name: /Apple Mindful Box Breathing/i })).not.toBeInTheDocument();
+
+    // Open Zen Mode overlay
+    const zenBtn = screen.getByRole('button', { name: /Enter Zen Fullscreen Mode/i });
+    fireEvent.click(zenBtn);
+    const zenDialog = screen.getByRole('dialog', { name: /Zen Mode Fullscreen Studio/i });
+    expect(zenDialog).toHaveAttribute('aria-modal', 'true');
+
+    // Close via Exit button
+    fireEvent.click(screen.getByLabelText(/Exit Zen Mode/i));
+    expect(screen.queryByRole('dialog', { name: /Zen Mode Fullscreen Studio/i })).not.toBeInTheDocument();
+
+    // Open Shortcuts HUD
+    const hudBtn = screen.getByRole('button', { name: /Keyboard Shortcuts/i });
+    fireEvent.click(hudBtn);
+    const hudDialog = screen.getByRole('dialog', { name: /Studio Keyboard Shortcuts/i });
+    expect(hudDialog).toHaveAttribute('aria-modal', 'true');
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {

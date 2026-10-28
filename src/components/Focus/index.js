@@ -392,7 +392,7 @@ const Focus = () => {
 
         {/* Zen Mode Immersive Overlay */}
         {isZenMode && (
-          <div className="zen-overlay">
+          <div className="zen-overlay" role="dialog" aria-modal="true" aria-label="Zen Mode Fullscreen Studio">
             <button
               type="button"
               className="zen-exit-btn"
@@ -457,7 +457,7 @@ const Focus = () => {
 
         {/* Apple Mindfulness Box Breathing Fullscreen Experience */}
         {isBreathingMode && (
-          <div className="mindful-breathing-overlay">
+          <div className="mindful-breathing-overlay" role="dialog" aria-modal="true" aria-label="Apple Mindful Box Breathing">
             <button
               type="button"
               className="breathing-exit-btn"
@@ -507,9 +507,9 @@ const Focus = () => {
         {/* Save Custom Preset Modal */}
         {showSaveModal && (
           <div className="modal-backdrop" onClick={() => setShowSaveModal(false)}>
-            <div className="preset-save-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="preset-save-modal" role="dialog" aria-modal="true" aria-labelledby="save-preset-heading" onClick={(e) => e.stopPropagation()}>
               <div className="modal-top">
-                <h3>Save Custom Soundscape</h3>
+                <h3 id="save-preset-heading">Save Custom Soundscape</h3>
                 <button
                   type="button"
                   className="modal-close-btn"
@@ -566,11 +566,11 @@ const Focus = () => {
         {/* Keyboard Shortcuts HUD Modal */}
         {showShortcutsModal && (
           <div className="modal-backdrop" onClick={() => setShowShortcutsModal(false)}>
-            <div className="shortcuts-hud-card" onClick={(e) => e.stopPropagation()}>
+            <div className="shortcuts-hud-card" role="dialog" aria-modal="true" aria-labelledby="shortcuts-hud-heading" onClick={(e) => e.stopPropagation()}>
               <div className="modal-top">
                 <div className="header-title-group">
                   <FontAwesomeIcon icon={faKeyboard} className="header-icon gold" />
-                  <h3>Studio Keyboard Shortcuts</h3>
+                  <h3 id="shortcuts-hud-heading">Studio Keyboard Shortcuts</h3>
                 </div>
                 <button
                   type="button"
@@ -713,6 +713,7 @@ const Focus = () => {
               className={`analog-warmth-btn ${isVinylWarmth ? 'active' : ''}`}
               onClick={() => setIsVinylWarmth(!isVinylWarmth)}
               title="Toggle analog tape saturation & subtle vinyl warmth"
+              aria-label={isVinylWarmth ? 'Turn off analog tape warmth' : 'Turn on analog tape warmth'}
             >
               <FontAwesomeIcon icon={faRecordVinyl} className={isVinylWarmth ? 'spin-icon' : ''} />
               <span>Analog Tape</span>
@@ -724,6 +725,7 @@ const Focus = () => {
               className={`mindful-btn ${isBreathingMode ? 'active' : ''}`}
               onClick={() => setIsBreathingMode(true)}
               title="Open Mindful Box Breathing Reset (B)"
+              aria-label="Open Mindful Box Breathing Reset (Press B)"
             >
               <FontAwesomeIcon icon={faSpa} />
               <span>Mindful Breath</span>
@@ -790,6 +792,7 @@ const Focus = () => {
                   className="save-preset-btn"
                   onClick={() => setShowSaveModal(true)}
                   title="Save current mix as custom preset"
+                  aria-label="Save current sound mix as custom preset"
                 >
                   <FontAwesomeIcon icon={faPlus} />
                   <span>Save Preset</span>
@@ -799,6 +802,7 @@ const Focus = () => {
                   className={`share-mix-btn ${shareCopied ? 'copied' : ''}`}
                   onClick={handleShareMix}
                   title="Copy shareable link to this custom sound mix"
+                  aria-label="Copy shareable link to this custom sound mix"
                 >
                   <FontAwesomeIcon icon={shareCopied ? faCheck : faLink} />
                   <span>{shareCopied ? 'Link Copied!' : 'Share Mix'}</span>
@@ -808,6 +812,7 @@ const Focus = () => {
                   className="clear-mix-btn"
                   onClick={clearAllSounds}
                   title="Mute and reset all sound layers"
+                  aria-label="Mute and clear all active ambient sound layers"
                 >
                   Clear Mix
                 </button>
