@@ -127,6 +127,15 @@ const Focus = () => {
     const ctx = canvas.getContext('2d');
     let animId = null;
 
+    const handleResize = () => {
+      if (canvas.parentElement) {
+        canvas.width = canvas.parentElement.clientWidth || 440;
+        canvas.height = 70;
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     const renderWave = () => {
       const analyser = analyserRef.current;
       const width = canvas.width;
@@ -170,6 +179,7 @@ const Focus = () => {
 
     renderWave();
     return () => {
+      window.removeEventListener('resize', handleResize);
       if (animId) cancelAnimationFrame(animId);
     };
   }, [analyserRef, isPlaying]);
@@ -609,8 +619,11 @@ const Focus = () => {
                         onClick={() => toggleSound(sound.id)}
                         role="button"
                         tabIndex={0}
+                        aria-label={`Toggle ${sound.name}`}
+                        aria-pressed={isActive}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
                             toggleSound(sound.id);
                           }
                         }}
