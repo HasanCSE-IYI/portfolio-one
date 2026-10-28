@@ -502,6 +502,24 @@ export const FocusProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [timerStatus, timerMode, timerPhase, playChime]);
 
+  // Synchronize browser tab title with active Pomodoro countdown
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (timerStatus === 'running' || timerStatus === 'paused') {
+      const timeStr = timerMode === 'stopwatch'
+        ? `${Math.floor(stopwatchSeconds / 60).toString().padStart(2, '0')}:${(stopwatchSeconds % 60).toString().padStart(2, '0')}`
+        : `${Math.floor(timeRemaining / 60).toString().padStart(2, '0')}:${(timeRemaining % 60).toString().padStart(2, '0')}`;
+
+      const prefix = timerStatus === 'paused' ? '⏸️ ' : timerPhase === 'break' ? '☕ ' : '⏳ ';
+      document.title = `(${prefix}${timeStr}) Focus Station · Mahmud al Hasan`;
+    } else if (timerStatus === 'idle') {
+      if (document.title.startsWith('(')) {
+        document.title = 'Mahmud al Hasan | Backend Software Engineer (Laravel, Node.js & .NET)';
+      }
+    }
+  }, [timerStatus, timeRemaining, stopwatchSeconds, timerMode, timerPhase]);
+
   const startTimer = () => {
     setTimerStatus('running');
   };

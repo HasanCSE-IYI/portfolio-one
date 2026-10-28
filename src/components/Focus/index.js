@@ -82,6 +82,18 @@ const Focus = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Update document title for Focus Station
+  useEffect(() => {
+    if (timerStatus === 'idle') {
+      document.title = 'Focus Station | Mahmud al Hasan · Deep Work & Ambient Beats';
+    }
+    return () => {
+      if (timerStatus === 'idle') {
+        document.title = 'Mahmud al Hasan | Backend Software Engineer (Laravel, Node.js & .NET)';
+      }
+    };
+  }, [timerStatus]);
+
   // Keyboard shortcut: F for Zen mode, Esc to exit
   useEffect(() => {
     const handleKeyDown = (e) => {
