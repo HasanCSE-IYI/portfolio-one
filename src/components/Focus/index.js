@@ -486,7 +486,7 @@ const Focus = () => {
 
   return (
     <>
-      <div className={`focus-station-container theme-${ambientTheme}`}>
+      <div className={`container focus-page focus-station-container theme-${ambientTheme} ${isZenMode ? 'zen-mode-active' : ''}`}>
         {/* Ambient Gradient Mesh Glow Backdrops */}
         <div className="ambient-mesh-glow" aria-hidden="true">
           <div className="mesh-glow orb-1"></div>

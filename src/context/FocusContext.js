@@ -1013,7 +1013,12 @@ export const FocusProvider = ({ children }) => {
   const [completedSessions, setCompletedSessions] = useState(0);
   const [currentTask, setCurrentTask] = useState(() => {
     try {
-      return localStorage.getItem('focus_current_task') || 'Focused Deep Work & Calm Reflection';
+      const stored = localStorage.getItem('focus_current_task');
+      if (stored && (stored.includes('ASP.NET') || stored.includes('.NET') || stored.includes('Laravel') || stored.includes('Architecting'))) {
+        localStorage.setItem('focus_current_task', 'Focused Deep Work & Calm Reflection');
+        return 'Focused Deep Work & Calm Reflection';
+      }
+      return stored || 'Focused Deep Work & Calm Reflection';
     } catch {
       return 'Focused Deep Work & Calm Reflection';
     }
