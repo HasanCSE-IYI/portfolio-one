@@ -79,7 +79,7 @@
         min-width: 0;
 
         .source-icon {
-          font-size: 0.85rem;
+          font-size: 1.4rem;
 
           &.gold {
             color: #f59e0b;
@@ -90,7 +90,7 @@
         }
 
         .source-name {
-          font-size: 0.8rem;
+          font-size: 1.35rem;
           font-weight: 600;
           color: #f8fafc;
           white-space: nowrap;
@@ -114,12 +114,12 @@
         padding: 2px 8px;
 
         .timer-icon {
-          font-size: 0.72rem;
+          font-size: 1.3rem;
           color: #f59e0b;
         }
 
         .timer-readout {
-          font-size: 0.76rem;
+          font-size: 1.35rem;
           font-weight: 800;
           font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
           color: #f8fafc;
@@ -127,7 +127,7 @@
         }
 
         .phase-indicator {
-          font-size: 0.64rem;
+          font-size: 1.25rem;
           font-weight: 700;
           color: #f59e0b;
           letter-spacing: 0.04em;
@@ -153,7 +153,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(30, 41, 59, 0.8);
       color: #cbd5e1;
-      font-size: 0.78rem;
+      font-size: 1.35rem;
       cursor: pointer;
       text-decoration: none;
       transition: all 0.18s ease;
