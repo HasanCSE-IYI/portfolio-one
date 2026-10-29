@@ -53,7 +53,7 @@ const Focus = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
-  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('soundboard'); // 'soundboard' | 'timer'
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('timer'); // 'timer' (Pomodoro & YouTube priority) | 'soundboard'
   const [customLinkInput, setCustomLinkInput] = useState('');
   const [isIslandExpanded, setIsIslandExpanded] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
