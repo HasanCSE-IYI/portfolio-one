@@ -105,8 +105,8 @@ describe('Focus Station Page', () => {
     fireEvent.click(deepWorkTab);
     expect(screen.getByText('50:00')).toBeInTheDocument();
 
-    // Switch to Code Sprint (15 min)
-    const sprintTab = screen.getByRole('tab', { name: /Code Sprint/i });
+    // Switch to Focus Sprint (15 min)
+    const sprintTab = screen.getByRole('tab', { name: /Focus Sprint/i });
     fireEvent.click(sprintTab);
     expect(screen.getByText('15:00')).toBeInTheDocument();
   });
@@ -232,7 +232,7 @@ describe('Focus Station Page', () => {
     fireEvent.click(anotherLineBtn);
   });
 
-  test('renders YouTube Lo-Fi player with curated picks and fold toggle', () => {
+  test('renders YouTube Video player with direct link paste and fold toggle', () => {
     render(
       <FocusProvider>
         <MemoryRouter initialEntries={['/focus']}>
@@ -242,11 +242,12 @@ describe('Focus Station Page', () => {
     );
 
     // YouTube section header
-    expect(screen.getByText(/YouTube Lo-Fi & Focus Media/i)).toBeInTheDocument();
+    expect(screen.getByText(/YouTube Video Player/i)).toBeInTheDocument();
 
-    // Curated Picks
-    expect(screen.getAllByText(/Ya Nabi Salam Alayka/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/Maher Zain/i)[0]).toBeInTheDocument();
+    // Direct link input & Play Video button
+    const linkInput = screen.getByLabelText(/YouTube video link/i);
+    expect(linkInput).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Play Video/i })).toBeInTheDocument();
 
     // Video fold toggle
     const foldBtn = screen.getByLabelText(/Hide video/i);
@@ -273,7 +274,7 @@ describe('Focus Station Page', () => {
 
     // Expand Dynamic Island
     fireEvent.click(islandBtn);
-    expect(screen.getAllByText(/Ya Nabi Salam Alayka/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/Calm Ambient Stream/i)[0]).toBeInTheDocument();
 
     // Close Zen Mode
     fireEvent.click(screen.getByRole('button', { name: /Exit Zen Mode/i }));

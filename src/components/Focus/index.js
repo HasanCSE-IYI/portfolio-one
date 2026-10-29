@@ -42,7 +42,6 @@ import {
   TIMER_MODES,
   FOCUS_SCENES,
   FOCUS_QUOTES,
-  YOUTUBE_PICKS,
 } from '../../context/FocusContext';
 import './index.scss';
 
@@ -55,7 +54,6 @@ const Focus = () => {
   const [newPresetName, setNewPresetName] = useState('');
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('all'); // 'all' | 'soundboard' | 'timer' | 'youtube'
-  const [ytTab, setYtTab] = useState('picks'); // 'picks' | 'links'
   const [customLinkInput, setCustomLinkInput] = useState('');
   const [isIslandExpanded, setIsIslandExpanded] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
@@ -481,7 +479,6 @@ const Focus = () => {
     const ok = addCustomYtLink(customLinkInput.trim());
     if (ok) {
       setCustomLinkInput('');
-      setYtTab('links');
     }
   };
 
@@ -1369,7 +1366,7 @@ const Focus = () => {
             onClick={() => setActiveWorkspaceTab('youtube')}
           >
             <span className="tab-symbol">📺</span>
-            <span className="tab-text">YouTube Lo-Fi</span>
+            <span className="tab-text">YouTube Video</span>
             {isYtPlaying && (
               <span className="tab-pulse-dot red" title="YouTube stream active"></span>
             )}
@@ -1408,16 +1405,16 @@ const Focus = () => {
             MAIN WORKSPACE GRID: Left (Pomodoro & YouTube) vs Right (Soundboard)
            ========================================================================= */}
         <div className={`focus-grid-container view-${activeWorkspaceTab}`}>
-          {/* LEFT COLUMN: Pomodoro Timer, Spectrum Visualizer & YouTube Lo-Fi Studio */}
+          {/* LEFT COLUMN: Pomodoro Timer, Spectrum Visualizer & YouTube Studio */}
           <div className={`focus-left-column ${activeWorkspaceTab === 'all' || activeWorkspaceTab === 'timer' || activeWorkspaceTab === 'youtube' ? 'mobile-visible' : 'mobile-hidden'}`}>
             
-            {/* 1. YouTube Focus Player & Lo-Fi Video Section */}
+            {/* 1. YouTube Focus Player & Stream Section */}
             {(activeWorkspaceTab === 'all' || activeWorkspaceTab === 'youtube') && (
               <div className={`focus-card youtube-card ${activeWorkspaceTab === 'youtube' ? 'tab-priority' : ''}`}>
                 <div className="card-top-header">
                   <div className="header-title-group">
                     <FontAwesomeIcon icon={faTv} className="header-icon red" />
-                    <h3>YouTube Lo-Fi &amp; Focus Media</h3>
+                    <h3>YouTube Video Player</h3>
                     {isYtPlaying && (
                       <span className="yt-live-tag">
                         <span className="live-dot"></span> LIVE
@@ -1438,148 +1435,119 @@ const Focus = () => {
                   </div>
                 </div>
 
-              {/* YouTube Screen Container (Foldable) */}
-              <div className={`yt-screen-fold ${isYtFolded ? 'folded' : 'expanded'}`}>
-                <div className="yt-screen-aspect">
-                  <iframe
-                    ref={ytIframeRef}
-                    title="YouTube Focus Player"
-                    src={`https://www.youtube-nocookie.com/embed/${currentYtTrack ? currentYtTrack.id : '25wH52RSam8'}?autoplay=${isYtPlaying ? 1 : 0}&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
-                    className="yt-iframe"
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-
-              {/* Now Playing Bar with Dedicated Volume Slider */}
-              <div className="yt-now-playing-bar">
-                <div className="yt-info-group">
-                  <span className={`yt-state-pill ${isYtPlaying ? 'playing' : ''}`}>
-                    {isYtPlaying ? 'Now playing' : 'Paused'}
-                  </span>
-                  <span className="yt-title-text" title={currentYtTrack ? currentYtTrack.title : ''}>
-                    {currentYtTrack ? `${currentYtTrack.title} · ${currentYtTrack.sub}` : 'Select a track below'}
-                  </span>
-                </div>
-
-                <div className="yt-volume-control">
-                  <FontAwesomeIcon icon={faVolumeHigh} className="yt-vol-icon" />
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={ytVolume}
-                    onChange={(e) => setYtVolume(Number(e.target.value))}
-                    className="yt-volume-slider"
-                    aria-label="YouTube Volume"
-                  />
-                  <span className="yt-vol-val">{ytVolume}%</span>
-                </div>
-              </div>
-
-              {/* Curated Picks vs Your Links Tablist */}
-              <div className="yt-tabs-container">
-                <div className="yt-tablist" role="tablist" aria-label="YouTube Tracks">
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={ytTab === 'picks'}
-                    className={`yt-tab ${ytTab === 'picks' ? 'active' : ''}`}
-                    onClick={() => setYtTab('picks')}
-                  >
-                    <span>My picks</span>
-                    <span className="yt-tab-count">{YOUTUBE_PICKS.length}</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={ytTab === 'links'}
-                    className={`yt-tab ${ytTab === 'links' ? 'active' : ''}`}
-                    onClick={() => setYtTab('links')}
-                  >
-                    <span>Your links</span>
-                    <span className="yt-tab-count">{customYtLinks.length}</span>
-                  </button>
-                </div>
-
-                {/* Tab Panel: My picks (21 Curated Tracks) */}
-                {ytTab === 'picks' && (
-                  <div className="yt-picks-scroll">
-                    {YOUTUBE_PICKS.map((track) => {
-                      const isCurrent = currentYtTrack && currentYtTrack.id === track.id;
-                      return (
-                        <button
-                          key={track.id}
-                          type="button"
-                          className={`yt-row-btn ${isCurrent ? 'current' : ''}`}
-                          onClick={() => playYtTrack(track)}
-                          aria-label={`Play ${track.title} by ${track.sub}`}
-                        >
-                          <div className="yt-row-thumb">
-                            <img
-                              src={`https://i.ytimg.com/vi/${track.id}/mqdefault.jpg`}
-                              alt=""
-                              className="yt-thumb-img"
-                              loading="lazy"
-                            />
-                            {isCurrent && isYtPlaying && (
-                              <div className="voice-eq-bars" aria-hidden="true">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="yt-row-meta">
-                            <span className="yt-track-title">{track.title}</span>
-                            <span className="yt-track-sub">{track.sub}</span>
-                          </div>
-                        </button>
-                      );
-                    })}
+                {/* YouTube Screen Container (Foldable) */}
+                <div className={`yt-screen-fold ${isYtFolded ? 'folded' : 'expanded'}`}>
+                  <div className="yt-screen-aspect">
+                    <iframe
+                      ref={ytIframeRef}
+                      title="YouTube Focus Player"
+                      src={`https://www.youtube-nocookie.com/embed/${currentYtTrack ? currentYtTrack.id : '25wH52RSam8'}?autoplay=${isYtPlaying ? 1 : 0}&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+                      className="yt-iframe"
+                      allow="autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                    />
                   </div>
-                )}
+                </div>
 
-                {/* Tab Panel: Your links (Custom Saved YouTube Links) */}
-                {ytTab === 'links' && (
-                  <div className="yt-links-panel">
-                    <form className="yt-link-form" onSubmit={handleCustomLinkSubmit}>
+                {/* Now Playing Bar with Dedicated Volume Slider */}
+                <div className="yt-now-playing-bar">
+                  <div className="yt-info-group">
+                    <button
+                      type="button"
+                      className={`yt-play-toggle-btn ${isYtPlaying ? 'playing' : ''}`}
+                      onClick={toggleYtPlay}
+                      aria-label={isYtPlaying ? 'Pause YouTube video' : 'Play YouTube video'}
+                      title={isYtPlaying ? 'Pause video' : 'Play video'}
+                    >
+                      <FontAwesomeIcon icon={isYtPlaying ? faPause : faPlay} />
+                    </button>
+                    <div className="yt-title-meta">
+                      <span className={`yt-state-pill ${isYtPlaying ? 'playing' : ''}`}>
+                        {isYtPlaying ? 'Now playing' : 'Paused'}
+                      </span>
+                      <span className="yt-title-text" title={currentYtTrack ? currentYtTrack.title : ''}>
+                        {currentYtTrack ? `${currentYtTrack.title}` : 'Paste a video link below'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="yt-volume-control">
+                    <FontAwesomeIcon icon={faVolumeHigh} className="yt-vol-icon" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={ytVolume}
+                      onChange={(e) => setYtVolume(Number(e.target.value))}
+                      className="yt-volume-slider"
+                      aria-label="YouTube Volume"
+                    />
+                    <span className="yt-vol-val">{ytVolume}%</span>
+                  </div>
+                </div>
+
+                {/* Direct Link Entry & Saved Videos Section */}
+                <div className="yt-link-entry-section">
+                  <form className="yt-link-form" onSubmit={handleCustomLinkSubmit}>
+                    <div className="yt-input-wrapper">
+                      <FontAwesomeIcon icon={faLink} className="yt-input-icon" />
                       <input
                         type="text"
-                        placeholder="Paste any YouTube video link or ID..."
+                        placeholder="Paste any YouTube video link or ID (e.g. https://youtu.be/...)"
                         value={customLinkInput}
                         onChange={(e) => setCustomLinkInput(e.target.value)}
                         className="yt-link-text-input"
-                        aria-label="YouTube link"
+                        aria-label="YouTube video link"
                       />
-                      <button type="submit" className="yt-link-add-btn">
-                        Play
-                      </button>
-                    </form>
+                      {customLinkInput && (
+                        <button
+                          type="button"
+                          className="yt-clear-input-btn"
+                          onClick={() => setCustomLinkInput('')}
+                          aria-label="Clear link input"
+                        >
+                          <FontAwesomeIcon icon={faTimes} />
+                        </button>
+                      )}
+                    </div>
+                    <button type="submit" className="yt-link-add-btn">
+                      <FontAwesomeIcon icon={faPlus} />
+                      <span>Play Video</span>
+                    </button>
+                  </form>
 
-                    {customYtLinks.length === 0 ? (
-                      <div className="yt-links-empty">
-                        <p>Paste any YouTube video or lo-fi stream link above to mix it seamlessly with your ambient sounds.</p>
+                  {/* Saved / Recently Added Videos Tray */}
+                  {customYtLinks.length > 0 && (
+                    <div className="yt-saved-links-tray">
+                      <div className="yt-saved-header">
+                        <span className="saved-title">Saved Videos ({customYtLinks.length})</span>
                       </div>
-                    ) : (
-                      <div className="yt-custom-scroll">
+                      <div className="yt-saved-chips">
                         {customYtLinks.map((track) => {
                           const isCurrent = currentYtTrack && currentYtTrack.id === track.id;
                           return (
-                            <div key={track.id} className={`yt-custom-row ${isCurrent ? 'current' : ''}`}>
+                            <div
+                              key={track.id}
+                              className={`yt-video-chip ${isCurrent ? 'active' : ''}`}
+                            >
                               <button
                                 type="button"
-                                className="yt-custom-play"
+                                className="chip-select-btn"
                                 onClick={() => playYtTrack(track)}
+                                title={`Play ${track.title}`}
                               >
-                                <span className="yt-custom-title">{track.title}</span>
-                                <span className="yt-custom-sub">{track.sub}</span>
+                                <FontAwesomeIcon
+                                  icon={isCurrent && isYtPlaying ? faPause : faPlay}
+                                  className="chip-play-icon"
+                                />
+                                <span className="chip-label">{track.title}</span>
                               </button>
                               <button
                                 type="button"
-                                className="yt-custom-del"
+                                className="chip-delete-btn"
                                 onClick={() => removeCustomYtLink(track.id)}
-                                title="Remove link"
-                                aria-label="Remove link"
+                                title="Remove video"
+                                aria-label={`Remove ${track.title}`}
                               >
                                 <FontAwesomeIcon icon={faTrashCan} />
                               </button>
@@ -1587,12 +1555,26 @@ const Focus = () => {
                           );
                         })}
                       </div>
-                    )}
-                  </div>
-                )}
+                    </div>
+                  )}
+
+                  {customYtLinks.length === 0 && (
+                    <div className="yt-empty-helper">
+                      <p>Paste any YouTube music, ambient soundscape, or tutorial link above to stream it seamlessly with your nature sounds.</p>
+                      <button
+                        type="button"
+                        className="yt-sample-chip-btn"
+                        onClick={() => addCustomYtLink('https://www.youtube.com/watch?v=25wH52RSam8')}
+                        aria-label="Load Sample Calm Stream"
+                      >
+                        <FontAwesomeIcon icon={faPlay} />
+                        <span>Load Sample Calm Stream</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
             {/* 2. Pomodoro Timer Station */}
             {(activeWorkspaceTab === 'all' || activeWorkspaceTab === 'timer') && (
@@ -1703,7 +1685,7 @@ const Focus = () => {
               {/* Active Focus Task Input */}
               <div className="active-task-container">
                 <label htmlFor="focus-task-input" className="task-label">
-                  CURRENT SPRINT GOAL:
+                  CURRENT FOCUS GOAL:
                 </label>
                 <div className="task-input-wrap">
                   <input
@@ -1711,7 +1693,7 @@ const Focus = () => {
                     type="text"
                     value={currentTask}
                     onChange={(e) => setCurrentTask(e.target.value)}
-                    placeholder="e.g. Profiling EF Core queries & indexing"
+                    placeholder="e.g. Focused reading, writing, or quiet meditation..."
                     className="task-text-input"
                   />
                 </div>

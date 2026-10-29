@@ -4,7 +4,7 @@ const FocusContext = createContext(null);
 
 export const BRAINWAVE_MODES = {
   alpha: { id: 'alpha', label: 'Alpha', hz: 10, icon: '🧠', tag: '10Hz Flow', desc: 'Flow State & Creative Architecture', carrier: 200 },
-  beta: { id: 'beta', label: 'Beta', hz: 15, icon: '⚡', tag: '15Hz Focus', desc: 'Active Problem Solving & Debugging', carrier: 220 },
+  beta: { id: 'beta', label: 'Beta', hz: 15, icon: '⚡', tag: '15Hz Focus', desc: 'Active Problem Solving & Focused Clarity', carrier: 220 },
   gamma: { id: 'gamma', label: 'Gamma', hz: 40, icon: '💎', tag: '40Hz Peak', desc: 'Peak Cognitive Synthesis & Logic', carrier: 240 },
   theta: { id: 'theta', label: 'Theta', hz: 6, icon: '🌌', tag: '6Hz Insight', desc: 'Deep Intuition & Algorithmic Design', carrier: 180 },
   delta: { id: 'delta', label: 'Delta', hz: 2, icon: '🌙', tag: '2Hz Rest', desc: 'Deep Mental Recovery & Restoration', carrier: 150 },
@@ -104,67 +104,43 @@ export const FOCUS_QUOTES = [
   'One tab, one task. The rest can wait an hour.',
   'You don’t need more motivation. You need fewer tabs.',
   'Close the other tabs. They will still be there later.',
-  'Make it work first. Make it pretty after.',
-  'Read the error slowly. It usually says what is wrong.',
-  'The bug is rarely where you are looking. Look one layer down.',
-  'If you are stuck for an hour, explain it out loud. Even to a rubber duck.',
-  'Hard problems get easier once you write them down.',
-  'Plan the next step, not the whole staircase.',
-  'Small, boring, reliable. That is how real products get built.',
-  'Ship something today, even if it is small.',
-  'Your first version is allowed to be embarrassing. Shipping it is not optional.',
-  'Done is a feature.',
-  'Nobody remembers how long it took. They remember that it works.',
-  'The best code I wrote was the code I deleted.',
-  'A good commit message is a letter to future you.',
-  'Code like the next person to read it is tired. It might be you.',
-  'Write the test you wish someone had written for you.',
-  'Agents type fast. Taste is still your job.',
-  'Let the AI write it, then read every line like it’s yours. It is.',
-  'Learn the boring fundamentals. They never go out of date.',
-  'Build things you would use yourself. You will care about the details.',
-  'Every expert you admire was once confused by the same thing.',
-  'Momentum beats motivation.',
+  'Start with simplicity. Let beauty follow with care.',
+  'When you feel rushed, slow down. Quality needs space.',
+  'Clarity comes from stillness and patient attention.',
+  'If you are overwhelmed, write it down and breathe.',
+  'Small, steady steps build lasting momentum.',
+  'Focus on this moment. The rest will take care of itself.',
+  'Done with calm intention is better than rushed perfection.',
+  'Simplicity is the ultimate sophistication. Clear away the noise.',
+  'Take your time. Craft your work with quiet dedication.',
+  'Rest is not a reward; it is an essential part of the rhythm.',
+  'Calm mind, open heart, steady momentum.',
+  'Momentum beats motivation every day.',
   'Thirty quiet minutes beat three noisy hours.',
-  'Today’s focus is tomorrow’s skill.',
-  'Deep work feels slow while you are in it and fast when you look back.',
+  'Today’s calm presence is tomorrow’s peace of mind.',
+  'Deep work feels slow while you are in it and rewarding when you look back.',
   'Put the phone face down. You can check it at the break.',
-  'Don’t check the phone. It can wait until this function is done.',
+  'Don’t check notifications. They can wait until your session is complete.',
   'Breathe. Then pick the smallest next step.',
-  'Tea first. Then the hard bug.',
+  'Tea first. Then calm, steady focus.',
   'Dhaka is loud. Headphones on, world off.',
-  'Monsoon outside, focus inside.',
-  'Rain on a tin roof, a cup of cha, one clear task.',
+  'Monsoon outside, calm focus inside.',
+  'Rain on a tin roof, a cup of cha, one clear intention.',
   'Bismillah. Start small, start now.',
-  'Clean desk, clean diff, clear head.',
-  'The keyboard is waiting. So is the version of you that finished this.',
-  'Progress is quiet. Keep going.',
-  'Rest is part of the work.',
+  'Clean desk, calm breath, clear head.',
+  'Stillness is where true clarity happens.',
+  'Progress is quiet. Keep going gently.',
+  'Rest is an essential part of the work.',
 ];
 
-export const YOUTUBE_PICKS = [
-  { id: '25wH52RSam8', title: 'Ya Nabi Salam Alayka', sub: 'Maher Zain' },
-  { id: 'IxwdZLtMf7I', title: 'Qalbi Fil Madinah', sub: 'Maher Zain feat. Harris J' },
-  { id: 'AIyAPGumseA', title: 'Ramadan', sub: 'Maher Zain' },
-  { id: 'nuYA88YJSC4', title: 'Bika Moulhimi', sub: 'Maher Zain feat. Mustafa Ceceli' },
-  { id: '61C6FxprHuY', title: 'Barak Allah Lakuma', sub: 'Maher Zain' },
-  { id: '9Jsb0Dy6wWA', title: 'I’m Alive', sub: 'Maher Zain feat. Atif Aslam' },
-  { id: 'LkAm79Edtlo', title: 'Assalamu Alaika', sub: 'Maher Zain' },
-  { id: 'pFMofSt2vVw', title: 'Number One For Me', sub: 'Maher Zain' },
-  { id: 'UW5K0OzOmVI', title: 'Rahmatun Lil’Alameen', sub: 'Maher Zain' },
-  { id: '0a43eUZf5iQ', title: 'La Tahzan', sub: 'Maher Zain' },
-  { id: '4VU4_NZuL24', title: 'The Power', sub: 'Maher Zain' },
-  { id: 'KTkdQ2q3jCA', title: 'The Book of Allah Is My Constitution', sub: 'Muhammad al Muqit' },
-  { id: 'JqGv0EdJdJI', title: 'I Rise', sub: 'Muhammad al Muqit' },
-  { id: 'NrsCej6SVxM', title: 'The Beauty of Existence', sub: 'Muhammad al Muqit' },
-  { id: 'YiSQ_db-Dcw', title: 'The Way of the Tears', sub: 'Muhammad al Muqit' },
-  { id: 'JaHtx79UhIM', title: 'My Dream', sub: 'Muhammad al Muqit' },
-  { id: 'ZZEgiM8QMM4', title: 'My Mother', sub: 'Muhammad al Muqit' },
-  { id: 'Ov0-CBnOW4w', title: 'My Arabic Language', sub: 'Muhammad al Muqit' },
-  { id: 'VQSUCfRoZPM', title: 'Kun Fayakoon', sub: 'Othman Alibrahim' },
-  { id: 'D7mg8zkmiy8', title: 'Be Happy', sub: 'Othman Alibrahim' },
-  { id: 'mTTk1QX30t0', title: 'Watheq', sub: 'Othman Alibrahim' },
-];
+export const DEFAULT_YT_TRACK = {
+  id: '25wH52RSam8',
+  title: 'Calm Ambient Stream',
+  sub: 'YouTube Video',
+  thumb: 'https://i.ytimg.com/vi/25wH52RSam8/mqdefault.jpg',
+};
+
+export const YOUTUBE_PICKS = [DEFAULT_YT_TRACK];
 
 export const parseYoutubeUrl = (input) => {
   if (!input || typeof input !== 'string') return null;
@@ -791,9 +767,9 @@ export const FOCUS_PRESETS = [
   },
   {
     id: 'late-night-coding',
-    name: 'Late-Night Coding',
-    icon: '💻',
-    desc: 'Rain on window + Mechanical keyboard + Brown noise',
+    name: 'Midnight Flow',
+    icon: '🌙',
+    desc: 'Rain on window + Calm typing + Soothing brown noise',
     scene: 'desk',
     mix: { 'rain-on-window': 50, keyboard: 30, brown: 30 },
   },
@@ -882,7 +858,7 @@ export const FOCUS_PRESETS = [
 export const TIMER_MODES = {
   deep: { id: 'deep', label: 'Deep Work', focusMinutes: 50, breakMinutes: 10 },
   pomodoro: { id: 'pomodoro', label: 'Classic Pomodoro', focusMinutes: 25, breakMinutes: 5 },
-  sprint: { id: 'sprint', label: 'Code Sprint', focusMinutes: 15, breakMinutes: 3 },
+  sprint: { id: 'sprint', label: 'Focus Sprint', focusMinutes: 15, breakMinutes: 3 },
   stopwatch: { id: 'stopwatch', label: 'Continuous Flow', focusMinutes: 0, breakMinutes: 0 },
 };
 
@@ -928,7 +904,25 @@ export const FocusProvider = ({ children }) => {
   }, []);
 
   // YouTube Focus Player State
-  const [currentYtTrack, setCurrentYtTrack] = useState(() => YOUTUBE_PICKS[0]);
+  const [customYtLinks, setCustomYtLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('focus-links');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [currentYtTrack, setCurrentYtTrack] = useState(() => {
+    try {
+      const saved = localStorage.getItem('focus-links');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed[0];
+      }
+    } catch {}
+    return DEFAULT_YT_TRACK;
+  });
   const [isYtPlaying, setIsYtPlaying] = useState(false);
   const [ytVolume, setYtVolume] = useState(80);
   const [isYtFolded, setIsYtFolded] = useState(() => {
@@ -936,15 +930,6 @@ export const FocusProvider = ({ children }) => {
       return localStorage.getItem('yt-video-hidden') === '1';
     } catch {
       return false;
-    }
-  });
-
-  const [customYtLinks, setCustomYtLinks] = useState(() => {
-    try {
-      const saved = localStorage.getItem('focus-links');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
     }
   });
 
@@ -969,42 +954,36 @@ export const FocusProvider = ({ children }) => {
   }, []);
 
   const nextYtTrack = useCallback(() => {
-    if (!currentYtTrack) {
-      setCurrentYtTrack(YOUTUBE_PICKS[0]);
+    if (customYtLinks.length > 0) {
+      const idx = customYtLinks.findIndex((p) => p.id === currentYtTrack?.id);
+      const nextIdx = (idx + 1) % customYtLinks.length;
+      setCurrentYtTrack(customYtLinks[nextIdx]);
       setIsYtPlaying(true);
-      return;
     }
-    const idx = YOUTUBE_PICKS.findIndex((p) => p.id === currentYtTrack.id);
-    const nextIdx = (idx + 1) % YOUTUBE_PICKS.length;
-    setCurrentYtTrack(YOUTUBE_PICKS[nextIdx]);
-    setIsYtPlaying(true);
-  }, [currentYtTrack]);
+  }, [customYtLinks, currentYtTrack]);
 
   const prevYtTrack = useCallback(() => {
-    if (!currentYtTrack) {
-      setCurrentYtTrack(YOUTUBE_PICKS[0]);
+    if (customYtLinks.length > 0) {
+      const idx = customYtLinks.findIndex((p) => p.id === currentYtTrack?.id);
+      const prevIdx = (idx - 1 + customYtLinks.length) % customYtLinks.length;
+      setCurrentYtTrack(customYtLinks[prevIdx]);
       setIsYtPlaying(true);
-      return;
     }
-    const idx = YOUTUBE_PICKS.findIndex((p) => p.id === currentYtTrack.id);
-    const prevIdx = (idx - 1 + YOUTUBE_PICKS.length) % YOUTUBE_PICKS.length;
-    setCurrentYtTrack(YOUTUBE_PICKS[prevIdx]);
-    setIsYtPlaying(true);
-  }, [currentYtTrack]);
+  }, [customYtLinks, currentYtTrack]);
 
   const addCustomYtLink = useCallback((inputUrl) => {
     const parsed = parseYoutubeUrl(inputUrl);
     if (!parsed || !parsed.id) return false;
     const newTrack = {
       id: parsed.id,
-      title: `YouTube Focus Stream (${parsed.id})`,
-      sub: 'Custom Link',
+      title: `YouTube Video (${parsed.id})`,
+      sub: 'Custom Stream',
       list: parsed.list,
       thumb: `https://i.ytimg.com/vi/${parsed.id}/mqdefault.jpg`,
     };
     setCustomYtLinks((prev) => {
       const filtered = prev.filter((p) => p.id !== parsed.id);
-      const updated = [newTrack, ...filtered].slice(0, 15);
+      const updated = [newTrack, ...filtered].slice(0, 20);
       try {
         localStorage.setItem('focus-links', JSON.stringify(updated));
       } catch {}
@@ -1034,9 +1013,9 @@ export const FocusProvider = ({ children }) => {
   const [completedSessions, setCompletedSessions] = useState(0);
   const [currentTask, setCurrentTask] = useState(() => {
     try {
-      return localStorage.getItem('focus_current_task') || 'Architecting Cloud Native Microservices';
+      return localStorage.getItem('focus_current_task') || 'Focused Deep Work & Calm Reflection';
     } catch {
-      return 'Architecting Cloud Native Microservices';
+      return 'Focused Deep Work & Calm Reflection';
     }
   });
 
