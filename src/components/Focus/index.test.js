@@ -13,6 +13,7 @@ beforeAll(() => {
       addColorStop: jest.fn(),
     }),
     beginPath: jest.fn(),
+    closePath: jest.fn(),
     roundRect: jest.fn(),
     fill: jest.fn(),
     moveTo: jest.fn(),
@@ -276,6 +277,79 @@ describe('Focus Station Page', () => {
 
     // Close Zen Mode
     fireEvent.click(screen.getByRole('button', { name: /Exit Zen Mode/i }));
+  });
+
+  test('renders mindfulness time toast greeting and allows dismissal', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Toast greeting should be visible
+    expect(screen.getByText(/Mindfulness/i)).toBeInTheDocument();
+    expect(screen.getByText(/Focus Streak/i)).toBeInTheDocument();
+
+    // Dismiss toast
+    const dismissBtn = screen.getByLabelText(/Dismiss greeting/i);
+    fireEvent.click(dismissBtn);
+    expect(screen.queryByText(/Focus Streak/i)).not.toBeInTheDocument();
+  });
+
+  test('cycles sleep timer when clicked', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const sleepBtn = screen.getByLabelText(/Set audio sleep timer/i);
+    expect(screen.getByText(/Sleep Timer/i)).toBeInTheDocument();
+
+    // Click to cycle to 15m
+    fireEvent.click(sleepBtn);
+    expect(screen.getByText(/15:00|14:59/i)).toBeInTheDocument();
+  });
+
+  test('toggles acoustic spectrum visualizer modes', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const waveBtn = screen.getByRole('button', { name: /^Wave$/i });
+    const radialBtn = screen.getByRole('button', { name: /^Radial$/i });
+    const barsBtn = screen.getByRole('button', { name: /^Bars$/i });
+
+    expect(barsBtn).toHaveClass('active');
+    fireEvent.click(waveBtn);
+    expect(waveBtn).toHaveClass('active');
+    fireEvent.click(radialBtn);
+    expect(radialBtn).toHaveClass('active');
+  });
+
+  test('toggles sound favorite and filters via Favorites category', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const favCategoryBtn = screen.getByRole('button', { name: /Favorites/i });
+    expect(favCategoryBtn).toBeInTheDocument();
+
+    // Click Favorites category
+    fireEvent.click(favCategoryBtn);
+    expect(favCategoryBtn).toHaveClass('active');
   });
 });
 

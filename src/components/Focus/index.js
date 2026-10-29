@@ -30,6 +30,8 @@ import {
   faBackward,
   faForward,
   faQuoteLeft,
+  faStar,
+  faMoon,
 } from '@fortawesome/free-solid-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import {
@@ -58,6 +60,9 @@ const Focus = () => {
   const [isIslandExpanded, setIsIslandExpanded] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
   const [showZenMixer, setShowZenMixer] = useState(false);
+  const [visualizerMode, setVisualizerMode] = useState('bars'); // 'bars' | 'wave' | 'radial'
+  const [showTimeToast, setShowTimeToast] = useState(true);
+  const [visitStreak, setVisitStreak] = useState(1);
   const canvasRef = useRef(null);
   const idleTimerRef = useRef(null);
   const ytIframeRef = useRef(null);
@@ -79,6 +84,11 @@ const Focus = () => {
     activeSoundsCount,
     analyserRef,
     shuffleMix,
+    favorites,
+    toggleFavorite,
+    sleepTimerMinutes,
+    sleepTimerRemaining,
+    setSleepTimer,
 
     // Scenes & Atmosphere
     activeScene,
@@ -148,6 +158,46 @@ const Focus = () => {
       setLetterClass('text-animate-hover');
     }, 2000);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Focus Visit Streak Tracker (Nahian portfolio mindfulness concept)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('focus_visit_streak') || '0';
+      const streak = parseInt(raw, 10) + 1;
+      localStorage.setItem('focus_visit_streak', streak.toString());
+      setVisitStreak(streak);
+    } catch {}
+  }, []);
+
+  // Dynamic Time-of-Day Mindfulness Greeting
+  const timeGreeting = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) {
+      return {
+        icon: '🌅',
+        period: 'Morning',
+        message: 'Good morning! Hope your day’s off to a productive start. Assalamu alaikum!',
+      };
+    } else if (hour >= 12 && hour < 17) {
+      return {
+        icon: '☀️',
+        period: 'Afternoon',
+        message: 'Good afternoon! Ready for deep mindful flow. Stay hydrated and focused.',
+      };
+    } else if (hour >= 17 && hour < 22) {
+      return {
+        icon: '🌇',
+        period: 'Evening',
+        message: 'Good evening! Settle into your serene focus space and enjoy the soundscapes.',
+      };
+    } else {
+      return {
+        icon: '🌙',
+        period: 'Late Night',
+        message: 'Burning the midnight oil? Remember to take gentle breaks and rest your eyes.',
+      };
+    }
   }, []);
 
   // Zen Mode Auto-Idle Timeout (3.5s inactivity hides cursor and controls)
@@ -247,7 +297,7 @@ const Focus = () => {
     isZenMode,
   ]);
 
-  // Real-time Web Audio Visualizer
+  // Real-time Web Audio Visualizer (Multi-mode: Bars, Wave, Radial)
   useEffect(() => {
     let animId;
     const canvas = canvasRef.current;
@@ -267,49 +317,102 @@ const Focus = () => {
 
       let dataArray = new Uint8Array(32);
       if (analyserRef.current && isPlaying) {
-        dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-        analyserRef.current.getByteFrequencyData(dataArray);
+        if (visualizerMode === 'wave') {
+          dataArray = new Uint8Array(analyserRef.current.fftSize || 64);
+          analyserRef.current.getByteTimeDomainData(dataArray);
+        } else {
+          dataArray = new Uint8Array(analyserRef.current.frequencyBinCount || 32);
+          analyserRef.current.getByteFrequencyData(dataArray);
+        }
       }
 
-      const barCount = 28;
-      const totalSpacing = (barCount - 1) * 3;
-      const barWidth = Math.max(3, (width - totalSpacing) / barCount);
-      const grad = ctx.createLinearGradient(0, height, 0, 0);
-      grad.addColorStop(0, '#f59e0b');
-      grad.addColorStop(0.5, '#38bdf8');
-      grad.addColorStop(1, '#a855f7');
+      if (visualizerMode === 'wave') {
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        const len = dataArray.length || 64;
+        const sliceWidth = width / len;
+        let x = 0;
+        for (let i = 0; i < len; i++) {
+          const v = isPlaying
+            ? dataArray[i] / 128.0
+            : 1 + Math.sin(Date.now() * 0.003 + i * 0.15) * 0.18;
+          const y = (v * height) / 2;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+          x += sliceWidth;
+        }
+        if (ctx.stroke) ctx.stroke();
+        ctx.shadowBlur = 0;
+      } else if (visualizerMode === 'radial') {
+        const cx = width / 2;
+        const cy = height / 2;
+        const baseRadius = Math.min(width, height) * 0.28;
+        const ringPoints = 36;
+        ctx.beginPath();
+        for (let i = 0; i < ringPoints; i++) {
+          const angle = (i / ringPoints) * Math.PI * 2;
+          const val = isPlaying
+            ? (dataArray[i % dataArray.length] || 10) / 255
+            : 0.15 + Math.sin(Date.now() * 0.004 + i * 0.5) * 0.1;
+          const r = baseRadius + val * 24;
+          const x = cx + Math.cos(angle) * r;
+          const y = cy + Math.sin(angle) * r;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        if (ctx.closePath) ctx.closePath();
+        ctx.strokeStyle = '#a855f7';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#a855f7';
+        ctx.shadowBlur = 12;
+        if (ctx.stroke) ctx.stroke();
+        ctx.shadowBlur = 0;
+      } else {
+        // 'bars' mode
+        const barCount = 28;
+        const totalSpacing = (barCount - 1) * 3;
+        const barWidth = Math.max(3, (width - totalSpacing) / barCount);
+        const grad = ctx.createLinearGradient(0, height, 0, 0);
+        grad.addColorStop(0, '#f59e0b');
+        grad.addColorStop(0.5, '#38bdf8');
+        grad.addColorStop(1, '#a855f7');
 
-      for (let i = 0; i < barCount; i++) {
-        const value = isPlaying
-          ? dataArray[Math.floor((i / barCount) * dataArray.length)] || 8
-          : 6 + Math.sin(Date.now() * 0.003 + i * 0.4) * 4;
+        for (let i = 0; i < barCount; i++) {
+          const value = isPlaying
+            ? dataArray[Math.floor((i / barCount) * dataArray.length)] || 8
+            : 6 + Math.sin(Date.now() * 0.003 + i * 0.4) * 4;
 
-        const barHeight = Math.max(4, (value / 255) * (height - 8));
-        const x = i * (barWidth + 3);
-        const y = height - barHeight;
+          const barHeight = Math.max(4, (value / 255) * (height - 8));
+          const x = i * (barWidth + 3);
+          const y = height - barHeight;
 
-        ctx.fillStyle = grad;
-        if (ctx.roundRect) {
-          ctx.beginPath();
-          ctx.roundRect(x, y, barWidth, barHeight, [3, 3, 0, 0]);
-          ctx.fill();
-        } else {
-          ctx.fillRect(x, y, barWidth, barHeight);
+          ctx.fillStyle = grad;
+          if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(x, y, barWidth, barHeight, [3, 3, 0, 0]);
+            ctx.fill();
+          } else {
+            ctx.fillRect(x, y, barWidth, barHeight);
+          }
         }
       }
     };
 
     renderSpectrum();
     return () => cancelAnimationFrame(animId);
-  }, [analyserRef, isPlaying]);
+  }, [analyserRef, isPlaying, visualizerMode]);
 
   // Categories list and sound filtering
   const categories = useMemo(() => {
-    return ['all', 'Rain', 'Nature', 'Animals', 'Places', 'Transport', 'Things', 'City', 'Noise & Waves'];
+    return ['all', 'Favorites', 'Rain', 'Nature', 'Animals', 'Places', 'Transport', 'Things', 'City', 'Noise & Waves'];
   }, []);
 
   const getCategoryCount = (cat) => {
     if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
+    if (cat.toLowerCase() === 'favorites') return SOUND_DEFINITIONS.filter((s) => favorites.includes(s.id)).length;
     return SOUND_DEFINITIONS.filter(
       (s) => s.category.toLowerCase() === cat.toLowerCase()
     ).length;
@@ -319,6 +422,7 @@ const Focus = () => {
     return SOUND_DEFINITIONS.filter((sound) => {
       const matchCat =
         activeCategory === 'all' ||
+        (activeCategory === 'favorites' && favorites.includes(sound.id)) ||
         sound.category.toLowerCase() === activeCategory.toLowerCase();
       const matchSearch =
         !soundSearch.trim() ||
@@ -327,7 +431,7 @@ const Focus = () => {
         sound.category.toLowerCase().includes(soundSearch.toLowerCase());
       return matchCat && matchSearch;
     });
-  }, [activeCategory, soundSearch]);
+  }, [activeCategory, soundSearch, favorites]);
 
   // Time formatter
   const formatTime = (secs) => {
@@ -895,6 +999,32 @@ const Focus = () => {
         )}
 
         {/* =========================================================================
+            AL NAHIAN MINDFULNESS TIME-TOAST GREETING BANNER
+           ========================================================================= */}
+        {showTimeToast && (
+          <div className="time-toast-banner" role="status" aria-live="polite">
+            <div className="time-toast-left">
+              <span className="toast-icon-badge">{timeGreeting.icon}</span>
+              <div className="toast-text-col">
+                <span className="toast-period-tag">{timeGreeting.period} Mindfulness</span>
+                <p className="toast-message">{timeGreeting.message}</p>
+              </div>
+            </div>
+            <div className="time-toast-right">
+              <span className="toast-streak-badge">Focus Streak #{visitStreak}</span>
+              <button
+                type="button"
+                className="toast-dismiss-btn"
+                onClick={() => setShowTimeToast(false)}
+                aria-label="Dismiss greeting"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
             ATMOSPHERIC HERO SCENE & CINEMATIC HEADER ZONE
            ========================================================================= */}
         <section className="hero-scene-section" aria-labelledby="focus-hero-title">
@@ -1090,6 +1220,33 @@ const Focus = () => {
               <FontAwesomeIcon icon={faSpa} />
               <span>Mindful Breath</span>
               <kbd>B</kbd>
+            </button>
+
+            {/* Sleep Timer Countdown Trigger */}
+            <button
+              type="button"
+              className={`sleep-timer-btn ${sleepTimerMinutes ? 'active' : ''}`}
+              onClick={() => {
+                const steps = [null, 15, 30, 45, 60];
+                const curIdx = steps.indexOf(sleepTimerMinutes);
+                const nextStep = steps[(curIdx + 1) % steps.length];
+                setSleepTimer(nextStep);
+              }}
+              title={
+                sleepTimerMinutes
+                  ? `Sleep timer active: ${Math.ceil(sleepTimerRemaining / 60)}m remaining. Click to cycle.`
+                  : 'Set audio auto-fade sleep timer (15m, 30m, 45m, 60m)'
+              }
+              aria-label="Set audio sleep timer"
+            >
+              <FontAwesomeIcon icon={faMoon} className={sleepTimerMinutes ? 'glowing' : ''} />
+              <span>
+                {sleepTimerMinutes
+                  ? `${Math.floor(sleepTimerRemaining / 60)}:${(sleepTimerRemaining % 60)
+                      .toString()
+                      .padStart(2, '0')}`
+                  : 'Sleep Timer'}
+              </span>
             </button>
           </div>
 
@@ -1548,9 +1705,37 @@ const Focus = () => {
                   <FontAwesomeIcon icon={faWaveSquare} className="header-icon cyan" />
                   <h3>Acoustic Spectrum</h3>
                 </div>
-                <span className="viz-status-pill">
-                  {isPlaying ? 'ACTIVE FREQUENCY' : 'IDLE BREATH'}
-                </span>
+                <div className="viz-header-controls">
+                  <div className="viz-mode-segmented" role="group" aria-label="Visualizer Mode">
+                    <button
+                      type="button"
+                      className={`viz-mode-btn ${visualizerMode === 'bars' ? 'active' : ''}`}
+                      onClick={() => setVisualizerMode('bars')}
+                      aria-pressed={visualizerMode === 'bars'}
+                    >
+                      Bars
+                    </button>
+                    <button
+                      type="button"
+                      className={`viz-mode-btn ${visualizerMode === 'wave' ? 'active' : ''}`}
+                      onClick={() => setVisualizerMode('wave')}
+                      aria-pressed={visualizerMode === 'wave'}
+                    >
+                      Wave
+                    </button>
+                    <button
+                      type="button"
+                      className={`viz-mode-btn ${visualizerMode === 'radial' ? 'active' : ''}`}
+                      onClick={() => setVisualizerMode('radial')}
+                      aria-pressed={visualizerMode === 'radial'}
+                    >
+                      Radial
+                    </button>
+                  </div>
+                  <span className="viz-status-pill">
+                    {isPlaying ? 'ACTIVE FREQUENCY' : 'IDLE BREATH'}
+                  </span>
+                </div>
               </div>
               <div className="canvas-wrapper">
                 <canvas ref={canvasRef} className="spectrum-canvas" />
@@ -1744,6 +1929,18 @@ const Focus = () => {
                             <span className="sound-name">{sound.name}</span>
                             <span className="sound-desc">{sound.desc}</span>
                           </div>
+                          <button
+                            type="button"
+                            className={`sound-fav-star ${favorites.includes(sound.id) ? 'starred' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleFavorite(sound.id);
+                            }}
+                            title={favorites.includes(sound.id) ? `Unfavorite ${sound.name}` : `Star ${sound.name} as favorite`}
+                            aria-label={`Favorite ${sound.name}`}
+                          >
+                            <FontAwesomeIcon icon={faStar} />
+                          </button>
                           <span className={`sound-level-badge ${vol > 0 ? 'audible' : ''}`}>
                             {vol > 0 ? `${vol}%` : 'OFF'}
                           </span>

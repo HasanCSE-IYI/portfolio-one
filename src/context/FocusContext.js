@@ -1157,6 +1157,94 @@ export const FocusProvider = ({ children }) => {
     setActivePreset((prev) => (prev === id ? null : prev));
   }, []);
 
+  // Favorite Sounds (persisted in localStorage)
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem('focus_favorites');
+      return saved ? JSON.parse(saved) : ['rain', 'river', 'scifi', 'fire', 'birds'];
+    } catch {
+      return ['rain', 'river', 'scifi', 'fire', 'birds'];
+    }
+  });
+
+  const toggleFavorite = useCallback((soundId) => {
+    setFavorites((prev) => {
+      const next = prev.includes(soundId)
+        ? prev.filter((id) => id !== soundId)
+        : [...prev, soundId];
+      try {
+        localStorage.setItem('focus_favorites', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  }, []);
+
+  // Sleep Timer (auto fade & pause)
+  const [sleepTimerMinutes, setSleepTimerMinutes] = useState(null);
+  const [sleepTimerRemaining, setSleepTimerRemaining] = useState(0);
+
+  const setSleepTimer = useCallback((minutes) => {
+    if (!minutes || minutes <= 0) {
+      setSleepTimerMinutes(null);
+      setSleepTimerRemaining(0);
+    } else {
+      setSleepTimerMinutes(minutes);
+      setSleepTimerRemaining(minutes * 60);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!sleepTimerMinutes || sleepTimerRemaining <= 0) return;
+    const interval = setInterval(() => {
+      setSleepTimerRemaining((prev) => {
+        if (prev <= 1) {
+          setIsPlaying(false);
+          setSleepTimerMinutes(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [sleepTimerMinutes, sleepTimerRemaining]);
+
+  // Share Mix URL generator
+  const getShareableMixUrl = useCallback(() => {
+    const activeEntries = Object.entries(volumes).filter(([, v]) => v > 0);
+    if (activeEntries.length === 0) return null;
+    const mixStr = activeEntries.map(([id, v]) => `${id}:${v}`).join(',');
+    return `${window.location.origin}${window.location.pathname}#focus?mix=${encodeURIComponent(mixStr)}`;
+  }, [volumes]);
+
+  const loadMixString = useCallback((mixStr) => {
+    if (!mixStr) return;
+    const newVolumes = {};
+    SOUND_DEFINITIONS.forEach((s) => {
+      newVolumes[s.id] = 0;
+    });
+    mixStr.split(',').forEach((part) => {
+      const [id, volStr] = part.split(':');
+      const vol = parseInt(volStr, 10);
+      if (id && !isNaN(vol) && vol > 0 && newVolumes[id] !== undefined) {
+        newVolumes[id] = Math.min(100, Math.max(0, vol));
+      }
+    });
+    setVolumes(newVolumes);
+    setIsPlaying(true);
+  }, []);
+
+  useEffect(() => {
+    try {
+      const hash = window.location.hash;
+      if (hash && hash.includes('mix=')) {
+        const match = hash.match(/mix=([^&]+)/);
+        if (match && match[1]) {
+          loadMixString(decodeURIComponent(match[1]));
+        }
+      }
+    } catch {}
+  }, [loadMixString]);
+
   // Apple-style Mindful Box Breathing (4s Inhale, 4s Hold, 4s Exhale, 4s Hold)
   const [isBreathingMode, setIsBreathingMode] = useState(false);
   const [breathingPhase, setBreathingPhase] = useState('inhale');
@@ -1740,6 +1828,13 @@ export const FocusProvider = ({ children }) => {
     activeSoundsCount,
     analyserRef,
     shuffleMix,
+    favorites,
+    toggleFavorite,
+    sleepTimerMinutes,
+    sleepTimerRemaining,
+    setSleepTimer,
+    getShareableMixUrl,
+    loadMixString,
 
     // Scenes & Atmosphere
     activeScene,
