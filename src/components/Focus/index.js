@@ -276,8 +276,8 @@ const Focus = () => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - timerProgress * circumference;
 
-  // Filter soundboard categories & search
-  const categories = ['all', 'Rain & Storm', 'Water & Oceans', 'Forest & Wind', 'Wildlife', 'Resonance'];
+  // Sound categories matching Nahian's nature groupings
+  const categories = ['all', 'Rain', 'Nature', 'Animals', 'Noise & Waves'];
 
   const getCategoryCount = (cat) => {
     if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
@@ -490,7 +490,7 @@ const Focus = () => {
               >
                 <input
                   type="text"
-                  placeholder="e.g. Nordic Rain & Pines"
+                  placeholder="e.g. Monsoon Tin Roof & Pines"
                   value={newPresetName}
                   onChange={(e) => setNewPresetName(e.target.value)}
                   autoFocus
@@ -577,7 +577,7 @@ const Focus = () => {
           <div className="header-meta-row">
             <span className="focus-kicker-tag">
               <span className="kicker-pulse"></span>
-              ENGINEERING FLOW STATE
+              PURE NATURE SOUNDSCAPES
             </span>
 
             {/* Ambient Studio Theme Switcher */}
@@ -615,8 +615,8 @@ const Focus = () => {
           </h1>
 
           <p className="focus-lead">
-            High-fidelity procedural nature soundscapes, Pomodoro flow timer, and binaural resonance.
-            Leave this tab open and lock into deep, uninterrupted engineering.
+            Curated pure nature recordings from rain, tin roofs, forests, rivers and wildlife.
+            Craft your serene acoustic sanctuary and enter uninterrupted deep engineering flow.
           </p>
         </div>
 
@@ -804,7 +804,7 @@ const Focus = () => {
           </div>
         </div>
 
-        {/* Main Workspace Grid: Timer & Visualizer (Left) vs Pure Nature Sounds (Right) */}
+        {/* Main Workspace Grid: Timer (Left) vs Pure Nature Soundboard (Right) */}
         <div className="focus-grid-container">
           {/* Left Column: Pomodoro & Live Visualizer */}
           <div className="focus-left-column">
@@ -994,18 +994,18 @@ const Focus = () => {
             </div>
           </div>
 
-          {/* Right Column: 100% Procedural Nature Soundboard */}
+          {/* Right Column: Complete Nature Soundboard */}
           <div className="focus-right-column">
             <div className="focus-card soundboard-card">
               <div className="soundboard-header">
                 <div className="header-title-group">
                   <FontAwesomeIcon icon={faHeadphones} className="header-icon" />
-                  <h3>Procedural Nature Soundboard</h3>
+                  <h3>All Nature Sounds Library</h3>
                 </div>
                 <span className="active-tracks-count">
                   {activeSoundsCount > 0
                     ? `${activeSoundsCount} sound${activeSoundsCount > 1 ? 's' : ''} active`
-                    : 'All sounds idle'}
+                    : `${SOUND_DEFINITIONS.length} sounds available`}
                 </span>
               </div>
 
@@ -1014,7 +1014,7 @@ const Focus = () => {
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="sound-search-icon" />
                 <input
                   type="text"
-                  placeholder="Search nature sounds (e.g. rain, brook, birds, thunder)..."
+                  placeholder="Search 39 nature sounds (e.g. tin roof, river, birds, rain, thunder)..."
                   value={soundSearch}
                   onChange={(e) => setSoundSearch(e.target.value)}
                   className="sound-search-input"

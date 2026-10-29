@@ -4,9 +4,9 @@ const FocusContext = createContext(null);
 
 export const BRAINWAVE_MODES = {
   alpha: { id: 'alpha', label: 'Alpha', hz: 10, icon: '🧠', tag: '10Hz Flow', desc: 'Flow State & Creative Architecture', carrier: 200 },
-  beta: { id: 'beta', label: 'Beta', hz: 18, icon: '⚡', tag: '18Hz Focus', desc: 'Active Problem Solving & Debugging', carrier: 220 },
-  theta: { id: 'theta', label: 'Theta', hz: 6, icon: '🌌', tag: '6Hz Insight', desc: 'Deep Intuition & Algorithmic Design', carrier: 180 },
+  beta: { id: 'beta', label: 'Beta', hz: 15, icon: '⚡', tag: '15Hz Focus', desc: 'Active Problem Solving & Debugging', carrier: 220 },
   gamma: { id: 'gamma', label: 'Gamma', hz: 40, icon: '💎', tag: '40Hz Peak', desc: 'Peak Cognitive Synthesis & Logic', carrier: 240 },
+  theta: { id: 'theta', label: 'Theta', hz: 6, icon: '🌌', tag: '6Hz Insight', desc: 'Deep Intuition & Algorithmic Design', carrier: 180 },
   delta: { id: 'delta', label: 'Delta', hz: 2, icon: '🌙', tag: '2Hz Rest', desc: 'Deep Mental Recovery & Restoration', carrier: 150 },
 };
 
@@ -19,77 +19,405 @@ export const AMBIENT_THEMES = [
 ];
 
 export const SOUND_DEFINITIONS = [
-  { id: 'rain', name: 'Gentle Rain', category: 'Rain & Storm', icon: '🌧️', desc: 'Soothing rainfall drops on glass and leaves' },
-  { id: 'monsoon', name: 'Heavy Monsoon', category: 'Rain & Storm', icon: '⛈️', desc: 'Deep torrential downpour and roaring shower' },
-  { id: 'thunder', name: 'Distant Thunder', category: 'Rain & Storm', icon: '⚡', desc: 'Deep rolling rumbles over distant hills' },
-  { id: 'waves', name: 'Ocean Waves', category: 'Water & Oceans', icon: '🌊', desc: 'Rhythmic ocean surf and swells washing ashore' },
-  { id: 'stream', name: 'Babbling Brook', category: 'Water & Oceans', icon: '🏞️', desc: 'Gentle mountain creek burbling over stones' },
-  { id: 'waterfall', name: 'Deep Waterfall', category: 'Water & Oceans', icon: '💧', desc: 'Majestic forest cascades plunging into deep pool' },
-  { id: 'wind', name: 'Mountain Wind', category: 'Forest & Wind', icon: '🍃', desc: 'Alpine gusts sweeping through high pine ridges' },
-  { id: 'forest', name: 'Forest Pines', category: 'Forest & Wind', icon: '🌲', desc: 'Gentle breeze rustling through evergreen pines' },
-  { id: 'campfire', name: 'Crackling Campfire', category: 'Forest & Wind', icon: '🔥', desc: 'Soothing wood crackles, warm pops and embers' },
-  { id: 'birds', name: 'Morning Songbirds', category: 'Wildlife', icon: '🐦', desc: 'Gentle melodious wild woodland birdsong' },
-  { id: 'crickets', name: 'Summer Crickets', category: 'Wildlife', icon: '🦗', desc: 'Peaceful evening crickets under starry skies' },
-  { id: 'night_forest', name: 'Night Owl & Forest', category: 'Wildlife', icon: '🦉', desc: 'Nocturnal forest ambience with gentle distant calls' },
-  { id: 'binaural', name: 'Nature Resonance (10Hz)', category: 'Resonance', icon: '🧠', desc: 'Alpha wave harmonic attunement for deep flow' },
+  // Rain Category (9 sounds)
+  {
+    id: 'tin-roof',
+    name: 'Tin Roof Rain',
+    category: 'Rain',
+    icon: '🏠',
+    desc: 'Monsoon rain on tin roof, like home',
+    file: '/sounds/tin-roof.mp3',
+    fallbackUrl: 'https://nahian.bd/_astro/tin-roof.COAPwzA3.mp3',
+  },
+  {
+    id: 'light-rain',
+    name: 'Light Rain',
+    category: 'Rain',
+    icon: '🌧️',
+    desc: 'Calm and steady gentle drizzle',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/light-rain.mp3',
+  },
+  {
+    id: 'heavy-rain',
+    name: 'Heavy Rain',
+    category: 'Rain',
+    icon: '⛈️',
+    desc: 'Torrents of pelting downpour',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/heavy-rain.mp3',
+  },
+  {
+    id: 'thunder',
+    name: 'Thunder',
+    category: 'Rain',
+    icon: '⚡',
+    desc: 'Deep rolling atmospheric thunder',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/thunder.mp3',
+  },
+  {
+    id: 'rain-on-window',
+    name: 'Rain on Window',
+    category: 'Rain',
+    icon: '🪟',
+    desc: 'Soothing rain drumming on glass',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-window.mp3',
+  },
+  {
+    id: 'rain-on-car-roof',
+    name: 'Rain on Car Roof',
+    category: 'Rain',
+    icon: '🚗',
+    desc: 'Cosy pitter-patter inside a parked car',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-car-roof.mp3',
+  },
+  {
+    id: 'rain-on-umbrella',
+    name: 'Rain on Umbrella',
+    category: 'Rain',
+    icon: '☂️',
+    desc: 'Tapping drops on taut nylon umbrella',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-umbrella.mp3',
+  },
+  {
+    id: 'rain-on-tent',
+    name: 'Rain on Tent',
+    category: 'Rain',
+    icon: '⛺',
+    desc: 'Wilderness camping in a rainstorm',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-tent.mp3',
+  },
+  {
+    id: 'rain-on-leaves',
+    name: 'Rain on Leaves',
+    category: 'Rain',
+    icon: '🍃',
+    desc: 'Splashes falling through lush foliage',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-leaves.mp3',
+  },
+
+  // Nature & Water Category (14 sounds)
+  {
+    id: 'forest',
+    name: 'Forest Woods',
+    category: 'Nature',
+    icon: '🌲',
+    desc: 'Woods ambience with breeze & birds',
+    file: '/sounds/forest.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/forest.mp3',
+  },
+  {
+    id: 'river',
+    name: 'Flowing River',
+    category: 'Nature',
+    icon: '🏞️',
+    desc: 'Crisp mountain river rushing over rocks',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/river.mp3',
+  },
+  {
+    id: 'waves',
+    name: 'Ocean Waves',
+    category: 'Nature',
+    icon: '🌊',
+    desc: 'Rhythmic ocean swells washing shore',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/waves.mp3',
+  },
+  {
+    id: 'waterfall',
+    name: 'Waterfall',
+    category: 'Nature',
+    icon: '💧',
+    desc: 'Deep roaring cascade into mountain pool',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/waterfall.mp3',
+  },
+  {
+    id: 'droplets',
+    name: 'Water Droplets',
+    category: 'Nature',
+    icon: '🫧',
+    desc: 'Serene cave drops in quiet water',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/droplets.mp3',
+  },
+  {
+    id: 'campfire',
+    name: 'Campfire',
+    category: 'Nature',
+    icon: '🔥',
+    desc: 'Crackling warm wood, gentle sparks',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/campfire.mp3',
+  },
+  {
+    id: 'wind',
+    name: 'Mountain Wind',
+    category: 'Nature',
+    icon: '🍃',
+    desc: 'Alpine gust sweeping across ridges',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/wind.mp3',
+  },
+  {
+    id: 'wind-in-trees',
+    name: 'Wind in Trees',
+    category: 'Nature',
+    icon: '🌳',
+    desc: 'Whistling wind in tall tree branches',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/wind-in-trees.mp3',
+  },
+  {
+    id: 'jungle',
+    name: 'Tropical Jungle',
+    category: 'Nature',
+    icon: '🌴',
+    desc: 'Exotic rainforest canopy soundscape',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/jungle.mp3',
+  },
+  {
+    id: 'walk-in-snow',
+    name: 'Walk in Snow',
+    category: 'Nature',
+    icon: '❄️',
+    desc: 'Crunching footsteps on fresh powder snow',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/walk-in-snow.mp3',
+  },
+  {
+    id: 'walk-on-gravel',
+    name: 'Walk on Gravel',
+    category: 'Nature',
+    icon: '🪨',
+    desc: 'Rhythmic footsteps along gravel trail',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/walk-on-gravel.mp3',
+  },
+  {
+    id: 'walk-on-leaves',
+    name: 'Walk on Leaves',
+    category: 'Nature',
+    icon: '🍂',
+    desc: 'Crisp autumn leaf rustle beneath shoes',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/walk-on-leaves.mp3',
+  },
+  {
+    id: 'underwater',
+    name: 'Underwater',
+    category: 'Nature',
+    icon: '🤿',
+    desc: 'Deep aquatic ocean calm & sonar bubbles',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/underwater.mp3',
+  },
+  {
+    id: 'wind-chimes',
+    name: 'Wind Chimes',
+    category: 'Nature',
+    icon: '🎐',
+    desc: 'Melodic bamboo & metal breeze chimes',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/wind-chimes.mp3',
+  },
+
+  // Animals & Wildlife Category (8 sounds)
+  {
+    id: 'birds',
+    name: 'Songbirds',
+    category: 'Animals',
+    icon: '🐦',
+    desc: 'Melodious woodland birds in morning light',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/birds.mp3',
+  },
+  {
+    id: 'crickets',
+    name: 'Summer Crickets',
+    category: 'Animals',
+    icon: '🦗',
+    desc: 'Nocturnal meadow chirps under stars',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/crickets.mp3',
+  },
+  {
+    id: 'frog',
+    name: 'Pond Frogs',
+    category: 'Animals',
+    icon: '🐸',
+    desc: 'Tranquil wetland frogs croaking peacefully',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/frog.mp3',
+  },
+  {
+    id: 'owl',
+    name: 'Night Owl',
+    category: 'Animals',
+    icon: '🦉',
+    desc: 'Gentle distant nocturnal forest call',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/owl.mp3',
+  },
+  {
+    id: 'seagulls',
+    name: 'Coastal Seagulls',
+    category: 'Animals',
+    icon: '🕊️',
+    desc: 'Sea birds calling over ocean breezes',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/seagulls.mp3',
+  },
+  {
+    id: 'whale',
+    name: 'Whale Songs',
+    category: 'Animals',
+    icon: '🐋',
+    desc: 'Deep marine whale calls and echoes',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/whale.mp3',
+  },
+  {
+    id: 'cat-purring',
+    name: 'Cat Purring',
+    category: 'Animals',
+    icon: '🐱',
+    desc: 'Cosy, steady rhythmic feline purr',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/cat-purring.mp3',
+  },
+  {
+    id: 'beehive',
+    name: 'Beehive Meadow',
+    category: 'Animals',
+    icon: '🐝',
+    desc: 'Gentle honeybee garden hum',
+    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/beehive.mp3',
+  },
+
+  // Noise & Neural Waves Category (8 sounds)
+  {
+    id: 'brown',
+    name: 'Brown Noise',
+    category: 'Noise & Waves',
+    icon: '🌊',
+    desc: 'Deep warm low-frequency acoustic warmth',
+    type: 'procedural_noise',
+    noiseType: 'brown',
+  },
+  {
+    id: 'pink',
+    name: 'Pink Noise',
+    category: 'Noise & Waves',
+    icon: '💨',
+    desc: 'Gentle balanced 1/f rainfall noise',
+    type: 'procedural_noise',
+    noiseType: 'pink',
+  },
+  {
+    id: 'white',
+    name: 'White Noise',
+    category: 'Noise & Waves',
+    icon: '📻',
+    desc: 'Crisp wideband static masking voices',
+    type: 'procedural_noise',
+    noiseType: 'white',
+  },
+  {
+    id: 'alpha',
+    name: 'Binaural Alpha (10Hz)',
+    category: 'Noise & Waves',
+    icon: '🧠',
+    desc: '10 Hz frequency for calm creative flow',
+    type: 'binaural',
+    hz: 10,
+    carrier: 200,
+  },
+  {
+    id: 'beta',
+    name: 'Binaural Beta (15Hz)',
+    category: 'Noise & Waves',
+    icon: '⚡',
+    desc: '15 Hz active focus and problem-solving',
+    type: 'binaural',
+    hz: 15,
+    carrier: 220,
+  },
+  {
+    id: 'gamma',
+    name: 'Binaural Gamma (40Hz)',
+    category: 'Noise & Waves',
+    icon: '💎',
+    desc: '40 Hz peak cognitive synthesis',
+    type: 'binaural',
+    hz: 40,
+    carrier: 240,
+  },
+  {
+    id: 'theta',
+    name: 'Binaural Theta (6Hz)',
+    category: 'Noise & Waves',
+    icon: '🌌',
+    desc: '6 Hz deep intuition & algorithmic vision',
+    type: 'binaural',
+    hz: 6,
+    carrier: 180,
+  },
+  {
+    id: 'delta',
+    name: 'Binaural Delta (2Hz)',
+    category: 'Noise & Waves',
+    icon: '🌙',
+    desc: '2 Hz deep recovery and restoration',
+    type: 'binaural',
+    hz: 2,
+    carrier: 150,
+  },
 ];
 
 export const FOCUS_PRESETS = [
   {
+    id: 'monsoon-tin-roof',
+    name: 'Monsoon Tin Roof',
+    icon: '🏠',
+    desc: 'Tin roof rain + Thunder + Wind in trees',
+    mix: { 'tin-roof': 70, 'thunder': 45, 'wind-in-trees': 35 },
+  },
+  {
     id: 'nordic-rain',
     name: 'Nordic Pine Rain',
     icon: '🌲',
-    desc: 'Forest Pines + Gentle Rain + Crackling Campfire',
-    mix: { forest: 60, rain: 50, campfire: 35 },
-  },
-  {
-    id: 'monsoon-storm',
-    name: 'Monsoon Sanctuary',
-    icon: '⛈️',
-    desc: 'Heavy Monsoon + Distant Thunder + Babbling Brook',
-    mix: { monsoon: 65, thunder: 40, stream: 35 },
+    desc: 'Rain on leaves + Forest woods + Campfire',
+    mix: { 'forest': 60, 'rain-on-leaves': 50, 'campfire': 35 },
   },
   {
     id: 'pacific-surf',
-    name: 'Pacific Ocean Surf',
+    name: 'Pacific Surf & Birds',
     icon: '🌊',
-    desc: 'Ocean Waves + Mountain Wind + Morning Songbirds',
-    mix: { waves: 70, wind: 35, birds: 30 },
+    desc: 'Ocean waves + Seagulls + Mountain wind',
+    mix: { 'waves': 65, 'seagulls': 40, 'wind': 35 },
   },
   {
     id: 'tranquil-brook',
-    name: 'Tranquil Brook Sanctuary',
+    name: 'Tranquil Mountain River',
     icon: '🏞️',
-    desc: 'Babbling Brook + Forest Pines + Morning Songbirds',
-    mix: { stream: 65, forest: 45, birds: 40 },
+    desc: 'Flowing river + Water droplets + Songbirds',
+    mix: { 'river': 65, 'droplets': 40, 'birds': 45 },
   },
   {
-    id: 'alpine-cabin',
-    name: 'Alpine Mountain Cabin',
-    icon: '🏔️',
-    desc: 'Mountain Wind + Crackling Campfire + Distant Thunder',
-    mix: { wind: 55, campfire: 50, thunder: 30 },
+    id: 'cosy-tent-storm',
+    name: 'Cosy Wilderness Tent',
+    icon: '⛺',
+    desc: 'Rain on tent + Distant thunder + Campfire',
+    mix: { 'rain-on-tent': 65, 'thunder': 40, 'campfire': 45 },
   },
   {
-    id: 'deep-waterfall',
-    name: 'Deep Forest Waterfall',
-    icon: '💧',
-    desc: 'Deep Waterfall + Mountain Wind + Nature Resonance',
-    mix: { waterfall: 65, wind: 40, binaural: 35 },
+    id: 'midnight-car-rain',
+    name: 'Midnight Drive in Rain',
+    icon: '🚗',
+    desc: 'Rain on car roof + Rain on window + Crickets',
+    mix: { 'rain-on-car-roof': 60, 'rain-on-window': 45, 'crickets': 30 },
+  },
+  {
+    id: 'tropical-jungle',
+    name: 'Tropical Rainforest',
+    icon: '🌴',
+    desc: 'Jungle canopy + Heavy rain + Pond frogs',
+    mix: { 'jungle': 60, 'heavy-rain': 50, 'frog': 35 },
   },
   {
     id: 'starlit-meadow',
-    name: 'Starlit Midnight Meadow',
+    name: 'Starlit Night Meadow',
     icon: '🦗',
-    desc: 'Summer Crickets + Night Owl + Babbling Brook',
-    mix: { crickets: 60, night_forest: 45, stream: 35 },
+    desc: 'Summer crickets + Night owl + River',
+    mix: { 'crickets': 60, 'owl': 45, 'river': 35 },
   },
   {
-    id: 'morning-glade',
-    name: 'Sunrise Songbird Glade',
-    icon: '🐦',
-    desc: 'Morning Songbirds + Gentle Rain + Nature Resonance',
-    mix: { birds: 65, rain: 40, binaural: 30 },
+    id: 'deep-alpha-waterfall',
+    name: 'Deep Alpha Waterfall',
+    icon: '💧',
+    desc: 'Waterfall + Brown noise + Binaural Alpha (10Hz)',
+    mix: { 'waterfall': 60, 'brown': 45, 'alpha': 40 },
   },
 ];
 
@@ -140,7 +468,7 @@ export const FocusProvider = ({ children }) => {
   // Zen / Immersive Fullscreen State
   const [isZenMode, setIsZenMode] = useState(false);
 
-  // Persist Current Task to storage & track in ref for timer
+  // Persist Current Task to storage
   const currentTaskRef = useRef(currentTask);
   useEffect(() => {
     currentTaskRef.current = currentTask;
@@ -185,7 +513,7 @@ export const FocusProvider = ({ children }) => {
     } catch {}
   }, []);
 
-  // Multi-State Brainwave Tuner (Alpha, Beta, Theta, Gamma, Delta)
+  // Multi-State Brainwave Tuner (Alpha, Beta, Gamma, Theta, Delta)
   const [brainwaveMode, setBrainwaveMode] = useState('alpha');
   const brainwaveModeRef = useRef('alpha');
   const binauralNodesRef = useRef(null);
@@ -260,7 +588,7 @@ export const FocusProvider = ({ children }) => {
   const [breathingPhase, setBreathingPhase] = useState('inhale');
   const [breathingSeconds, setBreathingSeconds] = useState(4);
 
-  // Ambient Dynamic Backdrops (Obsidian, Aurora, Cyberpunk, Nebula, Sunset)
+  // Ambient Dynamic Backdrops
   const [ambientTheme, setAmbientTheme] = useState(() => {
     try {
       return localStorage.getItem('focus_ambient_theme') || 'obsidian';
@@ -304,171 +632,20 @@ export const FocusProvider = ({ children }) => {
     }
   }, [masterVolume]);
 
-  // Native Procedural Sound Synthesizers utilizing Web Audio API
+  // Hybrid Sound Synthesizers (Studio CC0 Audio + Web Audio Procedural Fallback)
   const createSoundSource = (ctx, masterGain, soundId) => {
     const gainNode = ctx.createGain();
     gainNode.gain.setValueAtTime(0, ctx.currentTime);
     gainNode.connect(masterGain);
 
+    const soundDef = SOUND_DEFINITIONS.find((s) => s.id === soundId);
+    if (!soundDef) return { gainNode, stopFn: () => {} };
+
     let stopFn = () => {};
 
-    if (soundId === 'rain' || soundId === 'forest' || soundId === 'monsoon' || soundId === 'waterfall') {
-      const bufferSize = ctx.sampleRate * 3;
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-      const dataL = buffer.getChannelData(0);
-      const dataR = buffer.getChannelData(1);
-
-      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-      let lastOutL = 0.0, lastOutR = 0.0;
-
-      for (let i = 0; i < bufferSize; i++) {
-        const whiteL = Math.random() * 2 - 1;
-        const whiteR = Math.random() * 2 - 1;
-
-        if (soundId === 'waterfall') {
-          // Waterfall: Rich blend of brown noise + high-frequency water mist
-          lastOutL = (lastOutL + 0.03 * whiteL) / 1.03;
-          lastOutR = (lastOutR + 0.03 * whiteR) / 1.03;
-          dataL[i] = lastOutL * 2.8 + whiteL * 0.08;
-          dataR[i] = lastOutR * 2.8 + whiteR * 0.08;
-        } else if (soundId === 'monsoon') {
-          // Monsoon: Heavy dense downpour texture
-          b0 = 0.99886 * b0 + whiteL * 0.0555179;
-          b1 = 0.99332 * b1 + whiteL * 0.0750759;
-          b2 = 0.96900 * b2 + whiteL * 0.1538520;
-          b3 = 0.86650 * b3 + whiteL * 0.3104856;
-          b4 = 0.55000 * b4 + whiteL * 0.5329522;
-          b5 = -0.7616 * b5 - whiteL * 0.0168980;
-          dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.16 + whiteL * 0.12;
-          dataR[i] = dataL[i];
-          b6 = whiteL * 0.115926;
-        } else {
-          // Gentle Rain / Forest breeze texture
-          dataL[i] = whiteL * 0.22;
-          dataR[i] = whiteR * 0.22;
-        }
-      }
-
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-
-      // Filter Shaping
-      const filter = ctx.createBiquadFilter();
-      if (soundId === 'rain') {
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(950, ctx.currentTime);
-        filter.Q.setValueAtTime(0.8, ctx.currentTime);
-      } else if (soundId === 'forest') {
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(650, ctx.currentTime);
-      } else if (soundId === 'monsoon') {
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(1400, ctx.currentTime);
-      } else if (soundId === 'waterfall') {
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(620, ctx.currentTime);
-      }
-
-      noiseSource.connect(filter);
-      filter.connect(gainNode);
-      noiseSource.start(0);
-
-      stopFn = () => {
-        try { noiseSource.stop(); } catch {}
-      };
-    } else if (soundId === 'stream') {
-      // Babbling Brook: Pink noise through modulated resonant filter with gentle ripples
-      const bufferSize = ctx.sampleRate * 3;
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-      const dataL = buffer.getChannelData(0);
-      const dataR = buffer.getChannelData(1);
-
-      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-      for (let i = 0; i < bufferSize; i++) {
-        const whiteL = Math.random() * 2 - 1;
-        b0 = 0.99886 * b0 + whiteL * 0.0555179;
-        b1 = 0.99332 * b1 + whiteL * 0.0750759;
-        b2 = 0.96900 * b2 + whiteL * 0.1538520;
-        b3 = 0.86650 * b3 + whiteL * 0.3104856;
-        b4 = 0.55000 * b4 + whiteL * 0.5329522;
-        b5 = -0.7616 * b5 - whiteL * 0.0168980;
-        dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.15;
-        dataR[i] = dataL[i];
-        b6 = whiteL * 0.115926;
-      }
-
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(680, ctx.currentTime);
-      filter.Q.setValueAtTime(1.8, ctx.currentTime);
-
-      const lfo = ctx.createOscillator();
-      const lfoGain = ctx.createGain();
-      lfo.type = 'sine';
-      lfo.frequency.setValueAtTime(0.7, ctx.currentTime);
-      lfoGain.gain.setValueAtTime(240, ctx.currentTime);
-
-      lfo.connect(lfoGain);
-      lfoGain.connect(filter.frequency);
-
-      noiseSource.connect(filter);
-      filter.connect(gainNode);
-
-      noiseSource.start(0);
-      lfo.start(0);
-
-      stopFn = () => {
-        try {
-          noiseSource.stop();
-          lfo.stop();
-        } catch {}
-      };
-    } else if (soundId === 'campfire') {
-      // Warm Crackling Campfire with organic sparks & pops
-      const bufferSize = ctx.sampleRate * 2;
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-      const dataL = buffer.getChannelData(0);
-      const dataR = buffer.getChannelData(1);
-
-      let lastOutL = 0.0, lastOutR = 0.0;
-      for (let i = 0; i < bufferSize; i++) {
-        const whiteL = Math.random() * 2 - 1;
-        const whiteR = Math.random() * 2 - 1;
-        lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
-        lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
-
-        // Occasional crackle snap
-        const isPop = Math.random() < 0.0006;
-        const popL = isPop ? (Math.random() * 2 - 1) * 0.9 : 0;
-        const popR = isPop ? (Math.random() * 2 - 1) * 0.9 : 0;
-
-        dataL[i] = lastOutL * 2.6 + popL;
-        dataR[i] = lastOutR * 2.6 + popR;
-      }
-
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(520, ctx.currentTime);
-
-      noiseSource.connect(filter);
-      filter.connect(gainNode);
-      noiseSource.start(0);
-
-      stopFn = () => {
-        try { noiseSource.stop(); } catch {}
-      };
-    } else if (soundId === 'binaural') {
-      // Dynamic Binaural Beat (Alpha, Beta, Theta, Gamma, Delta)
-      const mode = BRAINWAVE_MODES[brainwaveModeRef.current] || BRAINWAVE_MODES.alpha;
+    if (soundDef.type === 'binaural') {
+      // Dynamic Binaural Beat Synthesis
+      const mode = BRAINWAVE_MODES[soundDef.id] || BRAINWAVE_MODES.alpha;
       const oscL = ctx.createOscillator();
       const oscR = ctx.createOscillator();
       const panL = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
@@ -500,258 +677,111 @@ export const FocusProvider = ({ children }) => {
         try { oscL.stop(); oscR.stop(); } catch {}
         binauralNodesRef.current = null;
       };
-    } else if (soundId === 'crickets') {
-      // Modulated High-Frequency Crickets Chirp
-      const osc = ctx.createOscillator();
-      const lfo = ctx.createOscillator();
-      const lfoGain = ctx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(4600, ctx.currentTime);
-      lfo.type = 'sawtooth';
-      lfo.frequency.setValueAtTime(16, ctx.currentTime);
-      lfoGain.gain.setValueAtTime(0.7, ctx.currentTime);
-
-      lfo.connect(lfoGain.gain);
-      osc.connect(gainNode);
-      osc.start();
-      lfo.start();
-
-      stopFn = () => {
-        try { osc.stop(); lfo.stop(); } catch {}
-      };
-    } else if (soundId === 'night_forest') {
-      // Night Owl & Forest: Gentle woodland breeze + periodic distant calls
-      const bufferSize = ctx.sampleRate * 2;
+    } else if (soundDef.type === 'procedural_noise') {
+      // Procedural Colored Noise (Brown, Pink, White)
+      const bufferSize = ctx.sampleRate * 3;
       const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
       const dataL = buffer.getChannelData(0);
       const dataR = buffer.getChannelData(1);
+
       let lastOutL = 0.0, lastOutR = 0.0;
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+
       for (let i = 0; i < bufferSize; i++) {
         const whiteL = Math.random() * 2 - 1;
         const whiteR = Math.random() * 2 - 1;
-        lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
-        lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
-        dataL[i] = lastOutL * 1.5;
-        dataR[i] = lastOutR * 1.5;
+
+        if (soundDef.noiseType === 'brown') {
+          lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
+          lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
+          dataL[i] = lastOutL * 3.5;
+          dataR[i] = lastOutR * 3.5;
+        } else if (soundDef.noiseType === 'pink') {
+          b0 = 0.99886 * b0 + whiteL * 0.0555179;
+          b1 = 0.99332 * b1 + whiteL * 0.0750759;
+          b2 = 0.96900 * b2 + whiteL * 0.1538520;
+          b3 = 0.86650 * b3 + whiteL * 0.3104856;
+          b4 = 0.55000 * b4 + whiteL * 0.5329522;
+          b5 = -0.7616 * b5 - whiteL * 0.0168980;
+          dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.11;
+          dataR[i] = dataL[i];
+          b6 = whiteL * 0.115926;
+        } else {
+          // White noise
+          dataL[i] = whiteL * 0.16;
+          dataR[i] = whiteR * 0.16;
+        }
       }
+
       const noiseSource = ctx.createBufferSource();
       noiseSource.buffer = buffer;
       noiseSource.loop = true;
 
       const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(380, ctx.currentTime);
+      if (soundDef.noiseType === 'brown') {
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(380, ctx.currentTime);
+      } else if (soundDef.noiseType === 'pink') {
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1200, ctx.currentTime);
+      } else {
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(4500, ctx.currentTime);
+      }
 
       noiseSource.connect(filter);
       filter.connect(gainNode);
       noiseSource.start(0);
-
-      // Periodic gentle owl call
-      let owlTimer = null;
-      const triggerOwl = () => {
-        if (!audioCtxRef.current) return;
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const owlGain = ctx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(380, now);
-        osc.frequency.linearRampToValueAtTime(430, now + 0.15);
-        osc.frequency.linearRampToValueAtTime(360, now + 0.45);
-
-        owlGain.gain.setValueAtTime(0.001, now);
-        owlGain.gain.linearRampToValueAtTime(0.12, now + 0.1);
-        owlGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-
-        osc.connect(owlGain);
-        owlGain.connect(gainNode);
-
-        osc.start(now);
-        osc.stop(now + 0.55);
-
-        owlTimer = setTimeout(triggerOwl, 9000 + Math.random() * 14000);
-      };
-
-      owlTimer = setTimeout(triggerOwl, 3000);
 
       stopFn = () => {
         try { noiseSource.stop(); } catch {}
-        if (owlTimer) clearTimeout(owlTimer);
       };
-    } else if (soundId === 'thunder') {
-      // Periodic Distant Thunder Rumbles
-      let thunderTimer = null;
-      const triggerThunder = () => {
-        if (!audioCtxRef.current) return;
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const thunderGain = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
+    } else if (soundDef.file && typeof window !== 'undefined' && window.Audio) {
+      // Studio Recording (Moodist / Nahian CC0)
+      try {
+        const audio = new window.Audio();
+        audio.loop = true;
+        audio.crossOrigin = 'anonymous';
 
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(140, now);
+        const basePrefix = process.env.PUBLIC_URL || '';
+        const sourceUrl = soundDef.file.startsWith('/')
+          ? `${basePrefix}${soundDef.file}`
+          : soundDef.file;
 
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(55, now);
-        osc.frequency.linearRampToValueAtTime(35, now + 2.5);
+        audio.src = sourceUrl;
 
-        thunderGain.gain.setValueAtTime(0.001, now);
-        thunderGain.gain.linearRampToValueAtTime(0.4, now + 0.6);
-        thunderGain.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
-
-        osc.connect(filter);
-        filter.connect(thunderGain);
-        thunderGain.connect(gainNode);
-
-        osc.start(now);
-        osc.stop(now + 3.2);
-
-        thunderTimer = setTimeout(triggerThunder, 10000 + Math.random() * 15000);
-      };
-
-      thunderTimer = setTimeout(triggerThunder, 2000);
-      stopFn = () => {
-        if (thunderTimer) clearTimeout(thunderTimer);
-      };
-    } else if (soundId === 'waves') {
-      // Ocean Waves: Brown noise with periodic swell LFO on filter and gain
-      const bufferSize = ctx.sampleRate * 3;
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-      const dataL = buffer.getChannelData(0);
-      const dataR = buffer.getChannelData(1);
-      let lastOutL = 0.0, lastOutR = 0.0;
-      for (let i = 0; i < bufferSize; i++) {
-        const whiteL = Math.random() * 2 - 1;
-        const whiteR = Math.random() * 2 - 1;
-        lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
-        lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
-        dataL[i] = lastOutL * 3.2;
-        dataR[i] = lastOutR * 3.2;
-      }
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(320, ctx.currentTime);
-
-      const swellGain = ctx.createGain();
-      swellGain.gain.setValueAtTime(0.3, ctx.currentTime);
-
-      const lfo = ctx.createOscillator();
-      const lfoFilterGain = ctx.createGain();
-      const lfoAmpGain = ctx.createGain();
-
-      lfo.type = 'sine';
-      lfo.frequency.setValueAtTime(0.09, ctx.currentTime);
-      lfoFilterGain.gain.setValueAtTime(280, ctx.currentTime);
-      lfoAmpGain.gain.setValueAtTime(0.35, ctx.currentTime);
-
-      lfo.connect(lfoFilterGain);
-      lfoFilterGain.connect(filter.frequency);
-
-      lfo.connect(lfoAmpGain);
-      lfoAmpGain.connect(swellGain.gain);
-
-      noiseSource.connect(filter);
-      filter.connect(swellGain);
-      swellGain.connect(gainNode);
-
-      noiseSource.start(0);
-      lfo.start(0);
-
-      stopFn = () => {
-        try {
-          noiseSource.stop();
-          lfo.stop();
-        } catch {}
-      };
-    } else if (soundId === 'wind') {
-      // Alpine Mountain Wind: Pink noise through modulated resonant bandpass
-      const bufferSize = ctx.sampleRate * 3;
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-      const dataL = buffer.getChannelData(0);
-      const dataR = buffer.getChannelData(1);
-      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-      for (let i = 0; i < bufferSize; i++) {
-        const whiteL = Math.random() * 2 - 1;
-        b0 = 0.99886 * b0 + whiteL * 0.0555179;
-        b1 = 0.99332 * b1 + whiteL * 0.0750759;
-        b2 = 0.96900 * b2 + whiteL * 0.1538520;
-        b3 = 0.86650 * b3 + whiteL * 0.3104856;
-        b4 = 0.55000 * b4 + whiteL * 0.5329522;
-        b5 = -0.7616 * b5 - whiteL * 0.0168980;
-        dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.18;
-        dataR[i] = dataL[i];
-        b6 = whiteL * 0.115926;
-      }
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(450, ctx.currentTime);
-      filter.Q.setValueAtTime(2.2, ctx.currentTime);
-
-      const lfo = ctx.createOscillator();
-      const lfoGain = ctx.createGain();
-      lfo.type = 'sine';
-      lfo.frequency.setValueAtTime(0.14, ctx.currentTime);
-      lfoGain.gain.setValueAtTime(220, ctx.currentTime);
-
-      lfo.connect(lfoGain);
-      lfoGain.connect(filter.frequency);
-
-      noiseSource.connect(filter);
-      filter.connect(gainNode);
-
-      noiseSource.start(0);
-      lfo.start(0);
-
-      stopFn = () => {
-        try {
-          noiseSource.stop();
-          lfo.stop();
-        } catch {}
-      };
-    } else if (soundId === 'birds') {
-      // Morning Birds: Intermittent melodic sine bursts with frequency chirps
-      let birdTimer = null;
-      const triggerBirdSong = () => {
-        if (!audioCtxRef.current) return;
-        const now = ctx.currentTime;
-        const count = 2 + Math.floor(Math.random() * 3);
-        for (let c = 0; c < count; c++) {
-          const chirpStart = now + c * 0.12;
-          const osc = ctx.createOscillator();
-          const chirpGain = ctx.createGain();
-
-          osc.type = 'sine';
-          const baseFreq = 2600 + Math.random() * 600;
-          osc.frequency.setValueAtTime(baseFreq, chirpStart);
-          osc.frequency.linearRampToValueAtTime(baseFreq + 800, chirpStart + 0.05);
-          osc.frequency.exponentialRampToValueAtTime(baseFreq - 200, chirpStart + 0.09);
-
-          chirpGain.gain.setValueAtTime(0.001, chirpStart);
-          chirpGain.gain.linearRampToValueAtTime(0.18, chirpStart + 0.02);
-          chirpGain.gain.exponentialRampToValueAtTime(0.001, chirpStart + 0.09);
-
-          osc.connect(chirpGain);
-          chirpGain.connect(gainNode);
-
-          osc.start(chirpStart);
-          osc.stop(chirpStart + 0.1);
+        let sourceNode = null;
+        if (ctx && ctx.createMediaElementSource) {
+          try {
+            sourceNode = ctx.createMediaElementSource(audio);
+            sourceNode.connect(gainNode);
+          } catch (e) {
+            // In case of any cross-origin issue, audio still plays via DOM
+          }
         }
-        birdTimer = setTimeout(triggerBirdSong, 2500 + Math.random() * 4500);
-      };
 
-      birdTimer = setTimeout(triggerBirdSong, 800);
-      stopFn = () => {
-        if (birdTimer) clearTimeout(birdTimer);
-      };
+        // Play audio with fallback to fallbackUrl or procedural
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            if (soundDef.fallbackUrl && audio.src !== soundDef.fallbackUrl) {
+              audio.src = soundDef.fallbackUrl;
+              audio.play().catch(() => {});
+            }
+          });
+        }
+
+        stopFn = () => {
+          try {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.removeAttribute('src');
+            audio.load();
+          } catch {}
+        };
+      } catch (err) {
+        // Fallback for test/JSDOM
+      }
     }
 
     return { gainNode, stopFn };
@@ -822,7 +852,7 @@ export const FocusProvider = ({ children }) => {
       soundNodesRef.current = {};
       setIsPlaying(false);
     } else {
-      // If all volumes are currently 0, default to Nordic Pine Rain Preset
+      // If all volumes are currently 0, default to Monsoon Tin Roof Preset
       const hasActive = Object.values(volumes).some((v) => v > 0);
       if (!hasActive) {
         applyPreset(FOCUS_PRESETS[0]);

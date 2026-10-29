@@ -31,8 +31,8 @@ describe('Focus Station Page', () => {
       </FocusProvider>
     );
 
-    // Page title or kicker badge
-    expect(screen.getByText(/ENGINEERING FLOW STATE/i)).toBeInTheDocument();
+    // Kicker tag
+    expect(screen.getByText(/PURE NATURE SOUNDSCAPES/i)).toBeInTheDocument();
 
     // Master ribbon buttons
     expect(screen.getByText(/START AMBIENCE/i)).toBeInTheDocument();
@@ -44,20 +44,23 @@ describe('Focus Station Page', () => {
     expect(screen.getByText(/Classic Pomodoro/i)).toBeInTheDocument();
     expect(screen.getByText(/START FOCUS/i)).toBeInTheDocument();
 
-    // Pure Nature Presets
+    // Curated Nature Presets (including Nahian's Monsoon Tin Roof & Nordic Rain)
+    expect(screen.getByText(/Monsoon Tin Roof/i)).toBeInTheDocument();
     expect(screen.getByText(/Nordic Pine Rain/i)).toBeInTheDocument();
-    expect(screen.getByText(/Monsoon Sanctuary/i)).toBeInTheDocument();
 
-    // Procedural Nature Soundboard
-    expect(screen.getByText(/Procedural Nature Soundboard/i)).toBeInTheDocument();
-    expect(screen.getByText(/Gentle Rain/i)).toBeInTheDocument();
-    expect(screen.getByText(/Heavy Monsoon/i)).toBeInTheDocument();
-    expect(screen.getByText(/Babbling Brook/i)).toBeInTheDocument();
-    expect(screen.getByText(/Deep Waterfall/i)).toBeInTheDocument();
-    expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mountain Wind/i)).toBeInTheDocument();
-    expect(screen.getByText(/Morning Songbirds/i)).toBeInTheDocument();
-    expect(screen.getByText(/Crackling Campfire/i)).toBeInTheDocument();
+    // All Nature Sounds Library header
+    expect(screen.getByText(/All Nature Sounds Library/i)).toBeInTheDocument();
+
+    // Nature Sounds from Nahian & Moodist
+    expect(screen.getByText('Tin Roof Rain')).toBeInTheDocument();
+    expect(screen.getByText('Light Rain')).toBeInTheDocument();
+    expect(screen.getByText('Heavy Rain')).toBeInTheDocument();
+    expect(screen.getByText('Forest Woods')).toBeInTheDocument();
+    expect(screen.getByText('Flowing River')).toBeInTheDocument();
+    expect(screen.getByText('Ocean Waves')).toBeInTheDocument();
+    expect(screen.getByText('Waterfall')).toBeInTheDocument();
+    expect(screen.getByText('Songbirds')).toBeInTheDocument();
+    expect(screen.getByText('Campfire')).toBeInTheDocument();
 
     // Today's Focus Log card
     expect(screen.getByText(/Today's Focus Log/i)).toBeInTheDocument();
@@ -73,18 +76,18 @@ describe('Focus Station Page', () => {
     );
 
     const searchInput = screen.getByLabelText(/Search sounds/i);
+    expect(screen.getByText(/Tin Roof Rain/i)).toBeInTheDocument();
     expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
-    expect(screen.getByText(/Crackling Campfire/i)).toBeInTheDocument();
 
-    // Type query "waves"
-    fireEvent.change(searchInput, { target: { value: 'waves' } });
-    expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Crackling Campfire/i)).not.toBeInTheDocument();
+    // Type query "tin roof"
+    fireEvent.change(searchInput, { target: { value: 'tin roof' } });
+    expect(screen.getByText(/Tin Roof Rain/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Ocean Waves/i)).not.toBeInTheDocument();
 
     // Click clear search button
     const clearBtn = screen.getByLabelText(/Clear search/i);
     fireEvent.click(clearBtn);
-    expect(screen.getByText(/Crackling Campfire/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
   });
 
   test('toggles timer mode and updates dial readout', () => {
@@ -163,11 +166,11 @@ describe('Focus Station Page', () => {
     );
 
     expect(screen.getByText(/Neural Frequency Architecture/i)).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /Beta 18 Hz/i })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /Beta 15 Hz/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /Theta 6 Hz/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /Gamma 40 Hz/i })).toBeInTheDocument();
 
-    const betaPill = screen.getByRole('radio', { name: /Beta 18 Hz/i });
+    const betaPill = screen.getByRole('radio', { name: /Beta 15 Hz/i });
     fireEvent.click(betaPill);
     expect(betaPill).toHaveAttribute('aria-checked', 'true');
   });
@@ -215,7 +218,7 @@ describe('Focus MiniPlayer Dock', () => {
     return (
       <div>
         <button onClick={() => {
-          setSoundVolume('rain', 50);
+          setSoundVolume('tin-roof', 50);
           toggleMasterPlay();
         }}>
           Activate Audio
