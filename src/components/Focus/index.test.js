@@ -210,6 +210,73 @@ describe('Focus Station Page', () => {
     const hudDialog = screen.getByRole('dialog', { name: /Studio Keyboard Shortcuts/i });
     expect(hudDialog).toHaveAttribute('aria-modal', 'true');
   });
+
+  test('renders Nahian atmospheric scene switcher and rotates inspiring quotes', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Atmospheric scene pills
+    expect(screen.getByRole('button', { name: /Pine Forest/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Calm Rain/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Monsoon Showers/i })).toBeInTheDocument();
+
+    // Quotes cycle button
+    const anotherLineBtn = screen.getByLabelText(/Show another inspiring line/i);
+    expect(anotherLineBtn).toBeInTheDocument();
+    fireEvent.click(anotherLineBtn);
+  });
+
+  test('renders YouTube Lo-Fi player with curated picks and fold toggle', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // YouTube section header
+    expect(screen.getByText(/YouTube Lo-Fi & Focus Media/i)).toBeInTheDocument();
+
+    // Curated Picks
+    expect(screen.getAllByText(/Ya Nabi Salam Alayka/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/Maher Zain/i)[0]).toBeInTheDocument();
+
+    // Video fold toggle
+    const foldBtn = screen.getByLabelText(/Hide video/i);
+    expect(foldBtn).toBeInTheDocument();
+    fireEvent.click(foldBtn);
+    expect(screen.getByLabelText(/Show video/i)).toBeInTheDocument();
+  });
+
+  test('renders Apple Dynamic Island inside Zen Mode with expand action', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Enter Zen Mode
+    fireEvent.click(screen.getByRole('button', { name: /Enter Zen Fullscreen Mode/i }));
+
+    // Dynamic island compact button should be present
+    const islandBtn = screen.getByLabelText(/Expand now playing controller/i);
+    expect(islandBtn).toBeInTheDocument();
+
+    // Expand Dynamic Island
+    fireEvent.click(islandBtn);
+    expect(screen.getAllByText(/Ya Nabi Salam Alayka/i)[0]).toBeInTheDocument();
+
+    // Close Zen Mode
+    fireEvent.click(screen.getByRole('button', { name: /Exit Zen Mode/i }));
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {

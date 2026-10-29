@@ -8,6 +8,9 @@ import {
   faClock,
   faTimes,
   faExpand,
+  faTv,
+  faEye,
+  faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { useFocus, FOCUS_PRESETS } from '../../context/FocusContext';
 import './MiniPlayer.scss';
@@ -27,6 +30,11 @@ const MiniPlayer = () => {
     stopwatchSeconds,
     pauseTimer,
     startTimer,
+    currentYtTrack,
+    isYtPlaying,
+    toggleYtPlay,
+    isYtFolded,
+    toggleYtFold,
   } = useFocus();
 
   // Hide on Focus page itself or when completely idle
@@ -34,8 +42,9 @@ const MiniPlayer = () => {
 
   const isAudioActive = isPlaying && activeSoundsCount > 0;
   const isTimerActive = timerStatus === 'running' || timerStatus === 'paused';
+  const isYoutubeActive = isYtPlaying && currentYtTrack;
 
-  if (!isAudioActive && !isTimerActive) {
+  if (!isAudioActive && !isTimerActive && !isYoutubeActive) {
     return null;
   }
 
@@ -54,6 +63,7 @@ const MiniPlayer = () => {
 
   const handleStopAll = () => {
     if (isPlaying) toggleMasterPlay();
+    if (isYtPlaying) toggleYtPlay();
     clearAllSounds();
     if (timerStatus === 'running') pauseTimer();
   };
@@ -63,11 +73,34 @@ const MiniPlayer = () => {
       className="focus-mini-player"
       aria-label="Background focus session audio and timer controls"
     >
+      {/* Optional YouTube Video Fold Preview if active and not folded */}
+      {isYoutubeActive && !isYtFolded && (
+        <div className="mini-video-fold">
+          <iframe
+            title="Mini YouTube Video"
+            src={`https://www.youtube-nocookie.com/embed/${currentYtTrack.id}?autoplay=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+            className="mini-video-frame"
+            allow="autoplay; encrypted-media; picture-in-picture"
+          />
+        </div>
+      )}
+
       <div className="mini-player-inner">
-        {/* Left: Active Nature Audio / Timer Status */}
+        {/* Left: Active Nature Audio / YouTube / Timer Status */}
         <div className="mini-meta-section">
           <span className="mini-pulse-beacon"></span>
           <div className="mini-text-wrap">
+            {/* YouTube Track Line */}
+            {isYoutubeActive && (
+              <span className="mini-source-line yt-line">
+                <FontAwesomeIcon icon={faTv} className="source-icon red" />
+                <span className="source-name" title={currentYtTrack.title}>
+                  {currentYtTrack.title}
+                </span>
+              </span>
+            )}
+
+            {/* Ambient Nature Sounds Line */}
             {isAudioActive && (
               <span className="mini-source-line">
                 <FontAwesomeIcon icon={faHeadphones} className="source-icon gold" />
@@ -100,15 +133,31 @@ const MiniPlayer = () => {
 
         {/* Center: Quick Controls */}
         <div className="mini-controls-row">
+          {/* YouTube Video Fold Toggle if YT active */}
+          {isYoutubeActive && (
+            <button
+              type="button"
+              className="mini-btn yt-toggle"
+              onClick={toggleYtFold}
+              aria-label={isYtFolded ? 'Show video' : 'Hide video'}
+              title={isYtFolded ? 'Show video' : 'Hide video'}
+            >
+              <FontAwesomeIcon icon={isYtFolded ? faEye : faEyeSlash} />
+            </button>
+          )}
+
           {/* Audio Master Play/Pause */}
           <button
             type="button"
-            className={`mini-btn sound-toggle ${isPlaying ? 'playing' : ''}`}
-            onClick={toggleMasterPlay}
-            aria-label={isPlaying ? 'Pause ambient sounds' : 'Play ambient sounds'}
-            title={isPlaying ? 'Pause ambience' : 'Resume ambience'}
+            className={`mini-btn sound-toggle ${isPlaying || isYtPlaying ? 'playing' : ''}`}
+            onClick={() => {
+              if (isYoutubeActive) toggleYtPlay();
+              toggleMasterPlay();
+            }}
+            aria-label={isPlaying || isYtPlaying ? 'Pause ambient sounds' : 'Play ambient sounds'}
+            title={isPlaying || isYtPlaying ? 'Pause ambience' : 'Resume ambience'}
           >
-            <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+            <FontAwesomeIcon icon={isPlaying || isYtPlaying ? faPause : faPlay} />
           </button>
 
           {/* Timer Play/Pause if timer is engaged */}

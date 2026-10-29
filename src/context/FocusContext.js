@@ -18,8 +18,192 @@ export const AMBIENT_THEMES = [
   { id: 'sunset', name: 'Pacific Sunset', icon: '🌅', desc: 'Warm Cupertino dusk peach, coral and gold ambient glow' },
 ];
 
+export const FOCUS_SCENES = [
+  { id: 'forest', name: 'Pine Forest', image: 'https://nahian.bd/_astro/forest.DgifAKtC_Shsyf.webp', icon: '🌲' },
+  { id: 'rain', name: 'Calm Rain', image: 'https://nahian.bd/_astro/rain.BwHDexYs_Z2bytjl.webp', icon: '🌧️' },
+  { id: 'monsoon', name: 'Monsoon Showers', image: 'https://nahian.bd/_astro/monsoon.BzBqm32v_Z2mvXYK.webp', icon: '🏠' },
+  { id: 'storm', name: 'Lightning Storm', image: 'https://nahian.bd/_astro/storm.CJLlRQn0_Z99nRn.webp', icon: '⛈️' },
+  { id: 'mountains', name: 'Alpine Mountains', image: 'https://nahian.bd/_astro/mountains.DPM3RYfe_wY8Oo.webp', icon: '🏔️' },
+  { id: 'garden', name: 'Botanical Garden', image: 'https://nahian.bd/_astro/garden.BEU1z0be_1YYtVM.webp', icon: '🌸' },
+  { id: 'ocean', name: 'Coastal Ocean', image: 'https://nahian.bd/_astro/ocean.Cme6vjYe_Z28apxR.webp', icon: '🌊' },
+  { id: 'night', name: 'Midnight Stars', image: 'https://nahian.bd/_astro/night.B9DC7PS5_Z2hPMJ2.webp', icon: '🌙' },
+  { id: 'cabin', name: 'Woodland Cabin', image: 'https://nahian.bd/_astro/cabin.D0zKu_4I_ZcDeqC.webp', icon: '🪵' },
+  { id: 'cafe', name: 'Quiet Café', image: 'https://nahian.bd/_astro/cafe.BVo4QF8p_Z29xCwl.webp', icon: '☕' },
+  { id: 'library', name: 'Old Library', image: 'https://nahian.bd/_astro/library.I2cYykiq_Z1SAIAt.webp', icon: '📚' },
+  { id: 'desk', name: 'Late-Night Desk', image: 'https://nahian.bd/_astro/desk.C-2saIFT_Z1ISWdi.webp', icon: '💻' },
+  { id: 'train', name: 'Scenic Train', image: 'https://nahian.bd/_astro/train.CK5WCulE_Z1EzXWe.webp', icon: '🚆' },
+  { id: 'city', name: 'City Skyline', image: 'https://nahian.bd/_astro/city.D7c2B3R5_Z599vp.webp', icon: '🏙️' },
+  { id: 'space', name: 'Deep Space', image: 'https://nahian.bd/_astro/space.BUmMSb8w_1iieeK.webp', icon: '🚀' },
+];
+
+export const SOUND_TO_SCENE_MAP = {
+  'heavy-rain': 'storm',
+  'thunder': 'storm',
+  'tin-roof': 'monsoon',
+  'rain-on-window': 'desk',
+  'rain-on-car-roof': 'night',
+  'rain-on-umbrella': 'rain',
+  'rain-on-tent': 'forest',
+  'rain-on-leaves': 'forest',
+  'light-rain': 'rain',
+  'forest': 'forest',
+  'river': 'forest',
+  'waves': 'ocean',
+  'waterfall': 'mountains',
+  'droplets': 'rain',
+  'campfire': 'cabin',
+  'wind': 'mountains',
+  'wind-in-trees': 'forest',
+  'jungle': 'forest',
+  'birds': 'garden',
+  'crickets': 'night',
+  'frog': 'garden',
+  'owl': 'night',
+  'seagulls': 'ocean',
+  'whale': 'ocean',
+  'cat-purring': 'cabin',
+  'beehive': 'garden',
+  'cafe': 'cafe',
+  'library': 'library',
+  'office': 'desk',
+  'restaurant': 'cafe',
+  'night-village': 'night',
+  'underwater': 'ocean',
+  'laboratory': 'desk',
+  'airport': 'city',
+  'subway-station': 'city',
+  'train': 'train',
+  'inside-a-train': 'train',
+  'airplane': 'city',
+  'sailboat': 'ocean',
+  'rowing-boat': 'ocean',
+  'submarine': 'ocean',
+  'keyboard': 'desk',
+  'typewriter': 'desk',
+  'paper': 'library',
+  'clock': 'library',
+  'ceiling-fan': 'cabin',
+  'wind-chimes': 'garden',
+  'boiling-water': 'cabin',
+  'vinyl-effect': 'cabin',
+  'busy-street': 'city',
+  'traffic': 'city',
+  'highway': 'city',
+  'road': 'city',
+  'crowd': 'city',
+  'brown': 'mountains',
+  'pink': 'mountains',
+  'white': 'mountains',
+  'alpha': 'mountains',
+  'beta': 'mountains',
+  'gamma': 'mountains',
+  'scifi': 'space',
+};
+
+export const FOCUS_QUOTES = [
+  'One tab, one task. The rest can wait an hour.',
+  'You don’t need more motivation. You need fewer tabs.',
+  'Close the other tabs. They will still be there later.',
+  'Make it work first. Make it pretty after.',
+  'Read the error slowly. It usually says what is wrong.',
+  'The bug is rarely where you are looking. Look one layer down.',
+  'If you are stuck for an hour, explain it out loud. Even to a rubber duck.',
+  'Hard problems get easier once you write them down.',
+  'Plan the next step, not the whole staircase.',
+  'Small, boring, reliable. That is how real products get built.',
+  'Ship something today, even if it is small.',
+  'Your first version is allowed to be embarrassing. Shipping it is not optional.',
+  'Done is a feature.',
+  'Nobody remembers how long it took. They remember that it works.',
+  'The best code I wrote was the code I deleted.',
+  'A good commit message is a letter to future you.',
+  'Code like the next person to read it is tired. It might be you.',
+  'Write the test you wish someone had written for you.',
+  'Agents type fast. Taste is still your job.',
+  'Let the AI write it, then read every line like it’s yours. It is.',
+  'Learn the boring fundamentals. They never go out of date.',
+  'Build things you would use yourself. You will care about the details.',
+  'Every expert you admire was once confused by the same thing.',
+  'Momentum beats motivation.',
+  'Thirty quiet minutes beat three noisy hours.',
+  'Today’s focus is tomorrow’s skill.',
+  'Deep work feels slow while you are in it and fast when you look back.',
+  'Put the phone face down. You can check it at the break.',
+  'Don’t check the phone. It can wait until this function is done.',
+  'Breathe. Then pick the smallest next step.',
+  'Tea first. Then the hard bug.',
+  'Dhaka is loud. Headphones on, world off.',
+  'Monsoon outside, focus inside.',
+  'Rain on a tin roof, a cup of cha, one clear task.',
+  'Bismillah. Start small, start now.',
+  'Clean desk, clean diff, clear head.',
+  'The keyboard is waiting. So is the version of you that finished this.',
+  'Progress is quiet. Keep going.',
+  'Rest is part of the work.',
+];
+
+export const YOUTUBE_PICKS = [
+  { id: '25wH52RSam8', title: 'Ya Nabi Salam Alayka', sub: 'Maher Zain' },
+  { id: 'IxwdZLtMf7I', title: 'Qalbi Fil Madinah', sub: 'Maher Zain feat. Harris J' },
+  { id: 'AIyAPGumseA', title: 'Ramadan', sub: 'Maher Zain' },
+  { id: 'nuYA88YJSC4', title: 'Bika Moulhimi', sub: 'Maher Zain feat. Mustafa Ceceli' },
+  { id: '61C6FxprHuY', title: 'Barak Allah Lakuma', sub: 'Maher Zain' },
+  { id: '9Jsb0Dy6wWA', title: 'I’m Alive', sub: 'Maher Zain feat. Atif Aslam' },
+  { id: 'LkAm79Edtlo', title: 'Assalamu Alaika', sub: 'Maher Zain' },
+  { id: 'pFMofSt2vVw', title: 'Number One For Me', sub: 'Maher Zain' },
+  { id: 'UW5K0OzOmVI', title: 'Rahmatun Lil’Alameen', sub: 'Maher Zain' },
+  { id: '0a43eUZf5iQ', title: 'La Tahzan', sub: 'Maher Zain' },
+  { id: '4VU4_NZuL24', title: 'The Power', sub: 'Maher Zain' },
+  { id: 'KTkdQ2q3jCA', title: 'The Book of Allah Is My Constitution', sub: 'Muhammad al Muqit' },
+  { id: 'JqGv0EdJdJI', title: 'I Rise', sub: 'Muhammad al Muqit' },
+  { id: 'NrsCej6SVxM', title: 'The Beauty of Existence', sub: 'Muhammad al Muqit' },
+  { id: 'YiSQ_db-Dcw', title: 'The Way of the Tears', sub: 'Muhammad al Muqit' },
+  { id: 'JaHtx79UhIM', title: 'My Dream', sub: 'Muhammad al Muqit' },
+  { id: 'ZZEgiM8QMM4', title: 'My Mother', sub: 'Muhammad al Muqit' },
+  { id: 'Ov0-CBnOW4w', title: 'My Arabic Language', sub: 'Muhammad al Muqit' },
+  { id: 'VQSUCfRoZPM', title: 'Kun Fayakoon', sub: 'Othman Alibrahim' },
+  { id: 'D7mg8zkmiy8', title: 'Be Happy', sub: 'Othman Alibrahim' },
+  { id: 'mTTk1QX30t0', title: 'Watheq', sub: 'Othman Alibrahim' },
+];
+
+export const parseYoutubeUrl = (input) => {
+  if (!input || typeof input !== 'string') return null;
+  const str = input.trim();
+  const idRegex = /^[\w-]{11}$/;
+  if (idRegex.test(str)) {
+    return { id: str };
+  }
+  try {
+    const url = new URL(/^https?:\/\//i.test(str) ? str : `https://${str}`);
+    const host = url.hostname.replace(/^(www|m|music)\./, '');
+    let videoId = '';
+    const listId = url.searchParams.get('list') || undefined;
+
+    if (host === 'youtu.be') {
+      videoId = url.pathname.slice(1).split('/')[0] || '';
+    } else if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+      const parts = url.pathname.split('/');
+      const section = parts[1];
+      if (section === 'watch') {
+        videoId = url.searchParams.get('v') || '';
+      } else if (section === 'shorts' || section === 'live' || section === 'embed' || section === 'v') {
+        videoId = parts[2] === 'videoseries' ? '' : parts[2] || '';
+      }
+    }
+    if (idRegex.test(videoId)) {
+      return { id: videoId, list: listId };
+    }
+    if (listId) {
+      return { id: '', list: listId };
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+};
+
 export const SOUND_DEFINITIONS = [
-  // Rain Category (9 sounds)
+  // 1. Rain Category (9 sounds)
   {
     id: 'tin-roof',
     name: 'Tin Roof Rain',
@@ -35,7 +219,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '🌧️',
     desc: 'Calm and steady gentle drizzle',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/light-rain.mp3',
+    file: '/sounds/light-rain.mp3',
+    fallbackUrl: 'https://nahian.bd/_astro/light-rain.BZGGXtwS.mp3',
   },
   {
     id: 'heavy-rain',
@@ -43,7 +228,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '⛈️',
     desc: 'Torrents of pelting downpour',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/heavy-rain.mp3',
+    file: '/sounds/heavy-rain.mp3',
+    fallbackUrl: 'https://nahian.bd/_astro/heavy-rain.nJpR88jx.mp3',
   },
   {
     id: 'thunder',
@@ -51,7 +237,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '⚡',
     desc: 'Deep rolling atmospheric thunder',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/thunder.mp3',
+    file: 'https://nahian.bd/_astro/thunder.B-flvVym.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/thunder.mp3',
   },
   {
     id: 'rain-on-window',
@@ -59,7 +246,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '🪟',
     desc: 'Soothing rain drumming on glass',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-window.mp3',
+    file: '/sounds/rain-on-window.mp3',
+    fallbackUrl: 'https://nahian.bd/_astro/rain-on-window.TETkzja0.mp3',
   },
   {
     id: 'rain-on-car-roof',
@@ -67,7 +255,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '🚗',
     desc: 'Cosy pitter-patter inside a parked car',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-car-roof.mp3',
+    file: 'https://nahian.bd/_astro/rain-on-car-roof.UDtwIGOt.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-car-roof.mp3',
   },
   {
     id: 'rain-on-umbrella',
@@ -75,7 +264,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '☂️',
     desc: 'Tapping drops on taut nylon umbrella',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-umbrella.mp3',
+    file: 'https://nahian.bd/_astro/rain-on-umbrella.DOyz5l6j.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-umbrella.mp3',
   },
   {
     id: 'rain-on-tent',
@@ -83,7 +273,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '⛺',
     desc: 'Wilderness camping in a rainstorm',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-tent.mp3',
+    file: 'https://nahian.bd/_astro/rain-on-tent.7H6QB2QV.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-tent.mp3',
   },
   {
     id: 'rain-on-leaves',
@@ -91,10 +282,11 @@ export const SOUND_DEFINITIONS = [
     category: 'Rain',
     icon: '🍃',
     desc: 'Splashes falling through lush foliage',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-leaves.mp3',
+    file: 'https://nahian.bd/_astro/rain-on-leaves.GueFB6eQ.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/rain/rain-on-leaves.mp3',
   },
 
-  // Nature & Water Category (14 sounds)
+  // 2. Nature & Water Category (9 sounds)
   {
     id: 'forest',
     name: 'Forest Woods',
@@ -102,7 +294,7 @@ export const SOUND_DEFINITIONS = [
     icon: '🌲',
     desc: 'Woods ambience with breeze & birds',
     file: '/sounds/forest.mp3',
-    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/forest.mp3',
+    fallbackUrl: 'https://nahian.bd/_astro/forest.BZGXKtTT.mp3',
   },
   {
     id: 'river',
@@ -110,7 +302,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🏞️',
     desc: 'Crisp mountain river rushing over rocks',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/river.mp3',
+    file: 'https://nahian.bd/_astro/river.MtyG0AwH.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/river.mp3',
   },
   {
     id: 'waves',
@@ -118,7 +311,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🌊',
     desc: 'Rhythmic ocean swells washing shore',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/waves.mp3',
+    file: 'https://nahian.bd/_astro/waves.BeyErWdW.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/waves.mp3',
   },
   {
     id: 'waterfall',
@@ -126,7 +320,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '💧',
     desc: 'Deep roaring cascade into mountain pool',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/waterfall.mp3',
+    file: 'https://nahian.bd/_astro/waterfall.UBoM_51q.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/waterfall.mp3',
   },
   {
     id: 'droplets',
@@ -134,7 +329,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🫧',
     desc: 'Serene cave drops in quiet water',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/droplets.mp3',
+    file: 'https://nahian.bd/_astro/droplets._riMndmy.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/droplets.mp3',
   },
   {
     id: 'campfire',
@@ -142,7 +338,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🔥',
     desc: 'Crackling warm wood, gentle sparks',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/campfire.mp3',
+    file: 'https://nahian.bd/_astro/campfire.bSKxRiZG.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/campfire.mp3',
   },
   {
     id: 'wind',
@@ -150,7 +347,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🍃',
     desc: 'Alpine gust sweeping across ridges',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/wind.mp3',
+    file: 'https://nahian.bd/_astro/wind.CJM9qTVi.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/wind.mp3',
   },
   {
     id: 'wind-in-trees',
@@ -158,7 +356,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🌳',
     desc: 'Whistling wind in tall tree branches',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/wind-in-trees.mp3',
+    file: 'https://nahian.bd/_astro/wind-in-trees.C2gNS7xo.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/wind-in-trees.mp3',
   },
   {
     id: 'jungle',
@@ -166,57 +365,19 @@ export const SOUND_DEFINITIONS = [
     category: 'Nature',
     icon: '🌴',
     desc: 'Exotic rainforest canopy soundscape',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/jungle.mp3',
-  },
-  {
-    id: 'walk-in-snow',
-    name: 'Walk in Snow',
-    category: 'Nature',
-    icon: '❄️',
-    desc: 'Crunching footsteps on fresh powder snow',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/walk-in-snow.mp3',
-  },
-  {
-    id: 'walk-on-gravel',
-    name: 'Walk on Gravel',
-    category: 'Nature',
-    icon: '🪨',
-    desc: 'Rhythmic footsteps along gravel trail',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/walk-on-gravel.mp3',
-  },
-  {
-    id: 'walk-on-leaves',
-    name: 'Walk on Leaves',
-    category: 'Nature',
-    icon: '🍂',
-    desc: 'Crisp autumn leaf rustle beneath shoes',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/walk-on-leaves.mp3',
-  },
-  {
-    id: 'underwater',
-    name: 'Underwater',
-    category: 'Nature',
-    icon: '🤿',
-    desc: 'Deep aquatic ocean calm & sonar bubbles',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/underwater.mp3',
-  },
-  {
-    id: 'wind-chimes',
-    name: 'Wind Chimes',
-    category: 'Nature',
-    icon: '🎐',
-    desc: 'Melodic bamboo & metal breeze chimes',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/wind-chimes.mp3',
+    file: 'https://nahian.bd/_astro/jungle.2acUpzI3.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/nature/jungle.mp3',
   },
 
-  // Animals & Wildlife Category (8 sounds)
+  // 3. Animals & Wildlife Category (8 sounds)
   {
     id: 'birds',
     name: 'Songbirds',
     category: 'Animals',
     icon: '🐦',
     desc: 'Melodious woodland birds in morning light',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/birds.mp3',
+    file: 'https://nahian.bd/_astro/birds.CtHflfXU.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/birds.mp3',
   },
   {
     id: 'crickets',
@@ -224,7 +385,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🦗',
     desc: 'Nocturnal meadow chirps under stars',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/crickets.mp3',
+    file: 'https://nahian.bd/_astro/crickets.B33C_N2E.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/crickets.mp3',
   },
   {
     id: 'frog',
@@ -232,7 +394,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🐸',
     desc: 'Tranquil wetland frogs croaking peacefully',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/frog.mp3',
+    file: 'https://nahian.bd/_astro/frog.B-DfAk8F.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/frog.mp3',
   },
   {
     id: 'owl',
@@ -240,7 +403,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🦉',
     desc: 'Gentle distant nocturnal forest call',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/owl.mp3',
+    file: 'https://nahian.bd/_astro/owl.DdKYT0Zn.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/owl.mp3',
   },
   {
     id: 'seagulls',
@@ -248,7 +412,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🕊️',
     desc: 'Sea birds calling over ocean breezes',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/seagulls.mp3',
+    file: 'https://nahian.bd/_astro/seagulls.CDE_yPMt.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/seagulls.mp3',
   },
   {
     id: 'whale',
@@ -256,7 +421,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🐋',
     desc: 'Deep marine whale calls and echoes',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/whale.mp3',
+    file: 'https://nahian.bd/_astro/whale.QH5uifGP.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/whale.mp3',
   },
   {
     id: 'cat-purring',
@@ -264,7 +430,8 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🐱',
     desc: 'Cosy, steady rhythmic feline purr',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/cat-purring.mp3',
+    file: 'https://nahian.bd/_astro/cat-purring.JONenhBK.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/cat-purring.mp3',
   },
   {
     id: 'beehive',
@@ -272,10 +439,271 @@ export const SOUND_DEFINITIONS = [
     category: 'Animals',
     icon: '🐝',
     desc: 'Gentle honeybee garden hum',
-    file: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/beehive.mp3',
+    file: 'https://nahian.bd/_astro/beehive.Blso1aRJ.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/animals/beehive.mp3',
   },
 
-  // Noise & Neural Waves Category (8 sounds)
+  // 4. Places Category (9 sounds)
+  {
+    id: 'cafe',
+    name: 'Quiet Café',
+    category: 'Places',
+    icon: '☕',
+    desc: 'Gentle coffeehouse murmur & porcelain',
+    file: 'https://nahian.bd/_astro/cafe.tGIKTWv7.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/cafe.mp3',
+  },
+  {
+    id: 'library',
+    name: 'University Library',
+    category: 'Places',
+    icon: '📚',
+    desc: 'Quiet reading room rustle & footsteps',
+    file: 'https://nahian.bd/_astro/library.BgVxe8nv.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/library.mp3',
+  },
+  {
+    id: 'office',
+    name: 'Creative Studio',
+    category: 'Places',
+    icon: '💼',
+    desc: 'Low-key studio murmurs & focus aura',
+    file: 'https://nahian.bd/_astro/office.DOe0dbtU.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/office.mp3',
+  },
+  {
+    id: 'restaurant',
+    name: 'Bistro Dining',
+    category: 'Places',
+    icon: '🍽️',
+    desc: 'Warm evening bistro dining atmosphere',
+    file: 'https://nahian.bd/_astro/restaurant.Cv7oeWle.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/restaurant.mp3',
+  },
+  {
+    id: 'night-village',
+    name: 'Night Village',
+    category: 'Places',
+    icon: '🏡',
+    desc: 'Peaceful countryside hamlet after midnight',
+    file: 'https://nahian.bd/_astro/night-village.M4ePrJTB.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/camp.mp3',
+  },
+  {
+    id: 'underwater',
+    name: 'Underwater',
+    category: 'Places',
+    icon: '🤿',
+    desc: 'Deep aquatic ocean calm & sonar bubbles',
+    file: 'https://nahian.bd/_astro/underwater.D3vlb4sh.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/underwater.mp3',
+  },
+  {
+    id: 'laboratory',
+    name: 'Research Lab',
+    category: 'Places',
+    icon: '🧪',
+    desc: 'Cleanroom computer hum & scientific instruments',
+    file: 'https://nahian.bd/_astro/laboratory.Dt5PM0Cj.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/office.mp3',
+  },
+  {
+    id: 'airport',
+    name: 'Airport Terminal',
+    category: 'Places',
+    icon: '🛫',
+    desc: 'Spacious international departures lounge',
+    file: 'https://nahian.bd/_astro/airport.CO47AMmq.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/airport.mp3',
+  },
+  {
+    id: 'subway-station',
+    name: 'Subway Station',
+    category: 'Places',
+    icon: '🚇',
+    desc: 'Underground transit platform rumble',
+    file: 'https://nahian.bd/_astro/subway-station.BJlb4yap.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/transport/train.mp3',
+  },
+
+  // 5. Transport Category (6 sounds)
+  {
+    id: 'train',
+    name: 'Passenger Train',
+    category: 'Transport',
+    icon: '🚆',
+    desc: 'Rhythmic train ride over rail joints',
+    file: 'https://nahian.bd/_astro/train.DviEu3zq.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/transport/train.mp3',
+  },
+  {
+    id: 'inside-a-train',
+    name: 'Inside Train Cabin',
+    category: 'Transport',
+    icon: '🪑',
+    desc: 'Gentle sway and low rumble of train cabin',
+    file: 'https://nahian.bd/_astro/inside-a-train.Dooiov-G.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/transport/train.mp3',
+  },
+  {
+    id: 'airplane',
+    name: 'Airplane Cabin',
+    category: 'Transport',
+    icon: '✈️',
+    desc: 'Deep cruising jet engine white noise',
+    file: 'https://nahian.bd/_astro/airplane.SKKSw1n5.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/transport/airplane.mp3',
+  },
+  {
+    id: 'sailboat',
+    name: 'Sailboat at Sea',
+    category: 'Transport',
+    icon: '⛵',
+    desc: 'Water lapping against wooden hull in ocean breeze',
+    file: 'https://nahian.bd/_astro/sailboat.DFSKR9Fk.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/transport/boat.mp3',
+  },
+  {
+    id: 'rowing-boat',
+    name: 'Rowing Boat',
+    category: 'Transport',
+    icon: '🚣',
+    desc: 'Gentle oars dipping through calm lake water',
+    file: 'https://nahian.bd/_astro/rowing-boat.BpBWvw7x.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/transport/boat.mp3',
+  },
+  {
+    id: 'submarine',
+    name: 'Submarine Deep',
+    category: 'Transport',
+    icon: '🚢',
+    desc: 'Sub-surface acoustic hull hum & sonar pulse',
+    file: 'https://nahian.bd/_astro/submarine.DQQ7GZv7.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/places/underwater.mp3',
+  },
+
+  // 6. Things Category (8 sounds)
+  {
+    id: 'keyboard',
+    name: 'Mechanical Keyboard',
+    category: 'Things',
+    icon: '⌨️',
+    desc: 'Tactile rhythmic typing on mechanical switches',
+    file: 'https://nahian.bd/_astro/keyboard.CGAR0l4Q.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/keyboard.mp3',
+  },
+  {
+    id: 'typewriter',
+    name: 'Vintage Typewriter',
+    category: 'Things',
+    icon: '📝',
+    desc: 'Classic metal keystrokes with carriage return ding',
+    file: 'https://nahian.bd/_astro/typewriter.DfFQNG84.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/typewriter.mp3',
+  },
+  {
+    id: 'paper',
+    name: 'Paper Turning',
+    category: 'Things',
+    icon: '📄',
+    desc: 'Crisp notebook paper flips & sketching',
+    file: 'https://nahian.bd/_astro/paper.0Prqz2Le.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/paper.mp3',
+  },
+  {
+    id: 'clock',
+    name: 'Antique Clock',
+    category: 'Things',
+    icon: '⏱️',
+    desc: 'Rhythmic mechanical second ticks',
+    file: 'https://nahian.bd/_astro/clock.Cp6_T4Ej.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/clock.mp3',
+  },
+  {
+    id: 'ceiling-fan',
+    name: 'Ceiling Fan',
+    category: 'Things',
+    icon: '🌀',
+    desc: 'Low soothing whirr of rotating ceiling fan',
+    file: 'https://nahian.bd/_astro/ceiling-fan.YzCgTXQO.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/fan.mp3',
+  },
+  {
+    id: 'wind-chimes',
+    name: 'Wind Chimes',
+    category: 'Things',
+    icon: '🎐',
+    desc: 'Melodic bamboo & metal breeze chimes',
+    file: 'https://nahian.bd/_astro/wind-chimes.DVl7gw6j.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/wind-chimes.mp3',
+  },
+  {
+    id: 'boiling-water',
+    name: 'Boiling Kettle',
+    category: 'Things',
+    icon: '🫖',
+    desc: 'Simmering tea kettle on stove',
+    file: 'https://nahian.bd/_astro/boiling-water.B_XPZ-lQ.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/kettle.mp3',
+  },
+  {
+    id: 'vinyl-effect',
+    name: 'Vinyl Crackle',
+    category: 'Things',
+    icon: '💿',
+    desc: 'Warm analog turntable surface noise & dust',
+    file: 'https://nahian.bd/_astro/vinyl-effect.zpEb16O5.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/things/vinyl.mp3',
+  },
+
+  // 7. City Category (5 sounds)
+  {
+    id: 'busy-street',
+    name: 'Busy Street',
+    category: 'City',
+    icon: '🏙️',
+    desc: 'Metropolitan sidewalk ambiance & movement',
+    file: 'https://nahian.bd/_astro/busy-street.CRRgRiRk.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/city/street.mp3',
+  },
+  {
+    id: 'traffic',
+    name: 'City Traffic',
+    category: 'City',
+    icon: '🚦',
+    desc: 'Distant flow of urban vehicles',
+    file: 'https://nahian.bd/_astro/traffic.Dnz0bnTe.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/city/traffic.mp3',
+  },
+  {
+    id: 'highway',
+    name: 'Open Highway',
+    category: 'City',
+    icon: '🛣️',
+    desc: 'Rhythmic whoosh of distant express traffic',
+    file: 'https://nahian.bd/_astro/highway.UDhkN4uj.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/city/traffic.mp3',
+  },
+  {
+    id: 'road',
+    name: 'Suburban Road',
+    category: 'City',
+    icon: '🚗',
+    desc: 'Gentle occasional cars along neighbourhood road',
+    file: 'https://nahian.bd/_astro/road.j6Ti9-Nm.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/city/street.mp3',
+  },
+  {
+    id: 'crowd',
+    name: 'Plaza Crowd',
+    category: 'City',
+    icon: '👥',
+    desc: 'Ambient chatter of people in a town square',
+    file: 'https://nahian.bd/_astro/crowd.C8pP-exH.mp3',
+    fallbackUrl: 'https://cdn.jsdelivr.net/gh/remvze/moodist@main/public/sounds/city/crowd.mp3',
+  },
+
+  // 8. Noise & Neural Waves Category (7 sounds)
   {
     id: 'brown',
     name: 'Brown Noise',
@@ -334,90 +762,120 @@ export const SOUND_DEFINITIONS = [
     carrier: 240,
   },
   {
-    id: 'theta',
-    name: 'Binaural Theta (6Hz)',
+    id: 'scifi',
+    name: 'Sci-fi Starship Hum',
     category: 'Noise & Waves',
-    icon: '🌌',
-    desc: '6 Hz deep intuition & algorithmic vision',
-    type: 'binaural',
-    hz: 6,
-    carrier: 180,
-  },
-  {
-    id: 'delta',
-    name: 'Binaural Delta (2Hz)',
-    category: 'Noise & Waves',
-    icon: '🌙',
-    desc: '2 Hz deep recovery and restoration',
-    type: 'binaural',
-    hz: 2,
-    carrier: 150,
+    icon: '🚀',
+    desc: 'Deep interstellar ship engine drone with subtle phaser sweep',
+    type: 'scifi',
   },
 ];
 
 export const FOCUS_PRESETS = [
+  // Nahian Ready-Made Curated Mixes
+  {
+    id: 'deep-focus',
+    name: 'Deep Focus',
+    icon: '🏔️',
+    desc: 'Brown noise + Binaural Alpha (10Hz)',
+    scene: 'mountains',
+    mix: { brown: 55, alpha: 50 },
+  },
+  {
+    id: 'rainy-cafe',
+    name: 'Rainy Café',
+    icon: '☕',
+    desc: 'Light rain + Quiet coffeehouse',
+    scene: 'cafe',
+    mix: { 'light-rain': 50, cafe: 55 },
+  },
+  {
+    id: 'late-night-coding',
+    name: 'Late-Night Coding',
+    icon: '💻',
+    desc: 'Rain on window + Mechanical keyboard + Brown noise',
+    scene: 'desk',
+    mix: { 'rain-on-window': 50, keyboard: 30, brown: 30 },
+  },
   {
     id: 'monsoon-tin-roof',
     name: 'Monsoon Tin Roof',
     icon: '🏠',
-    desc: 'Tin roof rain + Thunder + Wind in trees',
-    mix: { 'tin-roof': 70, 'thunder': 45, 'wind-in-trees': 35 },
+    desc: 'Tin roof rain + Summer crickets + Distant thunder',
+    scene: 'monsoon',
+    mix: { 'tin-roof': 65, crickets: 30, thunder: 30 },
+  },
+  {
+    id: 'thunderstorm',
+    name: 'Thunderstorm',
+    icon: '⛈️',
+    desc: 'Heavy rain + Deep thunder + Mountain wind',
+    scene: 'storm',
+    mix: { 'heavy-rain': 65, thunder: 55, wind: 20 },
+  },
+  {
+    id: 'forest-walk',
+    name: 'Forest Walk',
+    icon: '🌲',
+    desc: 'Forest woods + Flowing river + Songbirds',
+    scene: 'forest',
+    mix: { forest: 60, river: 35, birds: 30 },
+  },
+  {
+    id: 'pacific-surf',
+    name: 'Pacific Surf & Birds',
+    icon: '🌊',
+    desc: 'Ocean waves + Coastal seagulls + Wind',
+    scene: 'ocean',
+    mix: { waves: 65, seagulls: 20, wind: 20 },
+  },
+  {
+    id: 'cozy-cabin',
+    name: 'Cozy Cabin',
+    icon: '🪵',
+    desc: 'Warm campfire + Rain on window + Wind',
+    scene: 'cabin',
+    mix: { campfire: 55, 'rain-on-window': 45, wind: 20 },
+  },
+  {
+    id: 'study-hall',
+    name: 'Study Hall',
+    icon: '📚',
+    desc: 'Quiet library + Paper turning + Antique clock',
+    scene: 'library',
+    mix: { library: 60, paper: 25, clock: 15 },
+  },
+  {
+    id: 'night-train',
+    name: 'Night Train',
+    icon: '🚆',
+    desc: 'Inside train cabin + Light rain drizzle',
+    scene: 'train',
+    mix: { 'inside-a-train': 60, 'light-rain': 30 },
+  },
+  {
+    id: 'garden',
+    name: 'Bloom Garden',
+    icon: '🌸',
+    desc: 'Songbirds + Beehive hum + Wind in trees',
+    scene: 'garden',
+    mix: { birds: 45, beehive: 15, 'wind-in-trees': 30 },
+  },
+  {
+    id: 'starship',
+    name: 'Starship Odyssey',
+    icon: '🚀',
+    desc: 'Sci-fi starship drone + Low brown rumble',
+    scene: 'space',
+    mix: { scifi: 60, brown: 25 },
   },
   {
     id: 'nordic-rain',
     name: 'Nordic Pine Rain',
     icon: '🌲',
     desc: 'Rain on leaves + Forest woods + Campfire',
-    mix: { 'forest': 60, 'rain-on-leaves': 50, 'campfire': 35 },
-  },
-  {
-    id: 'pacific-surf',
-    name: 'Pacific Surf & Birds',
-    icon: '🌊',
-    desc: 'Ocean waves + Seagulls + Mountain wind',
-    mix: { 'waves': 65, 'seagulls': 40, 'wind': 35 },
-  },
-  {
-    id: 'tranquil-brook',
-    name: 'Tranquil Mountain River',
-    icon: '🏞️',
-    desc: 'Flowing river + Water droplets + Songbirds',
-    mix: { 'river': 65, 'droplets': 40, 'birds': 45 },
-  },
-  {
-    id: 'cosy-tent-storm',
-    name: 'Cosy Wilderness Tent',
-    icon: '⛺',
-    desc: 'Rain on tent + Distant thunder + Campfire',
-    mix: { 'rain-on-tent': 65, 'thunder': 40, 'campfire': 45 },
-  },
-  {
-    id: 'midnight-car-rain',
-    name: 'Midnight Drive in Rain',
-    icon: '🚗',
-    desc: 'Rain on car roof + Rain on window + Crickets',
-    mix: { 'rain-on-car-roof': 60, 'rain-on-window': 45, 'crickets': 30 },
-  },
-  {
-    id: 'tropical-jungle',
-    name: 'Tropical Rainforest',
-    icon: '🌴',
-    desc: 'Jungle canopy + Heavy rain + Pond frogs',
-    mix: { 'jungle': 60, 'heavy-rain': 50, 'frog': 35 },
-  },
-  {
-    id: 'starlit-meadow',
-    name: 'Starlit Night Meadow',
-    icon: '🦗',
-    desc: 'Summer crickets + Night owl + River',
-    mix: { 'crickets': 60, 'owl': 45, 'river': 35 },
-  },
-  {
-    id: 'deep-alpha-waterfall',
-    name: 'Deep Alpha Waterfall',
-    icon: '💧',
-    desc: 'Waterfall + Brown noise + Binaural Alpha (10Hz)',
-    mix: { 'waterfall': 60, 'brown': 45, 'alpha': 40 },
+    scene: 'forest',
+    mix: { forest: 60, 'rain-on-leaves': 50, campfire: 35 },
   },
 ];
 
@@ -450,6 +908,123 @@ export const FocusProvider = ({ children }) => {
     return init;
   });
 
+  // Atmospheric Scene State
+  const [activeScene, setActiveScene] = useState('forest');
+  const changeScene = useCallback((sceneId) => {
+    setActiveScene(sceneId);
+  }, []);
+
+  // Quotes State
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(() =>
+    Math.floor(Math.random() * FOCUS_QUOTES.length)
+  );
+
+  const nextQuote = useCallback(() => {
+    setCurrentQuoteIndex((prev) => (prev + 1) % FOCUS_QUOTES.length);
+  }, []);
+
+  const prevQuote = useCallback(() => {
+    setCurrentQuoteIndex((prev) => (prev - 1 + FOCUS_QUOTES.length) % FOCUS_QUOTES.length);
+  }, []);
+
+  // YouTube Focus Player State
+  const [currentYtTrack, setCurrentYtTrack] = useState(() => YOUTUBE_PICKS[0]);
+  const [isYtPlaying, setIsYtPlaying] = useState(false);
+  const [ytVolume, setYtVolume] = useState(80);
+  const [isYtFolded, setIsYtFolded] = useState(() => {
+    try {
+      return localStorage.getItem('yt-video-hidden') === '1';
+    } catch {
+      return false;
+    }
+  });
+
+  const [customYtLinks, setCustomYtLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('focus-links');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const toggleYtFold = useCallback(() => {
+    setIsYtFolded((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('yt-video-hidden', next ? '1' : '0');
+      } catch {}
+      return next;
+    });
+  }, []);
+
+  const playYtTrack = useCallback((track) => {
+    if (!track) return;
+    setCurrentYtTrack(track);
+    setIsYtPlaying(true);
+  }, []);
+
+  const toggleYtPlay = useCallback(() => {
+    setIsYtPlaying((prev) => !prev);
+  }, []);
+
+  const nextYtTrack = useCallback(() => {
+    if (!currentYtTrack) {
+      setCurrentYtTrack(YOUTUBE_PICKS[0]);
+      setIsYtPlaying(true);
+      return;
+    }
+    const idx = YOUTUBE_PICKS.findIndex((p) => p.id === currentYtTrack.id);
+    const nextIdx = (idx + 1) % YOUTUBE_PICKS.length;
+    setCurrentYtTrack(YOUTUBE_PICKS[nextIdx]);
+    setIsYtPlaying(true);
+  }, [currentYtTrack]);
+
+  const prevYtTrack = useCallback(() => {
+    if (!currentYtTrack) {
+      setCurrentYtTrack(YOUTUBE_PICKS[0]);
+      setIsYtPlaying(true);
+      return;
+    }
+    const idx = YOUTUBE_PICKS.findIndex((p) => p.id === currentYtTrack.id);
+    const prevIdx = (idx - 1 + YOUTUBE_PICKS.length) % YOUTUBE_PICKS.length;
+    setCurrentYtTrack(YOUTUBE_PICKS[prevIdx]);
+    setIsYtPlaying(true);
+  }, [currentYtTrack]);
+
+  const addCustomYtLink = useCallback((inputUrl) => {
+    const parsed = parseYoutubeUrl(inputUrl);
+    if (!parsed || !parsed.id) return false;
+    const newTrack = {
+      id: parsed.id,
+      title: `YouTube Focus Stream (${parsed.id})`,
+      sub: 'Custom Link',
+      list: parsed.list,
+      thumb: `https://i.ytimg.com/vi/${parsed.id}/mqdefault.jpg`,
+    };
+    setCustomYtLinks((prev) => {
+      const filtered = prev.filter((p) => p.id !== parsed.id);
+      const updated = [newTrack, ...filtered].slice(0, 15);
+      try {
+        localStorage.setItem('focus-links', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+    setCurrentYtTrack(newTrack);
+    setIsYtPlaying(true);
+    return true;
+  }, []);
+
+  const removeCustomYtLink = useCallback((id) => {
+    setCustomYtLinks((prev) => {
+      const updated = prev.filter((p) => p.id !== id);
+      try {
+        localStorage.setItem('focus-links', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+  }, []);
+
   // Pomodoro Timer State
   const [timerMode, setTimerMode] = useState('pomodoro');
   const [timerStatus, setTimerStatus] = useState('idle'); // 'idle' | 'running' | 'paused'
@@ -474,9 +1049,7 @@ export const FocusProvider = ({ children }) => {
     currentTaskRef.current = currentTask;
     try {
       localStorage.setItem('focus_current_task', currentTask);
-    } catch {
-      // ignore
-    }
+    } catch {}
   }, [currentTask]);
 
   // Pomodoro Session History State
@@ -559,6 +1132,7 @@ export const FocusProvider = ({ children }) => {
       name: name.trim(),
       icon: '✨',
       desc: 'Custom nature soundscape',
+      scene: activeScene,
       mix: currentMix,
       isCustom: true,
     };
@@ -570,7 +1144,7 @@ export const FocusProvider = ({ children }) => {
       return updated;
     });
     setActivePreset(newPreset.id);
-  }, [volumes]);
+  }, [volumes, activeScene]);
 
   const deleteUserPreset = useCallback((id) => {
     setUserPresets((prev) => {
@@ -677,6 +1251,49 @@ export const FocusProvider = ({ children }) => {
         try { oscL.stop(); oscR.stop(); } catch {}
         binauralNodesRef.current = null;
       };
+    } else if (soundDef.id === 'scifi') {
+      // Procedural Sci-Fi Starship Drone Synthesizer
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(360, ctx.currentTime);
+      filter.Q.setValueAtTime(1.2, ctx.currentTime);
+      filter.connect(gainNode);
+
+      const oscs = [];
+      const configs = [
+        [55, 'sawtooth', 0.12],
+        [55.4, 'sawtooth', 0.12],
+        [82.4, 'triangle', 0.1],
+        [110.2, 'sine', 0.08],
+      ];
+
+      configs.forEach(([freq, type, vol]) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        g.gain.setValueAtTime(vol, ctx.currentTime);
+        osc.connect(g);
+        g.connect(filter);
+        osc.start();
+        oscs.push(osc);
+      });
+
+      // LFO filter sweep
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      lfo.frequency.setValueAtTime(0.035, ctx.currentTime);
+      lfoGain.gain.setValueAtTime(150, ctx.currentTime);
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+      lfo.start();
+      oscs.push(lfo);
+
+      stopFn = () => {
+        oscs.forEach((o) => {
+          try { o.stop(); } catch {}
+        });
+      };
     } else if (soundDef.type === 'procedural_noise') {
       // Procedural Colored Noise (Brown, Pink, White)
       const bufferSize = ctx.sampleRate * 3;
@@ -760,7 +1377,6 @@ export const FocusProvider = ({ children }) => {
           }
         }
 
-        // Play audio with fallback to fallbackUrl or procedural
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => {
@@ -798,185 +1414,280 @@ export const FocusProvider = ({ children }) => {
 
       osc.type = 'sine';
       osc.frequency.setValueAtTime(587.33, now); // D5
-      osc.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.3); // A5
 
-      chimeGain.gain.setValueAtTime(0.35, now);
-      chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+      chimeGain.gain.setValueAtTime(0.3, now);
+      chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
 
       osc.connect(chimeGain);
-      chimeGain.connect(masterGainRef.current || ctx.destination);
+      chimeGain.connect(ctx.destination);
 
       osc.start(now);
-      osc.stop(now + 1.8);
+      osc.stop(now + 1.2);
     } catch {}
   }, [initAudioEngine]);
 
-  // Master Volume & Mute Update
-  useEffect(() => {
-    if (masterGainRef.current && audioCtxRef.current) {
-      const vol = isMuted ? 0 : masterVolume / 100;
-      masterGainRef.current.gain.setTargetAtTime(vol, audioCtxRef.current.currentTime, 0.05);
+  // Master Play / Pause Toggle
+  const toggleMasterPlay = useCallback(() => {
+    const ctx = initAudioEngine();
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
     }
+
+    setIsPlaying((prev) => !prev);
+  }, [initAudioEngine]);
+
+  // Set single sound volume
+  const setSoundVolume = useCallback((soundId, vol) => {
+    const numVol = Math.max(0, Math.min(100, Number(vol)));
+    setVolumes((prev) => ({
+      ...prev,
+      [soundId]: numVol,
+    }));
+    setActivePreset(null);
+
+    // Auto switch atmospheric scene if mapped
+    if (numVol > 0 && SOUND_TO_SCENE_MAP[soundId]) {
+      setActiveScene(SOUND_TO_SCENE_MAP[soundId]);
+    }
+  }, []);
+
+  // Toggle single sound on/off
+  const toggleSound = useCallback((soundId) => {
+    setVolumes((prev) => {
+      const current = prev[soundId] || 0;
+      const next = current > 0 ? 0 : 50;
+      if (next > 0 && !isPlaying) {
+        setIsPlaying(true);
+        const ctx = initAudioEngine();
+        if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+      }
+      if (next > 0 && SOUND_TO_SCENE_MAP[soundId]) {
+        setActiveScene(SOUND_TO_SCENE_MAP[soundId]);
+      }
+      return {
+        ...prev,
+        [soundId]: next,
+      };
+    });
+  }, [isPlaying, initAudioEngine]);
+
+  // Apply a curated or custom soundscape preset
+  const applyPreset = useCallback((preset) => {
+    if (!preset) return;
+    setActivePreset(preset.id);
+    const newVolumes = {};
+    SOUND_DEFINITIONS.forEach((s) => {
+      newVolumes[s.id] = preset.mix[s.id] || 0;
+    });
+    setVolumes(newVolumes);
+
+    if (preset.scene) {
+      setActiveScene(preset.scene);
+    }
+
+    if (!isPlaying) {
+      setIsPlaying(true);
+      const ctx = initAudioEngine();
+      if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+    }
+  }, [isPlaying, initAudioEngine]);
+
+  // Shuffle: a surprise mix of 2-3 harmonious sounds
+  const shuffleMix = useCallback(() => {
+    const eligible = SOUND_DEFINITIONS.filter((s) => s.id !== 'scifi');
+    const pick1 = eligible[Math.floor(Math.random() * eligible.length)];
+    const pick2 = eligible[Math.floor(Math.random() * eligible.length)];
+    const pick3 = Math.random() > 0.4 ? eligible[Math.floor(Math.random() * eligible.length)] : null;
+
+    const newVolumes = {};
+    SOUND_DEFINITIONS.forEach((s) => {
+      newVolumes[s.id] = 0;
+    });
+
+    newVolumes[pick1.id] = 50 + Math.floor(Math.random() * 25);
+    newVolumes[pick2.id] = 30 + Math.floor(Math.random() * 25);
+    if (pick3 && pick3.id !== pick1.id && pick3.id !== pick2.id) {
+      newVolumes[pick3.id] = 25 + Math.floor(Math.random() * 20);
+    }
+
+    setVolumes(newVolumes);
+    setActivePreset(null);
+
+    const primaryScene = SOUND_TO_SCENE_MAP[pick1.id] || SOUND_TO_SCENE_MAP[pick2.id] || 'forest';
+    setActiveScene(primaryScene);
+
+    if (!isPlaying) {
+      setIsPlaying(true);
+      const ctx = initAudioEngine();
+      if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+    }
+  }, [isPlaying, initAudioEngine]);
+
+  // Clear all sound layers
+  const clearAllSounds = useCallback(() => {
+    setVolumes((prev) => {
+      const reset = {};
+      Object.keys(prev).forEach((k) => {
+        reset[k] = 0;
+      });
+      return reset;
+    });
+    setActivePreset(null);
+  }, []);
+
+  // Sync Master Volume
+  useEffect(() => {
+    if (!audioCtxRef.current || !masterGainRef.current) return;
+    const ctx = audioCtxRef.current;
+    const gain = masterGainRef.current;
+    const target = isMuted ? 0 : masterVolume / 100;
+    gain.gain.cancelScheduledValues(ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(target, ctx.currentTime + 0.05);
   }, [masterVolume, isMuted]);
 
-  // Synchronize Per-Sound Node Gains
+  // Sync Individual Sound Nodes with Volumes
   useEffect(() => {
-    if (!isPlaying) return;
-    const ctx = audioCtxRef.current;
-    if (!ctx) return;
-
-    Object.entries(volumes).forEach(([id, vol]) => {
-      let sound = soundNodesRef.current[id];
-      if (vol > 0 && !sound) {
-        sound = createSoundSource(ctx, masterGainRef.current, id);
-        soundNodesRef.current[id] = sound;
-      }
-
-      if (sound) {
-        const targetGain = (vol / 100) * 0.8;
-        sound.gainNode.gain.setTargetAtTime(targetGain, ctx.currentTime, 0.05);
-      }
-    });
-  }, [volumes, isPlaying]);
-
-  // Toggle Master Sound State
-  const toggleMasterPlay = () => {
-    const ctx = initAudioEngine();
-    if (ctx && ctx.state === 'suspended') {
-      ctx.resume();
-    }
-
-    if (isPlaying) {
-      // Fade out all sounds
-      Object.values(soundNodesRef.current).forEach((s) => s.stopFn());
+    if (!isPlaying) {
+      Object.keys(soundNodesRef.current).forEach((soundId) => {
+        const nodeObj = soundNodesRef.current[soundId];
+        if (nodeObj && nodeObj.stopFn) {
+          try { nodeObj.stopFn(); } catch {}
+        }
+      });
       soundNodesRef.current = {};
-      setIsPlaying(false);
-    } else {
-      // If all volumes are currently 0, default to Monsoon Tin Roof Preset
-      const hasActive = Object.values(volumes).some((v) => v > 0);
-      if (!hasActive) {
-        applyPreset(FOCUS_PRESETS[0]);
-      }
-      setIsPlaying(true);
+      return;
     }
-  };
 
-  // Adjust Individual Sound Volume
-  const setSoundVolume = (soundId, val) => {
-    const num = Math.max(0, Math.min(100, Number(val)));
-    setVolumes((prev) => ({ ...prev, [soundId]: num }));
-    setActivePreset(null);
-
-    if (num > 0 && !isPlaying) {
-      const ctx = initAudioEngine();
-      if (ctx && ctx.state === 'suspended') {
-        ctx.resume();
-      }
-      setIsPlaying(true);
-    }
-  };
-
-  // Toggle Single Sound
-  const toggleSound = (soundId) => {
-    const current = volumes[soundId] || 0;
-    setSoundVolume(soundId, current > 0 ? 0 : 50);
-  };
-
-  // Apply Curated Preset
-  const applyPreset = (preset) => {
     const ctx = initAudioEngine();
-    if (ctx && ctx.state === 'suspended') {
-      ctx.resume();
-    }
+    if (!ctx || !masterGainRef.current) return;
 
-    const newVols = {};
-    SOUND_DEFINITIONS.forEach((s) => {
-      newVols[s.id] = preset.mix[s.id] || 0;
+    SOUND_DEFINITIONS.forEach((sound) => {
+      const vol = volumes[sound.id] || 0;
+      const targetGain = vol / 100;
+
+      let nodeObj = soundNodesRef.current[sound.id];
+
+      if (targetGain > 0) {
+        if (!nodeObj) {
+          nodeObj = createSoundSource(ctx, masterGainRef.current, sound.id);
+          soundNodesRef.current[sound.id] = nodeObj;
+        }
+        if (nodeObj && nodeObj.gainNode) {
+          nodeObj.gainNode.gain.cancelScheduledValues(ctx.currentTime);
+          nodeObj.gainNode.gain.linearRampToValueAtTime(targetGain, ctx.currentTime + 0.1);
+        }
+      } else if (nodeObj) {
+        if (nodeObj.gainNode) {
+          nodeObj.gainNode.gain.cancelScheduledValues(ctx.currentTime);
+          nodeObj.gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.1);
+        }
+        setTimeout(() => {
+          if ((volumes[sound.id] || 0) === 0 && soundNodesRef.current[sound.id]) {
+            try { soundNodesRef.current[sound.id].stopFn(); } catch {}
+            delete soundNodesRef.current[sound.id];
+          }
+        }, 150);
+      }
     });
+  }, [isPlaying, volumes, initAudioEngine]);
 
-    setVolumes(newVols);
-    setActivePreset(preset.id);
-    setIsPlaying(true);
-  };
-
-  // Clear All Active Sounds
-  const clearAllSounds = () => {
-    const newVols = {};
-    SOUND_DEFINITIONS.forEach((s) => {
-      newVols[s.id] = 0;
-    });
-    setVolumes(newVols);
-    setActivePreset(null);
-    if (isPlaying) {
-      Object.values(soundNodesRef.current).forEach((s) => s.stopFn());
-      soundNodesRef.current = {};
-      binauralNodesRef.current = null;
-      setIsPlaying(false);
-    }
-  };
-
-  // Vinyl Tape Warmth Synthesizer Engine
+  // Analog Vinyl Warmth Effect Node
   useEffect(() => {
     if (!audioCtxRef.current || !masterGainRef.current) return;
     const ctx = audioCtxRef.current;
 
-    if (isVinylWarmth && isPlaying) {
-      if (vinylNodeRef.current) return;
+    if (isVinylWarmth && !vinylNodeRef.current) {
       try {
-        const bufferSize = ctx.sampleRate * 2;
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          if (Math.random() < 0.0008) {
-            data[i] = (Math.random() * 2 - 1) * 0.7;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowshelf';
+        filter.frequency.setValueAtTime(280, ctx.currentTime);
+        filter.gain.setValueAtTime(4.5, ctx.currentTime);
+
+        const highCut = ctx.createBiquadFilter();
+        highCut.type = 'highshelf';
+        highCut.frequency.setValueAtTime(8000, ctx.currentTime);
+        highCut.gain.setValueAtTime(-2.5, ctx.currentTime);
+
+        filter.connect(highCut);
+        vinylNodeRef.current = { filter, highCut };
+      } catch {}
+    }
+  }, [isVinylWarmth]);
+
+  // Pomodoro Timer Engine
+  useEffect(() => {
+    if (timerStatus !== 'running') return;
+
+    const interval = setInterval(() => {
+      if (timerMode === 'stopwatch') {
+        setStopwatchSeconds((prev) => prev + 1);
+        return;
+      }
+
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          playChime();
+          const modeConfig = TIMER_MODES[timerMode] || TIMER_MODES.pomodoro;
+
+          if (timerPhase === 'focus') {
+            logCompletedSession(currentTaskRef.current, modeConfig.focusMinutes, modeConfig.label);
+            setCompletedSessions((s) => s + 1);
+            setTimerPhase('break');
+            return modeConfig.breakMinutes * 60;
           } else {
-            data[i] = (Math.random() * 2 - 1) * 0.015;
+            setTimerPhase('focus');
+            return modeConfig.focusMinutes * 60;
           }
         }
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.loop = true;
+        return prev - 1;
+      });
+    }, 1000);
 
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(2200, ctx.currentTime);
-        filter.Q.setValueAtTime(1.4, ctx.currentTime);
+    return () => clearInterval(interval);
+  }, [timerStatus, timerMode, timerPhase, playChime, logCompletedSession]);
 
-        const vGain = ctx.createGain();
-        vGain.gain.setValueAtTime(0.1, ctx.currentTime);
+  // Timer Control Callbacks
+  const startTimer = useCallback(() => {
+    setTimerStatus('running');
+  }, []);
 
-        source.connect(filter);
-        filter.connect(vGain);
-        vGain.connect(masterGainRef.current);
-        source.start(0);
+  const pauseTimer = useCallback(() => {
+    setTimerStatus('paused');
+  }, []);
 
-        vinylNodeRef.current = { source, vGain };
-      } catch {}
-    } else {
-      if (vinylNodeRef.current) {
-        try {
-          vinylNodeRef.current.source.stop();
-        } catch {}
-        vinylNodeRef.current = null;
-      }
-    }
-  }, [isVinylWarmth, isPlaying]);
+  const resetTimer = useCallback(() => {
+    setTimerStatus('idle');
+    setTimerPhase('focus');
+    setStopwatchSeconds(0);
+    const modeConfig = TIMER_MODES[timerMode] || TIMER_MODES.pomodoro;
+    setTimeRemaining(modeConfig.focusMinutes * 60);
+  }, [timerMode]);
 
-  // Mindfulness Box Breathing Tick Engine (4s Inhale -> 4s Hold -> 4s Exhale -> 4s Hold)
+  const changeTimerMode = useCallback((newMode) => {
+    setTimerMode(newMode);
+    setTimerStatus('idle');
+    setTimerPhase('focus');
+    setStopwatchSeconds(0);
+    const modeConfig = TIMER_MODES[newMode] || TIMER_MODES.pomodoro;
+    setTimeRemaining(modeConfig.focusMinutes * 60);
+  }, []);
+
+  // Mindful Box Breathing Cycle (4s Inhale -> 4s Hold -> 4s Exhale -> 4s Hold)
   useEffect(() => {
     if (!isBreathingMode) return;
 
-    const timer = setInterval(() => {
+    const interval = setInterval(() => {
       setBreathingSeconds((prev) => {
         if (prev <= 1) {
-          setBreathingPhase((curPhase) => {
-            let nextPhase = 'inhale';
-            if (curPhase === 'inhale') nextPhase = 'hold-in';
-            else if (curPhase === 'hold-in') nextPhase = 'exhale';
-            else if (curPhase === 'exhale') nextPhase = 'hold-out';
-            else if (curPhase === 'hold-out') nextPhase = 'inhale';
-            playChime();
-            return nextPhase;
+          setBreathingPhase((currentPhase) => {
+            switch (currentPhase) {
+              case 'inhale': return 'hold-in';
+              case 'hold-in': return 'exhale';
+              case 'exhale': return 'hold-out';
+              case 'hold-out': return 'inhale';
+              default: return 'inhale';
+            }
           });
           return 4;
         }
@@ -984,154 +1695,117 @@ export const FocusProvider = ({ children }) => {
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [isBreathingMode, playChime]);
-
-  // Timer Tick Engine
-  useEffect(() => {
-    if (timerStatus !== 'running') return;
-
-    const interval = setInterval(() => {
-      if (timerMode === 'stopwatch') {
-        setStopwatchSeconds((prev) => prev + 1);
-      } else {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            playChime();
-            if (timerPhase === 'focus') {
-              setCompletedSessions((c) => c + 1);
-              const mins = TIMER_MODES[timerMode]?.focusMinutes || 25;
-              logCompletedSession(currentTaskRef.current, mins, TIMER_MODES[timerMode]?.label || 'Focus');
-              setTimerPhase('break');
-              return (TIMER_MODES[timerMode]?.breakMinutes || 5) * 60;
-            } else {
-              setTimerPhase('focus');
-              return (TIMER_MODES[timerMode]?.focusMinutes || 25) * 60;
-            }
-          }
-          return prev - 1;
-        });
-      }
-    }, 1000);
-
     return () => clearInterval(interval);
-  }, [timerStatus, timerMode, timerPhase, playChime, logCompletedSession]);
+  }, [isBreathingMode]);
 
-  // Synchronize browser tab title with active Pomodoro countdown
+  // Browser Tab Title Synchronization
   useEffect(() => {
-    if (typeof document === 'undefined') return;
+    if (timerStatus === 'running') {
+      const formatTime = (secs) => {
+        const h = Math.floor(secs / 3600);
+        const m = Math.floor((secs % 3600) / 60);
+        const s = secs % 60;
+        if (h > 0) {
+          return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      };
 
-    if (timerStatus === 'running' || timerStatus === 'paused') {
-      const secs = timerMode === 'stopwatch' ? stopwatchSeconds : timeRemaining;
-      const h = Math.floor(secs / 3600);
-      const m = Math.floor((secs % 3600) / 60);
-      const s = secs % 60;
-      const timeStr = h > 0
-        ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
-        : `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-
-      const prefix = timerStatus === 'paused' ? '⏸️ ' : timerPhase === 'break' ? '☕ ' : '⏳ ';
-      document.title = `(${prefix}${timeStr}) Nature Focus Station · Mahmud al Hasan`;
-    } else if (timerStatus === 'idle') {
-      if (document.title.startsWith('(')) {
-        document.title = 'Mahmud al Hasan | Backend Software Engineer (Laravel, Node.js & .NET)';
-      }
+      const timeStr = timerMode === 'stopwatch'
+        ? formatTime(stopwatchSeconds)
+        : formatTime(timeRemaining);
+      const phaseStr = timerPhase === 'focus' ? 'Focus' : 'Break';
+      document.title = `(${timeStr}) ${phaseStr} · Focus Station`;
+    } else {
+      document.title = 'Focus Station · Hasan';
     }
   }, [timerStatus, timeRemaining, stopwatchSeconds, timerMode, timerPhase]);
 
-  const startTimer = () => {
-    setTimerStatus('running');
-  };
-
-  const pauseTimer = () => {
-    setTimerStatus('paused');
-  };
-
-  const resetTimer = (newMode) => {
-    const mode = newMode || timerMode;
-    setTimerStatus('idle');
-    setTimerPhase('focus');
-    if (mode === 'stopwatch') {
-      setStopwatchSeconds(0);
-    } else {
-      setTimeRemaining((TIMER_MODES[mode]?.focusMinutes || 25) * 60);
-    }
-  };
-
-  const changeTimerMode = (newMode) => {
-    setTimerMode(newMode);
-    resetTimer(newMode);
-  };
-
-  // Active Sounds Count
   const activeSoundsCount = Object.values(volumes).filter((v) => v > 0).length;
 
-  return (
-    <FocusContext.Provider
-      value={{
-        // Sounds
-        isPlaying,
-        toggleMasterPlay,
-        masterVolume,
-        setMasterVolume,
-        isMuted,
-        setIsMuted,
-        volumes,
-        setSoundVolume,
-        toggleSound,
-        activePreset,
-        applyPreset,
-        clearAllSounds,
-        activeSoundsCount,
-        analyserRef,
+  const value = {
+    // Soundboard
+    isPlaying,
+    toggleMasterPlay,
+    masterVolume,
+    setMasterVolume,
+    isMuted,
+    setIsMuted,
+    volumes,
+    setSoundVolume,
+    toggleSound,
+    activePreset,
+    applyPreset,
+    clearAllSounds,
+    activeSoundsCount,
+    analyserRef,
+    shuffleMix,
 
-        // Timer
-        timerMode,
-        changeTimerMode,
-        timerStatus,
-        timerPhase,
-        timeRemaining,
-        stopwatchSeconds,
-        startTimer,
-        pauseTimer,
-        resetTimer,
-        completedSessions,
-        currentTask,
-        setCurrentTask,
-        sessionHistory,
-        clearSessionHistory,
+    // Scenes & Atmosphere
+    activeScene,
+    changeScene,
 
-        // Brainwave Tuner
-        brainwaveMode,
-        changeBrainwaveMode,
+    // Quotes
+    currentQuoteIndex,
+    nextQuote,
+    prevQuote,
 
-        // Vinyl Tape Warmth
-        isVinylWarmth,
-        setIsVinylWarmth,
+    // YouTube Integration
+    currentYtTrack,
+    isYtPlaying,
+    ytVolume,
+    setYtVolume,
+    isYtFolded,
+    toggleYtFold,
+    customYtLinks,
+    playYtTrack,
+    toggleYtPlay,
+    nextYtTrack,
+    prevYtTrack,
+    addCustomYtLink,
+    removeCustomYtLink,
 
-        // User Presets
-        userPresets,
-        saveUserPreset,
-        deleteUserPreset,
+    // Timer
+    timerMode,
+    changeTimerMode,
+    timerStatus,
+    timerPhase,
+    timeRemaining,
+    stopwatchSeconds,
+    startTimer,
+    pauseTimer,
+    resetTimer,
+    completedSessions,
+    currentTask,
+    setCurrentTask,
+    sessionHistory,
+    clearSessionHistory,
 
-        // Mindfulness Box Breathing
-        isBreathingMode,
-        setIsBreathingMode,
-        breathingPhase,
-        breathingSeconds,
+    // Brainwave & Synth
+    brainwaveMode,
+    changeBrainwaveMode,
+    isVinylWarmth,
+    setIsVinylWarmth,
 
-        // Ambient Backdrop Theme
-        ambientTheme,
-        changeAmbientTheme,
+    // Custom Presets
+    userPresets,
+    saveUserPreset,
+    deleteUserPreset,
 
-        // Zen Mode
-        isZenMode,
-        setIsZenMode,
-      }}
-    >
-      {children}
-    </FocusContext.Provider>
-  );
+    // Breathing
+    isBreathingMode,
+    setIsBreathingMode,
+    breathingPhase,
+    breathingSeconds,
+
+    // Themes & Zen
+    ambientTheme,
+    changeAmbientTheme,
+    isZenMode,
+    setIsZenMode,
+  };
+
+  return <FocusContext.Provider value={value}>{children}</FocusContext.Provider>;
 };
 
 export const useFocus = () => {

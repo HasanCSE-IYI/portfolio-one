@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlay,
@@ -23,6 +23,13 @@ import {
   faKeyboard,
   faPlus,
   faWaveSquare,
+  faShuffle,
+  faEye,
+  faEyeSlash,
+  faTv,
+  faBackward,
+  faForward,
+  faQuoteLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import {
@@ -30,8 +37,10 @@ import {
   SOUND_DEFINITIONS,
   FOCUS_PRESETS,
   BRAINWAVE_MODES,
-  AMBIENT_THEMES,
   TIMER_MODES,
+  FOCUS_SCENES,
+  FOCUS_QUOTES,
+  YOUTUBE_PICKS,
 } from '../../context/FocusContext';
 import './index.scss';
 
@@ -43,10 +52,18 @@ const Focus = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
-  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('soundboard');
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('soundboard'); // 'soundboard' | 'timer' | 'youtube'
+  const [ytTab, setYtTab] = useState('picks'); // 'picks' | 'links'
+  const [customLinkInput, setCustomLinkInput] = useState('');
+  const [isIslandExpanded, setIsIslandExpanded] = useState(false);
+  const [isIdle, setIsIdle] = useState(false);
+  const [showZenMixer, setShowZenMixer] = useState(false);
   const canvasRef = useRef(null);
+  const idleTimerRef = useRef(null);
+  const ytIframeRef = useRef(null);
 
   const {
+    // Soundboard
     isPlaying,
     toggleMasterPlay,
     masterVolume,
@@ -61,7 +78,32 @@ const Focus = () => {
     clearAllSounds,
     activeSoundsCount,
     analyserRef,
+    shuffleMix,
 
+    // Scenes & Atmosphere
+    activeScene,
+    changeScene,
+
+    // Quotes
+    currentQuoteIndex,
+    nextQuote,
+
+    // YouTube Focus Player
+    currentYtTrack,
+    isYtPlaying,
+    ytVolume,
+    setYtVolume,
+    isYtFolded,
+    toggleYtFold,
+    customYtLinks,
+    playYtTrack,
+    toggleYtPlay,
+    nextYtTrack,
+    prevYtTrack,
+    addCustomYtLink,
+    removeCustomYtLink,
+
+    // Timer
     timerMode,
     changeTimerMode,
     timerStatus,
@@ -77,183 +119,217 @@ const Focus = () => {
     sessionHistory,
     clearSessionHistory,
 
+    // Brainwave & Effects
     brainwaveMode,
     changeBrainwaveMode,
-
     isVinylWarmth,
     setIsVinylWarmth,
 
+    // Custom Presets
     userPresets,
     saveUserPreset,
     deleteUserPreset,
 
+    // Breathing
     isBreathingMode,
     setIsBreathingMode,
     breathingPhase,
     breathingSeconds,
 
+    // Theme & Zen
     ambientTheme,
-    changeAmbientTheme,
-
     isZenMode,
     setIsZenMode,
   } = useFocus();
 
+  // Letter entrance animation trigger
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover');
-    }, 1800);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Update document title for Focus Station
+  // Zen Mode Auto-Idle Timeout (3.5s inactivity hides cursor and controls)
   useEffect(() => {
-    if (timerStatus === 'idle') {
-      document.title = 'Focus Station | Mahmud al Hasan · Deep Nature Soundscapes & Flow';
+    if (!isZenMode) {
+      setIsIdle(false);
+      return;
     }
-    return () => {
-      if (timerStatus === 'idle') {
-        document.title = 'Mahmud al Hasan | Backend Software Engineer (Laravel, Node.js & .NET)';
-      }
+    const resetIdleTimer = () => {
+      setIsIdle(false);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => {
+        setIsIdle(true);
+      }, 3500);
     };
-  }, [timerStatus]);
 
-  // Global Keyboard Shortcuts (Space, M, F, B, T, R, ?, Esc)
+    window.addEventListener('mousemove', resetIdleTimer);
+    window.addEventListener('keydown', resetIdleTimer);
+    idleTimerRef.current = setTimeout(() => {
+      setIsIdle(true);
+    }, 3500);
+
+    return () => {
+      window.removeEventListener('mousemove', resetIdleTimer);
+      window.removeEventListener('keydown', resetIdleTimer);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [isZenMode]);
+
+  // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      // Ignore if user is typing in an input or textarea
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
-      const key = e.key.toLowerCase();
-      if (key === ' ' || e.code === 'Space') {
+      if (e.code === 'Space') {
         e.preventDefault();
         toggleMasterPlay();
-      } else if (key === 'm') {
+      } else if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
         setIsMuted(!isMuted);
-      } else if (key === 'f') {
-        setIsZenMode(!isZenMode);
-      } else if (key === 'b') {
-        setIsBreathingMode(!isBreathingMode);
-      } else if (key === 't') {
+      } else if (e.key === 'v' || e.key === 'V') {
+        e.preventDefault();
+        setIsZenMode((prev) => !prev);
+      } else if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+          setIsZenMode(true);
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      } else if (e.key === 't' || e.key === 'T') {
+        e.preventDefault();
         if (timerStatus === 'running') pauseTimer();
         else startTimer();
-      } else if (key === 'r') {
+      } else if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault();
         resetTimer();
-      } else if (key === '?' || (e.shiftKey && key === '/')) {
-        setShowShortcutsModal(!showShortcutsModal);
+      } else if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault();
+        setIsBreathingMode((prev) => !prev);
+      } else if (e.key === 's' || e.key === 'S') {
+        e.preventDefault();
+        shuffleMix();
+      } else if (e.key === 'y' || e.key === 'Y') {
+        e.preventDefault();
+        toggleYtFold();
+      } else if (e.key === '?') {
+        e.preventDefault();
+        setShowShortcutsModal((prev) => !prev);
       } else if (e.key === 'Escape') {
+        if (showSaveModal) setShowSaveModal(false);
         if (showShortcutsModal) setShowShortcutsModal(false);
-        else if (showSaveModal) setShowSaveModal(false);
-        else if (isBreathingMode) setIsBreathingMode(false);
-        else if (isZenMode) setIsZenMode(false);
+        if (isBreathingMode) setIsBreathingMode(false);
+        if (isZenMode) setIsZenMode(false);
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [
-    isZenMode,
-    setIsZenMode,
-    isBreathingMode,
-    setIsBreathingMode,
+    toggleMasterPlay,
     isMuted,
     setIsMuted,
+    setIsZenMode,
     timerStatus,
     startTimer,
     pauseTimer,
     resetTimer,
-    toggleMasterPlay,
-    showShortcutsModal,
+    setIsBreathingMode,
+    shuffleMix,
+    toggleYtFold,
     showSaveModal,
+    showShortcutsModal,
+    isBreathingMode,
+    isZenMode,
   ]);
 
-  // Prevent background scroll in Zen Mode or Breathing Mode
+  // Real-time Web Audio Visualizer
   useEffect(() => {
-    if (isZenMode || isBreathingMode) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isZenMode, isBreathingMode]);
-
-  // Real-Time Canvas Audio Frequency Visualizer (Retina High-DPI & Organic Breath)
-  useEffect(() => {
+    let animId;
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
-    let animId = null;
+    const dpr = window.devicePixelRatio || 1;
+    const width = canvas.clientWidth || 320;
+    const height = canvas.clientHeight || 90;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    if (ctx.scale) ctx.scale(dpr, dpr);
 
-    const handleResize = () => {
-      if (canvas.parentElement) {
-        const clientWidth = canvas.parentElement.clientWidth || 440;
-        const clientHeight = 74;
-        canvas.width = clientWidth;
-        canvas.height = clientHeight;
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    let idleTime = 0;
-    const renderWave = () => {
-      const analyser = analyserRef.current;
-      const width = canvas.width;
-      const height = canvas.height;
-
+    const renderSpectrum = () => {
+      animId = requestAnimationFrame(renderSpectrum);
       ctx.clearRect(0, 0, width, height);
 
-      if (analyser && isPlaying) {
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        analyser.getByteFrequencyData(dataArray);
-
-        const barWidth = (width / bufferLength) * 2.2;
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-          const barHeight = (dataArray[i] / 255) * height * 0.92;
-          const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight);
-          gradient.addColorStop(0, 'rgba(245, 158, 11, 0.2)');
-          gradient.addColorStop(0.5, 'rgba(6, 182, 212, 0.85)');
-          gradient.addColorStop(1, 'rgba(168, 85, 247, 0.95)');
-
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          if (ctx.roundRect) {
-            ctx.roundRect(x, height - barHeight, barWidth - 2, barHeight, [3, 3, 0, 0]);
-          } else {
-            ctx.rect(x, height - barHeight, barWidth - 2, barHeight);
-          }
-          ctx.fill();
-
-          x += barWidth;
-        }
-      } else {
-        // Serene ambient sine ripple when idle/paused
-        idleTime += 0.03;
-        ctx.beginPath();
-        ctx.moveTo(0, height / 2);
-        for (let x = 0; x < width; x += 4) {
-          const y = height / 2 + Math.sin(x * 0.025 + idleTime) * Math.sin(idleTime * 0.4) * 5;
-          ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = 'rgba(245, 158, 11, 0.28)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+      let dataArray = new Uint8Array(32);
+      if (analyserRef.current && isPlaying) {
+        dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+        analyserRef.current.getByteFrequencyData(dataArray);
       }
 
-      animId = requestAnimationFrame(renderWave);
+      const barCount = 28;
+      const totalSpacing = (barCount - 1) * 3;
+      const barWidth = Math.max(3, (width - totalSpacing) / barCount);
+      const grad = ctx.createLinearGradient(0, height, 0, 0);
+      grad.addColorStop(0, '#f59e0b');
+      grad.addColorStop(0.5, '#38bdf8');
+      grad.addColorStop(1, '#a855f7');
+
+      for (let i = 0; i < barCount; i++) {
+        const value = isPlaying
+          ? dataArray[Math.floor((i / barCount) * dataArray.length)] || 8
+          : 6 + Math.sin(Date.now() * 0.003 + i * 0.4) * 4;
+
+        const barHeight = Math.max(4, (value / 255) * (height - 8));
+        const x = i * (barWidth + 3);
+        const y = height - barHeight;
+
+        ctx.fillStyle = grad;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(x, y, barWidth, barHeight, [3, 3, 0, 0]);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, y, barWidth, barHeight);
+        }
+      }
     };
 
-    renderWave();
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (animId) cancelAnimationFrame(animId);
-    };
+    renderSpectrum();
+    return () => cancelAnimationFrame(animId);
   }, [analyserRef, isPlaying]);
 
-  // Format MM:SS or H:MM:SS
+  // Categories list and sound filtering
+  const categories = useMemo(() => {
+    return ['all', 'Rain', 'Nature', 'Animals', 'Places', 'Transport', 'Things', 'City', 'Noise & Waves'];
+  }, []);
+
+  const getCategoryCount = (cat) => {
+    if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
+    return SOUND_DEFINITIONS.filter(
+      (s) => s.category.toLowerCase() === cat.toLowerCase()
+    ).length;
+  };
+
+  const filteredSounds = useMemo(() => {
+    return SOUND_DEFINITIONS.filter((sound) => {
+      const matchCat =
+        activeCategory === 'all' ||
+        sound.category.toLowerCase() === activeCategory.toLowerCase();
+      const matchSearch =
+        !soundSearch.trim() ||
+        sound.name.toLowerCase().includes(soundSearch.toLowerCase()) ||
+        sound.desc.toLowerCase().includes(soundSearch.toLowerCase()) ||
+        sound.category.toLowerCase().includes(soundSearch.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [activeCategory, soundSearch]);
+
+  // Time formatter
   const formatTime = (secs) => {
     const h = Math.floor(secs / 3600);
     const m = Math.floor((secs % 3600) / 60);
@@ -264,127 +340,243 @@ const Focus = () => {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  // Circular timer progress calculation
-  const totalModeSeconds = (timerPhase === 'focus'
-    ? TIMER_MODES[timerMode]?.focusMinutes || 25
-    : TIMER_MODES[timerMode]?.breakMinutes || 5) * 60;
+  // Dial progress calculations
+  const totalDuration = useMemo(() => {
+    const modeConfig = TIMER_MODES[timerMode] || TIMER_MODES.pomodoro;
+    return timerPhase === 'focus'
+      ? modeConfig.focusMinutes * 60
+      : modeConfig.breakMinutes * 60;
+  }, [timerMode, timerPhase]);
 
-  const timerProgress = timerMode === 'stopwatch'
-    ? 1
-    : Math.max(0, Math.min(1, 1 - timeRemaining / (totalModeSeconds || 1)));
-
-  const radius = 105;
+  const radius = 86;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - timerProgress * circumference;
+  const progressRatio = totalDuration > 0 ? (totalDuration - timeRemaining) / totalDuration : 0;
+  const strokeDashoffset = circumference * (1 - progressRatio);
 
-  // Sound categories matching Nahian's nature groupings
-  const categories = ['all', 'Rain', 'Nature', 'Animals', 'Noise & Waves'];
-
-  const getCategoryCount = (cat) => {
-    if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
-    return SOUND_DEFINITIONS.filter((s) => s.category.toLowerCase() === cat.toLowerCase()).length;
-  };
-
-  const filteredSounds = SOUND_DEFINITIONS.filter((s) => {
-    const matchesCat = activeCategory === 'all' || s.category.toLowerCase() === activeCategory.toLowerCase();
-    const query = soundSearch.trim().toLowerCase();
-    const matchesSearch = !query ||
-      s.name.toLowerCase().includes(query) ||
-      s.desc.toLowerCase().includes(query) ||
-      s.category.toLowerCase().includes(query);
-    return matchesCat && matchesSearch;
-  });
-
-  // Handle Share / Copy Mix Link
+  // Handle Share Mix
   const handleShareMix = () => {
-    const mixStr = Object.entries(volumes)
-      .filter(([_, v]) => v > 0)
-      .map(([k, v]) => `${k}:${v}`)
-      .join(',');
-
-    const base = `${window.location.origin}${window.location.pathname}`;
-    const shareUrl = mixStr ? `${base}#/focus?mix=${encodeURIComponent(mixStr)}` : `${base}#/focus`;
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(shareUrl).then(() => {
+    const active = {};
+    SOUND_DEFINITIONS.forEach((s) => {
+      if (volumes[s.id] > 0) active[s.id] = volumes[s.id];
+    });
+    try {
+      const encoded = btoa(JSON.stringify(active));
+      const url = `${window.location.origin}/focus?mix=${encoded}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
         setShareCopied(true);
         setTimeout(() => setShareCopied(false), 2500);
-      }).catch(() => {});
+      }
+    } catch {}
+  };
+
+  // Handle Custom YouTube Link Submission
+  const handleCustomLinkSubmit = (e) => {
+    e.preventDefault();
+    if (!customLinkInput.trim()) return;
+    const ok = addCustomYtLink(customLinkInput.trim());
+    if (ok) {
+      setCustomLinkInput('');
+      setYtTab('links');
     }
   };
 
-  // Auto-load mix from URL parameters
-  useEffect(() => {
-    try {
-      let mixParam = null;
-      if (window.location.search) {
-        mixParam = new URLSearchParams(window.location.search).get('mix');
-      }
-      if (!mixParam && window.location.hash.includes('?')) {
-        const hashQuery = window.location.hash.split('?')[1];
-        if (hashQuery) {
-          mixParam = new URLSearchParams(hashQuery).get('mix');
-        }
-      }
-      if (mixParam) {
-        const decoded = decodeURIComponent(mixParam);
-        decoded.split(',').forEach((part) => {
-          const [soundId, volStr] = part.split(':');
-          const vol = parseInt(volStr, 10);
-          if (soundId && !isNaN(vol) && vol >= 0 && vol <= 100) {
-            setSoundVolume(soundId, vol);
-          }
-        });
-      }
-    } catch {
-      // ignore
-    }
-  }, [setSoundVolume]);
+  const currentSceneObj = FOCUS_SCENES.find((s) => s.id === activeScene) || FOCUS_SCENES[0];
 
   return (
     <>
-      <div className={`container focus-page theme-${ambientTheme} ${isZenMode ? 'zen-mode-active' : ''}`}>
-        {/* Dynamic Ambient Mesh Glow Background */}
-        <div className="ambient-backdrop-mesh" aria-hidden="true">
+      <div className={`focus-station-container theme-${ambientTheme}`}>
+        {/* Ambient Gradient Mesh Glow Backdrops */}
+        <div className="ambient-mesh-glow" aria-hidden="true">
           <div className="mesh-glow orb-1"></div>
           <div className="mesh-glow orb-2"></div>
           <div className="mesh-glow orb-3"></div>
         </div>
 
-        {/* Zen Mode Immersive Overlay */}
+        {/* =========================================================================
+            ZEN MODE / FULLSCREEN IMMERSIVE ATMOSPHERIC OVERLAY
+           ========================================================================= */}
         {isZenMode && (
-          <div className="zen-overlay" role="dialog" aria-modal="true" aria-label="Zen Mode Fullscreen Studio">
-            <button
-              type="button"
-              className="zen-exit-btn"
-              onClick={() => setIsZenMode(false)}
-              aria-label="Exit Zen Mode (Esc)"
-              title="Exit Zen Mode (Esc)"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-              <span>Exit Zen Mode</span>
-              <kbd>ESC</kbd>
-            </button>
+          <div
+            className={`zen-overlay ${isIdle ? 'data-idle' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Zen Mode Fullscreen Studio"
+          >
+            {/* Edge-to-edge atmospheric scene background with gentle Ken Burns drift */}
+            <div className="zen-scene-backdrop" aria-hidden="true">
+              <img
+                src={currentSceneObj.image}
+                alt=""
+                className="zen-bg-image focus-drift"
+              />
+              <div className="zen-backdrop-gradient"></div>
+            </div>
 
-            <div className="zen-center-card">
+            {/* Apple Dynamic Island Top Dock */}
+            <div className="zen-island-dock">
+              <div
+                className={`apple-dynamic-island ${isIslandExpanded ? 'expanded' : 'compact'}`}
+                role="region"
+                aria-label="Now Playing Dynamic Island"
+              >
+                {!isIslandExpanded ? (
+                  <button
+                    type="button"
+                    className="island-compact-btn"
+                    onClick={() => setIsIslandExpanded(true)}
+                    aria-expanded="false"
+                    aria-label="Expand now playing controller"
+                  >
+                    <img
+                      src={
+                        currentYtTrack
+                          ? `https://i.ytimg.com/vi/${currentYtTrack.id}/mqdefault.jpg`
+                          : currentSceneObj.image
+                      }
+                      alt=""
+                      className="island-art-thumb"
+                    />
+                    <span className="island-compact-title">
+                      {isYtPlaying && currentYtTrack
+                        ? currentYtTrack.title
+                        : activeSoundsCount > 0
+                        ? `${activeSoundsCount} Nature Sounds Active`
+                        : currentSceneObj.name}
+                    </span>
+                    {(isYtPlaying || (isPlaying && activeSoundsCount > 0)) && (
+                      <span className="island-eq" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span>
+                      </span>
+                    )}
+                  </button>
+                ) : (
+                  <div className="island-expanded-card">
+                    <div className="island-card-top">
+                      <img
+                        src={
+                          currentYtTrack
+                            ? `https://i.ytimg.com/vi/${currentYtTrack.id}/mqdefault.jpg`
+                            : currentSceneObj.image
+                        }
+                        alt=""
+                        className="island-expanded-art"
+                      />
+                      <div className="island-track-meta">
+                        <span className="island-status-pill">
+                          {isYtPlaying ? 'YouTube Focus Audio' : 'Ambient Nature Sanctuary'}
+                        </span>
+                        <h4 className="island-title">
+                          {currentYtTrack ? currentYtTrack.title : 'Atmospheric Soundscape'}
+                        </h4>
+                        <p className="island-sub">
+                          {currentYtTrack ? currentYtTrack.sub : `${activeSoundsCount} active layers`}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        className="island-close-btn"
+                        onClick={() => setIsIslandExpanded(false)}
+                        aria-label="Close island controller"
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                    </div>
+
+                    <div className="island-controls-row">
+                      <button
+                        type="button"
+                        className="island-step-btn"
+                        onClick={prevYtTrack}
+                        title="Previous Track"
+                        aria-label="Previous Track"
+                      >
+                        <FontAwesomeIcon icon={faBackward} />
+                      </button>
+                      <button
+                        type="button"
+                        className="island-main-btn"
+                        onClick={toggleYtPlay}
+                        title={isYtPlaying ? 'Pause' : 'Play'}
+                        aria-label={isYtPlaying ? 'Pause' : 'Play'}
+                      >
+                        <FontAwesomeIcon icon={isYtPlaying ? faPause : faPlay} />
+                      </button>
+                      <button
+                        type="button"
+                        className="island-step-btn"
+                        onClick={nextYtTrack}
+                        title="Next Track"
+                        aria-label="Next Track"
+                      >
+                        <FontAwesomeIcon icon={faForward} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Top Right Exit and Fullscreen Buttons */}
+            <div className="zen-top-actions">
+              <button
+                type="button"
+                className="zen-action-pill-btn"
+                onClick={() => {
+                  if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                  } else {
+                    document.exitFullscreen().catch(() => {});
+                  }
+                }}
+                title="Toggle Fullscreen (F)"
+                aria-label="Toggle Fullscreen"
+              >
+                <FontAwesomeIcon icon={faExpand} />
+              </button>
+              <button
+                type="button"
+                className="zen-exit-btn"
+                onClick={() => setIsZenMode(false)}
+                aria-label="Exit Zen Mode (Esc)"
+                title="Exit Zen Mode (Esc)"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+                <span>Exit Zen Mode</span>
+                <kbd>ESC</kbd>
+              </button>
+            </div>
+
+            {/* Center Stage: Minimalist Clock & Quote */}
+            <div className="zen-center-stage">
               <div className="zen-task-line">
                 <span className="zen-dot"></span>
                 <span className="zen-task-text">{currentTask || 'Deep Nature Focus Session'}</span>
               </div>
 
-              <div className="zen-timer-display">
+              <div className="zen-timer-display" aria-live="polite">
                 {timerMode === 'stopwatch' ? formatTime(stopwatchSeconds) : formatTime(timeRemaining)}
               </div>
 
               <div className="zen-phase-badge">
-                {timerMode === 'stopwatch' ? 'STOPWATCH' : timerPhase === 'focus' ? 'FOCUS INTERVAL' : 'BREAK INTERVAL'}
+                {timerMode === 'stopwatch'
+                  ? 'STOPWATCH FLOW'
+                  : timerPhase === 'focus'
+                  ? 'FOCUS INTERVAL'
+                  : 'SHORT BREAK'}
               </div>
 
+              {/* Inspiring Deep Work Quote */}
+              <div className="zen-quote-display">
+                <p>“{FOCUS_QUOTES[currentQuoteIndex]}”</p>
+              </div>
+
+              {/* Action Controls */}
               <div className="zen-controls-row">
                 {timerStatus === 'running' ? (
                   <button type="button" className="zen-action-btn pause" onClick={pauseTimer}>
                     <FontAwesomeIcon icon={faPause} />
-                    <span>Pause</span>
+                    <span>Pause Timer</span>
                   </button>
                 ) : (
                   <button type="button" className="zen-action-btn start" onClick={startTimer}>
@@ -412,12 +604,113 @@ const Focus = () => {
                 </span>
               </div>
             </div>
+
+            {/* Bottom Floating Control Dock */}
+            <div className="zen-bottom-dock">
+              {/* Scene Switcher Dropdown */}
+              <div className="zen-dock-group">
+                <span className="dock-label">Atmosphere:</span>
+                <select
+                  className="zen-scene-select"
+                  value={activeScene}
+                  onChange={(e) => changeScene(e.target.value)}
+                  aria-label="Select Scene Atmosphere"
+                >
+                  {FOCUS_SCENES.map((sc) => (
+                    <option key={sc.id} value={sc.id}>
+                      {sc.icon} {sc.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Shuffle Surprise Mix */}
+              <button
+                type="button"
+                className="zen-dock-btn"
+                onClick={shuffleMix}
+                title="Shuffle surprise mix (S)"
+                aria-label="Shuffle surprise mix"
+              >
+                <FontAwesomeIcon icon={faShuffle} />
+                <span>Surprise Mix</span>
+              </button>
+
+              {/* Next Quote Button */}
+              <button
+                type="button"
+                className="zen-dock-btn"
+                onClick={nextQuote}
+                title="Next inspiring quote"
+                aria-label="Next inspiring quote"
+              >
+                <span>Another Quote</span>
+              </button>
+
+              {/* Toggle Quick Mixer Overlay */}
+              <button
+                type="button"
+                className={`zen-dock-btn ${showZenMixer ? 'active' : ''}`}
+                onClick={() => setShowZenMixer(!showZenMixer)}
+                title="Soundboard quick mixer"
+                aria-label="Soundboard quick mixer"
+              >
+                <FontAwesomeIcon icon={faSliders} />
+                <span>Mixer ({activeSoundsCount})</span>
+              </button>
+            </div>
+
+            {/* Quick Mixer Drawer Overlay */}
+            {showZenMixer && (
+              <div className="zen-mixer-popup" role="dialog" aria-label="Zen Quick Sound Mixer">
+                <div className="zen-mixer-header">
+                  <h4>Active Sound Mix</h4>
+                  <button
+                    type="button"
+                    className="mixer-close-btn"
+                    onClick={() => setShowZenMixer(false)}
+                    aria-label="Close mixer"
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+                <div className="zen-mixer-list">
+                  {SOUND_DEFINITIONS.filter((s) => (volumes[s.id] || 0) > 0).length === 0 ? (
+                    <p className="mixer-empty-note">No sounds active. Tap below to shuffle a mix.</p>
+                  ) : (
+                    SOUND_DEFINITIONS.filter((s) => (volumes[s.id] || 0) > 0).map((s) => (
+                      <div key={s.id} className="zen-mixer-row">
+                        <span className="mixer-sound-icon">{s.icon}</span>
+                        <span className="mixer-sound-name">{s.name}</span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={volumes[s.id] || 0}
+                          onChange={(e) => setSoundVolume(s.id, e.target.value)}
+                          className="zen-mixer-slider"
+                          aria-label={`${s.name} volume`}
+                        />
+                        <span className="mixer-vol-val">{volumes[s.id]}%</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Mindful Box Breathing Immersive Overlay */}
+        {/* =========================================================================
+            MINDFUL BOX BREATHING OVERLAY
+           ========================================================================= */}
         {isBreathingMode && (
-          <div className="mindful-breathing-overlay" role="dialog" aria-modal="true" aria-label="Apple Mindful Box Breathing">
+          <div
+            className="mindful-breathing-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Apple Mindful Box Breathing"
+          >
             <button
               type="button"
               className="breathing-exit-btn"
@@ -461,10 +754,18 @@ const Focus = () => {
           </div>
         )}
 
-        {/* Save Custom Preset Modal */}
+        {/* =========================================================================
+            SAVE PRESET MODAL
+           ========================================================================= */}
         {showSaveModal && (
           <div className="modal-backdrop" onClick={() => setShowSaveModal(false)}>
-            <div className="preset-save-modal" role="dialog" aria-modal="true" aria-labelledby="save-preset-heading" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="preset-save-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="save-preset-heading"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="modal-top">
                 <h3 id="save-preset-heading">Save Custom Soundscape</h3>
                 <button
@@ -520,10 +821,18 @@ const Focus = () => {
           </div>
         )}
 
-        {/* Keyboard Shortcuts HUD Modal */}
+        {/* =========================================================================
+            KEYBOARD SHORTCUTS HUD MODAL
+           ========================================================================= */}
         {showShortcutsModal && (
           <div className="modal-backdrop" onClick={() => setShowShortcutsModal(false)}>
-            <div className="shortcuts-hud-card" role="dialog" aria-modal="true" aria-labelledby="shortcuts-hud-heading" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="shortcuts-hud-card"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="shortcuts-hud-heading"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="modal-top">
                 <div className="header-title-group">
                   <FontAwesomeIcon icon={faKeyboard} className="header-icon gold" />
@@ -549,8 +858,20 @@ const Focus = () => {
                   <div className="keys"><kbd>M</kbd></div>
                 </div>
                 <div className="shortcut-row">
+                  <span className="shortcut-label">Focus View / Zen Mode</span>
+                  <div className="keys"><kbd>V</kbd></div>
+                </div>
+                <div className="shortcut-row">
                   <span className="shortcut-label">Zen Fullscreen Mode</span>
                   <div className="keys"><kbd>F</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Surprise Mix (Shuffle)</span>
+                  <div className="keys"><kbd>S</kbd></div>
+                </div>
+                <div className="shortcut-row">
+                  <span className="shortcut-label">Toggle YouTube Video Fold</span>
+                  <div className="keys"><kbd>Y</kbd></div>
                 </div>
                 <div className="shortcut-row">
                   <span className="shortcut-label">Mindful Box Breathing</span>
@@ -573,55 +894,141 @@ const Focus = () => {
           </div>
         )}
 
-        {/* Header Zone */}
-        <div className="focus-header-zone">
-          <div className="header-meta-row">
-            <span className="focus-kicker-tag">
-              <span className="kicker-pulse"></span>
-              PURE NATURE SOUNDSCAPES
-            </span>
-
-            {/* Ambient Studio Theme Switcher */}
-            <div className="theme-switcher-bar" role="toolbar" aria-label="Ambient Backdrops">
-              {AMBIENT_THEMES.map((th) => (
-                <button
-                  key={th.id}
-                  type="button"
-                  className={`theme-chip ${ambientTheme === th.id ? 'active' : ''}`}
-                  onClick={() => changeAmbientTheme(th.id)}
-                  title={th.desc}
-                >
-                  <span className="th-icon">{th.icon}</span>
-                  <span className="th-name">{th.name.split(' ')[0]}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="focus-status-badge">
-              <span className={`status-indicator ${isPlaying || timerStatus === 'running' ? 'active' : ''}`}></span>
-              <span>
-                {isPlaying || timerStatus === 'running'
-                  ? 'Deep Nature Focus In Progress'
-                  : 'Ready to Focus'}
-              </span>
-            </div>
+        {/* =========================================================================
+            ATMOSPHERIC HERO SCENE & CINEMATIC HEADER ZONE
+           ========================================================================= */}
+        <section className="hero-scene-section" aria-labelledby="focus-hero-title">
+          {/* Dynamic Atmospheric Scene Backdrop */}
+          <div className="hero-scene-backdrop" data-scene={activeScene} aria-hidden="true">
+            <img
+              src={currentSceneObj.image}
+              alt=""
+              className="hero-scene-image focus-drift"
+            />
+            <div className="hero-scene-gradient"></div>
           </div>
 
-          <h1 className="page-title">
-            <AnimatedLetters
-              letterClass={letterClass}
-              strArray={'Focus Station'.split('')}
-              idx={15}
-            />
-          </h1>
+          <div className="hero-scene-content">
+            <div className="header-meta-row">
+              <span className="focus-kicker-tag">
+                <span className="kicker-pulse"></span>
+                PURE NATURE SOUNDSCAPES
+              </span>
 
-          <p className="focus-lead">
-            Curated pure nature recordings from rain, tin roofs, forests, rivers and wildlife.
-            Craft your serene acoustic sanctuary and enter uninterrupted deep engineering flow.
-          </p>
-        </div>
+              {/* Atmosphere Scene Selector Pills */}
+              <div className="scene-selector-strip" role="toolbar" aria-label="Atmospheric Scenes">
+                {FOCUS_SCENES.slice(0, 8).map((sc) => (
+                  <button
+                    key={sc.id}
+                    type="button"
+                    className={`scene-pill ${activeScene === sc.id ? 'active' : ''}`}
+                    onClick={() => changeScene(sc.id)}
+                    title={`Atmospheric scene: ${sc.name}`}
+                  >
+                    <span>{sc.icon}</span>
+                    <span className="sc-name">{sc.name}</span>
+                  </button>
+                ))}
+              </div>
 
-        {/* Master Control Floating Ribbon */}
+              <div className="focus-status-badge">
+                <span className={`status-indicator ${isPlaying || isYtPlaying || timerStatus === 'running' ? 'active' : ''}`}></span>
+                <span>
+                  {isPlaying || isYtPlaying || timerStatus === 'running'
+                    ? 'Deep Nature Focus In Progress'
+                    : 'Ready to Focus'}
+                </span>
+              </div>
+            </div>
+
+            <h1 id="focus-hero-title" className="page-title">
+              <AnimatedLetters
+                letterClass={letterClass}
+                strArray={'Focus Station'.split('')}
+                idx={15}
+              />
+            </h1>
+
+            {/* Rotating Deep Work Inspiration Quote */}
+            <div className="hero-quote-container">
+              <blockquote className="hero-quote-text">
+                <FontAwesomeIcon icon={faQuoteLeft} className="quote-mark" />
+                <span>{FOCUS_QUOTES[currentQuoteIndex]}</span>
+              </blockquote>
+              <button
+                type="button"
+                className="quote-next-btn"
+                onClick={nextQuote}
+                title="Another line"
+                aria-label="Show another inspiring line"
+              >
+                <FontAwesomeIcon icon={faRotateRight} />
+                <span>Another line</span>
+              </button>
+            </div>
+
+            {/* Primary Action Hero Cluster */}
+            <div className="hero-action-cluster">
+              <button
+                type="button"
+                data-focus-play
+                className={`hero-play-btn ${isPlaying || isYtPlaying ? 'playing' : ''}`}
+                onClick={toggleMasterPlay}
+                aria-label={isPlaying ? 'Pause' : 'Play'}
+                title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
+              >
+                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+              </button>
+
+              <button
+                type="button"
+                data-focus-shuffle
+                className="hero-circle-btn shuffle"
+                onClick={shuffleMix}
+                title="Shuffle: a surprise mix (S)"
+                aria-label="Shuffle: a surprise mix"
+              >
+                <FontAwesomeIcon icon={faShuffle} />
+              </button>
+
+              <button
+                type="button"
+                data-focus-expand
+                className="hero-circle-btn expand"
+                onClick={() => setIsZenMode(true)}
+                title="Focus view (V)"
+                aria-label="Open the focus view"
+              >
+                <FontAwesomeIcon icon={faExpand} />
+              </button>
+            </div>
+
+            {/* Ready-Made Curated Mixes Pills */}
+            <div className="hero-mixes-row" role="group" aria-label="Ready-made mixes">
+              {FOCUS_PRESETS.map((preset) => {
+                const isActive = activePreset === preset.id;
+                return (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    className={`mix-chip ${isActive ? 'active' : ''}`}
+                    onClick={() => applyPreset(preset)}
+                    title={preset.desc}
+                    aria-pressed={isActive}
+                  >
+                    <span className="mix-icon">{preset.icon}</span>
+                    <span className="mix-label">{preset.name}</span>
+                    {isActive && <span className="mix-dot"></span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            MASTER FLOATING RIBBON (Studio Controls)
+           ========================================================================= */}
         <div className="focus-master-ribbon">
           <div className="ribbon-left">
             <button
@@ -686,28 +1093,7 @@ const Focus = () => {
             </button>
           </div>
 
-          {/* Quick Presets Strip */}
-          <div className="ribbon-presets-scroll" role="toolbar" aria-label="Curated Sound Presets">
-            <span className="presets-label">
-              <FontAwesomeIcon icon={faSliders} /> Presets:
-            </span>
-            {FOCUS_PRESETS.map((preset) => {
-              const isActive = activePreset === preset.id;
-              return (
-                <button
-                  key={preset.id}
-                  type="button"
-                  className={`preset-pill ${isActive ? 'active' : ''}`}
-                  onClick={() => applyPreset(preset)}
-                  title={preset.desc}
-                >
-                  <span className="preset-icon">{preset.icon}</span>
-                  <span className="preset-name">{preset.name}</span>
-                  {isActive && <span className="preset-active-dot"></span>}
-                </button>
-              );
-            })}
-
+          <div className="ribbon-right">
             {/* Custom User Presets */}
             {userPresets.map((preset) => {
               const isActive = activePreset === preset.id;
@@ -739,7 +1125,7 @@ const Focus = () => {
               );
             })}
 
-            {/* Mix Action Buttons */}
+            {/* Save & Share & Clear Actions */}
             {activeSoundsCount > 0 && (
               <>
                 <button
@@ -775,9 +1161,7 @@ const Focus = () => {
                 </button>
               </>
             )}
-          </div>
 
-          <div className="ribbon-right">
             {/* Keyboard Shortcuts Button */}
             <button
               type="button"
@@ -805,7 +1189,9 @@ const Focus = () => {
           </div>
         </div>
 
-        {/* Apple Segmented View Switcher (Visible on mobile/tablet to avoid visual clutter) */}
+        {/* =========================================================================
+            APPLE SEGMENTED VIEW SWITCHER (Mobile / Tablet Minimalist Controller)
+           ========================================================================= */}
         <div className="focus-view-switcher" role="tablist" aria-label="Workspace views">
           <button
             type="button"
@@ -834,14 +1220,207 @@ const Focus = () => {
               <span className="tab-pulse-dot" title="Timer in progress"></span>
             )}
           </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeWorkspaceTab === 'youtube'}
+            className={`view-tab ${activeWorkspaceTab === 'youtube' ? 'active' : ''}`}
+            onClick={() => setActiveWorkspaceTab('youtube')}
+          >
+            <span className="tab-symbol">📺</span>
+            <span className="tab-text">YouTube Lo-Fi</span>
+            {isYtPlaying && (
+              <span className="tab-pulse-dot red" title="YouTube stream active"></span>
+            )}
+          </button>
         </div>
 
-        {/* Main Workspace Grid: Timer (Left) vs Pure Nature Soundboard (Right) */}
+        {/* =========================================================================
+            MAIN WORKSPACE GRID: Left (Pomodoro & YouTube) vs Right (Soundboard)
+           ========================================================================= */}
         <div className={`focus-grid-container view-${activeWorkspaceTab}`}>
-          {/* Left Column: Pomodoro & Live Visualizer */}
-          <div className={`focus-left-column ${activeWorkspaceTab === 'timer' ? 'mobile-visible' : 'mobile-hidden'}`}>
-            {/* Pomodoro Timer Station */}
-            <div className="focus-card pomodoro-card">
+          {/* LEFT COLUMN: Pomodoro Timer, Spectrum Visualizer & YouTube Lo-Fi Studio */}
+          <div className={`focus-left-column ${activeWorkspaceTab === 'timer' || activeWorkspaceTab === 'youtube' ? 'mobile-visible' : 'mobile-hidden'}`}>
+            
+            {/* 1. YouTube Focus Player & Lo-Fi Video Section */}
+            <div className={`focus-card youtube-card ${activeWorkspaceTab === 'youtube' ? 'tab-priority' : ''}`}>
+              <div className="card-top-header">
+                <div className="header-title-group">
+                  <FontAwesomeIcon icon={faTv} className="header-icon red" />
+                  <h3>YouTube Lo-Fi &amp; Focus Media</h3>
+                </div>
+                <div className="yt-header-actions">
+                  <button
+                    type="button"
+                    className="yt-fold-btn"
+                    onClick={toggleYtFold}
+                    title={isYtFolded ? 'Show video' : 'Hide video'}
+                    aria-label={isYtFolded ? 'Show video' : 'Hide video'}
+                  >
+                    <FontAwesomeIcon icon={isYtFolded ? faEye : faEyeSlash} />
+                    <span>{isYtFolded ? 'Show Video' : 'Hide Video'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* YouTube Screen Container (Foldable) */}
+              <div className={`yt-screen-fold ${isYtFolded ? 'folded' : 'expanded'}`}>
+                <div className="yt-screen-aspect">
+                  <iframe
+                    ref={ytIframeRef}
+                    title="YouTube Focus Player"
+                    src={`https://www.youtube-nocookie.com/embed/${currentYtTrack ? currentYtTrack.id : '25wH52RSam8'}?autoplay=${isYtPlaying ? 1 : 0}&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+                    className="yt-iframe"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+
+              {/* Now Playing Bar with Dedicated Volume Slider */}
+              <div className="yt-now-playing-bar">
+                <div className="yt-info-group">
+                  <span className={`yt-state-pill ${isYtPlaying ? 'playing' : ''}`}>
+                    {isYtPlaying ? 'Now playing' : 'Paused'}
+                  </span>
+                  <span className="yt-title-text" title={currentYtTrack ? currentYtTrack.title : ''}>
+                    {currentYtTrack ? `${currentYtTrack.title} · ${currentYtTrack.sub}` : 'Select a track below'}
+                  </span>
+                </div>
+
+                <div className="yt-volume-control">
+                  <FontAwesomeIcon icon={faVolumeHigh} className="yt-vol-icon" />
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={ytVolume}
+                    onChange={(e) => setYtVolume(Number(e.target.value))}
+                    className="yt-volume-slider"
+                    aria-label="YouTube Volume"
+                  />
+                  <span className="yt-vol-val">{ytVolume}%</span>
+                </div>
+              </div>
+
+              {/* Curated Picks vs Your Links Tablist */}
+              <div className="yt-tabs-container">
+                <div className="yt-tablist" role="tablist" aria-label="YouTube Tracks">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={ytTab === 'picks'}
+                    className={`yt-tab ${ytTab === 'picks' ? 'active' : ''}`}
+                    onClick={() => setYtTab('picks')}
+                  >
+                    <span>My picks</span>
+                    <span className="yt-tab-count">{YOUTUBE_PICKS.length}</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={ytTab === 'links'}
+                    className={`yt-tab ${ytTab === 'links' ? 'active' : ''}`}
+                    onClick={() => setYtTab('links')}
+                  >
+                    <span>Your links</span>
+                    <span className="yt-tab-count">{customYtLinks.length}</span>
+                  </button>
+                </div>
+
+                {/* Tab Panel: My picks (21 Curated Tracks) */}
+                {ytTab === 'picks' && (
+                  <div className="yt-picks-scroll">
+                    {YOUTUBE_PICKS.map((track) => {
+                      const isCurrent = currentYtTrack && currentYtTrack.id === track.id;
+                      return (
+                        <button
+                          key={track.id}
+                          type="button"
+                          className={`yt-row-btn ${isCurrent ? 'current' : ''}`}
+                          onClick={() => playYtTrack(track)}
+                          aria-label={`Play ${track.title} by ${track.sub}`}
+                        >
+                          <div className="yt-row-thumb">
+                            <img
+                              src={`https://i.ytimg.com/vi/${track.id}/mqdefault.jpg`}
+                              alt=""
+                              className="yt-thumb-img"
+                              loading="lazy"
+                            />
+                            {isCurrent && isYtPlaying && (
+                              <div className="voice-eq-bars" aria-hidden="true">
+                                <span></span><span></span><span></span><span></span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="yt-row-meta">
+                            <span className="yt-track-title">{track.title}</span>
+                            <span className="yt-track-sub">{track.sub}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Tab Panel: Your links (Custom Saved YouTube Links) */}
+                {ytTab === 'links' && (
+                  <div className="yt-links-panel">
+                    <form className="yt-link-form" onSubmit={handleCustomLinkSubmit}>
+                      <input
+                        type="text"
+                        placeholder="Paste any YouTube video link or ID..."
+                        value={customLinkInput}
+                        onChange={(e) => setCustomLinkInput(e.target.value)}
+                        className="yt-link-text-input"
+                        aria-label="YouTube link"
+                      />
+                      <button type="submit" className="yt-link-add-btn">
+                        Play
+                      </button>
+                    </form>
+
+                    {customYtLinks.length === 0 ? (
+                      <div className="yt-links-empty">
+                        <p>Paste any YouTube video or lo-fi stream link above to mix it seamlessly with your ambient sounds.</p>
+                      </div>
+                    ) : (
+                      <div className="yt-custom-scroll">
+                        {customYtLinks.map((track) => {
+                          const isCurrent = currentYtTrack && currentYtTrack.id === track.id;
+                          return (
+                            <div key={track.id} className={`yt-custom-row ${isCurrent ? 'current' : ''}`}>
+                              <button
+                                type="button"
+                                className="yt-custom-play"
+                                onClick={() => playYtTrack(track)}
+                              >
+                                <span className="yt-custom-title">{track.title}</span>
+                                <span className="yt-custom-sub">{track.sub}</span>
+                              </button>
+                              <button
+                                type="button"
+                                className="yt-custom-del"
+                                onClick={() => removeCustomYtLink(track.id)}
+                                title="Remove link"
+                                aria-label="Remove link"
+                              >
+                                <FontAwesomeIcon icon={faTrashCan} />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 2. Pomodoro Timer Station */}
+            <div className={`focus-card pomodoro-card ${activeWorkspaceTab === 'timer' ? 'tab-priority' : ''}`}>
               <div className="card-top-header">
                 <div className="header-title-group">
                   <FontAwesomeIcon icon={faClock} className="header-icon gold" />
@@ -962,7 +1541,7 @@ const Focus = () => {
               </div>
             </div>
 
-            {/* Audio Wave Visualizer Card */}
+            {/* 3. Audio Wave Visualizer Card */}
             <div className="focus-card visualizer-card">
               <div className="card-top-header">
                 <div className="header-title-group">
@@ -978,7 +1557,7 @@ const Focus = () => {
               </div>
             </div>
 
-            {/* Completed Sessions Log Card */}
+            {/* 4. Completed Sessions Log Card */}
             <div className="focus-card session-history-card">
               <div className="card-top-header">
                 <div className="header-title-group">
@@ -1026,7 +1605,7 @@ const Focus = () => {
             </div>
           </div>
 
-          {/* Right Column: Complete Nature Soundboard */}
+          {/* RIGHT COLUMN: Complete Nature Soundboard (All 61 Sounds) */}
           <div className={`focus-right-column ${activeWorkspaceTab === 'soundboard' ? 'mobile-visible' : 'mobile-hidden'}`}>
             <div className="focus-card soundboard-card">
               <div className="soundboard-header">
@@ -1046,7 +1625,7 @@ const Focus = () => {
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="sound-search-icon" />
                 <input
                   type="text"
-                  placeholder="Search 39 nature sounds (e.g. tin roof, river, birds, rain, thunder)..."
+                  placeholder="Search 61 sounds (e.g. tin roof, cafe, train, rain, thunder)..."
                   value={soundSearch}
                   onChange={(e) => setSoundSearch(e.target.value)}
                   className="sound-search-input"
@@ -1122,7 +1701,7 @@ const Focus = () => {
               {/* Sound Tiles Grid */}
               {filteredSounds.length === 0 ? (
                 <div className="sound-empty-state">
-                  <p>No nature sounds match your search query "{soundSearch}".</p>
+                  <p>No sounds match your search query "{soundSearch}".</p>
                   <button
                     type="button"
                     className="clear-search-link"
@@ -1131,7 +1710,7 @@ const Focus = () => {
                       setActiveCategory('all');
                     }}
                   >
-                    Reset filter & search
+                    Reset filter &amp; search
                   </button>
                 </div>
               ) : (
