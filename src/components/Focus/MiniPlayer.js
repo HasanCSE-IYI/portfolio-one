@@ -9,7 +9,6 @@ import {
   faTimes,
   faExpand,
 } from '@fortawesome/free-solid-svg-icons';
-import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { useFocus, FOCUS_PRESETS } from '../../context/FocusContext';
 import './MiniPlayer.scss';
 
@@ -28,8 +27,6 @@ const MiniPlayer = () => {
     stopwatchSeconds,
     pauseTimer,
     startTimer,
-    activeYouTube,
-    setActiveYouTube,
   } = useFocus();
 
   // Hide on Focus page itself or when completely idle
@@ -37,9 +34,8 @@ const MiniPlayer = () => {
 
   const isAudioActive = isPlaying && activeSoundsCount > 0;
   const isTimerActive = timerStatus === 'running' || timerStatus === 'paused';
-  const isYtActive = Boolean(activeYouTube);
 
-  if (!isAudioActive && !isTimerActive && !isYtActive) {
+  if (!isAudioActive && !isTimerActive) {
     return null;
   }
 
@@ -59,7 +55,6 @@ const MiniPlayer = () => {
   const handleStopAll = () => {
     if (isPlaying) toggleMasterPlay();
     clearAllSounds();
-    if (activeYouTube) setActiveYouTube(null);
     if (timerStatus === 'running') pauseTimer();
   };
 
@@ -69,7 +64,7 @@ const MiniPlayer = () => {
       aria-label="Background focus session audio and timer controls"
     >
       <div className="mini-player-inner">
-        {/* Left: Active Audio / YouTube Status */}
+        {/* Left: Active Nature Audio / Timer Status */}
         <div className="mini-meta-section">
           <span className="mini-pulse-beacon"></span>
           <div className="mini-text-wrap">
@@ -77,15 +72,8 @@ const MiniPlayer = () => {
               <span className="mini-source-line">
                 <FontAwesomeIcon icon={faHeadphones} className="source-icon gold" />
                 <span className="source-name">
-                  {presetObj ? presetObj.name : `${activeSoundsCount} sound${activeSoundsCount > 1 ? 's' : ''}`}
+                  {presetObj ? presetObj.name : `${activeSoundsCount} nature sound${activeSoundsCount > 1 ? 's' : ''}`}
                 </span>
-              </span>
-            )}
-
-            {isYtActive && !isAudioActive && (
-              <span className="mini-source-line">
-                <FontAwesomeIcon icon={faYoutube} className="source-icon red" />
-                <span className="source-name">{activeYouTube.title}</span>
               </span>
             )}
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import Focus from './index';
 import MiniPlayer from './MiniPlayer';
 import { FocusProvider, useFocus } from '../../context/FocusContext';
@@ -22,7 +22,7 @@ beforeAll(() => {
 });
 
 describe('Focus Station Page', () => {
-  test('renders page title, pomodoro dial, preset buttons, and sound tiles', () => {
+  test('renders page title, pomodoro dial, preset buttons, and nature sound tiles', () => {
     render(
       <FocusProvider>
         <MemoryRouter initialEntries={['/focus']}>
@@ -44,23 +44,20 @@ describe('Focus Station Page', () => {
     expect(screen.getByText(/Classic Pomodoro/i)).toBeInTheDocument();
     expect(screen.getByText(/START FOCUS/i)).toBeInTheDocument();
 
-    // Presets
-    expect(screen.getByText(/Deep Architecture Flow/i)).toBeInTheDocument();
-    expect(screen.getByText(/Monsoon Coffee Shop/i)).toBeInTheDocument();
+    // Pure Nature Presets
+    expect(screen.getByText(/Nordic Pine Rain/i)).toBeInTheDocument();
+    expect(screen.getByText(/Monsoon Sanctuary/i)).toBeInTheDocument();
 
-    // Soundboard
-    expect(screen.getByText(/Synthesized Ambient Soundboard/i)).toBeInTheDocument();
-    expect(screen.getByText(/Brown Noise/i)).toBeInTheDocument();
+    // Procedural Nature Soundboard
+    expect(screen.getByText(/Procedural Nature Soundboard/i)).toBeInTheDocument();
     expect(screen.getByText(/Gentle Rain/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mechanical Keys/i)).toBeInTheDocument();
-
-    // Coding streams
-    expect(screen.getByText(/Curated Coding Streams/i)).toBeInTheDocument();
-
-    // New ambient synthesizers
+    expect(screen.getByText(/Heavy Monsoon/i)).toBeInTheDocument();
+    expect(screen.getByText(/Babbling Brook/i)).toBeInTheDocument();
+    expect(screen.getByText(/Deep Waterfall/i)).toBeInTheDocument();
     expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
     expect(screen.getByText(/Mountain Wind/i)).toBeInTheDocument();
-    expect(screen.getByText(/Morning Birds/i)).toBeInTheDocument();
+    expect(screen.getByText(/Morning Songbirds/i)).toBeInTheDocument();
+    expect(screen.getByText(/Crackling Campfire/i)).toBeInTheDocument();
 
     // Today's Focus Log card
     expect(screen.getByText(/Today's Focus Log/i)).toBeInTheDocument();
@@ -77,17 +74,17 @@ describe('Focus Station Page', () => {
 
     const searchInput = screen.getByLabelText(/Search sounds/i);
     expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mechanical Keys/i)).toBeInTheDocument();
+    expect(screen.getByText(/Crackling Campfire/i)).toBeInTheDocument();
 
     // Type query "waves"
     fireEvent.change(searchInput, { target: { value: 'waves' } });
     expect(screen.getByText(/Ocean Waves/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Mechanical Keys/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Crackling Campfire/i)).not.toBeInTheDocument();
 
     // Click clear search button
     const clearBtn = screen.getByLabelText(/Clear search/i);
     fireEvent.click(clearBtn);
-    expect(screen.getByText(/Mechanical Keys/i)).toBeInTheDocument();
+    expect(screen.getByText(/Crackling Campfire/i)).toBeInTheDocument();
   });
 
   test('toggles timer mode and updates dial readout', () => {

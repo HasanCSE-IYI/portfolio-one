@@ -14,10 +14,6 @@ import {
   faCheck,
   faFire,
   faBrain,
-  faTerminal,
-  faEye,
-  faEyeSlash,
-  faMusic,
   faMagnifyingGlass,
   faLink,
   faHistory,
@@ -28,7 +24,6 @@ import {
   faPlus,
   faWaveSquare,
 } from '@fortawesome/free-solid-svg-icons';
-import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import {
   useFocus,
@@ -36,7 +31,6 @@ import {
   FOCUS_PRESETS,
   BRAINWAVE_MODES,
   AMBIENT_THEMES,
-  YOUTUBE_CHANNELS,
   TIMER_MODES,
 } from '../../context/FocusContext';
 import './index.scss';
@@ -49,8 +43,6 @@ const Focus = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
-  const [customYtId, setCustomYtId] = useState('');
-  const [ytError, setYtError] = useState(false);
   const canvasRef = useRef(null);
 
   const {
@@ -102,11 +94,6 @@ const Focus = () => {
     ambientTheme,
     changeAmbientTheme,
 
-    activeYouTube,
-    setActiveYouTube,
-    isYtFolded,
-    setIsYtFolded,
-
     isZenMode,
     setIsZenMode,
   } = useFocus();
@@ -121,7 +108,7 @@ const Focus = () => {
   // Update document title for Focus Station
   useEffect(() => {
     if (timerStatus === 'idle') {
-      document.title = 'Focus Station | Mahmud al Hasan · Deep Work & Ambient Beats';
+      document.title = 'Focus Station | Mahmud al Hasan · Deep Nature Soundscapes & Flow';
     }
     return () => {
       if (timerStatus === 'idle') {
@@ -290,7 +277,7 @@ const Focus = () => {
   const strokeDashoffset = circumference - timerProgress * circumference;
 
   // Filter soundboard categories & search
-  const categories = ['all', 'Noise', 'Nature', 'Ambience', 'Brainwave', 'Coding'];
+  const categories = ['all', 'Rain & Storm', 'Water & Oceans', 'Forest & Wind', 'Wildlife', 'Resonance'];
 
   const getCategoryCount = (cat) => {
     if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
@@ -353,33 +340,6 @@ const Focus = () => {
     }
   }, [setSoundVolume]);
 
-  // Handle custom YouTube input
-  const handlePlayCustomYt = (e) => {
-    e.preventDefault();
-    if (!customYtId.trim()) return;
-
-    let id = customYtId.trim();
-    // Parse URL if user pastes a full YouTube link
-    if (id.includes('v=')) {
-      id = id.split('v=')[1]?.split('&')[0];
-    } else if (id.includes('youtu.be/')) {
-      id = id.split('youtu.be/')[1]?.split('?')[0];
-    }
-
-    if (id && id.length >= 8) {
-      setYtError(false);
-      setActiveYouTube({
-        id,
-        title: 'Custom YouTube Stream',
-        artist: 'User Input',
-        tag: 'Custom',
-      });
-      setCustomYtId('');
-    } else {
-      setYtError(true);
-    }
-  };
-
   return (
     <>
       <div className={`container focus-page theme-${ambientTheme} ${isZenMode ? 'zen-mode-active' : ''}`}>
@@ -408,7 +368,7 @@ const Focus = () => {
             <div className="zen-center-card">
               <div className="zen-task-line">
                 <span className="zen-dot"></span>
-                <span className="zen-task-text">{currentTask || 'Deep Work Session'}</span>
+                <span className="zen-task-text">{currentTask || 'Deep Nature Focus Session'}</span>
               </div>
 
               <div className="zen-timer-display">
@@ -446,16 +406,15 @@ const Focus = () => {
                 <FontAwesomeIcon icon={faHeadphones} />
                 <span>
                   {activeSoundsCount > 0
-                    ? `${activeSoundsCount} ambient sound${activeSoundsCount > 1 ? 's' : ''} active`
-                    : 'Ambient generator ready'}
-                  {activeYouTube && ` · YouTube: ${activeYouTube.title}`}
+                    ? `${activeSoundsCount} nature sound${activeSoundsCount > 1 ? 's' : ''} active`
+                    : 'Nature soundscape generator ready'}
                 </span>
               </div>
             </div>
           </div>
         )}
 
-        {/* Apple Mindfulness Box Breathing Fullscreen Experience */}
+        {/* Mindful Box Breathing Immersive Overlay */}
         {isBreathingMode && (
           <div className="mindful-breathing-overlay" role="dialog" aria-modal="true" aria-label="Apple Mindful Box Breathing">
             <button
@@ -471,11 +430,8 @@ const Focus = () => {
             </button>
 
             <div className="breathing-stage">
-              <div className="breathing-kicker-badge">
-                <span>NEURAL MINDFULNESS RESET</span>
-              </div>
+              <span className="breathing-kicker-badge">NEURAL MINDFULNESS RESET</span>
 
-              {/* Glowing Concentric Breathing Circle */}
               <div className={`breathing-circle-wrap phase-${breathingPhase}`}>
                 <div className="breathing-aura-outer"></div>
                 <div className="breathing-aura-mid"></div>
@@ -520,7 +476,7 @@ const Focus = () => {
                 </button>
               </div>
               <p className="modal-desc">
-                Save your active mix of {activeSoundsCount} ambient sound layers directly to your personal soundscape library.
+                Save your active mix of {activeSoundsCount} nature sound layers directly to your personal soundscape library.
               </p>
               <form
                 onSubmit={(e) => {
@@ -534,7 +490,7 @@ const Focus = () => {
               >
                 <input
                   type="text"
-                  placeholder="e.g. Midnight Microservices Flow"
+                  placeholder="e.g. Nordic Rain & Pines"
                   value={newPresetName}
                   onChange={(e) => setNewPresetName(e.target.value)}
                   autoFocus
@@ -604,28 +560,24 @@ const Focus = () => {
                   <div className="keys"><kbd>T</kbd></div>
                 </div>
                 <div className="shortcut-row">
-                  <span className="shortcut-label">Reset Pomodoro Dial</span>
+                  <span className="shortcut-label">Reset Timer</span>
                   <div className="keys"><kbd>R</kbd></div>
                 </div>
                 <div className="shortcut-row">
-                  <span className="shortcut-label">Toggle Shortcuts Help</span>
+                  <span className="shortcut-label">Show Shortcuts Help</span>
                   <div className="keys"><kbd>?</kbd></div>
-                </div>
-                <div className="shortcut-row">
-                  <span className="shortcut-label">Exit Fullscreen or Modal</span>
-                  <div className="keys"><kbd>ESC</kbd></div>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Regular Focus Page Surface */}
+        {/* Header Zone */}
         <div className="focus-header-zone">
           <div className="header-meta-row">
-            <span className="focus-kicker-badge">
+            <span className="focus-kicker-tag">
               <span className="kicker-pulse"></span>
-              <span>ENGINEERING FLOW STATE · STUDIO</span>
+              ENGINEERING FLOW STATE
             </span>
 
             {/* Ambient Studio Theme Switcher */}
@@ -648,7 +600,7 @@ const Focus = () => {
               <span className={`status-indicator ${isPlaying || timerStatus === 'running' ? 'active' : ''}`}></span>
               <span>
                 {isPlaying || timerStatus === 'running'
-                  ? 'Deep Work Session In Progress'
+                  ? 'Deep Nature Focus In Progress'
                   : 'Ready to Focus'}
               </span>
             </div>
@@ -663,8 +615,8 @@ const Focus = () => {
           </h1>
 
           <p className="focus-lead">
-            High-fidelity ambient soundscapes, Pomodoro flow timer, and background coding beats.
-            Leave this tab open and lock into deep backend development.
+            High-fidelity procedural nature soundscapes, Pomodoro flow timer, and binaural resonance.
+            Leave this tab open and lock into deep, uninterrupted engineering.
           </p>
         </div>
 
@@ -712,11 +664,11 @@ const Focus = () => {
               type="button"
               className={`analog-warmth-btn ${isVinylWarmth ? 'active' : ''}`}
               onClick={() => setIsVinylWarmth(!isVinylWarmth)}
-              title="Toggle analog tape saturation & subtle vinyl warmth"
+              title="Toggle analog tape saturation & subtle warmth"
               aria-label={isVinylWarmth ? 'Turn off analog tape warmth' : 'Turn on analog tape warmth'}
             >
               <FontAwesomeIcon icon={faRecordVinyl} className={isVinylWarmth ? 'spin-icon' : ''} />
-              <span>Analog Tape</span>
+              <span>Analog Warmth</span>
             </button>
 
             {/* Mindful Box Breathing Trigger */}
@@ -759,7 +711,7 @@ const Focus = () => {
             {userPresets.map((preset) => {
               const isActive = activePreset === preset.id;
               return (
-                <div key={preset.id} className="user-preset-chip-wrap">
+                <div key={preset.id} className="user-preset-wrapper">
                   <button
                     type="button"
                     className={`preset-pill user-preset ${isActive ? 'active' : ''}`}
@@ -772,41 +724,45 @@ const Focus = () => {
                   </button>
                   <button
                     type="button"
-                    className="delete-preset-btn"
+                    className="delete-user-preset-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       deleteUserPreset(preset.id);
                     }}
-                    title="Delete custom preset"
+                    title={`Delete "${preset.name}" preset`}
+                    aria-label={`Delete "${preset.name}" preset`}
                   >
-                    <FontAwesomeIcon icon={faTimes} />
+                    ×
                   </button>
                 </div>
               );
             })}
 
+            {/* Mix Action Buttons */}
             {activeSoundsCount > 0 && (
               <>
                 <button
                   type="button"
                   className="save-preset-btn"
                   onClick={() => setShowSaveModal(true)}
-                  title="Save current mix as custom preset"
-                  aria-label="Save current sound mix as custom preset"
+                  title="Save current nature mix as custom preset"
+                  aria-label="Save current mix as preset"
                 >
                   <FontAwesomeIcon icon={faPlus} />
-                  <span>Save Preset</span>
+                  <span>Save Mix</span>
                 </button>
+
                 <button
                   type="button"
                   className={`share-mix-btn ${shareCopied ? 'copied' : ''}`}
                   onClick={handleShareMix}
-                  title="Copy shareable link to this custom sound mix"
-                  aria-label="Copy shareable link to this custom sound mix"
+                  title="Copy shareable link to this sound mix"
+                  aria-label="Copy shareable mix link"
                 >
                   <FontAwesomeIcon icon={shareCopied ? faCheck : faLink} />
-                  <span>{shareCopied ? 'Link Copied!' : 'Share Mix'}</span>
+                  <span>{shareCopied ? 'Copied Link!' : 'Share Mix'}</span>
                 </button>
+
                 <button
                   type="button"
                   className="clear-mix-btn"
@@ -848,7 +804,7 @@ const Focus = () => {
           </div>
         </div>
 
-        {/* Main Workspace Grid: Timer & Visualizer (Left) vs Sounds & YouTube (Right) */}
+        {/* Main Workspace Grid: Timer & Visualizer (Left) vs Pure Nature Sounds (Right) */}
         <div className="focus-grid-container">
           {/* Left Column: Pomodoro & Live Visualizer */}
           <div className="focus-left-column">
@@ -859,23 +815,29 @@ const Focus = () => {
                   <FontAwesomeIcon icon={faClock} className="header-icon gold" />
                   <h3>Deep Work Pomodoro</h3>
                 </div>
-                <div className="mode-selector-tabs" role="tablist" aria-label="Pomodoro Intervals">
-                  {Object.values(TIMER_MODES).map((mode) => (
-                    <button
-                      key={mode.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={timerMode === mode.id}
-                      className={`mode-tab ${timerMode === mode.id ? 'active' : ''}`}
-                      onClick={() => changeTimerMode(mode.id)}
-                    >
-                      {mode.label}
-                    </button>
-                  ))}
+                <div className="sessions-counter" title="Completed focus sessions in this run">
+                  <FontAwesomeIcon icon={faFire} className="fire-icon" />
+                  <span>{completedSessions} sessions</span>
                 </div>
               </div>
 
-              {/* Circular Radial Countdown */}
+              {/* Mode Selector Tabs */}
+              <div className="mode-selector-tabs" role="tablist">
+                {Object.values(TIMER_MODES).map((mode) => (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={timerMode === mode.id}
+                    className={`mode-tab ${timerMode === mode.id ? 'active' : ''}`}
+                    onClick={() => changeTimerMode(mode.id)}
+                  >
+                    {mode.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Circular Dial Progress Ring */}
               <div className="pomodoro-dial-wrap">
                 <svg className="pomodoro-svg-ring" viewBox="0 0 240 240">
                   <circle
@@ -883,149 +845,135 @@ const Focus = () => {
                     cx="120"
                     cy="120"
                     r={radius}
-                    strokeWidth="10"
                   />
                   <circle
-                    className={`ring-progress ${timerPhase === 'break' ? 'phase-break' : ''}`}
+                    className={`ring-progress ${timerPhase === 'break' ? 'break-phase' : ''}`}
                     cx="120"
                     cy="120"
                     r={radius}
-                    strokeWidth="10"
                     strokeDasharray={circumference}
                     strokeDashoffset={strokeDashoffset}
                   />
                 </svg>
 
-                <div className="dial-center-content">
-                  <span className={`phase-badge ${timerPhase}`}>
+                <div className="pomodoro-dial-content">
+                  <span className={`phase-badge ${timerPhase === 'break' ? 'break' : ''}`}>
                     {timerMode === 'stopwatch'
                       ? 'STOPWATCH'
                       : timerPhase === 'focus'
-                      ? 'FOCUS TIME'
+                      ? 'FOCUS SPRINT'
                       : 'SHORT BREAK'}
                   </span>
-                  <div className="dial-timer-readout">
-                    {timerMode === 'stopwatch'
-                      ? formatTime(stopwatchSeconds)
-                      : formatTime(timeRemaining)}
+
+                  <div className="dial-time-digits" aria-live="polite">
+                    {timerMode === 'stopwatch' ? formatTime(stopwatchSeconds) : formatTime(timeRemaining)}
                   </div>
-                  <span className="dial-sub-hint">
+
+                  <span className="dial-status-caption">
                     {timerStatus === 'running'
-                      ? 'Stay in the zone'
+                      ? 'Session In Progress'
                       : timerStatus === 'paused'
                       ? 'Paused'
-                      : 'Ready to initiate'}
+                      : 'Ready to Start'}
                   </span>
                 </div>
               </div>
 
-              {/* Timer Controls Row */}
-              <div className="timer-actions-row">
+              {/* Timer Primary Action Controls */}
+              <div className="pomodoro-actions-bar">
                 {timerStatus === 'running' ? (
                   <button
                     type="button"
-                    className="timer-btn pause"
+                    className="timer-action-btn pause-btn"
                     onClick={pauseTimer}
                   >
                     <FontAwesomeIcon icon={faPause} />
-                    <span>PAUSE INTERVAL</span>
+                    <span>PAUSE</span>
                   </button>
                 ) : (
                   <button
                     type="button"
-                    className="timer-btn start"
+                    className="timer-action-btn start-btn"
                     onClick={startTimer}
                   >
                     <FontAwesomeIcon icon={faPlay} />
-                    <span>
-                      {timerStatus === 'paused' ? 'RESUME FLOW' : 'START FOCUS'}
-                    </span>
+                    <span>{timerStatus === 'paused' ? 'RESUME' : 'START FOCUS'}</span>
                   </button>
                 )}
 
                 <button
                   type="button"
-                  className="timer-btn reset"
+                  className="timer-reset-btn"
                   onClick={() => resetTimer()}
-                  title="Reset Interval"
-                  aria-label="Reset interval"
+                  title="Reset Timer (R)"
+                  aria-label="Reset Timer"
                 >
                   <FontAwesomeIcon icon={faRotateRight} />
                 </button>
               </div>
 
-              {/* Current Objective Input */}
-              <div className="focus-objective-field">
-                <label htmlFor="focus-task-input" className="objective-label">
-                  <FontAwesomeIcon icon={faFire} className="label-icon" />
-                  <span>CURRENT OBJECTIVE</span>
+              {/* Active Focus Task Input */}
+              <div className="active-task-container">
+                <label htmlFor="focus-task-input" className="task-label">
+                  CURRENT SPRINT GOAL:
                 </label>
-                <div className="objective-input-wrap">
+                <div className="task-input-wrap">
                   <input
                     id="focus-task-input"
                     type="text"
                     value={currentTask}
                     onChange={(e) => setCurrentTask(e.target.value)}
-                    placeholder="e.g. Building ASP.NET Core EF Core Migrations"
-                    maxLength={90}
+                    placeholder="e.g. Profiling EF Core queries & indexing"
+                    className="task-text-input"
                   />
-                  {completedSessions > 0 && (
-                    <span className="sessions-badge" title="Completed sessions today">
-                      <FontAwesomeIcon icon={faCheck} /> {completedSessions} done
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
 
-            {/* Audio Waveform Canvas Visualizer */}
+            {/* Audio Wave Visualizer Card */}
             <div className="focus-card visualizer-card">
               <div className="card-top-header">
                 <div className="header-title-group">
-                  <FontAwesomeIcon icon={faBrain} className="header-icon cyan" />
-                  <h3>Live Audio Visualizer</h3>
+                  <FontAwesomeIcon icon={faWaveSquare} className="header-icon cyan" />
+                  <h3>Acoustic Spectrum</h3>
                 </div>
-                <span className="viz-status">
-                  {isPlaying ? 'ACTIVE FREQUENCY' : 'STANDBY'}
+                <span className="viz-status-pill">
+                  {isPlaying ? 'ACTIVE FREQUENCY' : 'IDLE BREATH'}
                 </span>
               </div>
-              <div className="visualizer-canvas-wrap">
-                <canvas
-                  ref={canvasRef}
-                  width="440"
-                  height="70"
-                  className="waveform-canvas"
-                />
+              <div className="canvas-wrapper">
+                <canvas ref={canvasRef} className="spectrum-canvas" />
               </div>
             </div>
 
-            {/* Focus Session Log / History Card */}
-            <div className="focus-card history-card">
+            {/* Completed Sessions Log Card */}
+            <div className="focus-card session-history-card">
               <div className="card-top-header">
                 <div className="header-title-group">
                   <FontAwesomeIcon icon={faHistory} className="header-icon purple" />
                   <h3>Today's Focus Log</h3>
                 </div>
-                <div className="history-header-actions">
-                  <span className="history-count-badge">
-                    {sessionHistory.length} completed
-                  </span>
-                  {sessionHistory.length > 0 && (
+                {sessionHistory.length > 0 && (
+                  <div className="history-header-actions">
+                    <span className="history-count-badge">
+                      {sessionHistory.length} logged
+                    </span>
                     <button
                       type="button"
                       className="history-clear-btn"
                       onClick={clearSessionHistory}
                       title="Clear session history"
+                      aria-label="Clear session history"
                     >
                       <FontAwesomeIcon icon={faTrashCan} />
                     </button>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
 
               {sessionHistory.length === 0 ? (
                 <div className="history-empty-state">
-                  <p>No completed intervals yet today. Lock into a Pomodoro sprint to log your engineering achievements!</p>
+                  <p>Completed focus sessions will appear here with your task details and duration.</p>
                 </div>
               ) : (
                 <div className="history-list">
@@ -1033,7 +981,7 @@ const Focus = () => {
                     <div key={item.id} className="history-item">
                       <div className="history-item-left">
                         <span className="history-time">{item.time}</span>
-                        <span className="history-task">{item.task}</span>
+                        <span className="history-task" title={item.task}>{item.task}</span>
                       </div>
                       <div className="history-item-right">
                         <span className="history-duration">{item.minutes}m</span>
@@ -1046,17 +994,18 @@ const Focus = () => {
             </div>
           </div>
 
-          {/* Right Column: Multi-Track Soundboard & YouTube Lo-Fi Stream */}
+          {/* Right Column: 100% Procedural Nature Soundboard */}
           <div className="focus-right-column">
-            {/* Ambient Soundboard Matrix */}
             <div className="focus-card soundboard-card">
               <div className="soundboard-header">
                 <div className="header-title-group">
-                  <FontAwesomeIcon icon={faHeadphones} className="header-icon gold" />
-                  <h3>Synthesized Ambient Soundboard</h3>
+                  <FontAwesomeIcon icon={faHeadphones} className="header-icon" />
+                  <h3>Procedural Nature Soundboard</h3>
                 </div>
                 <span className="active-tracks-count">
-                  {activeSoundsCount} track{activeSoundsCount !== 1 ? 's' : ''} active
+                  {activeSoundsCount > 0
+                    ? `${activeSoundsCount} sound${activeSoundsCount > 1 ? 's' : ''} active`
+                    : 'All sounds idle'}
                 </span>
               </div>
 
@@ -1065,9 +1014,9 @@ const Focus = () => {
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="sound-search-icon" />
                 <input
                   type="text"
+                  placeholder="Search nature sounds (e.g. rain, brook, birds, thunder)..."
                   value={soundSearch}
                   onChange={(e) => setSoundSearch(e.target.value)}
-                  placeholder="Search sounds (e.g. rain, ocean, waves, keys, wind, birds)..."
                   className="sound-search-input"
                   aria-label="Search sounds"
                 />
@@ -1083,11 +1032,10 @@ const Focus = () => {
                 )}
               </div>
 
-              {/* Sound Categories Tabs with Item Counts */}
-              <div className="category-filter-bar">
+              {/* Category Filter Pills */}
+              <div className="category-filter-bar" role="toolbar" aria-label="Sound Categories">
                 {categories.map((cat) => {
-                  const count = getCategoryCount(cat);
-                  const isCur = activeCategory === cat.toLowerCase();
+                  const isCur = activeCategory.toLowerCase() === cat.toLowerCase();
                   return (
                     <button
                       key={cat}
@@ -1096,51 +1044,53 @@ const Focus = () => {
                       onClick={() => setActiveCategory(cat.toLowerCase())}
                     >
                       <span>{cat}</span>
-                      <span className="cat-count">({count})</span>
+                      <span className="cat-count">({getCategoryCount(cat)})</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Multi-State Brainwave Tuner Panel */}
-              {(activeCategory === 'all' || activeCategory === 'brainwave') && !soundSearch && (
-                <div className="brainwave-tuner-panel">
-                  <div className="tuner-header">
-                    <div className="tuner-title-group">
-                      <FontAwesomeIcon icon={faWaveSquare} className="tuner-icon cyan" />
-                      <span className="tuner-title">Neural Frequency Architecture</span>
-                    </div>
-                    <span className="current-hz-badge">
-                      {BRAINWAVE_MODES[brainwaveMode]?.icon} {BRAINWAVE_MODES[brainwaveMode]?.tag} ({BRAINWAVE_MODES[brainwaveMode]?.hz} Hz)
-                    </span>
+              {/* Neural Brainwave Tuner Panel */}
+              <div className="brainwave-tuner-panel">
+                <div className="tuner-header">
+                  <div className="tuner-title-group">
+                    <FontAwesomeIcon icon={faBrain} className="tuner-icon cyan" />
+                    <span className="tuner-title">Neural Frequency Architecture</span>
                   </div>
-                  <div className="brainwave-modes-grid" role="radiogroup" aria-label="Brainwave Frequency Modes">
-                    {Object.values(BRAINWAVE_MODES).map((mode) => (
+                  <span className="current-hz-badge">
+                    {BRAINWAVE_MODES[brainwaveMode]?.hz}Hz · {BRAINWAVE_MODES[brainwaveMode]?.tag}
+                  </span>
+                </div>
+
+                <div className="brainwave-modes-grid" role="radiogroup" aria-label="Brainwave Frequency Modes">
+                  {Object.values(BRAINWAVE_MODES).map((bw) => {
+                    const isCur = brainwaveMode === bw.id;
+                    return (
                       <button
-                        key={mode.id}
+                        key={bw.id}
                         type="button"
                         role="radio"
-                        aria-label={`${mode.label} ${mode.hz} Hz`}
-                        aria-checked={brainwaveMode === mode.id}
-                        className={`bw-mode-pill ${brainwaveMode === mode.id ? 'active' : ''}`}
-                        onClick={() => changeBrainwaveMode(mode.id)}
-                        title={mode.desc}
+                        aria-label={`${bw.label} ${bw.hz} Hz`}
+                        aria-checked={isCur}
+                        className={`bw-mode-pill ${isCur ? 'active' : ''}`}
+                        onClick={() => changeBrainwaveMode(bw.id)}
+                        title={`${bw.label} (${bw.hz}Hz) - ${bw.desc}`}
                       >
-                        <span className="bw-icon">{mode.icon}</span>
+                        <span className="bw-icon">{bw.icon}</span>
                         <div className="bw-info">
-                          <span className="bw-name">{mode.label}</span>
-                          <span className="bw-hz">{mode.hz} Hz</span>
+                          <span className="bw-name">{bw.label}</span>
+                          <span className="bw-hz">{bw.hz} Hz</span>
                         </div>
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
 
-              {/* Soundboard Tiles Grid */}
+              {/* Sound Tiles Grid */}
               {filteredSounds.length === 0 ? (
                 <div className="sound-empty-state">
-                  <p>No ambient sounds match "{soundSearch}".</p>
+                  <p>No nature sounds match your search query "{soundSearch}".</p>
                   <button
                     type="button"
                     className="clear-search-link"
@@ -1202,100 +1152,6 @@ const Focus = () => {
                       </div>
                     );
                   })}
-                </div>
-              )}
-            </div>
-
-            {/* YouTube Developer Beats & Streams */}
-            <div className="focus-card youtube-card">
-              <div className="card-top-header">
-                <div className="header-title-group">
-                  <FontAwesomeIcon icon={faYoutube} className="header-icon red" />
-                  <h3>Curated Coding Streams</h3>
-                </div>
-                {activeYouTube && (
-                  <div className="yt-actions">
-                    <button
-                      type="button"
-                      className="yt-fold-btn"
-                      onClick={() => setIsYtFolded(!isYtFolded)}
-                      title={isYtFolded ? 'Show Video Frame' : 'Hide Video (Audio Only)'}
-                    >
-                      <FontAwesomeIcon icon={isYtFolded ? faEye : faEyeSlash} />
-                      <span>{isYtFolded ? 'Show Video' : 'Audio Mode'}</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="yt-close-btn"
-                      onClick={() => setActiveYouTube(null)}
-                      title="Stop YouTube Stream"
-                    >
-                      <FontAwesomeIcon icon={faTimes} />
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* YouTube Channel Selector Pills */}
-              <div className="yt-channels-grid">
-                {YOUTUBE_CHANNELS.map((ch) => {
-                  const isCur = activeYouTube?.id === ch.id;
-                  return (
-                    <button
-                      key={ch.id}
-                      type="button"
-                      className={`yt-channel-card ${isCur ? 'active' : ''}`}
-                      onClick={() => {
-                        setActiveYouTube(ch);
-                        setIsYtFolded(false);
-                      }}
-                    >
-                      <div className="yt-card-header">
-                        <FontAwesomeIcon icon={faMusic} className="ch-icon" />
-                        <span className="ch-tag">{ch.tag}</span>
-                      </div>
-                      <span className="ch-title">{ch.title}</span>
-                      <span className="ch-artist">{ch.artist}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Custom YouTube Input Form */}
-              <form onSubmit={handlePlayCustomYt} className="custom-yt-form">
-                <div className="input-group">
-                  <FontAwesomeIcon icon={faTerminal} className="form-icon" />
-                  <input
-                    type="text"
-                    value={customYtId}
-                    onChange={(e) => {
-                      setCustomYtId(e.target.value);
-                      if (ytError) setYtError(false);
-                    }}
-                    placeholder="Paste any YouTube URL or Video ID (e.g. 4xDzrJKXOOY)"
-                    aria-label="Custom YouTube Video URL"
-                  />
-                  <button type="submit" className="custom-play-btn">
-                    Play
-                  </button>
-                </div>
-                {ytError && (
-                  <span className="yt-error-msg">
-                    Please provide a valid YouTube video ID or link.
-                  </span>
-                )}
-              </form>
-
-              {/* Active Embedded Player Frame */}
-              {activeYouTube && !isYtFolded && (
-                <div className="yt-embed-container">
-                  <iframe
-                    className="yt-iframe"
-                    src={`https://www.youtube-nocookie.com/embed/${activeYouTube.id}?autoplay=1&enablejsapi=1`}
-                    title={activeYouTube.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
                 </div>
               )}
             </div>

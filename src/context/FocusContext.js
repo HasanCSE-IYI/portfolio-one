@@ -19,87 +19,78 @@ export const AMBIENT_THEMES = [
 ];
 
 export const SOUND_DEFINITIONS = [
-  { id: 'brown', name: 'Brown Noise', category: 'Noise', icon: '🌊', desc: 'Warm deep low-frequency sound for deep focus' },
-  { id: 'pink', name: 'Pink Noise', category: 'Noise', icon: '💨', desc: 'Balanced 1/f soothing static waterfall' },
-  { id: 'white', name: 'White Noise', category: 'Noise', icon: '📻', desc: 'Crisp wideband static for acoustic isolation' },
-  { id: 'rain', name: 'Gentle Rain', category: 'Nature', icon: '🌧️', desc: 'Soothing rain drops on a glass window' },
-  { id: 'thunder', name: 'Distant Thunder', category: 'Nature', icon: '⚡', desc: 'Deep rolling rumbles over the hills' },
-  { id: 'waves', name: 'Ocean Waves', category: 'Nature', icon: '🌊', desc: 'Rhythmic ocean swells washing ashore' },
-  { id: 'wind', name: 'Mountain Wind', category: 'Nature', icon: '🍃', desc: 'Howling alpine gust sweeping through peaks' },
-  { id: 'forest', name: 'Forest Breeze', category: 'Nature', icon: '🌲', desc: 'Gentle wind rustling through pine trees' },
-  { id: 'campfire', name: 'Campfire', category: 'Nature', icon: '🔥', desc: 'Soothing crackling wood and warm embers' },
-  { id: 'birds', name: 'Morning Birds', category: 'Nature', icon: '🐦', desc: 'Gentle melodious birdsong in morning light' },
-  { id: 'crickets', name: 'Night Crickets', category: 'Nature', icon: '🦗', desc: 'Peaceful evening crickets under stars' },
-  { id: 'binaural', name: 'Binaural Alpha (10Hz)', category: 'Brainwave', icon: '🧠', desc: '10 Hz frequency for cognitive flow and coding' },
-  { id: 'cafe', name: 'Coffee Shop', category: 'Ambience', icon: '☕', desc: 'Warm café murmur and ceramic clinking' },
-  { id: 'keyboard', name: 'Mechanical Keys', category: 'Coding', icon: '⌨️', desc: 'Rhythmic Cherry MX programmer typing' },
-  { id: 'clock', name: 'Tick-Tock Clock', category: 'Coding', icon: '⏱️', desc: 'Steady 1 Hz rhythmic pacing click' },
+  { id: 'rain', name: 'Gentle Rain', category: 'Rain & Storm', icon: '🌧️', desc: 'Soothing rainfall drops on glass and leaves' },
+  { id: 'monsoon', name: 'Heavy Monsoon', category: 'Rain & Storm', icon: '⛈️', desc: 'Deep torrential downpour and roaring shower' },
+  { id: 'thunder', name: 'Distant Thunder', category: 'Rain & Storm', icon: '⚡', desc: 'Deep rolling rumbles over distant hills' },
+  { id: 'waves', name: 'Ocean Waves', category: 'Water & Oceans', icon: '🌊', desc: 'Rhythmic ocean surf and swells washing ashore' },
+  { id: 'stream', name: 'Babbling Brook', category: 'Water & Oceans', icon: '🏞️', desc: 'Gentle mountain creek burbling over stones' },
+  { id: 'waterfall', name: 'Deep Waterfall', category: 'Water & Oceans', icon: '💧', desc: 'Majestic forest cascades plunging into deep pool' },
+  { id: 'wind', name: 'Mountain Wind', category: 'Forest & Wind', icon: '🍃', desc: 'Alpine gusts sweeping through high pine ridges' },
+  { id: 'forest', name: 'Forest Pines', category: 'Forest & Wind', icon: '🌲', desc: 'Gentle breeze rustling through evergreen pines' },
+  { id: 'campfire', name: 'Crackling Campfire', category: 'Forest & Wind', icon: '🔥', desc: 'Soothing wood crackles, warm pops and embers' },
+  { id: 'birds', name: 'Morning Songbirds', category: 'Wildlife', icon: '🐦', desc: 'Gentle melodious wild woodland birdsong' },
+  { id: 'crickets', name: 'Summer Crickets', category: 'Wildlife', icon: '🦗', desc: 'Peaceful evening crickets under starry skies' },
+  { id: 'night_forest', name: 'Night Owl & Forest', category: 'Wildlife', icon: '🦉', desc: 'Nocturnal forest ambience with gentle distant calls' },
+  { id: 'binaural', name: 'Nature Resonance (10Hz)', category: 'Resonance', icon: '🧠', desc: 'Alpha wave harmonic attunement for deep flow' },
 ];
 
 export const FOCUS_PRESETS = [
   {
-    id: 'deep-arch',
-    name: 'Deep Architecture Flow',
-    icon: '⚡',
-    desc: 'Brown noise + Gentle rain for deep backend modeling',
-    mix: { brown: 65, rain: 45, binaural: 35 },
-  },
-  {
-    id: 'monsoon-cafe',
-    name: 'Monsoon Coffee Shop',
-    icon: '☕',
-    desc: 'Rain + Café ambience with distant thunder',
-    mix: { rain: 60, cafe: 45, thunder: 25 },
-  },
-  {
-    id: 'midnight-terminal',
-    name: 'Midnight Terminal',
-    icon: '💻',
-    desc: 'Mechanical keyboard + Pink noise + Night crickets',
-    mix: { keyboard: 50, pink: 35, crickets: 25 },
-  },
-  {
-    id: 'zen-sanctuary',
-    name: 'Zen Forest Sanctuary',
+    id: 'nordic-rain',
+    name: 'Nordic Pine Rain',
     icon: '🌲',
-    desc: 'Forest breeze + Campfire embers',
-    mix: { forest: 55, campfire: 35, rain: 20 },
+    desc: 'Forest Pines + Gentle Rain + Crackling Campfire',
+    mix: { forest: 60, rain: 50, campfire: 35 },
   },
   {
-    id: 'coastal-dawn',
-    name: 'Coastal Code Sanctuary',
+    id: 'monsoon-storm',
+    name: 'Monsoon Sanctuary',
+    icon: '⛈️',
+    desc: 'Heavy Monsoon + Distant Thunder + Babbling Brook',
+    mix: { monsoon: 65, thunder: 40, stream: 35 },
+  },
+  {
+    id: 'pacific-surf',
+    name: 'Pacific Ocean Surf',
     icon: '🌊',
-    desc: 'Ocean waves + Gentle rain + Binaural alpha flow',
-    mix: { waves: 65, rain: 40, binaural: 35 },
+    desc: 'Ocean Waves + Mountain Wind + Morning Songbirds',
+    mix: { waves: 70, wind: 35, birds: 30 },
   },
   {
-    id: 'nordic-cabin',
-    name: 'Nordic Mountain Cabin',
+    id: 'tranquil-brook',
+    name: 'Tranquil Brook Sanctuary',
+    icon: '🏞️',
+    desc: 'Babbling Brook + Forest Pines + Morning Songbirds',
+    mix: { stream: 65, forest: 45, birds: 40 },
+  },
+  {
+    id: 'alpine-cabin',
+    name: 'Alpine Mountain Cabin',
     icon: '🏔️',
-    desc: 'Mountain wind + Campfire + Distant thunder',
-    mix: { wind: 55, campfire: 45, thunder: 25 },
+    desc: 'Mountain Wind + Crackling Campfire + Distant Thunder',
+    mix: { wind: 55, campfire: 50, thunder: 30 },
   },
   {
-    id: 'morning-garden',
-    name: 'Morning Garden Flow',
+    id: 'deep-waterfall',
+    name: 'Deep Forest Waterfall',
+    icon: '💧',
+    desc: 'Deep Waterfall + Mountain Wind + Nature Resonance',
+    mix: { waterfall: 65, wind: 40, binaural: 35 },
+  },
+  {
+    id: 'starlit-meadow',
+    name: 'Starlit Midnight Meadow',
+    icon: '🦗',
+    desc: 'Summer Crickets + Night Owl + Babbling Brook',
+    mix: { crickets: 60, night_forest: 45, stream: 35 },
+  },
+  {
+    id: 'morning-glade',
+    name: 'Sunrise Songbird Glade',
     icon: '🐦',
-    desc: 'Morning birds + Forest breeze + Brown noise',
-    mix: { birds: 60, forest: 50, brown: 30 },
+    desc: 'Morning Songbirds + Gentle Rain + Nature Resonance',
+    mix: { birds: 65, rain: 40, binaural: 30 },
   },
-  {
-    id: 'binaural-code',
-    name: 'Binaural Alpha State',
-    icon: '🧠',
-    desc: '10Hz Alpha brainwaves + Brown noise isolation',
-    mix: { binaural: 75, brown: 40 },
-  },
-];
-
-export const YOUTUBE_CHANNELS = [
-  { id: 'jfKfPfyJRdk', title: 'Lofi Girl - Beats to Relax/Study', artist: 'Lofi Records', tag: 'Lo-Fi Chill' },
-  { id: '4xDzrJKXOOY', title: 'Synthwave Radio - Chill Synth / Cyberpunk', artist: 'Lofi Girl', tag: 'Synthwave' },
-  { id: 'DWcJFNfaw9c', title: 'Coffee Shop Radio - 24/7 Chill Beats', artist: 'STEEZYASFUCK', tag: 'Jazzhop' },
-  { id: 'lTRiuFIWV54', title: 'Peaceful Piano & Rain - Ambient Work', artist: 'The Soul of Wind', tag: 'Piano & Rain' },
 ];
 
 export const TIMER_MODES = {
@@ -140,16 +131,11 @@ export const FocusProvider = ({ children }) => {
   const [completedSessions, setCompletedSessions] = useState(0);
   const [currentTask, setCurrentTask] = useState(() => {
     try {
-      return localStorage.getItem('focus_current_task') || 'Architecting ASP.NET Core & Microservices';
+      return localStorage.getItem('focus_current_task') || 'Architecting Cloud Native Microservices';
     } catch {
-      return 'Architecting ASP.NET Core & Microservices';
+      return 'Architecting Cloud Native Microservices';
     }
   });
-
-  // YouTube Stream State
-  const [activeYouTube, setActiveYouTube] = useState(null); // channel object or null
-  const [isYtPlaying, setIsYtPlaying] = useState(false);
-  const [isYtFolded, setIsYtFolded] = useState(false);
 
   // Zen / Immersive Fullscreen State
   const [isZenMode, setIsZenMode] = useState(false);
@@ -179,7 +165,7 @@ export const FocusProvider = ({ children }) => {
     const newEntry = {
       id: Date.now(),
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      task: taskName || 'Deep Work Sprint',
+      task: taskName || 'Deep Nature Focus Sprint',
       minutes,
       mode: modeLabel,
     };
@@ -244,7 +230,7 @@ export const FocusProvider = ({ children }) => {
       id: `custom-${Date.now()}`,
       name: name.trim(),
       icon: '✨',
-      desc: 'Custom developer soundscape',
+      desc: 'Custom nature soundscape',
       mix: currentMix,
       isCustom: true,
     };
@@ -318,7 +304,7 @@ export const FocusProvider = ({ children }) => {
     }
   }, [masterVolume]);
 
-  // Sound Synthesizers utilizing Web Audio API Buffer/Filter Graphs
+  // Native Procedural Sound Synthesizers utilizing Web Audio API
   const createSoundSource = (ctx, masterGain, soundId) => {
     const gainNode = ctx.createGain();
     gainNode.gain.setValueAtTime(0, ctx.currentTime);
@@ -326,37 +312,38 @@ export const FocusProvider = ({ children }) => {
 
     let stopFn = () => {};
 
-    if (soundId === 'brown' || soundId === 'pink' || soundId === 'rain' || soundId === 'campfire' || soundId === 'forest' || soundId === 'cafe') {
+    if (soundId === 'rain' || soundId === 'forest' || soundId === 'monsoon' || soundId === 'waterfall') {
       const bufferSize = ctx.sampleRate * 3;
       const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
       const dataL = buffer.getChannelData(0);
       const dataR = buffer.getChannelData(1);
 
-      let lastOutL = 0.0;
-      let lastOutR = 0.0;
       let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      let lastOutL = 0.0, lastOutR = 0.0;
 
       for (let i = 0; i < bufferSize; i++) {
         const whiteL = Math.random() * 2 - 1;
         const whiteR = Math.random() * 2 - 1;
 
-        if (soundId === 'brown' || soundId === 'campfire') {
-          lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
-          lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
-          dataL[i] = lastOutL * 3.5;
-          dataR[i] = lastOutR * 3.5;
-        } else if (soundId === 'pink' || soundId === 'cafe') {
+        if (soundId === 'waterfall') {
+          // Waterfall: Rich blend of brown noise + high-frequency water mist
+          lastOutL = (lastOutL + 0.03 * whiteL) / 1.03;
+          lastOutR = (lastOutR + 0.03 * whiteR) / 1.03;
+          dataL[i] = lastOutL * 2.8 + whiteL * 0.08;
+          dataR[i] = lastOutR * 2.8 + whiteR * 0.08;
+        } else if (soundId === 'monsoon') {
+          // Monsoon: Heavy dense downpour texture
           b0 = 0.99886 * b0 + whiteL * 0.0555179;
           b1 = 0.99332 * b1 + whiteL * 0.0750759;
           b2 = 0.96900 * b2 + whiteL * 0.1538520;
           b3 = 0.86650 * b3 + whiteL * 0.3104856;
           b4 = 0.55000 * b4 + whiteL * 0.5329522;
           b5 = -0.7616 * b5 - whiteL * 0.0168980;
-          dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.11;
+          dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.16 + whiteL * 0.12;
           dataR[i] = dataL[i];
           b6 = whiteL * 0.115926;
         } else {
-          // Rain / Forest: multi-band texture
+          // Gentle Rain / Forest breeze texture
           dataL[i] = whiteL * 0.22;
           dataR[i] = whiteR * 0.22;
         }
@@ -368,26 +355,109 @@ export const FocusProvider = ({ children }) => {
 
       // Filter Shaping
       const filter = ctx.createBiquadFilter();
-      if (soundId === 'brown') {
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(380, ctx.currentTime);
-      } else if (soundId === 'pink') {
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(1200, ctx.currentTime);
-      } else if (soundId === 'rain') {
+      if (soundId === 'rain') {
         filter.type = 'bandpass';
         filter.frequency.setValueAtTime(950, ctx.currentTime);
         filter.Q.setValueAtTime(0.8, ctx.currentTime);
       } else if (soundId === 'forest') {
         filter.type = 'lowpass';
         filter.frequency.setValueAtTime(650, ctx.currentTime);
-      } else if (soundId === 'cafe') {
+      } else if (soundId === 'monsoon') {
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(750, ctx.currentTime);
-      } else if (soundId === 'campfire') {
+        filter.frequency.setValueAtTime(1400, ctx.currentTime);
+      } else if (soundId === 'waterfall') {
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(450, ctx.currentTime);
+        filter.frequency.setValueAtTime(620, ctx.currentTime);
       }
+
+      noiseSource.connect(filter);
+      filter.connect(gainNode);
+      noiseSource.start(0);
+
+      stopFn = () => {
+        try { noiseSource.stop(); } catch {}
+      };
+    } else if (soundId === 'stream') {
+      // Babbling Brook: Pink noise through modulated resonant filter with gentle ripples
+      const bufferSize = ctx.sampleRate * 3;
+      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+      const dataL = buffer.getChannelData(0);
+      const dataR = buffer.getChannelData(1);
+
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const whiteL = Math.random() * 2 - 1;
+        b0 = 0.99886 * b0 + whiteL * 0.0555179;
+        b1 = 0.99332 * b1 + whiteL * 0.0750759;
+        b2 = 0.96900 * b2 + whiteL * 0.1538520;
+        b3 = 0.86650 * b3 + whiteL * 0.3104856;
+        b4 = 0.55000 * b4 + whiteL * 0.5329522;
+        b5 = -0.7616 * b5 - whiteL * 0.0168980;
+        dataL[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.15;
+        dataR[i] = dataL[i];
+        b6 = whiteL * 0.115926;
+      }
+
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(680, ctx.currentTime);
+      filter.Q.setValueAtTime(1.8, ctx.currentTime);
+
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(0.7, ctx.currentTime);
+      lfoGain.gain.setValueAtTime(240, ctx.currentTime);
+
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+
+      noiseSource.connect(filter);
+      filter.connect(gainNode);
+
+      noiseSource.start(0);
+      lfo.start(0);
+
+      stopFn = () => {
+        try {
+          noiseSource.stop();
+          lfo.stop();
+        } catch {}
+      };
+    } else if (soundId === 'campfire') {
+      // Warm Crackling Campfire with organic sparks & pops
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+      const dataL = buffer.getChannelData(0);
+      const dataR = buffer.getChannelData(1);
+
+      let lastOutL = 0.0, lastOutR = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const whiteL = Math.random() * 2 - 1;
+        const whiteR = Math.random() * 2 - 1;
+        lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
+        lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
+
+        // Occasional crackle snap
+        const isPop = Math.random() < 0.0006;
+        const popL = isPop ? (Math.random() * 2 - 1) * 0.9 : 0;
+        const popR = isPop ? (Math.random() * 2 - 1) * 0.9 : 0;
+
+        dataL[i] = lastOutL * 2.6 + popL;
+        dataR[i] = lastOutR * 2.6 + popR;
+      }
+
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(520, ctx.currentTime);
 
       noiseSource.connect(filter);
       filter.connect(gainNode);
@@ -450,35 +520,64 @@ export const FocusProvider = ({ children }) => {
       stopFn = () => {
         try { osc.stop(); lfo.stop(); } catch {}
       };
-    } else if (soundId === 'keyboard') {
-      // ASMR Mechanical Keyboard Rhythmic Interval
-      let timerId = null;
-      const triggerKeyClick = () => {
+    } else if (soundId === 'night_forest') {
+      // Night Owl & Forest: Gentle woodland breeze + periodic distant calls
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+      const dataL = buffer.getChannelData(0);
+      const dataR = buffer.getChannelData(1);
+      let lastOutL = 0.0, lastOutR = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const whiteL = Math.random() * 2 - 1;
+        const whiteR = Math.random() * 2 - 1;
+        lastOutL = (lastOutL + 0.02 * whiteL) / 1.02;
+        lastOutR = (lastOutR + 0.02 * whiteR) / 1.02;
+        dataL[i] = lastOutL * 1.5;
+        dataR[i] = lastOutR * 1.5;
+      }
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(380, ctx.currentTime);
+
+      noiseSource.connect(filter);
+      filter.connect(gainNode);
+      noiseSource.start(0);
+
+      // Periodic gentle owl call
+      let owlTimer = null;
+      const triggerOwl = () => {
         if (!audioCtxRef.current) return;
         const now = ctx.currentTime;
-        const clickOsc = ctx.createOscillator();
-        const clickGain = ctx.createGain();
+        const osc = ctx.createOscillator();
+        const owlGain = ctx.createGain();
 
-        clickOsc.type = 'triangle';
-        clickOsc.frequency.setValueAtTime(120 + Math.random() * 80, now);
-        clickOsc.frequency.exponentialRampToValueAtTime(30, now + 0.04);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(380, now);
+        osc.frequency.linearRampToValueAtTime(430, now + 0.15);
+        osc.frequency.linearRampToValueAtTime(360, now + 0.45);
 
-        clickGain.gain.setValueAtTime(0.5, now);
-        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        owlGain.gain.setValueAtTime(0.001, now);
+        owlGain.gain.linearRampToValueAtTime(0.12, now + 0.1);
+        owlGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
 
-        clickOsc.connect(clickGain);
-        clickGain.connect(gainNode);
+        osc.connect(owlGain);
+        owlGain.connect(gainNode);
 
-        clickOsc.start(now);
-        clickOsc.stop(now + 0.05);
+        osc.start(now);
+        osc.stop(now + 0.55);
 
-        const nextDelay = 120 + Math.random() * 260;
-        timerId = setTimeout(triggerKeyClick, nextDelay);
+        owlTimer = setTimeout(triggerOwl, 9000 + Math.random() * 14000);
       };
 
-      triggerKeyClick();
+      owlTimer = setTimeout(triggerOwl, 3000);
+
       stopFn = () => {
-        if (timerId) clearTimeout(timerId);
+        try { noiseSource.stop(); } catch {}
+        if (owlTimer) clearTimeout(owlTimer);
       };
     } else if (soundId === 'thunder') {
       // Periodic Distant Thunder Rumbles
@@ -514,31 +613,6 @@ export const FocusProvider = ({ children }) => {
       thunderTimer = setTimeout(triggerThunder, 2000);
       stopFn = () => {
         if (thunderTimer) clearTimeout(thunderTimer);
-      };
-    } else if (soundId === 'white') {
-      // Pure White Noise static
-      const bufferSize = ctx.sampleRate * 2;
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
-      const dataL = buffer.getChannelData(0);
-      const dataR = buffer.getChannelData(1);
-      for (let i = 0; i < bufferSize; i++) {
-        dataL[i] = (Math.random() * 2 - 1) * 0.16;
-        dataR[i] = (Math.random() * 2 - 1) * 0.16;
-      }
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(4500, ctx.currentTime);
-
-      noiseSource.connect(filter);
-      filter.connect(gainNode);
-      noiseSource.start(0);
-
-      stopFn = () => {
-        try { noiseSource.stop(); } catch {}
       };
     } else if (soundId === 'waves') {
       // Ocean Waves: Brown noise with periodic swell LFO on filter and gain
@@ -678,36 +752,6 @@ export const FocusProvider = ({ children }) => {
       stopFn = () => {
         if (birdTimer) clearTimeout(birdTimer);
       };
-    } else if (soundId === 'clock') {
-      // Tick-Tock Clock: Alternating 1-second cadence tick
-      let clockTimer = null;
-      let isTick = true;
-      const triggerClock = () => {
-        if (!audioCtxRef.current) return;
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const clickGain = ctx.createGain();
-
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(isTick ? 1200 : 900, now);
-        isTick = !isTick;
-
-        clickGain.gain.setValueAtTime(0.3, now);
-        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
-
-        osc.connect(clickGain);
-        clickGain.connect(gainNode);
-
-        osc.start(now);
-        osc.stop(now + 0.03);
-
-        clockTimer = setTimeout(triggerClock, 1000);
-      };
-
-      triggerClock();
-      stopFn = () => {
-        if (clockTimer) clearTimeout(clockTimer);
-      };
     }
 
     return { gainNode, stopFn };
@@ -778,7 +822,7 @@ export const FocusProvider = ({ children }) => {
       soundNodesRef.current = {};
       setIsPlaying(false);
     } else {
-      // If all volumes are currently 0, default to Deep Architecture Preset
+      // If all volumes are currently 0, default to Nordic Pine Rain Preset
       const hasActive = Object.values(volumes).some((v) => v > 0);
       if (!hasActive) {
         applyPreset(FOCUS_PRESETS[0]);
@@ -957,7 +1001,7 @@ export const FocusProvider = ({ children }) => {
         : `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 
       const prefix = timerStatus === 'paused' ? '⏸️ ' : timerPhase === 'break' ? '☕ ' : '⏳ ';
-      document.title = `(${prefix}${timeStr}) Focus Station · Mahmud al Hasan`;
+      document.title = `(${prefix}${timeStr}) Nature Focus Station · Mahmud al Hasan`;
     } else if (timerStatus === 'idle') {
       if (document.title.startsWith('(')) {
         document.title = 'Mahmud al Hasan | Backend Software Engineer (Laravel, Node.js & .NET)';
@@ -1026,14 +1070,6 @@ export const FocusProvider = ({ children }) => {
         setCurrentTask,
         sessionHistory,
         clearSessionHistory,
-
-        // YouTube
-        activeYouTube,
-        setActiveYouTube,
-        isYtPlaying,
-        setIsYtPlaying,
-        isYtFolded,
-        setIsYtFolded,
 
         // Brainwave Tuner
         brainwaveMode,
