@@ -5,27 +5,39 @@
   perspective: 600px;
 }
 
+.animated-word {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.animated-word-space {
+  display: inline-block;
+  width: 0.28em;
+  vertical-align: baseline;
+}
+
 .text-animate {
   display: inline-block;
   opacity: 0;
   animation: modernLetterIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  min-width: 10px;
   transform-style: preserve-3d;
   will-change: transform, opacity, filter;
+  vertical-align: baseline;
 
   &.space-char {
-    min-width: 0.35em;
+    min-width: 0.28em;
   }
 }
 
 .text-animate-hover {
-  min-width: 10px;
   display: inline-block;
   transition: color 0.25s ease, text-shadow 0.25s ease;
   cursor: default;
+  vertical-align: baseline;
 
   &.space-char {
-    min-width: 0.35em;
+    min-width: 0.28em;
   }
 
   &:hover {

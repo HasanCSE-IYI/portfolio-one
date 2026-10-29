@@ -43,6 +43,7 @@ const Focus = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('soundboard');
   const canvasRef = useRef(null);
 
   const {
@@ -804,10 +805,41 @@ const Focus = () => {
           </div>
         </div>
 
+        {/* Apple Segmented View Switcher (Visible on mobile/tablet to avoid visual clutter) */}
+        <div className="focus-view-switcher" role="tablist" aria-label="Workspace views">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeWorkspaceTab === 'soundboard'}
+            className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
+            onClick={() => setActiveWorkspaceTab('soundboard')}
+          >
+            <span className="tab-symbol">🌿</span>
+            <span className="tab-text">Nature Soundboard</span>
+            {activeSoundsCount > 0 && (
+              <span className="tab-badge">{activeSoundsCount}</span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeWorkspaceTab === 'timer'}
+            className={`view-tab ${activeWorkspaceTab === 'timer' ? 'active' : ''}`}
+            onClick={() => setActiveWorkspaceTab('timer')}
+          >
+            <span className="tab-symbol">⏱️</span>
+            <span className="tab-text">Flow Timer &amp; Log</span>
+            {timerStatus === 'running' && (
+              <span className="tab-pulse-dot" title="Timer in progress"></span>
+            )}
+          </button>
+        </div>
+
         {/* Main Workspace Grid: Timer (Left) vs Pure Nature Soundboard (Right) */}
-        <div className="focus-grid-container">
+        <div className={`focus-grid-container view-${activeWorkspaceTab}`}>
           {/* Left Column: Pomodoro & Live Visualizer */}
-          <div className="focus-left-column">
+          <div className={`focus-left-column ${activeWorkspaceTab === 'timer' ? 'mobile-visible' : 'mobile-hidden'}`}>
             {/* Pomodoro Timer Station */}
             <div className="focus-card pomodoro-card">
               <div className="card-top-header">
@@ -995,7 +1027,7 @@ const Focus = () => {
           </div>
 
           {/* Right Column: Complete Nature Soundboard */}
-          <div className="focus-right-column">
+          <div className={`focus-right-column ${activeWorkspaceTab === 'soundboard' ? 'mobile-visible' : 'mobile-hidden'}`}>
             <div className="focus-card soundboard-card">
               <div className="soundboard-header">
                 <div className="header-title-group">
