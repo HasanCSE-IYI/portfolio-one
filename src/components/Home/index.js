@@ -407,6 +407,15 @@ const Home = () => {
                       autoCapitalize="off"
                       autoComplete="off"
                     />
+                    <button
+                      type="submit"
+                      className="cli-submit-btn"
+                      aria-label="Execute CLI command"
+                      disabled={!commandInput.trim()}
+                    >
+                      <span>Run</span>
+                      <span className="btn-return-icon" aria-hidden="true">↵</span>
+                    </button>
                   </form>
 
                   <div className="cli-quick-tags">
@@ -416,6 +425,9 @@ const Home = () => {
                     <button type="button" onClick={() => executeCliCommand('curl /api/health')}>curl health</button>
                     <button type="button" onClick={() => executeCliCommand('whoami')}>whoami</button>
                     <button type="button" onClick={() => executeCliCommand('help')}>help</button>
+                    {terminalHistory.length > 0 && (
+                      <button type="button" className="clear-tag" onClick={() => executeCliCommand('clear')}>clear</button>
+                    )}
                   </div>
                 </div>
               </div>

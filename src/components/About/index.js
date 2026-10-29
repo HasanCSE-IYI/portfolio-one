@@ -148,14 +148,16 @@ const About = () => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
           title="Click and drag to rotate the 3D cube"
           role="region"
           aria-label="Interactive 3D Tech Cube"
         >
-          <div className="cube-orbit-wrap">
+          <div
+            className="cube-orbit-wrap"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <div
               className={`cubespinner ${hasInteracted ? 'interactive-mode' : ''}`}
               style={

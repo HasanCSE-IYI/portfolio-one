@@ -64,6 +64,10 @@
           transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
           box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 
+          @media screen and (max-width: 768px) {
+            font-size: 16px; // Eliminates iOS viewport auto-zoom
+          }
+
           &::placeholder {
             color: #64748b;
           }
@@ -123,6 +127,9 @@
         color: #94a3b8;
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 8px 18px;
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
         border-radius: 20px;
         font-family: var(--font-sans);
         font-size: 1.3rem;
@@ -428,12 +435,19 @@
           font-weight: 700;
           text-decoration: none;
           padding: 8px 16px;
+          min-height: 42px;
           border-radius: 8px;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 6px;
           transition: all 0.25s ease;
+
+          @media screen and (max-width: 480px) {
+            flex: 1;
+            min-width: 120px;
+          }
 
           .ext-icon {
             font-size: 1.15rem;
