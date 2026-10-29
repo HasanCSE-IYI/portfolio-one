@@ -1846,10 +1846,11 @@ const Focus = () => {
                   {filteredSounds.map((sound) => {
                     const vol = volumes[sound.id] || 0;
                     const isActive = vol > 0 && isPlaying;
+                    const isStarred = favorites.includes(sound.id);
                     return (
                       <div
                         key={sound.id}
-                        className={`sound-tile ${isActive ? 'is-active' : ''}`}
+                        className={`sound-tile ${isActive ? 'is-active' : ''} ${vol > 0 ? 'has-volume' : ''}`}
                       >
                         <div
                           className="tile-top-row"
@@ -1866,30 +1867,50 @@ const Focus = () => {
                           }}
                         >
                           <div className="tile-icon-avatar">
-                            <span>{sound.icon}</span>
+                            <span className="sound-emoji">{sound.icon}</span>
+                            {isActive && <span className="avatar-pulse-glow" aria-hidden="true"></span>}
                           </div>
                           <div className="tile-title-col">
-                            <span className="sound-name">{sound.name}</span>
+                            <div className="sound-name-row">
+                              <span className="sound-name">{sound.name}</span>
+                              {isActive && (
+                                <span className="sound-eq-bars" aria-label="Playing" aria-hidden="true">
+                                  <span></span><span></span><span></span>
+                                </span>
+                              )}
+                            </div>
                             <span className="sound-desc">{sound.desc}</span>
                           </div>
-                          <button
-                            type="button"
-                            className={`sound-fav-star ${favorites.includes(sound.id) ? 'starred' : ''}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleFavorite(sound.id);
-                            }}
-                            title={favorites.includes(sound.id) ? `Unfavorite ${sound.name}` : `Star ${sound.name} as favorite`}
-                            aria-label={`Favorite ${sound.name}`}
-                          >
-                            <FontAwesomeIcon icon={faStar} />
-                          </button>
-                          <span className={`sound-level-badge ${vol > 0 ? 'audible' : ''}`}>
-                            {vol > 0 ? `${vol}%` : 'OFF'}
-                          </span>
+                          <div className="tile-actions-col">
+                            <button
+                              type="button"
+                              className={`sound-fav-star ${isStarred ? 'starred' : ''}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleFavorite(sound.id);
+                              }}
+                              title={isStarred ? `Unfavorite ${sound.name}` : `Star ${sound.name} as favorite`}
+                              aria-label={`Favorite ${sound.name}`}
+                            >
+                              <FontAwesomeIcon icon={faStar} />
+                            </button>
+                            <button
+                              type="button"
+                              className={`sound-power-toggle ${isActive ? 'active' : ''}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleSound(sound.id);
+                              }}
+                              aria-label={isActive ? `Turn off ${sound.name}` : `Play ${sound.name}`}
+                              title={isActive ? `Turn off ${sound.name}` : `Play ${sound.name}`}
+                            >
+                              <FontAwesomeIcon icon={isActive ? faVolumeHigh : faPlay} />
+                            </button>
+                          </div>
                         </div>
 
                         <div className="tile-slider-row">
+                          <span className="slider-vol-label">VOL</span>
                           <input
                             type="range"
                             min="0"
@@ -1899,6 +1920,7 @@ const Focus = () => {
                             className="sound-volume-slider"
                             aria-label={`${sound.name} volume`}
                           />
+                          <span className="tile-vol-readout">{vol}%</span>
                         </div>
                       </div>
                     );

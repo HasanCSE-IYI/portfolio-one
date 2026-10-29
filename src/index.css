@@ -78,7 +78,7 @@ body {
     radial-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px;
   background-attachment: fixed, fixed, fixed, scroll;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: auto;
   min-height: 100vh;
   width: 100%;
