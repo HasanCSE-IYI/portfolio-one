@@ -11,12 +11,20 @@ html {
 }
 
 :root {
-  /* Apple Obsidian Color Space */
+  /* Apple Obsidian & VisionOS Color Space */
   --bg-base: #07090e;
   --bg-surface: rgba(15, 20, 30, 0.72);
   --bg-surface-elevated: rgba(22, 28, 42, 0.82);
   --bg-surface-hover: rgba(30, 38, 56, 0.9);
   --bg-glass: rgba(13, 17, 26, 0.78);
+
+  /* Apple Liquid Glass Vibrance Materials */
+  --apple-glass-material: rgba(18, 24, 38, 0.75);
+  --apple-glass-blur: blur(28px) saturate(190%);
+  --apple-specular-border: 1px solid rgba(255, 255, 255, 0.1);
+  --apple-specular-inner: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --apple-elevation-card: 0 16px 40px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --apple-elevation-card-hover: 0 24px 54px -10px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
   /* Specular Borders & Glass Highlights */
   --border-subtle: rgba(255, 255, 255, 0.08);
@@ -40,9 +48,9 @@ html {
   --text-muted: #64748b;
 
   /* Apple Pro Font Stack */
-  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
-  --font-resume: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-resume: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, ui-monospace, monospace;
 
   /* Apple Spring & Elevation Curves */
   --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
@@ -90,8 +98,12 @@ samp {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-gold);
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent-gold);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
 }
 
 /* Custom smooth obsidian & luminous amber scrollbar */
