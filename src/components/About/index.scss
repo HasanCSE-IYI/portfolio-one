@@ -18,7 +18,7 @@
 
     .about-subtitle {
       color: #94a3b8;
-      font-size: 1.8rem;
+      font-size: 1.45rem;
       font-family: var(--font-sans);
       margin: 0;
       max-width: 68ch;
@@ -83,14 +83,14 @@
     border: 1px solid rgba(245, 158, 11, 0.35);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #cbd5e1;
     font-family: var(--font-sans);
     pointer-events: auto;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
     .hint-icon {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       display: inline-block;
       animation: waveHand 2s ease-in-out infinite;
     }
@@ -101,7 +101,7 @@
       color: #fbbf24;
       border-radius: 9999px;
       padding: 3px 11px;
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       font-weight: 600;
       cursor: pointer;
       font-family: var(--font-sans);
@@ -270,7 +270,7 @@
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       p {
-        font-size: 1.8rem;
+        font-size: 1.45rem;
         line-height: 1.7;
         color: #d1d5db;
         margin: 0 0 16px;
@@ -299,7 +299,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.3);
       padding: 10px 22px;
       border-radius: 9999px;
-      font-size: 1.45rem;
+      font-size: 1.3rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -308,7 +308,7 @@
       gap: 10px;
 
       .toggle-icon {
-        font-size: 1.35rem;
+        font-size: 1.15rem;
         transition: transform 0.25s ease;
       }
 
@@ -351,7 +351,7 @@
         }
 
         .principle-title {
-          font-size: 1.5rem;
+          font-size: 1.4rem;
           font-weight: 700;
           color: #fff;
           display: flex;
@@ -370,7 +370,7 @@
         }
 
         .principle-summary {
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           color: #94a3b8;
           line-height: 1.55;
           margin: 0;
@@ -383,7 +383,7 @@
     margin-top: 28px;
 
     .group-label {
-      font-size: 1.35rem;
+      font-size: 1.2rem;
       font-family: var(--font-mono);
       font-weight: 700;
       letter-spacing: 1.2px;
@@ -400,7 +400,7 @@
       margin-bottom: 16px;
 
       .tag {
-        font-size: 1.4rem;
+        font-size: 0.84rem;
         font-family: var(--font-mono);
         color: #d1d5db;
         background: rgba(24, 30, 42, 0.7);
@@ -444,7 +444,7 @@
 
       .section-eyebrow {
         font-family: var(--font-mono);
-        font-size: 1.3rem;
+        font-size: 1.15rem;
         color: #f59e0b;
         font-weight: 700;
         letter-spacing: 0.14em;
@@ -455,14 +455,14 @@
 
       h3 {
         font-family: var(--font-sans);
-        font-size: 1.45rem;
+        font-size: 1.65rem;
         font-weight: 700;
         color: #f8fafc;
         margin: 0 0 6px 0;
       }
 
       p {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         color: #94a3b8;
         margin: 0;
         line-height: 1.55;
@@ -513,7 +513,7 @@
 
           .book-tag {
             font-family: var(--font-mono);
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: #38bdf8;
             background: rgba(56, 189, 248, 0.12);
             border: 1px solid rgba(56, 189, 248, 0.25);
@@ -523,7 +523,7 @@
           }
 
           .book-icon {
-            font-size: 1.6rem;
+            font-size: 1.25rem;
             color: #38bdf8;
             opacity: 0.9;
           }
@@ -531,7 +531,7 @@
 
         .book-title {
           font-family: var(--font-sans);
-          font-size: 1.8rem;
+          font-size: 1.45rem;
           font-weight: 700;
           color: #f1f5f9;
           margin: 0 0 4px 0;
@@ -540,14 +540,14 @@
 
         .book-author {
           font-family: var(--font-mono);
-          font-size: 1.35rem;
+          font-size: 1.2rem;
           color: #f59e0b;
           margin-bottom: 12px;
         }
 
         .book-takeaway {
           font-family: var(--font-sans);
-          font-size: 1.45rem;
+          font-size: 1.35rem;
           color: #94a3b8;
           line-height: 1.55;
           margin: 0;
@@ -569,7 +569,7 @@
       border: 1.5px solid #f59e0b;
       color: #f59e0b;
       font-family: var(--font-sans);
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: 700;
       letter-spacing: 0.05em;
       padding: 13px 30px;
@@ -583,7 +583,7 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 
       .cv-btn-icon {
-        font-size: 1.8rem;
+        font-size: 1.3rem;
       }
 
       &:hover {

@@ -1133,76 +1133,6 @@ const Focus = () => {
               </button>
             </div>
 
-            {/* Prominent Hero YouTube Lo-Fi Focus Bar */}
-            <div className="hero-yt-focus-bar" role="region" aria-label="YouTube Focus Station Controller">
-              <div className="hero-yt-left">
-                <span className={`hero-yt-status-tag ${isYtPlaying ? 'live' : ''}`}>
-                  <FontAwesomeIcon icon={faTv} className="yt-tag-icon" />
-                  <span className="yt-tag-text">{isYtPlaying ? 'STREAMING NOW' : 'YOUTUBE LO-FI'}</span>
-                  {isYtPlaying && <span className="yt-live-pulse"></span>}
-                </span>
-                <div className="hero-yt-meta">
-                  <span className="hero-yt-title">
-                    {currentYtTrack ? currentYtTrack.title : 'Ya Nabi Salam Alayka'}
-                  </span>
-                  <span className="hero-yt-artist">
-                    {currentYtTrack ? currentYtTrack.artist : 'Maher Zain'} · 21 Focus Picks
-                  </span>
-                </div>
-              </div>
-
-              <div className="hero-yt-controls">
-                <button
-                  type="button"
-                  className="yt-nav-btn"
-                  onClick={prevYtTrack}
-                  aria-label="Previous YouTube track"
-                  title="Previous track"
-                >
-                  <FontAwesomeIcon icon={faBackward} />
-                </button>
-                <button
-                  type="button"
-                  className={`yt-play-hero-btn ${isYtPlaying ? 'playing' : ''}`}
-                  onClick={toggleYtPlay}
-                  aria-label={isYtPlaying ? 'Pause YouTube Lo-Fi' : 'Play YouTube Lo-Fi'}
-                  title={isYtPlaying ? 'Pause YouTube stream' : 'Play YouTube stream'}
-                >
-                  <FontAwesomeIcon icon={isYtPlaying ? faPause : faPlay} />
-                  <span>{isYtPlaying ? 'PAUSE LO-FI' : 'PLAY LO-FI'}</span>
-                </button>
-                <button
-                  type="button"
-                  className="yt-nav-btn"
-                  onClick={nextYtTrack}
-                  aria-label="Next YouTube track"
-                  title="Next track"
-                >
-                  <FontAwesomeIcon icon={faForward} />
-                </button>
-              </div>
-
-              <div className="hero-yt-right">
-                <button
-                  type="button"
-                  className="yt-open-player-btn"
-                  onClick={() => {
-                    setActiveWorkspaceTab('youtube');
-                    if (isYtFolded) toggleYtFold();
-                    setTimeout(() => {
-                      const el = document.querySelector('.youtube-card');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }, 80);
-                  }}
-                  title="Open full video studio & playlist"
-                  aria-label="Open full YouTube video player & playlist"
-                >
-                  <FontAwesomeIcon icon={faExpand} />
-                  <span>Open Video Studio</span>
-                </button>
-              </div>
-            </div>
-
             {/* Ready-Made Curated Mixes Pills */}
             <div className="hero-mixes-row" role="group" aria-label="Ready-made mixes">
               {FOCUS_PRESETS.map((preset) => {
@@ -1448,20 +1378,6 @@ const Focus = () => {
           <button
             type="button"
             role="tab"
-            aria-selected={activeWorkspaceTab === 'soundboard'}
-            className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
-            onClick={() => setActiveWorkspaceTab('soundboard')}
-          >
-            <span className="tab-symbol">🌿</span>
-            <span className="tab-text">Nature Soundboard</span>
-            {activeSoundsCount > 0 && (
-              <span className="tab-badge">{activeSoundsCount}</span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            role="tab"
             aria-selected={activeWorkspaceTab === 'timer'}
             className={`view-tab ${activeWorkspaceTab === 'timer' ? 'active' : ''}`}
             onClick={() => setActiveWorkspaceTab('timer')}
@@ -1470,6 +1386,20 @@ const Focus = () => {
             <span className="tab-text">Flow Timer &amp; Log</span>
             {timerStatus === 'running' && (
               <span className="tab-pulse-dot" title="Timer in progress"></span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeWorkspaceTab === 'soundboard'}
+            className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
+            onClick={() => setActiveWorkspaceTab('soundboard')}
+          >
+            <span className="tab-symbol">🌿</span>
+            <span className="tab-text">Nature Soundboard</span>
+            {activeSoundsCount > 0 && (
+              <span className="tab-badge">{activeSoundsCount}</span>
             )}
           </button>
         </div>
@@ -1484,24 +1414,29 @@ const Focus = () => {
             {/* 1. YouTube Focus Player & Lo-Fi Video Section */}
             {(activeWorkspaceTab === 'all' || activeWorkspaceTab === 'youtube') && (
               <div className={`focus-card youtube-card ${activeWorkspaceTab === 'youtube' ? 'tab-priority' : ''}`}>
-              <div className="card-top-header">
-                <div className="header-title-group">
-                  <FontAwesomeIcon icon={faTv} className="header-icon red" />
-                  <h3>YouTube Lo-Fi &amp; Focus Media</h3>
+                <div className="card-top-header">
+                  <div className="header-title-group">
+                    <FontAwesomeIcon icon={faTv} className="header-icon red" />
+                    <h3>YouTube Lo-Fi &amp; Focus Media</h3>
+                    {isYtPlaying && (
+                      <span className="yt-live-tag">
+                        <span className="live-dot"></span> LIVE
+                      </span>
+                    )}
+                  </div>
+                  <div className="yt-header-actions">
+                    <button
+                      type="button"
+                      className="yt-fold-btn"
+                      onClick={toggleYtFold}
+                      title={isYtFolded ? 'Show video' : 'Hide video'}
+                      aria-label={isYtFolded ? 'Show video' : 'Hide video'}
+                    >
+                      <FontAwesomeIcon icon={isYtFolded ? faEye : faEyeSlash} />
+                      <span>{isYtFolded ? 'Show Video' : 'Hide Video'}</span>
+                    </button>
+                  </div>
                 </div>
-                <div className="yt-header-actions">
-                  <button
-                    type="button"
-                    className="yt-fold-btn"
-                    onClick={toggleYtFold}
-                    title={isYtFolded ? 'Show video' : 'Hide video'}
-                    aria-label={isYtFolded ? 'Show video' : 'Hide video'}
-                  >
-                    <FontAwesomeIcon icon={isYtFolded ? faEye : faEyeSlash} />
-                    <span>{isYtFolded ? 'Show Video' : 'Hide Video'}</span>
-                  </button>
-                </div>
-              </div>
 
               {/* YouTube Screen Container (Foldable) */}
               <div className={`yt-screen-fold ${isYtFolded ? 'folded' : 'expanded'}`}>
@@ -1659,11 +1594,11 @@ const Focus = () => {
             </div>
           )}
 
-          {/* 2. Pomodoro Timer Station */}
-          {(activeWorkspaceTab === 'all' || activeWorkspaceTab === 'timer') && (
-            <>
-              <div className={`focus-card pomodoro-card ${activeWorkspaceTab === 'timer' ? 'tab-priority' : ''}`}>
-              <div className="card-top-header">
+            {/* 2. Pomodoro Timer Station */}
+            {(activeWorkspaceTab === 'all' || activeWorkspaceTab === 'timer') && (
+              <>
+                <div className={`focus-card pomodoro-card ${activeWorkspaceTab === 'timer' ? 'tab-priority' : ''}`}>
+                <div className="card-top-header">
                 <div className="header-title-group">
                   <FontAwesomeIcon icon={faClock} className="header-icon gold" />
                   <h3>Deep Work Pomodoro</h3>
@@ -1873,8 +1808,8 @@ const Focus = () => {
                 </div>
               )}
             </div>
-            </>
-          )}
+              </>
+            )}
           </div>
 
           {/* RIGHT COLUMN: Complete Nature Soundboard (All 61 Sounds) */}
