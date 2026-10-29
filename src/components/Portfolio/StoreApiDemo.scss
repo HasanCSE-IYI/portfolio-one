@@ -17,7 +17,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.82rem;
+      font-size: 1.3rem;
       font-weight: 700;
       letter-spacing: 1.2px;
       color: #f59e0b;
@@ -38,7 +38,7 @@
 
     .demo-description {
       color: #94a3b8;
-      font-size: 0.95rem;
+      font-size: 1.45rem;
       line-height: 1.6;
       margin-top: 10px;
       margin-bottom: 0;
@@ -73,7 +73,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 8px 14px;
         border-radius: 8px;
-        font-size: 0.84rem;
+        font-size: 1.35rem;
         cursor: pointer;
         transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -99,7 +99,7 @@
         .method-badge {
           font-family: var(--font-mono);
           font-weight: 700;
-          font-size: 0.72rem;
+          font-size: 1.15rem;
           padding: 2px 6px;
           border-radius: 4px;
 
@@ -130,7 +130,7 @@
       border: 1px dashed rgba(245, 158, 11, 0.3);
 
       .role-label {
-        font-size: 0.84rem;
+        font-size: 1.35rem;
         color: #94a3b8;
         font-weight: 500;
       }
@@ -141,7 +141,7 @@
         flex-wrap: wrap;
 
         .role-btn {
-          font-size: 0.8rem;
+          font-size: 1.25rem;
           padding: 6px 12px;
           border-radius: 6px;
           cursor: pointer;
@@ -196,7 +196,7 @@
         .method-pill {
           font-family: var(--font-mono);
           font-weight: 700;
-          font-size: 0.78rem;
+          font-size: 1.25rem;
           padding: 3px 7px;
           border-radius: 4px;
 
@@ -214,7 +214,7 @@
         .url-text {
           font-family: var(--font-mono);
           color: #f1f5f9;
-          font-size: 0.88rem;
+          font-size: 1.35rem;
         }
       }
 
@@ -222,7 +222,7 @@
         background: #f59e0b;
         color: #0f172a;
         font-weight: 700;
-        font-size: 0.88rem;
+        font-size: 1.4rem;
         border: none;
         padding: 10px 22px;
         border-radius: 8px;
@@ -291,7 +291,7 @@
     .panel-header {
       background: rgba(24, 30, 42, 0.85);
       padding: 10px 14px;
-      font-size: 0.8rem;
+      font-size: 1.3rem;
       font-weight: 600;
       color: #94a3b8;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -324,7 +324,7 @@
           border: 1px solid transparent;
           padding: 4px 10px;
           border-radius: 6px;
-          font-size: 0.76rem;
+          font-size: 1.25rem;
           font-family: var(--font-sans);
           cursor: pointer;
           transition: all 0.2s ease;
@@ -349,7 +349,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 3px 10px;
         border-radius: 6px;
-        font-size: 0.74rem;
+        font-size: 1.2rem;
         cursor: pointer;
         transition: all 0.2s ease;
 
@@ -367,7 +367,7 @@
 
         .status-pill {
           font-family: var(--font-mono);
-          font-size: 0.72rem;
+          font-size: 1.2rem;
           padding: 3px 8px;
           border-radius: 4px;
           font-weight: 600;
@@ -393,7 +393,7 @@
 
         .file-tag {
           font-family: var(--font-mono);
-          font-size: 0.7rem;
+          font-size: 1.15rem;
           color: #64748b;
         }
       }
@@ -403,7 +403,7 @@
       margin: 0;
       padding: 14px 16px;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 1.3rem;
       line-height: 1.5;
       color: #e2e8f0;
       overflow-x: auto;
@@ -432,7 +432,7 @@
         padding: 30px 20px;
         text-align: center;
         color: #64748b;
-        font-size: 0.86rem;
+        font-size: 1.35rem;
         max-width: 320px;
 
         strong {
@@ -448,7 +448,7 @@
         gap: 12px;
         padding: 30px;
         color: #f59e0b;
-        font-size: 0.86rem;
+        font-size: 1.35rem;
 
         .spinner {
           width: 24px;
@@ -464,7 +464,7 @@
         margin: 0;
         padding: 14px 16px;
         font-family: var(--font-mono);
-        font-size: 0.78rem;
+        font-size: 1.3rem;
         line-height: 1.5;
         color: #86efac;
         overflow-x: auto;
