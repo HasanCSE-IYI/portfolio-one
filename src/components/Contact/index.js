@@ -209,7 +209,11 @@ const Contact = () => {
     }, 30000)
 
     let isMounted = true
-    fetch('https://api.open-meteo.com/v1/forecast?latitude=22.3911&longitude=91.8177&current_weather=true')
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null
+
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=22.3911&longitude=91.8177&current_weather=true', {
+      signal: controller?.signal,
+    })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (isMounted && data?.current_weather) {
@@ -220,13 +224,15 @@ const Contact = () => {
           })
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        if (err?.name === 'AbortError') return
         // Fallback default
       })
 
     return () => {
       isMounted = false
       clearInterval(timer)
+      controller?.abort()
     }
   }, [])
 
@@ -663,7 +669,7 @@ const Contact = () => {
         </div>
 
         <div className="contact-aside">
-          <div className="info-map">
+          <div className="info-map" data-testid="info-map">
             Mahmud al Hasan
             <br />
             Backend Software Engineer

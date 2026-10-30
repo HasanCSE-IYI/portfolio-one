@@ -373,7 +373,7 @@ describe('Focus MiniPlayer Dock', () => {
   };
 
   test('does not render when idle on non-focus route', () => {
-    const { container } = render(
+    render(
       <FocusProvider>
         <MemoryRouter initialEntries={['/portfolio']}>
           <MiniPlayer />
@@ -381,7 +381,7 @@ describe('Focus MiniPlayer Dock', () => {
       </FocusProvider>
     );
 
-    expect(container.querySelector('.focus-mini-player')).toBeNull();
+    expect(screen.queryByRole('complementary', { name: /background focus session/i })).not.toBeInTheDocument();
   });
 
   test('renders floating dock on non-focus route when sound is active', () => {

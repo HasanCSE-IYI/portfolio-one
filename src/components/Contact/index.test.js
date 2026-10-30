@@ -2,15 +2,37 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Contact from './index';
 
-test('renders contact page with 3 Map Types, Traffic detail toggle, removed Transit and marker popup card, slim English coordinates pill, and modern sleek UI', () => {
+beforeEach(() => {
+  jest.spyOn(global, 'fetch').mockImplementation(() =>
+    Promise.resolve({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          current_weather: {
+            temperature: 28,
+            weathercode: 1,
+          },
+        }),
+    })
+  );
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+test('renders contact page with 3 Map Types, Traffic detail toggle, removed Transit and marker popup card, slim English coordinates pill, and modern sleek UI', async () => {
   render(
     <MemoryRouter>
       <Contact />
     </MemoryRouter>
   );
 
+  // Wait for mocked weather data state update
+  await screen.findByText(/28°C/);
+
   // Check restored original card info inside .info-map
-  const infoMap = document.querySelector('.info-map');
+  const infoMap = screen.getByTestId('info-map');
   expect(infoMap).toBeInTheDocument();
   expect(infoMap).toHaveTextContent('Mahmud al Hasan');
   expect(infoMap).toHaveTextContent('Backend Software Engineer');
