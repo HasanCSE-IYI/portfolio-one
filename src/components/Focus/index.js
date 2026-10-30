@@ -225,6 +225,29 @@ const Focus = () => {
     };
   }, [isZenMode]);
 
+  // Manage body classes for Zen Mode and Mindful Breathing Mode
+  useEffect(() => {
+    if (isZenMode) {
+      document.body.classList.add('zen-mode-active');
+    } else {
+      document.body.classList.remove('zen-mode-active');
+    }
+    return () => {
+      document.body.classList.remove('zen-mode-active');
+    };
+  }, [isZenMode]);
+
+  useEffect(() => {
+    if (isBreathingMode) {
+      document.body.classList.add('breathing-mode-active');
+    } else {
+      document.body.classList.remove('breathing-mode-active');
+    }
+    return () => {
+      document.body.classList.remove('breathing-mode-active');
+    };
+  }, [isBreathingMode]);
+
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -811,20 +834,24 @@ const Focus = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Apple Mindful Box Breathing"
+            onClick={() => setIsBreathingMode(false)}
           >
             <button
               type="button"
               className="breathing-exit-btn"
-              onClick={() => setIsBreathingMode(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsBreathingMode(false);
+              }}
               aria-label="Exit Mindful Breathing (Esc)"
               title="Exit Mindful Breathing (Esc)"
             >
               <FontAwesomeIcon icon={faTimes} />
-              <span>Exit Reset</span>
+              <span>Exit Breathing</span>
               <kbd>ESC</kbd>
             </button>
 
-            <div className="breathing-stage">
+            <div className="breathing-stage" onClick={(e) => e.stopPropagation()}>
               <span className="breathing-kicker-badge">NEURAL MINDFULNESS RESET</span>
 
               <div className={`breathing-circle-wrap phase-${breathingPhase}`}>
@@ -851,6 +878,19 @@ const Focus = () => {
               <p className="breathing-subtext">
                 Box Breathing regulates autonomic vagal tone, reduces cortisol, and re-primes your prefrontal cortex for deep architectural problem solving.
               </p>
+
+              {/* Prominent Center Finish Button */}
+              <div className="breathing-bottom-actions">
+                <button
+                  type="button"
+                  className="breathing-finish-btn"
+                  onClick={() => setIsBreathingMode(false)}
+                  aria-label="Done with breathing session"
+                >
+                  <FontAwesomeIcon icon={faCheck} className="finish-icon" />
+                  <span>Done · Return to Focus</span>
+                </button>
+              </div>
             </div>
           </div>
         )}

@@ -779,3 +779,15 @@
     }
   }
 }
+
+// Hide navigation in full immersive modes (Zen Mode & Mindful Box Breathing)
+body.zen-mode-active,
+body.breathing-mode-active {
+  .modern-navbar,
+  .mobile-bottom-dock {
+    display: none !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+}

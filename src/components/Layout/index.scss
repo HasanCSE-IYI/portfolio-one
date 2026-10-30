@@ -58,6 +58,12 @@
   }
 }
 
+// In full immersive overlays (Zen Mode & Mindful Box Breathing), promote container stacking
+body.zen-mode-active .container,
+body.breathing-mode-active .container {
+  z-index: 100000 !important;
+}
+
 @keyframes pageFadeIn {
   from {
     opacity: 0;
