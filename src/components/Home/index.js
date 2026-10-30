@@ -53,7 +53,12 @@ const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
-  const [isSpecCollapsed, setIsSpecCollapsed] = useState(false)
+  const [isSpecCollapsed, setIsSpecCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768
+    }
+    return false
+  })
   const [commandInput, setCommandInput] = useState('')
   const [terminalHistory, setTerminalHistory] = useState([])
   const [pastCommands, setPastCommands] = useState([])
