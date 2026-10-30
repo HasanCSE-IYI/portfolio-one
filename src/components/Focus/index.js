@@ -1325,34 +1325,36 @@ const Focus = () => {
         {/* =========================================================================
             APPLE SEGMENTED VIEW SWITCHER (Mobile / Tablet Minimalist Controller)
            ========================================================================= */}
-        <div className="focus-view-switcher" role="tablist" aria-label="Workspace views">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeWorkspaceTab === 'soundboard'}
-            className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
-            onClick={() => setActiveWorkspaceTab('soundboard')}
-          >
-            <span className="tab-symbol">🌿</span>
-            <span className="tab-text">Nature Soundboard</span>
-            {activeSoundsCount > 0 && (
-              <span className="tab-badge">{activeSoundsCount}</span>
-            )}
-          </button>
+        <div className="focus-view-switcher-sticky-wrap">
+          <div className="focus-view-switcher" role="tablist" aria-label="Workspace views">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeWorkspaceTab === 'soundboard'}
+              className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
+              onClick={() => setActiveWorkspaceTab('soundboard')}
+            >
+              <span className="tab-symbol">🌿</span>
+              <span className="tab-text">Nature Soundboard</span>
+              {activeSoundsCount > 0 && (
+                <span className="tab-badge">{activeSoundsCount}</span>
+              )}
+            </button>
 
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeWorkspaceTab === 'timer'}
-            className={`view-tab ${activeWorkspaceTab === 'timer' ? 'active' : ''}`}
-            onClick={() => setActiveWorkspaceTab('timer')}
-          >
-            <span className="tab-symbol">⏱️</span>
-            <span className="tab-text">Flow Timer &amp; Log</span>
-            {(timerStatus === 'running' || isYtPlaying) && (
-              <span className="tab-pulse-dot" title="Session in progress"></span>
-            )}
-          </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeWorkspaceTab === 'timer'}
+              className={`view-tab ${activeWorkspaceTab === 'timer' ? 'active' : ''}`}
+              onClick={() => setActiveWorkspaceTab('timer')}
+            >
+              <span className="tab-symbol">⏱️</span>
+              <span className="tab-text">Flow Timer &amp; Log</span>
+              {(timerStatus === 'running' || isYtPlaying) && (
+                <span className="tab-pulse-dot" title="Session in progress"></span>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* =========================================================================
@@ -1383,10 +1385,14 @@ const Focus = () => {
                     type="button"
                     role="tab"
                     aria-selected={timerMode === mode.id}
+                    aria-label={mode.label}
                     className={`mode-tab ${timerMode === mode.id ? 'active' : ''}`}
                     onClick={() => changeTimerMode(mode.id)}
                   >
-                    {mode.label}
+                    <span className="mode-tab-title">{mode.label}</span>
+                    <span className="mode-tab-duration">
+                      {mode.id === 'stopwatch' ? '∞' : `${mode.focusMinutes}m`}
+                    </span>
                   </button>
                 ))}
               </div>
