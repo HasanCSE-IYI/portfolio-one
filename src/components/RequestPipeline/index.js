@@ -70,16 +70,41 @@ const PIPELINE_STEPS = [
 const RequestPipeline = () => {
   const [activeStepId, setActiveStepId] = useState('auth');
   const activeBtnRef = useRef(null);
+  const flowContainerRef = useRef(null);
+  const isInitialMount = useRef(true);
 
   const activeStep = PIPELINE_STEPS.find((s) => s.id === activeStepId) || PIPELINE_STEPS[1];
 
   useEffect(() => {
-    if (activeBtnRef.current && typeof activeBtnRef.current.scrollIntoView === 'function') {
-      activeBtnRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest',
-      });
+    // Avoid any scrolling on initial mount so the window scroll position stays at the top
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // Scroll only the horizontal flow container, never the window
+    if (activeBtnRef.current && flowContainerRef.current) {
+      const container = flowContainerRef.current;
+      const btn = activeBtnRef.current;
+      const btnLeft = btn.offsetLeft;
+      const btnRight = btnLeft + btn.offsetWidth;
+      const scrollLeft = container.scrollLeft;
+      const containerWidth = container.clientWidth;
+
+      if (btnLeft < scrollLeft) {
+        if (typeof container.scrollTo === 'function') {
+          container.scrollTo({ left: Math.max(0, btnLeft - 16), behavior: 'smooth' });
+        } else {
+          container.scrollLeft = Math.max(0, btnLeft - 16);
+        }
+      } else if (btnRight > scrollLeft + containerWidth) {
+        const targetScroll = btnRight - containerWidth + 16;
+        if (typeof container.scrollTo === 'function') {
+          container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+        } else {
+          container.scrollLeft = targetScroll;
+        }
+      }
     }
   }, [activeStepId]);
 
@@ -105,7 +130,7 @@ const RequestPipeline = () => {
         </p>
       </div>
 
-      <div className="pipeline-flow-cont">
+      <div className="pipeline-flow-cont" ref={flowContainerRef}>
         <div className="pipeline-nodes" role="tablist" aria-label="API Pipeline Stages">
           {PIPELINE_STEPS.map((step, idx) => (
             <React.Fragment key={step.id}>

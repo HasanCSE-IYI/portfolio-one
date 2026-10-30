@@ -67,6 +67,23 @@ const Sidebar = () => {
     setShowMoreMenu(false)
   }, [location.pathname])
 
+  // Scroll to top if clicking Home while already on the home page
+  const handleHomeClick = () => {
+    if (location.pathname === '/') {
+      if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+        try {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          })
+        } catch {
+          window.scrollTo(0, 0)
+        }
+      }
+    }
+  }
+
   return (
     <>
       {/* Top Floating Glass Navbar (Desktop Floating Capsule & Mobile Slim Header) */}
@@ -74,7 +91,7 @@ const Sidebar = () => {
         <div className="navbar-container">
           {/* Brand Logo & Live Availability Status Capsule */}
           <div className="brand-zone">
-            <Link className="brand-logo" to="/" aria-label="Home · Mahmud al Hasan">
+            <Link className="brand-logo" to="/" aria-label="Home · Mahmud al Hasan" onClick={handleHomeClick}>
               <div className="logo-icon-wrap">
                 <img className="logo-img" src={LogoS} alt="Mahmud al Hasan Logo" />
               </div>
@@ -100,6 +117,7 @@ const Sidebar = () => {
               end
               to="/"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={handleHomeClick}
             >
               <FontAwesomeIcon icon={faHome} className="nav-icon" />
               <span>Home</span>
@@ -314,6 +332,7 @@ const Sidebar = () => {
           to="/"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Home"
+          onClick={handleHomeClick}
         >
           <FontAwesomeIcon icon={faHome} className="dock-icon" />
           <span className="dock-label">Home</span>

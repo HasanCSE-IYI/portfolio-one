@@ -58,7 +58,16 @@ const BASE_COMMANDS = [
     title: 'Go to Home',
     subtitle: 'System specifications, architectural capabilities & REST pipeline',
     icon: faHome,
-    action: (navigate) => navigate('/'),
+    action: (navigate) => {
+      navigate('/')
+      if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+        try {
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+        } catch {
+          window.scrollTo(0, 0)
+        }
+      }
+    },
   },
   {
     id: 'nav-about',
