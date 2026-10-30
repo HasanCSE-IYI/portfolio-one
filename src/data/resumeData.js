@@ -2,7 +2,7 @@
 
 export const RESUME_META = {
   name: 'Mahmud al Hasan',
-  headline: 'Software Engineer (.NET / Backend) · 8+ Years Production Experience',
+  headline: 'Senior Software Engineer (ASP.NET Core / Backend) · 8+ Years Production Experience',
   location: 'Bayazid, Chattogram, Bangladesh',
   phone: '+880 1727-328200',
   phoneRaw: '+8801727328200',
@@ -15,7 +15,7 @@ export const RESUME_META = {
 };
 
 export const PROFESSIONAL_SUMMARY =
-  'Backend-focused Software Engineer with 8+ years of experience building and deploying robust REST APIs and web applications with Laravel, NestJS, and Node.js, including leading backend architecture for a telemedicine startup (Doctor Dekhao). Experienced with AWS (EC2, S3), MySQL, MongoDB, and Linux-based deployments. Actively focused on expanding into the modern .NET ecosystem (C#, ASP.NET Core, Entity Framework Core) through hands-on architectural API projects.';
+  'Senior Backend Software Engineer with 8+ years of experience architecting and deploying high-throughput REST APIs and distributed services. Proven track record leading backend architecture for a telemedicine platform (Doctor Dekhao, 99.9% uptime) with Laravel, MySQL, and AWS. Actively building enterprise-grade architectures in the modern .NET ecosystem with C#, ASP.NET Core Web API, and Entity Framework Core.';
 
 export const TECHNICAL_SKILLS = [
   {

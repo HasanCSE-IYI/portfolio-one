@@ -302,11 +302,11 @@ const Home = () => {
               />
             </h1>
 
-            <h2>Backend Software Engineer (8+ Years) | Laravel • NestJS • Transitioning to .NET</h2>
+            <h2>Senior Backend Software Engineer (8+ Years) | ASP.NET Core &amp; C# • Laravel • Distributed Systems</h2>
 
             <p className="hero-bio">
               Architecting resilient REST APIs, relational schemas, and high-concurrency systems.
-              Former Co-Founder &amp; Tech Lead at <strong>Doctor Dekhao</strong> (Laravel/Cloud); actively preparing for .NET roles and building clean services with <strong>ASP.NET Core Web API, C#, and Entity Framework Core</strong>.
+              Former Co-Founder &amp; Tech Lead at <strong>Doctor Dekhao</strong> (Laravel/Cloud); architecting enterprise-grade microservices and Web APIs with <strong>ASP.NET Core, C#, Entity Framework Core, and AWS</strong>.
             </p>
 
             {/* Focus Chain */}
@@ -321,16 +321,16 @@ const Home = () => {
             </div>
 
             <div className="cta-buttons">
-              <Link to="/contact" className="flat-button">
-                <span>CONTACT ME</span>
+              <Link to="/portfolio" className="flat-button button-primary-glow">
+                <FontAwesomeIcon icon={faLayerGroup} className="btn-icon" />
+                <span>EXPLORE ARCHITECTURE &amp; SIMULATOR</span>
               </Link>
               <Link to="/resume" className="flat-button button-cv">
                 <FontAwesomeIcon icon={faFilePdf} className="btn-icon" />
-                <span>VIEW / DOWNLOAD CV</span>
+                <span>EXECUTIVE RESUME</span>
               </Link>
-              <Link to="/portfolio" className="flat-button button-secondary">
-                <FontAwesomeIcon icon={faLayerGroup} className="btn-icon" />
-                <span>VIEW ARCHITECTURE &amp; SIMULATOR</span>
+              <Link to="/contact" className="flat-button button-secondary">
+                <span>GET IN TOUCH</span>
               </Link>
             </div>
           </div>
@@ -369,6 +369,10 @@ const Home = () => {
                   <FontAwesomeIcon icon={faTerminal} className="terminal-icon-mini" />
                   <span className="terminal-title">mahmud-al-hasan@backend-core:~$</span>
                 </div>
+                <span className="terminal-live-badge">
+                  <span className="live-dot" aria-hidden="true"></span>
+                  <span>Interactive CLI</span>
+                </span>
               </div>
               <div className="terminal-body">
                 {!isSpecCollapsed && (

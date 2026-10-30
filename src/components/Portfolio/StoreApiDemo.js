@@ -1,48 +1,20 @@
 import React, { useState } from 'react';
 import './StoreApiDemo.scss';
 
-const ENDPOINTS = [
-  {
-    id: 'get-products',
-    method: 'GET',
-    path: '/api/products?page=1&pageSize=2',
-    name: 'Browse Catalog (EF Core Query)',
-    authRequired: false,
-    curlCmd: `curl -X GET "https://api.store.local/api/products?page=1&pageSize=2" \\
-  -H "Accept: application/json"`,
-    csharpCode: `// ProductsController.cs
-[HttpGet]
-public async Task<ActionResult<PagedResult<ProductDto>>> GetProducts(
-    [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-{
-    var query = _context.Products.AsNoTracking();
-    var total = await query.CountAsync();
-    var items = await query
-        .OrderByDescending(p => p.CreatedAt)
-        .Skip((page - 1) * pageSize)
-        .Take(pageSize)
-        .Select(p => new ProductDto(p.Id, p.Name, p.Price, p.Stock))
-        .ToListAsync();
+const CATALOG_ITEMS = [
+  { id: 1, name: "Mechanical Keyboard (Cherry MX)", category: "Peripherals", price: 89.99, stock: 34, inStock: true, createdAt: "2026-10-28T09:15:00Z" },
+  { id: 2, name: "27-inch 4K IPS Monitor", category: "Displays", price: 349.50, stock: 12, inStock: true, createdAt: "2026-10-27T14:30:00Z" },
+  { id: 3, name: "Studio Condenser Microphone", category: "Audio", price: 129.00, stock: 18, inStock: true, createdAt: "2026-10-26T11:20:00Z" },
+  { id: 4, name: "Ergonomic Vertical Mouse", category: "Peripherals", price: 54.00, stock: 45, inStock: true, createdAt: "2026-10-25T16:45:00Z" },
+  { id: 5, name: "Ultra-Wide 34-inch Curved Display", category: "Displays", price: 599.00, stock: 8, inStock: true, createdAt: "2026-10-24T10:10:00Z" },
+  { id: 6, name: "Active Noise-Cancelling Headphones", category: "Audio", price: 199.50, stock: 22, inStock: true, createdAt: "2026-10-23T18:00:00Z" },
+  { id: 7, name: "Thunderbolt 4 Docking Station", category: "Peripherals", price: 219.00, stock: 15, inStock: true, createdAt: "2026-10-22T13:40:00Z" },
+  { id: 8, name: "NVMe M.2 2TB Gen4 SSD", category: "Components", price: 149.99, stock: 50, inStock: true, createdAt: "2026-10-21T08:30:00Z" },
+];
 
-    return Ok(new PagedResult<ProductDto>(items, total, page, pageSize));
-}`,
-    sqlExecution: `SELECT [p].[Id], [p].[Name], [p].[Price], [p].[Stock]
-FROM [Products] AS [p]
-ORDER BY [p].[CreatedAt] DESC
-LIMIT 2 OFFSET 0;`,
-    responseStatus: '200 OK',
-    latency: '18ms',
-    responseData: {
-      status: 200,
-      page: 1,
-      pageSize: 2,
-      totalCount: 48,
-      data: [
-        { id: 1, name: "Mechanical Keyboard (Cherry MX)", price: 89.99, stock: 34, inStock: true },
-        { id: 2, name: "27-inch 4K IPS Monitor", price: 349.50, stock: 12, inStock: true }
-      ]
-    }
-  },
+const CATEGORIES = ['All', 'Peripherals', 'Displays', 'Audio', 'Components'];
+
+const STATIC_ENDPOINTS = [
   {
     id: 'auth-login',
     method: 'POST',
@@ -178,7 +150,92 @@ const StoreApiDemo = () => {
   const [copiedJson, setCopiedJson] = useState(false);
   const [viewTab, setViewTab] = useState('csharp'); // 'csharp' or 'curl'
 
-  const activeEndpoint = ENDPOINTS.find((e) => e.id === activeEndpointId) || ENDPOINTS[0];
+  // Interactive Query Parameters for get-products
+  const [queryCategory, setQueryCategory] = useState('All');
+  const [queryPage, setQueryPage] = useState(1);
+  const [queryPageSize, setQueryPageSize] = useState(2);
+
+  // Compute filtered items for get-products
+  const filteredCatalog = CATALOG_ITEMS.filter((item) =>
+    queryCategory === 'All' ? true : item.category === queryCategory
+  );
+  const totalCount = filteredCatalog.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / queryPageSize));
+  const safePage = Math.min(queryPage, totalPages);
+  const offset = (safePage - 1) * queryPageSize;
+  const pagedItems = filteredCatalog.slice(offset, offset + queryPageSize);
+
+  const queryParams = new URLSearchParams();
+  queryParams.set('page', String(safePage));
+  queryParams.set('pageSize', String(queryPageSize));
+  if (queryCategory !== 'All') {
+    queryParams.set('category', queryCategory);
+  }
+  const queryString = queryParams.toString();
+  const dynamicGetPath = `/api/products?${queryString}`;
+
+  const dynamicGetSql = `SELECT [p].[Id], [p].[Name], [p].[Category], [p].[Price], [p].[Stock]
+FROM [Products] AS [p]${queryCategory !== 'All' ? `\nWHERE [p].[Category] = '${queryCategory}'` : ''}
+ORDER BY [p].[CreatedAt] DESC
+LIMIT ${queryPageSize} OFFSET ${offset};`;
+
+  const dynamicGetCurl = `curl -X GET "https://api.store.local${dynamicGetPath}" \\
+  -H "Accept: application/json"`;
+
+  const dynamicGetCsharp = `// ProductsController.cs
+[HttpGet]
+public async Task<ActionResult<PagedResult<ProductDto>>> GetProducts(
+    [FromQuery] int page = ${safePage},
+    [FromQuery] int pageSize = ${queryPageSize}${queryCategory !== 'All' ? `,\n    [FromQuery] string category = "${queryCategory}"` : ''})
+{
+    var query = _context.Products.AsNoTracking();
+${queryCategory !== 'All' ? `    query = query.Where(p => p.Category == category);\n` : ''}    var total = await query.CountAsync();
+    var items = await query
+        .OrderByDescending(p => p.CreatedAt)
+        .Skip((${safePage} - 1) * ${queryPageSize})
+        .Take(${queryPageSize})
+        .Select(p => new ProductDto(p.Id, p.Name, p.Price, p.Stock))
+        .ToListAsync();
+
+    return Ok(new PagedResult<ProductDto>(items, total, ${safePage}, ${queryPageSize}));
+}`;
+
+  const dynamicGetResponse = {
+    status: 200,
+    page: safePage,
+    pageSize: queryPageSize,
+    totalCount: totalCount,
+    totalPages: totalPages,
+    data: pagedItems.map(p => ({
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      price: p.price,
+      stock: p.stock,
+      inStock: p.inStock
+    }))
+  };
+
+  const getDynamicEndpoint = () => {
+    if (activeEndpointId === 'get-products') {
+      return {
+        id: 'get-products',
+        method: 'GET',
+        path: dynamicGetPath,
+        name: 'Browse Catalog (EF Core Query & Pagination)',
+        authRequired: false,
+        curlCmd: dynamicGetCurl,
+        csharpCode: dynamicGetCsharp,
+        sqlExecution: dynamicGetSql,
+        responseStatus: '200 OK',
+        latency: `${14 + queryPageSize * 2}ms`,
+        responseData: dynamicGetResponse,
+      };
+    }
+    return STATIC_ENDPOINTS.find((e) => e.id === activeEndpointId) || STATIC_ENDPOINTS[0];
+  };
+
+  const activeEndpoint = getDynamicEndpoint();
 
   const handleExecute = () => {
     setIsExecuting(true);
@@ -186,7 +243,7 @@ const StoreApiDemo = () => {
     setTimeout(() => {
       setIsExecuting(false);
       setHasExecuted(true);
-    }, 400);
+    }, 350);
   };
 
   const handleCopyCode = () => {
@@ -224,13 +281,23 @@ const StoreApiDemo = () => {
           LIVE ARCHITECTURE SIMULATOR · ASP.NET CORE &amp; EF CORE
         </div>
         <p className="demo-description">
-          Test real controller pipelines, Entity Framework Core queries, and JWT Role-Based Authorization implemented in the <strong>StoreApi</strong> project.
+          Test real controller pipelines, Entity Framework Core queries, dynamic LINQ pagination, and JWT Role-Based Authorization implemented in the <strong>StoreApi</strong> project.
         </p>
       </div>
 
       <div className="demo-controls">
         <div className="endpoint-selector">
-          {ENDPOINTS.map((ep) => (
+          <button
+            className={`endpoint-btn ${activeEndpointId === 'get-products' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveEndpointId('get-products');
+              setHasExecuted(false);
+            }}
+          >
+            <span className="method-badge get">GET</span>
+            <span className="ep-title">Browse Catalog (Interactive EF Core)</span>
+          </button>
+          {STATIC_ENDPOINTS.map((ep) => (
             <button
               key={ep.id}
               className={`endpoint-btn ${activeEndpointId === ep.id ? 'active' : ''}`}
@@ -244,6 +311,72 @@ const StoreApiDemo = () => {
             </button>
           ))}
         </div>
+
+        {/* Live Interactive Query Controls for get-products */}
+        {activeEndpointId === 'get-products' && (
+          <div className="interactive-params-bar" role="toolbar" aria-label="Interactive Query Parameters">
+            <div className="param-group">
+              <span className="param-label">Category Filter:</span>
+              <div className="param-pills">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    className={`param-pill ${queryCategory === cat ? 'active' : ''}`}
+                    onClick={() => {
+                      setQueryCategory(cat);
+                      setQueryPage(1);
+                      setHasExecuted(false);
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="param-group-row">
+              <div className="param-group">
+                <span className="param-label">Page:</span>
+                <div className="param-pills">
+                  {[1, 2, 3, 4].slice(0, Math.max(1, totalPages)).map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      className={`param-pill page-pill ${safePage === p ? 'active' : ''}`}
+                      onClick={() => {
+                        setQueryPage(p);
+                        setHasExecuted(false);
+                      }}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="param-group">
+                <span className="param-label">Page Size:</span>
+                <div className="param-pills">
+                  {[2, 4].map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      className={`param-pill ${queryPageSize === size ? 'active' : ''}`}
+                      onClick={() => {
+                        setQueryPageSize(size);
+                        setQueryPage(1);
+                        setHasExecuted(false);
+                      }}
+                    >
+                      {size} / page
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeEndpoint.authRequired && (
           <div className="role-switcher">
@@ -282,6 +415,7 @@ const StoreApiDemo = () => {
             className="execute-btn"
             onClick={handleExecute}
             disabled={isExecuting}
+            aria-label="Send simulated HTTP request"
           >
             {isExecuting ? 'Simulating Pipeline...' : '▶ Send Request'}
           </button>
@@ -301,7 +435,7 @@ const StoreApiDemo = () => {
                 className={`tab-btn ${viewTab === 'csharp' ? 'active' : ''}`}
                 onClick={() => setViewTab('csharp')}
               >
-                C# Controller
+                C# Controller &amp; LINQ
               </button>
               <button
                 className={`tab-btn ${viewTab === 'curl' ? 'active' : ''}`}
@@ -320,7 +454,7 @@ const StoreApiDemo = () => {
           </pre>
 
           <div className="panel-header sql-header">
-            <span>EF Core Generated SQL Query</span>
+            <span>EF Core Generated SQL Query (LINQ Translation)</span>
             <span className="file-tag">SQLite / MySQL</span>
           </div>
           <pre className="code-block sql-block">

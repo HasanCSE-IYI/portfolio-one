@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import Home from './components/Home'
 import Resume from './components/Resume'
 import ScrollToTop from './components/ScrollToTop'
+import ErrorBoundary from './components/ErrorBoundary'
 import { FocusProvider } from './context/FocusContext'
 import MiniPlayer from './components/Focus/MiniPlayer'
 import './App.scss'
@@ -22,23 +23,25 @@ const PageFallback = () => (
 
 function App() {
   return (
-    <FocusProvider>
-      <ScrollToTop />
-      <Suspense fallback={<PageFallback />}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="resume" element={<Resume />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="portfolio" element={<Portfolio />} />
-            <Route path="focus" element={<Focus />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </Suspense>
-      <MiniPlayer />
-    </FocusProvider>
+    <ErrorBoundary>
+      <FocusProvider>
+        <ScrollToTop />
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="resume" element={<Resume />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="portfolio" element={<Portfolio />} />
+              <Route path="focus" element={<Focus />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </Suspense>
+        <MiniPlayer />
+      </FocusProvider>
+    </ErrorBoundary>
   )
 }
 

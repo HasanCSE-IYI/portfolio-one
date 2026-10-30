@@ -7,12 +7,37 @@
   animation: miniPlayerSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   @media screen and (max-width: 991px) {
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
-    right: 16px;
-    left: 16px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    right: 14px;
+    left: 14px;
     margin: 0 auto;
     max-width: 420px;
     width: auto;
+  }
+
+  @media screen and (max-width: 380px) {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    right: 8px;
+    left: 8px;
+
+    .mini-player-inner {
+      padding: 6px 10px;
+      gap: 8px;
+    }
+
+    .mini-meta-section .mini-text-wrap .mini-source-line .source-name {
+      max-width: 72px;
+    }
+
+    .mini-controls-row {
+      gap: 4px;
+
+      .mini-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1.15rem;
+      }
+    }
   }
 
   .mini-video-fold {

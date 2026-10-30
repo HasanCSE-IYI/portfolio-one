@@ -14,7 +14,7 @@ test('renders contact page with 3 Map Types, Traffic detail toggle, removed Tran
   expect(infoMap).toBeInTheDocument();
   expect(infoMap).toHaveTextContent('Mahmud al Hasan');
   expect(infoMap).toHaveTextContent('Backend Software Engineer');
-  expect(infoMap).toHaveTextContent('(Laravel, NestJS • Transitioning to .NET)');
+  expect(infoMap).toHaveTextContent('(ASP.NET Core & C# • Laravel, NestJS • Cloud Systems)');
   expect(infoMap).toHaveTextContent('Bayazid, Chattogram, Bangladesh');
   expect(infoMap).toHaveTextContent('+880 1727 328200');
   expect(infoMap).toHaveTextContent('mahmud.csem@gmail.com');

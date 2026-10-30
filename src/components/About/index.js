@@ -161,7 +161,7 @@ const About = () => {
             />
           </h1>
           <p className="about-subtitle">
-            8+ Years in Production Backend Systems · Architecture · Active .NET Transition
+            8+ Years in Production Backend Systems · Clean Architecture · ASP.NET Core &amp; C# Specialization
           </p>
         </div>
 

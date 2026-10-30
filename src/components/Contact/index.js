@@ -668,7 +668,7 @@ const Contact = () => {
             <br />
             Backend Software Engineer
             <br />
-            (Laravel, NestJS • Transitioning to .NET)
+            (ASP.NET Core &amp; C# • Laravel, NestJS • Cloud Systems)
             <br />
             Bayazid, Chattogram, Bangladesh
             <br />
