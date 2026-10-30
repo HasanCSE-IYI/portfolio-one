@@ -12,14 +12,16 @@
 
     h1.page-title {
       margin: 10px 0 12px;
-      font-size: clamp(28px, 6vw, 48px);
-      font-family: 'Coolvetica', var(--font-sans);
+      font-size: clamp(24px, 3.8vw, 36px);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: #f59e0b;
     }
 
     .portfolio-subheading {
       color: #94a3b8;
-      font-size: 1.45rem;
+      font-size: 1.32rem;
       max-width: 68ch;
       line-height: 1.6;
       margin: 0 0 18px;
@@ -323,7 +325,7 @@
 
         .card-title {
           margin: 0;
-          font-size: 1.65rem;
+          font-size: 1.48rem;
           color: #f8fafc;
           font-weight: 700;
           font-family: var(--font-sans);
@@ -334,7 +336,7 @@
           gap: 8px;
 
           .folder-icon {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             color: #f59e0b;
             opacity: 0.9;
           }
@@ -343,15 +345,15 @@
         .card-role {
           margin: 5px 0 0 0;
           font-family: var(--font-mono);
-          font-size: 1.2rem;
+          font-size: 1.15rem;
           color: #94a3b8;
         }
       }
 
       .card-description {
         color: #cbd5e1;
-        font-size: 1.38rem;
-        line-height: 1.6;
+        font-size: 1.28rem;
+        line-height: 1.55;
         margin: 0 0 16px 0;
       }
 
@@ -367,7 +369,7 @@
           display: flex;
           align-items: flex-start;
           gap: 8px;
-          font-size: 1.3rem;
+          font-size: 1.22rem;
           color: #94a3b8;
           line-height: 1.5;
 

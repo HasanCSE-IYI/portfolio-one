@@ -156,22 +156,22 @@
         margin-bottom: 14px;
 
         .full-name {
-          font-size: clamp(32px, 5.5vw, 44px);
+          font-size: clamp(24px, 3.8vw, 34px);
           font-family: var(--font-resume, var(--font-sans));
           font-weight: 800;
           color: #ffffff;
           letter-spacing: -0.025em;
-          margin: 0 0 8px;
-          line-height: 1.15;
+          margin: 0 0 6px;
+          line-height: 1.18;
         }
 
         .headline {
-          font-size: clamp(1.45rem, 2vw, 1.7rem);
+          font-size: clamp(1.3rem, 1.6vw, 1.48rem);
           font-family: var(--font-resume, var(--font-sans));
           color: #fbbf24;
           font-weight: 600;
           margin: 0;
-          letter-spacing: 0.2px;
+          letter-spacing: 0.15px;
           line-height: 1.4;
         }
       }
@@ -181,7 +181,7 @@
         flex-wrap: wrap;
         gap: 10px 20px;
         font-family: var(--font-mono);
-        font-size: 1.3rem;
+        font-size: 1.22rem;
         color: #cbd5e1;
 
         .strip-item {
@@ -244,25 +244,25 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-family: var(--font-resume, var(--font-sans));
         font-weight: 700;
         color: #fbbf24;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        margin: 0 0 16px;
+        margin: 0 0 14px;
         padding-bottom: 8px;
         border-bottom: 1.5px solid rgba(251, 191, 36, 0.25);
 
         .section-icon {
-          font-size: 1.5rem;
+          font-size: 1.35rem;
           color: #fbbf24;
         }
       }
 
       .summary-body {
-        font-size: 1.48rem;
-        line-height: 1.7;
+        font-size: 1.34rem;
+        line-height: 1.62;
         color: #e2e8f0;
         margin: 0;
 
@@ -387,7 +387,7 @@
             }
 
             .job-title {
-              font-size: 1.65rem;
+              font-size: 1.45rem;
               font-weight: 700;
               color: #ffffff;
               margin: 0 0 4px;
@@ -412,7 +412,7 @@
               align-items: center;
               flex-wrap: wrap;
               gap: 8px;
-              font-size: 1.4rem;
+              font-size: 1.3rem;
               font-family: var(--font-resume, var(--font-sans));
 
               .company-name {
@@ -520,11 +520,11 @@
           margin: 8px 0 0;
           padding-left: 20px;
           color: #e2e8f0;
-          font-size: 1.4rem;
-          line-height: 1.65;
+          font-size: 1.3rem;
+          line-height: 1.6;
 
           li {
-            margin-bottom: 7px;
+            margin-bottom: 6px;
 
             &:last-child {
               margin-bottom: 0;

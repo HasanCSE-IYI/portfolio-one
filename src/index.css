@@ -47,10 +47,10 @@ html {
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
-  /* Apple Pro Font Stack */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Roboto, sans-serif;
-  --font-resume: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, ui-monospace, monospace;
+  /* Premium Engineering Typography Stack (Plus Jakarta Sans & JetBrains Mono) */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-resume: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', Menlo, Consolas, ui-monospace, monospace;
 
   /* Apple Spring & Elevation Curves */
   --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
@@ -64,8 +64,8 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1.5rem;
-  line-height: 1.6;
+  font-size: 1.4rem;
+  line-height: 1.55;
   font-weight: 400;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;

@@ -10,15 +10,16 @@
 
     h1 {
       margin: 0 0 10px;
-      font-size: clamp(32px, 6vw, 48px);
-      font-family: 'Coolvetica', var(--font-sans);
+      font-size: clamp(24px, 4vw, 36px);
+      font-family: var(--font-sans);
+      font-weight: 700;
       color: #f59e0b;
-      letter-spacing: 0.5px;
+      letter-spacing: -0.02em;
     }
 
     .about-subtitle {
       color: #94a3b8;
-      font-size: 1.45rem;
+      font-size: 1.32rem;
       font-family: var(--font-sans);
       margin: 0;
       max-width: 68ch;
@@ -287,10 +288,10 @@
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       p {
-        font-size: 1.45rem;
-        line-height: 1.7;
+        font-size: 1.35rem;
+        line-height: 1.65;
         color: #d1d5db;
-        margin: 0 0 16px;
+        margin: 0 0 14px;
 
         &:last-child {
           margin-bottom: 0;
@@ -317,7 +318,7 @@
       padding: 10px 22px;
       min-height: 44px;
       border-radius: 9999px;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
