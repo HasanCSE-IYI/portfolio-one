@@ -13,6 +13,17 @@ import {
   faLinkedin,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
+import {
+  RESUME_META,
+  PROFESSIONAL_SUMMARY,
+  TECHNICAL_SKILLS,
+  FEATURED_PROJECTS,
+  WORK_EXPERIENCE,
+  EDUCATION,
+  LANGUAGES,
+  ADDITIONAL_ACTIVITIES,
+  REFERENCES,
+} from '../../data/resumeData';
 import './index.scss';
 
 const ResumeModal = ({ isOpen, onClose }) => {
@@ -61,7 +72,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
         <div className="modal-top-bar">
           <div className="modal-title-wrap">
             <span className="dot green"></span>
-            <span className="title-text">Curriculum Vitae · Mahmud al Hasan</span>
+            <span className="title-text">Curriculum Vitae · {RESUME_META.name}</span>
           </div>
           <div className="modal-actions">
             <Link to="/resume" className="full-page-link" onClick={onClose}>
@@ -78,36 +89,34 @@ const ResumeModal = ({ isOpen, onClose }) => {
 
         <div className="resume-sheet">
           <header className="resume-header">
-            <h1 className="name">Mahmud al Hasan</h1>
-            <p className="headline">
-              Software Engineer (.NET / Backend) · 8+ Years Production Experience
-            </p>
+            <h1 className="name">{RESUME_META.name}</h1>
+            <p className="headline">{RESUME_META.headline}</p>
             <div className="contact-row">
               <span>
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="contact-icon" /> Bayazid, Chattogram, Bangladesh
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="contact-icon" /> {RESUME_META.location}
               </span>
-              <a href="tel:+8801727328200">
-                <FontAwesomeIcon icon={faPhone} className="contact-icon" /> +880 1727-328200
+              <a href={`tel:${RESUME_META.phoneRaw}`}>
+                <FontAwesomeIcon icon={faPhone} className="contact-icon" /> {RESUME_META.phone}
               </a>
-              <a href="mailto:mahmud.csem@gmail.com">
-                <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> mahmud.csem@gmail.com
+              <a href={`mailto:${RESUME_META.email}`}>
+                <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> {RESUME_META.email}
               </a>
               <a
-                href="https://www.linkedin.com/in/mahmud-al-hasan/"
+                href={RESUME_META.linkedin}
                 target="_blank"
                 rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faLinkedin} className="contact-icon" /> LinkedIn
               </a>
               <a
-                href="https://github.com/HasanCSE-IYI"
+                href={RESUME_META.github}
                 target="_blank"
                 rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faGithub} className="contact-icon" /> GitHub
               </a>
               <a
-                href="https://wa.me/8801727328200"
+                href={RESUME_META.whatsapp}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -118,199 +127,71 @@ const ResumeModal = ({ isOpen, onClose }) => {
 
           <section className="resume-section">
             <h2 className="section-title">Professional Summary</h2>
-            <p className="summary-text">
-              Backend-focused Software Engineer with <strong>8+ years of experience</strong> building and deploying REST APIs and web applications with <strong>Laravel, NestJS, and Node.js</strong>, including leading backend architecture for a telemedicine startup (<strong>Doctor Dekhao</strong>). Experienced with AWS, MySQL, MongoDB, and Linux-based deployment. Now actively focused on the <strong>.NET ecosystem (C#, ASP.NET Core, Entity Framework Core)</strong> through hands-on API projects.
-            </p>
+            <p className="summary-text">{PROFESSIONAL_SUMMARY}</p>
           </section>
 
           <section className="resume-section">
             <h2 className="section-title">Technical Skills</h2>
             <div className="skills-grid">
-              <div className="skill-cat">
-                <span className="cat-title">.NET &amp; C#:</span>
-                <span className="cat-items">
-                  C#, ASP.NET Core Web API, Entity Framework Core (Code First, migrations), LINQ, JWT authentication, RESTful APIs
-                </span>
-              </div>
-              <div className="skill-cat">
-                <span className="cat-title">Learning / Expanding:</span>
-                <span className="cat-items highlight">
-                  xUnit, SQL Server, Microsoft Azure, Docker Containerization
-                </span>
-              </div>
-              <div className="skill-cat">
-                <span className="cat-title">Backend Foundation:</span>
-                <span className="cat-items">
-                  Laravel (PHP), NestJS, Node.js, Express, RESTful API design, Microservices, Clean Architecture
-                </span>
-              </div>
-              <div className="skill-cat">
-                <span className="cat-title">Databases &amp; Caching:</span>
-                <span className="cat-items">
-                  MySQL, MongoDB, SQLite, PostgreSQL, Redis Queues
-                </span>
-              </div>
-              <div className="skill-cat">
-                <span className="cat-title">Cloud &amp; Systems:</span>
-                <span className="cat-items">
-                  AWS (EC2, S3), Linux, Git, GitHub Actions CI/CD
-                </span>
-              </div>
-              <div className="skill-cat">
-                <span className="cat-title">Data &amp; Automation:</span>
-                <span className="cat-items">
-                  Python, Scrapy, Celery, Redis Task Queues
-                </span>
-              </div>
-              <div className="skill-cat">
-                <span className="cat-title">Frontend &amp; UI:</span>
-                <span className="cat-items">
-                  TypeScript, Next.js, React, ReactFlow, Shadcn UI
-                </span>
-              </div>
+              {TECHNICAL_SKILLS.map((skill, idx) => (
+                <div className="skill-cat" key={idx}>
+                  <span className="cat-title">{skill.category}:</span>
+                  <span className={`cat-items ${skill.highlight ? 'highlight' : ''}`}>
+                    {skill.items}
+                  </span>
+                </div>
+              ))}
             </div>
           </section>
 
           <section className="resume-section">
             <h2 className="section-title">Featured Projects</h2>
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Store API</h3>
-                  <span className="company">ASP.NET Core, EF Core, SQLite, JWT</span>
+            {FEATURED_PROJECTS.map((proj, idx) => (
+              <div className="job-entry" key={idx}>
+                <div className="job-header">
+                  <div>
+                    <h3 className="job-title">{proj.title}</h3>
+                    <span className="company">{proj.tech}</span>
+                  </div>
+                  <a
+                    href={proj.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="period"
+                  >
+                    github.com/HasanCSE-IYI/{proj.title} ↗
+                  </a>
                 </div>
-                <a
-                  href="https://github.com/HasanCSE-IYI/StoreApi"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="period"
-                >
-                  github.com/HasanCSE-IYI/StoreApi ↗
-                </a>
+                <ul className="achievements">
+                  {proj.achievements.map((ach, aIdx) => (
+                    <li key={aIdx}>{ach}</li>
+                  ))}
+                </ul>
               </div>
-              <ul className="achievements">
-                <li>Built a RESTful product inventory API with JWT authentication and role-based authorization (User/Admin).</li>
-                <li>Implemented search, category filtering, pagination, and EF Core Code First migrations.</li>
-                <li>Structured the codebase in Controller–Service–Repository layers with custom middleware.</li>
-              </ul>
-            </div>
+            ))}
           </section>
 
           <section className="resume-section">
             <h2 className="section-title">Work Experience</h2>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">IT Operations &amp; Web Systems Engineer</h3>
-                  <div className="company-subline">
-                    <span className="company">EXONEXT &amp; SourcingPi</span>
-                    <span className="work-type-badge">Hybrid</span>
+            {WORK_EXPERIENCE.map((job, idx) => (
+              <div className="job-entry" key={idx}>
+                <div className="job-header">
+                  <div>
+                    <h3 className="job-title">{job.role}</h3>
+                    <span className="company">
+                      {job.company}
+                      {job.workType && ` (${job.workType})`}
+                    </span>
                   </div>
+                  <span className="period">{job.period}</span>
                 </div>
-                <span className="period">Feb 2025 – Present</span>
+                <ul className="achievements">
+                  {job.bullets.map((b, bIdx) => (
+                    <li key={bIdx}>{b}</li>
+                  ))}
+                </ul>
               </div>
-              <ul className="achievements">
-                <li>Administer IT infrastructure, network configuration, and system security for hybrid business operations.</li>
-                <li>Maintain and deploy updates for company websites, improving loading performance and responsiveness.</li>
-                <li>Produce technical documentation and user guides for internal workflows.</li>
-              </ul>
-            </div>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Front-End Support &amp; Content Developer</h3>
-                  <div className="company-subline">
-                    <span className="company">Independent Contractor</span>
-                    <span className="work-type-badge">Remote</span>
-                  </div>
-                </div>
-                <span className="period">Feb 2025 – Aug 2026</span>
-              </div>
-              <ul className="achievements">
-                <li>Monitored, tested, and resolved web platform defects, reducing recurring errors and downtime.</li>
-                <li>Handled UI responsiveness fixes, cross-browser compatibility, and content updates.</li>
-              </ul>
-            </div>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Software Engineer</h3>
-                  <span className="company">iGOT AI</span>
-                </div>
-                <span className="period">Feb 2024 – Aug 2024</span>
-              </div>
-              <ul className="achievements">
-                <li>Developed core modules of a no-code virtual employee platform and AI chatbot solutions.</li>
-                <li>Built node-based workflow interfaces with ReactFlow, Next.js, and TypeScript.</li>
-                <li>Created reusable, accessible UI components with Shadcn UI.</li>
-              </ul>
-            </div>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Software Engineer</h3>
-                  <span className="company">BeWeddy and BlessUp AI</span>
-                </div>
-                <span className="period">Feb 2022 – Dec 2023</span>
-              </div>
-              <ul className="achievements">
-                <li>Developed and maintained features and modules using NestJS, MongoDB, and Next.js/React.</li>
-                <li>Built and consumed RESTful APIs with JWT authentication using a modular, dependency-injection architecture.</li>
-                <li>Managed deployment and DevOps on AWS (EC2, S3), reducing release cycles.</li>
-                <li>Provided production support: resolved critical bugs and handled system incidents.</li>
-              </ul>
-            </div>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Software Engineer (Ex-Co-Founder)</h3>
-                  <span className="company">Doctor Dekhao (Telemedicine Startup)</span>
-                </div>
-                <span className="period">Jun 2019 – Sep 2021</span>
-              </div>
-              <ul className="achievements">
-                <li>Co-founded a telemedicine startup and led backend architecture for a 4-member software team.</li>
-                <li>Designed, deployed, and maintained RESTful APIs (Laravel, MySQL) serving mobile applications for real-time patient-doctor consultations.</li>
-                <li>Modeled database schemas and optimized relational queries and API payloads, dramatically improving response times.</li>
-                <li>Collaborated closely with mobile engineers to establish API contracts for real-time doctor-patient interactions.</li>
-                <li>Deployed and maintained backend infrastructure on cloud servers.</li>
-              </ul>
-            </div>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Software Engineer (R&amp;D)</h3>
-                  <span className="company">DataShall Analytics Ltd.</span>
-                </div>
-                <span className="period">Sep 2018 – May 2019</span>
-              </div>
-              <ul className="achievements">
-                <li>Contributed to &quot;Shuni Live&quot;, an AI-powered social listening and sentiment analytics platform.</li>
-                <li>Integrated the Facebook Graph API for automated timeline data extraction and keyword discovery.</li>
-                <li>Built data scraping pipelines and background task queues with Python, Scrapy, Celery, and Redis.</li>
-                <li>Built the business analytics module for &quot;Shuni 02&quot;, enabling client retargeting based on negative sentiment analysis.</li>
-              </ul>
-            </div>
-
-            <div className="job-entry">
-              <div className="job-header">
-                <div>
-                  <h3 className="job-title">Mobile Application Developer</h3>
-                  <span className="company">Talha Soft</span>
-                </div>
-                <span className="period">Apr 2018 – Aug 2018</span>
-              </div>
-              <ul className="achievements">
-                <li>Built cross-platform mobile app prototypes with Python and Kivy.</li>
-                <li>Managed version control with SVN and configured Linux-based Android builds with Buildozer.</li>
-              </ul>
-            </div>
+            ))}
           </section>
 
           <section className="resume-section">
@@ -318,13 +199,10 @@ const ResumeModal = ({ isOpen, onClose }) => {
             <div className="job-entry">
               <div className="job-header">
                 <div>
-                  <h3 className="job-title">B.Sc. in Computer Science and Engineering (CSE)</h3>
-                  <div className="company-subline">
-                    <span className="company">Bangladesh University of Business and Technology</span>
-                    <span className="location-tag">Dhaka, Bangladesh</span>
-                  </div>
+                  <h3 className="job-title">{EDUCATION.degree}</h3>
+                  <span className="company">{EDUCATION.institution}</span>
                 </div>
-                <span className="period">Graduated</span>
+                <span className="period">{EDUCATION.status}</span>
               </div>
             </div>
           </section>
@@ -332,69 +210,49 @@ const ResumeModal = ({ isOpen, onClose }) => {
           <section className="resume-section">
             <h2 className="section-title">Languages &amp; Additional</h2>
             <p className="summary-text">
-              <strong>Bangla</strong> (Native / Fluent) · <strong>English</strong> (Professional Working Proficiency)
-            </p>
-            <p className="summary-text" style={{ marginTop: '6px' }}>
-              Firefox Student Ambassador (volunteer) · Professional PHP with Laravel training, BASIS BITM · Intra-university programming contests
+              <strong>Languages:</strong>{' '}
+              {LANGUAGES.map((l, lIdx) => (
+                <span key={lIdx}>
+                  {l.name} ({l.proficiency})
+                  {lIdx < LANGUAGES.length - 1 ? ', ' : ''}
+                </span>
+              ))}
+              <br />
+              <strong>Activities &amp; Training:</strong> {ADDITIONAL_ACTIVITIES.join('; ')}.
             </p>
           </section>
 
-          <section className="resume-section reference-section">
+          <section className="resume-section references-section">
             <h2 className="section-title">Professional References</h2>
-            <div className="reference-card">
-              <div className="ref-header">
-                <div>
-                  <h3 className="job-title">Habibur Rahman</h3>
-                  <span className="ref-badge">Professional Mentor &amp; Industry Trainer</span>
+            <div className="references-grid">
+              {REFERENCES.map((ref, idx) => (
+                <div className="ref-card" key={idx}>
+                  <div className="ref-name">{ref.name}</div>
+                  <div className="ref-title">{ref.role}</div>
+                  {ref.designations.map((d, dIdx) => (
+                    <div className="ref-dept" key={dIdx}>
+                      {d.role} · {d.org}
+                    </div>
+                  ))}
+                  {ref.web && (
+                    <div className="ref-web">
+                      <a href={ref.webUrl} target="_blank" rel="noreferrer">
+                        <FontAwesomeIcon icon={faGlobe} /> {ref.web}
+                      </a>
+                    </div>
+                  )}
+                  <div className="ref-contact">
+                    <a href={`tel:${ref.phoneRaw}`}>
+                      <FontAwesomeIcon icon={faPhone} /> {ref.phone}
+                    </a>
+                    <a href={`mailto:${ref.email}`}>
+                      <FontAwesomeIcon icon={faEnvelope} /> {ref.email}
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <ul className="achievements" style={{ marginTop: '6px', marginBottom: '8px' }}>
-                <li><strong>Trainer</strong> · BASIS BITM (PHP with Laravel Framework)</li>
-                <li><strong>Head of IT Department</strong> · Sorejomin Barta</li>
-              </ul>
-              <div className="contact-row ref-modal-contacts">
-                <a href="tel:+8801711805110">
-                  <FontAwesomeIcon icon={faPhone} className="contact-icon" /> +880 1711-805110
-                </a>
-                <a href="mailto:habib2498922@gmail.com">
-                  <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> habib2498922@gmail.com
-                </a>
-                <a href="https://www.sorejominbarta.com" target="_blank" rel="noreferrer">
-                  <FontAwesomeIcon icon={faGlobe} className="contact-icon" /> www.sorejominbarta.com ↗
-                </a>
-              </div>
-            </div>
-
-            <div className="reference-card" style={{ marginTop: '12px' }}>
-              <div className="ref-header">
-                <div>
-                  <h3 className="job-title">IFTEKHAR UDDIN MD. TANVIR</h3>
-                  <span className="ref-badge">MSc in Computer Science, MBA</span>
-                </div>
-              </div>
-              <ul className="achievements" style={{ marginTop: '6px', marginBottom: '8px' }}>
-                <li><strong>Head of IT (Ex)</strong> · Island Securities Ltd.</li>
-              </ul>
-              <div className="contact-row ref-modal-contacts">
-                <a href="tel:+8801919316231">
-                  <FontAwesomeIcon icon={faPhone} className="contact-icon" /> +880 1919-316231
-                </a>
-                <a href="mailto:eng.iftekhar@gmail.com">
-                  <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> eng.iftekhar@gmail.com
-                </a>
-              </div>
+              ))}
             </div>
           </section>
-
-          {/* Executive Document Print Footer (Rendered in A4 Print & PDF Output) */}
-          <footer className="resume-print-footer" aria-hidden="true">
-            <div className="print-footer-line">
-              <span className="doc-id">Curriculum Vitae · Mahmud al Hasan</span>
-              <span className="doc-role">Software Engineer (.NET / Backend)</span>
-              <span className="doc-loc">Bayazid, Chattogram, Bangladesh</span>
-              <span className="doc-url">https://hasancse-iyi.github.io/portfolio-one/</span>
-            </div>
-          </footer>
         </div>
       </div>
     </div>
