@@ -27,6 +27,11 @@
     -webkit-appearance: none;
     appearance: none;
     outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 2px;
+    }
   }
 
   input[type="text"],
@@ -35,6 +40,11 @@
     -webkit-appearance: none;
     appearance: none;
     outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 2px;
+    }
   }
 
   // Dynamic Ambient Mesh Glow Background
@@ -2048,6 +2058,12 @@
           max-width: 100%;
           min-width: 0;
           box-sizing: border-box;
+          border-radius: 10px;
+
+          &:focus-visible {
+            outline: 2px solid var(--accent-gold);
+            outline-offset: -2px;
+          }
 
           .tile-icon-avatar {
             position: relative;
@@ -2233,6 +2249,12 @@
             background: transparent;
             outline: none;
             cursor: pointer;
+
+            &:focus-visible {
+              outline: 2px solid var(--accent-gold);
+              outline-offset: 4px;
+              border-radius: 4px;
+            }
 
             &::-webkit-slider-runnable-track {
               width: 100%;
