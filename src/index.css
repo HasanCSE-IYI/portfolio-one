@@ -125,6 +125,17 @@ h1, h2, h3, h4, h5, h6 {
   background: #fbbf24;
 }
 
+/* Global Tactile Button Shimmer Sweep Keyframes */
+@keyframes btnShimmerSweep {
+  0% {
+    left: -60%;
+  }
+  20%,
+  100% {
+    left: 140%;
+  }
+}
+
 /* Accessibility: Respect Reduced Motion Preferences */
 @media (prefers-reduced-motion: reduce) {
   *,

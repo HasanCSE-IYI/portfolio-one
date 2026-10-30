@@ -173,6 +173,7 @@ const StoreApiDemo = () => {
   const [hasExecuted, setHasExecuted] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedJson, setCopiedJson] = useState(false);
+  const [copiedSql, setCopiedSql] = useState(false);
   const [viewTab, setViewTab] = useState('csharp'); // 'csharp' or 'curl'
 
   // Interactive Query Parameters for get-products
@@ -315,6 +316,26 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
     setTimeout(() => setCopiedJson(false), 2000);
   };
 
+  const handleCopySql = () => {
+    safeCopyText(activeEndpoint.sqlExecution);
+    setCopiedSql(true);
+    setTimeout(() => setCopiedSql(false), 2000);
+  };
+
+  const isQueryModified =
+    queryCategory !== 'All' ||
+    searchKeyword.trim() !== '' ||
+    queryPage !== 1 ||
+    queryPageSize !== 2;
+
+  const handleResetQuery = () => {
+    setQueryCategory('All');
+    setSearchKeyword('');
+    setQueryPage(1);
+    setQueryPageSize(2);
+    setHasExecuted(false);
+  };
+
   const isForbidden = activeEndpoint.authRequired && role !== 'Admin';
   const isErrorStatus =
     isForbidden ||
@@ -454,6 +475,20 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                   ))}
                 </div>
               </div>
+
+              {isQueryModified && (
+                <div className="param-group reset-group">
+                  <button
+                    type="button"
+                    className="param-reset-btn"
+                    onClick={handleResetQuery}
+                    title="Reset simulator filters to default"
+                    aria-label="Reset query parameters to default"
+                  >
+                    ↺ Reset Query
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -535,7 +570,17 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
 
           <div className="panel-header sql-header">
             <span>EF Core Generated SQL Query (LINQ Translation)</span>
-            <span className="file-tag">SQLite / MySQL</span>
+            <div className="sql-header-actions">
+              <span className="file-tag">SQLite / MySQL</span>
+              <button
+                type="button"
+                className="copy-btn copy-sql-btn"
+                onClick={handleCopySql}
+                aria-label="Copy generated SQL query"
+              >
+                {copiedSql ? '✓ Copied' : 'Copy SQL'}
+              </button>
+            </div>
           </div>
           <pre className="code-block sql-block">
             <code>{activeEndpoint.sqlExecution}</code>

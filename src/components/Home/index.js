@@ -550,6 +550,12 @@ const Home = () => {
               >
                 <div className="cap-top">
                   <span className="cap-tag">{cap.tag}</span>
+                  {activeCapability === idx && (
+                    <span className="cap-active-badge">
+                      <span className="active-dot" aria-hidden="true"></span>
+                      Active
+                    </span>
+                  )}
                   <Link to={cap.link} className="cap-trace" onClick={(e) => e.stopPropagation()}>
                     Traced to: {cap.project} ↗
                   </Link>
