@@ -1,6 +1,31 @@
 import React, { useState } from 'react';
 import './StoreApiDemo.scss';
 
+const safeCopyText = (text) => {
+  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+};
+
+const fallbackCopy = (text) => {
+  try {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  } catch (e) {
+    // ignore
+  }
+};
+
 const CATALOG_ITEMS = [
   { id: 1, name: "Mechanical Keyboard (Cherry MX)", category: "Peripherals", price: 89.99, stock: 34, inStock: true, createdAt: "2026-10-28T09:15:00Z" },
   { id: 2, name: "27-inch 4K IPS Monitor", category: "Displays", price: 349.50, stock: 12, inStock: true, createdAt: "2026-10-27T14:30:00Z" },
@@ -248,7 +273,7 @@ ${queryCategory !== 'All' ? `    query = query.Where(p => p.Category == category
 
   const handleCopyCode = () => {
     const textToCopy = viewTab === 'curl' ? activeEndpoint.curlCmd : activeEndpoint.csharpCode;
-    navigator.clipboard?.writeText(textToCopy);
+    safeCopyText(textToCopy);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
@@ -262,7 +287,7 @@ ${queryCategory !== 'All' ? `    query = query.Where(p => p.Category == category
           path: activeEndpoint.path
         }
       : activeEndpoint.responseData;
-    navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
+    safeCopyText(JSON.stringify(payload, null, 2));
     setCopiedJson(true);
     setTimeout(() => setCopiedJson(false), 2000);
   };

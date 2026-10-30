@@ -16,3 +16,15 @@ test('renders portfolio app navigation and header', () => {
   const focusLinks = screen.getAllByRole('link', { name: /focus/i });
   expect(focusLinks.length).toBeGreaterThan(0);
 });
+
+test('renders 404 NotFound page when route does not exist', async () => {
+  render(
+    <MemoryRouter initialEntries={['/unknown-nonexistent-route']}>
+      <App />
+    </MemoryRouter>
+  );
+
+  const notFoundTitle = await screen.findByText(/Page Not Found/i);
+  expect(notFoundTitle).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Return to Home/i })).toBeInTheDocument();
+});

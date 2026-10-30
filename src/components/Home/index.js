@@ -142,8 +142,8 @@ const Home = () => {
       case 'whoami':
         result = (
           <div className="cli-output">
-            <p>Mahmud al Hasan — Backend Software Engineer (8+ Years Production Experience)</p>
-            <p>Foundation: Laravel &amp; NestJS · Target: ASP.NET Core Web API &amp; C#</p>
+            <p>Mahmud al Hasan — Senior Backend Software Engineer (8+ Years Production Experience)</p>
+            <p>Foundation: Laravel &amp; NestJS · Specialization: ASP.NET Core Web API &amp; C#</p>
           </div>
         )
         break
@@ -254,7 +254,7 @@ const Home = () => {
             <div className="status-time-bar">
               <span className="availability-chip">
                 <span className="pulse-indicator"></span>
-                Open to Opportunities · Backend Software Engineer
+                Open to Opportunities · Senior Backend Software Engineer
               </span>
               <span className="location-clock">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="clock-loc-icon" /> Bayazid, Chattogram, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
@@ -379,7 +379,7 @@ const Home = () => {
                   <div className="specs-container">
                     <div className="spec-row">
                       <span className="spec-key">Role:</span>
-                      <span className="spec-val highlight">Backend Software Engineer</span>
+                      <span className="spec-val highlight">Senior Backend Software Engineer</span>
                     </div>
                     <div className="spec-row">
                       <span className="spec-key">Experience:</span>

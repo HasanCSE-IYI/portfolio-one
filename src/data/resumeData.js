@@ -192,7 +192,7 @@ export const REFERENCES = [
 
 export const getPlainTextResume = () => {
   return `MAHMUD AL HASAN
-Software Engineer (.NET / Backend)
+Senior Backend Software Engineer (ASP.NET Core & C# · 8+ Years Experience)
 ${RESUME_META.location}
 ${RESUME_META.phone} | ${RESUME_META.email}
 LinkedIn: ${RESUME_META.linkedin} | GitHub: ${RESUME_META.github}
