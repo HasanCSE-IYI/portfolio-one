@@ -1718,6 +1718,10 @@
         min-height: 44px;
         transition: all 0.2s ease;
 
+        @media screen and (max-width: 768px) {
+          font-size: 16px; // Eliminates iOS viewport auto-zoom
+        }
+
         &::placeholder {
           color: #64748b;
         }

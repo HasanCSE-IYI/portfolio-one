@@ -292,7 +292,10 @@
             width: 11px;
             height: 11px;
             border-radius: 50%;
+            border: none;
+            padding: 0;
             cursor: pointer;
+            outline: none;
             transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
 
             &.red { 
@@ -339,6 +342,12 @@
         flex-direction: column;
         gap: 10px;
 
+        .specs-container {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
         .spec-row {
           display: flex;
           justify-content: space-between;
@@ -379,6 +388,17 @@
             &.success {
               color: #34d399;
               font-weight: 600;
+            }
+          }
+
+          @media screen and (max-width: 480px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+
+            .spec-val {
+              text-align: left;
+              padding-left: 10px;
             }
           }
         }

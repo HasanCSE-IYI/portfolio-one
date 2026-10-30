@@ -633,6 +633,40 @@ Phone: +880 1919-316231 | Email: eng.iftekhar@gmail.com`;
           </div>
         </section>
 
+        {/* Bottom Fast Action Bar (Screen Only) */}
+        <div className="resume-bottom-cta screen-only">
+          <div className="bottom-cta-inner">
+            <div className="bottom-cta-text">
+              <h4>Ready to collaborate?</h4>
+              <p>Download a verified copy or reach out directly for backend &amp; .NET roles.</p>
+            </div>
+            <div className="bottom-cta-actions">
+              <button
+                type="button"
+                className="action-btn print-btn"
+                onClick={handlePrint}
+                aria-label="Print document"
+              >
+                <FontAwesomeIcon icon={faPrint} />
+                <span>Print / Save PDF</span>
+              </button>
+              <button
+                type="button"
+                className="action-btn copy-btn"
+                onClick={handleCopyText}
+                aria-label="Copy resume text"
+              >
+                <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
+                <span>{copied ? 'Copied!' : 'Copy Plain Text'}</span>
+              </button>
+              <Link to="/contact" className="action-btn contact-btn">
+                <FontAwesomeIcon icon={faEnvelope} />
+                <span>Get in Touch</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* Executive Document Print Footer (Rendered in A4 Print & PDF Output) */}
         <footer className="resume-print-footer" aria-hidden="true">
           <div className="print-footer-line">

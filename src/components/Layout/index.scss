@@ -4,7 +4,7 @@
   min-height: 100vh;
   position: relative;
   padding-top: 68px;
-  padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); // Leaves ample space above mobile floating bottom dock
+  padding-bottom: calc(135px + env(safe-area-inset-bottom, 20px)); // Leaves ample clearance for mobile floating dock (62px) + MiniPlayer (52px)
   overflow-x: clip;
   box-sizing: border-box;
 

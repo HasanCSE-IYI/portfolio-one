@@ -53,6 +53,7 @@ const Home = () => {
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
+  const [isSpecCollapsed, setIsSpecCollapsed] = useState(false)
   const [commandInput, setCommandInput] = useState('')
   const [terminalHistory, setTerminalHistory] = useState([])
   const [pastCommands, setPastCommands] = useState([])
@@ -334,9 +335,30 @@ const Home = () => {
             <div className="terminal-card">
               <div className="terminal-header">
                 <div className="terminal-dots">
-                  <span className="dot red" title="Close"></span>
-                  <span className="dot yellow" title="Minimize"></span>
-                  <span className="dot green" title="Expand"></span>
+                  <button
+                    type="button"
+                    className="dot red"
+                    title="Clear console output"
+                    aria-label="Clear console output"
+                    onClick={() => {
+                      setTerminalHistory([])
+                      setCommandInput('')
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="dot yellow"
+                    title={isSpecCollapsed ? 'Expand system specs' : 'Minimize system specs'}
+                    aria-label={isSpecCollapsed ? 'Expand system specs' : 'Minimize system specs'}
+                    onClick={() => setIsSpecCollapsed((prev) => !prev)}
+                  />
+                  <button
+                    type="button"
+                    className="dot green"
+                    title="Run help command"
+                    aria-label="Run help command"
+                    onClick={() => executeCliCommand('help')}
+                  />
                 </div>
                 <div className="terminal-title-wrap">
                   <FontAwesomeIcon icon={faTerminal} className="terminal-icon-mini" />
@@ -344,38 +366,42 @@ const Home = () => {
                 </div>
               </div>
               <div className="terminal-body">
-                <div className="spec-row">
-                  <span className="spec-key">Role:</span>
-                  <span className="spec-val highlight">Backend Software Engineer</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">Experience:</span>
-                  <span className="spec-val">8+ Years in Production Systems</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">Current Focus:</span>
-                  <span className="spec-val accent">C#, ASP.NET Core Web API, EF Core</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">Proven Foundation:</span>
-                  <span className="spec-val">Laravel (PHP), NestJS, Node.js</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">Startup Track:</span>
-                  <span className="spec-val">Co-Founder &amp; Lead @ Doctor Dekhao</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">Databases:</span>
-                  <span className="spec-val">MySQL, SQLite, MongoDB, Redis Caching</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">Cloud &amp; OS:</span>
-                  <span className="spec-val">AWS (EC2, RDS, S3), Docker, Linux</span>
-                </div>
-                <div className="spec-row">
-                  <span className="spec-key">SLA &amp; Latency:</span>
-                  <span className="spec-val success">99.9% Uptime · &lt;60ms REST Latency</span>
-                </div>
+                {!isSpecCollapsed && (
+                  <div className="specs-container">
+                    <div className="spec-row">
+                      <span className="spec-key">Role:</span>
+                      <span className="spec-val highlight">Backend Software Engineer</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">Experience:</span>
+                      <span className="spec-val">8+ Years in Production Systems</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">Current Focus:</span>
+                      <span className="spec-val accent">C#, ASP.NET Core Web API, EF Core</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">Proven Foundation:</span>
+                      <span className="spec-val">Laravel (PHP), NestJS, Node.js</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">Startup Track:</span>
+                      <span className="spec-val">Co-Founder &amp; Lead @ Doctor Dekhao</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">Databases:</span>
+                      <span className="spec-val">MySQL, SQLite, MongoDB, Redis Caching</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">Cloud &amp; OS:</span>
+                      <span className="spec-val">AWS (EC2, RDS, S3), Docker, Linux</span>
+                    </div>
+                    <div className="spec-row">
+                      <span className="spec-key">SLA &amp; Latency:</span>
+                      <span className="spec-val success">99.9% Uptime · &lt;60ms REST Latency</span>
+                    </div>
+                  </div>
+                )}
 
                 {/* Interactive CLI Console Zone */}
                 <div className="terminal-cli-zone">

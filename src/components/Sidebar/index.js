@@ -48,17 +48,19 @@ const Sidebar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Global keyboard shortcut: Cmd+K / Ctrl+K to toggle Command Palette
+  // Global keyboard shortcuts: Cmd+K / Ctrl+K for Palette, Escape to close mobile menu
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
         setIsPaletteOpen((prev) => !prev)
+      } else if (e.key === 'Escape' && showMoreMenu) {
+        setShowMoreMenu(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [showMoreMenu])
 
   // Close extra menu on route change
   useEffect(() => {
@@ -203,6 +205,8 @@ const Sidebar = () => {
               className={`more-toggle-btn ${showMoreMenu ? 'active' : ''}`}
               onClick={() => setShowMoreMenu(!showMoreMenu)}
               aria-label="Quick Connect Options"
+              aria-expanded={showMoreMenu}
+              aria-controls="mobile-more-dropdown"
             >
               <FontAwesomeIcon icon={showMoreMenu ? faClose : faEllipsisVertical} />
             </button>
@@ -217,7 +221,13 @@ const Sidebar = () => {
               onClick={() => setShowMoreMenu(false)}
               aria-hidden="true"
             />
-            <div className="mobile-more-dropdown">
+            <div
+              id="mobile-more-dropdown"
+              className="mobile-more-dropdown"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Quick Connect Channels"
+            >
               <div className="dropdown-header">
                 <span>Quick Connect &amp; Channels</span>
                 <button
