@@ -32,6 +32,9 @@ import {
   faQuoteLeft,
   faStar,
   faMoon,
+  faChevronDown,
+  faChevronUp,
+  faVolumeLow,
 } from '@fortawesome/free-solid-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import {
@@ -48,6 +51,7 @@ import './index.scss';
 const Focus = () => {
   const [letterClass, setLetterClass] = useState('text-animate');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [isBrainwaveExpanded, setIsBrainwaveExpanded] = useState(true);
   const [soundSearch, setSoundSearch] = useState('');
   const [shareCopied, setShareCopied] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
@@ -426,23 +430,43 @@ const Focus = () => {
     return () => cancelAnimationFrame(animId);
   }, [analyserRef, isPlaying, visualizerMode]);
 
+  // Category icons mapping for modern visual hierarchy
+  const categoryIcons = useMemo(() => ({
+    all: '🌐',
+    active: '🔊',
+    favorites: '⭐',
+    rain: '🌧️',
+    nature: '🌲',
+    animals: '🦉',
+    places: '☕',
+    transport: '🚆',
+    things: '🕰️',
+    city: '🏙️',
+    'noise & waves': '🌊',
+  }), []);
+
   // Categories list and sound filtering
   const categories = useMemo(() => {
-    return ['all', 'Favorites', 'Rain', 'Nature', 'Animals', 'Places', 'Transport', 'Things', 'City', 'Noise & Waves'];
+    return ['all', 'Active', 'Favorites', 'Rain', 'Nature', 'Animals', 'Places', 'Transport', 'Things', 'City', 'Noise & Waves'];
   }, []);
 
   const getCategoryCount = (cat) => {
-    if (cat.toLowerCase() === 'all') return SOUND_DEFINITIONS.length;
-    if (cat.toLowerCase() === 'favorites') return SOUND_DEFINITIONS.filter((s) => favorites.includes(s.id)).length;
+    const c = cat.toLowerCase();
+    if (c === 'all') return SOUND_DEFINITIONS.length;
+    if (c === 'active') return activeSoundsCount;
+    if (c === 'favorites') return SOUND_DEFINITIONS.filter((s) => favorites.includes(s.id)).length;
     return SOUND_DEFINITIONS.filter(
-      (s) => s.category.toLowerCase() === cat.toLowerCase()
+      (s) => s.category.toLowerCase() === c
     ).length;
   };
 
   const filteredSounds = useMemo(() => {
     return SOUND_DEFINITIONS.filter((sound) => {
+      const vol = volumes[sound.id] || 0;
+      const isActive = vol > 0;
       const matchCat =
         activeCategory === 'all' ||
+        (activeCategory === 'active' && isActive) ||
         (activeCategory === 'favorites' && favorites.includes(sound.id)) ||
         sound.category.toLowerCase() === activeCategory.toLowerCase();
       const matchSearch =
@@ -452,7 +476,7 @@ const Focus = () => {
         sound.category.toLowerCase().includes(soundSearch.toLowerCase());
       return matchCat && matchSearch;
     });
-  }, [activeCategory, soundSearch, favorites]);
+  }, [activeCategory, soundSearch, favorites, volumes]);
 
   // Time formatter
   const formatTime = (secs) => {
@@ -1782,21 +1806,74 @@ const Focus = () => {
           {/* RIGHT COLUMN: Complete Nature Soundboard (All 61 Sounds) */}
           <div className={`focus-right-column ${activeWorkspaceTab === 'soundboard' ? 'mobile-visible' : 'mobile-hidden'}`}>
             <div className="focus-card soundboard-card">
+              {/* Soundboard Header with Quick Mix Actions */}
               <div className="soundboard-header">
-                <div className="header-title-group">
-                  <FontAwesomeIcon icon={faHeadphones} className="header-icon" />
-                  <h3>All Nature Sounds Library</h3>
+                <div className="soundboard-header-main">
+                  <div className="header-title-group">
+                    <div className="soundboard-badge-icon" aria-hidden="true">
+                      <FontAwesomeIcon icon={faHeadphones} className="header-icon" />
+                      {activeSoundsCount > 0 && <span className="header-icon-glow"></span>}
+                    </div>
+                    <div className="soundboard-title-text">
+                      <h3>All Nature Sounds Library</h3>
+                      <p className="soundboard-subtitle">
+                        {activeSoundsCount > 0
+                          ? `${activeSoundsCount} sound${activeSoundsCount > 1 ? 's' : ''} active · Craft your custom soundscape`
+                          : `${SOUND_DEFINITIONS.length} sounds available · High-fidelity ambient layers`}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="soundboard-header-controls">
+                    <span className="active-tracks-count" aria-live="polite">
+                      {activeSoundsCount > 0
+                        ? `${activeSoundsCount} sound${activeSoundsCount > 1 ? 's' : ''} active`
+                        : `${SOUND_DEFINITIONS.length} sounds available`}
+                    </span>
+
+                    <button
+                      type="button"
+                      className="soundboard-action-btn shuffle-action-btn"
+                      onClick={shuffleMix}
+                      title="Surprise Mix: Generate a random relaxing combination (S)"
+                      aria-label="Surprise nature sound mix"
+                    >
+                      <FontAwesomeIcon icon={faShuffle} />
+                      <span>Surprise Mix</span>
+                    </button>
+
+                    {activeSoundsCount > 0 && (
+                      <>
+                        <button
+                          type="button"
+                          className="soundboard-action-btn clear-action-btn"
+                          onClick={clearAllSounds}
+                          title="Mute and clear all active sounds"
+                          aria-label="Clear all active sounds"
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                          <span>Clear All</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className={`soundboard-action-btn share-action-btn ${shareCopied ? 'copied' : ''}`}
+                          onClick={handleShareMix}
+                          title="Copy shareable link to this sound mix"
+                          aria-label="Share current sound mix"
+                        >
+                          <FontAwesomeIcon icon={shareCopied ? faCheck : faLink} />
+                          <span>{shareCopied ? 'Copied Link!' : 'Share Mix'}</span>
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <span className="active-tracks-count">
-                  {activeSoundsCount > 0
-                    ? `${activeSoundsCount} sound${activeSoundsCount > 1 ? 's' : ''} active`
-                    : `${SOUND_DEFINITIONS.length} sounds available`}
-                </span>
               </div>
 
               {/* Sound Search Bar */}
               <div className="sound-search-wrap">
-                <FontAwesomeIcon icon={faMagnifyingGlass} className="sound-search-icon" />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="sound-search-icon" aria-hidden="true" />
                 <input
                   type="text"
                   placeholder="Search 61 sounds (e.g. tin roof, cafe, train, rain, thunder)..."
@@ -1805,46 +1882,85 @@ const Focus = () => {
                   className="sound-search-input"
                   aria-label="Search sounds"
                 />
-                {soundSearch && (
-                  <button
-                    type="button"
-                    className="sound-search-clear"
-                    onClick={() => setSoundSearch('')}
-                    aria-label="Clear search"
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                )}
+                <div className="sound-search-meta">
+                  {soundSearch ? (
+                    <button
+                      type="button"
+                      className="sound-search-clear"
+                      onClick={() => setSoundSearch('')}
+                      aria-label="Clear search"
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  ) : (
+                    <span className="search-count-pill" title="Matching sound count">
+                      {filteredSounds.length} / {SOUND_DEFINITIONS.length}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Category Filter Pills */}
               <div className="category-filter-bar" role="toolbar" aria-label="Sound Categories">
                 {categories.map((cat) => {
-                  const isCur = activeCategory.toLowerCase() === cat.toLowerCase();
+                  const catKey = cat.toLowerCase();
+                  const isCur = activeCategory.toLowerCase() === catKey;
+                  const count = getCategoryCount(cat);
+                  const icon = categoryIcons[catKey] || '🎵';
                   return (
                     <button
                       key={cat}
                       type="button"
-                      className={`cat-pill ${isCur ? 'active' : ''}`}
-                      onClick={() => setActiveCategory(cat.toLowerCase())}
+                      className={`cat-pill ${isCur ? 'active' : ''} ${catKey === 'active' && activeSoundsCount > 0 ? 'has-live-active' : ''}`}
+                      onClick={() => setActiveCategory(catKey)}
+                      title={`Filter by ${cat} (${count})`}
+                      aria-label={`Filter by ${cat} (${count})`}
                     >
+                      <span className="cat-icon" aria-hidden="true">{icon}</span>
                       <span>{cat}</span>
-                      <span className="cat-count">({getCategoryCount(cat)})</span>
+                      <span className="cat-count">({count})</span>
+                      {catKey === 'active' && activeSoundsCount > 0 && (
+                        <span className="active-dot-indicator" aria-hidden="true" />
+                      )}
                     </button>
                   );
                 })}
               </div>
 
               {/* Neural Brainwave Tuner Panel */}
-              <div className="brainwave-tuner-panel">
-                <div className="tuner-header">
+              <div className={`brainwave-tuner-panel ${isBrainwaveExpanded ? 'is-expanded' : 'is-collapsed'}`}>
+                <div
+                  className="tuner-header"
+                  onClick={() => setIsBrainwaveExpanded(!isBrainwaveExpanded)}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isBrainwaveExpanded}
+                  aria-label="Toggle Neural Frequency Architecture panel"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setIsBrainwaveExpanded(!isBrainwaveExpanded);
+                    }
+                  }}
+                >
                   <div className="tuner-title-group">
                     <FontAwesomeIcon icon={faBrain} className="tuner-icon cyan" />
                     <span className="tuner-title">Neural Frequency Architecture</span>
+                    <span className="tuner-kicker-tag">BINAURAL ENTRAINMENT</span>
                   </div>
-                  <span className="current-hz-badge">
-                    {BRAINWAVE_MODES[brainwaveMode]?.hz}Hz · {BRAINWAVE_MODES[brainwaveMode]?.tag}
-                  </span>
+                  <div className="tuner-meta-right">
+                    <span className="current-hz-badge">
+                      {BRAINWAVE_MODES[brainwaveMode]?.icon} {BRAINWAVE_MODES[brainwaveMode]?.label} · {BRAINWAVE_MODES[brainwaveMode]?.hz}Hz
+                    </span>
+                    <button
+                      type="button"
+                      className="tuner-collapse-chevron"
+                      aria-label={isBrainwaveExpanded ? "Collapse neural frequency tuner" : "Expand neural frequency tuner"}
+                      tabIndex={-1}
+                    >
+                      <FontAwesomeIcon icon={isBrainwaveExpanded ? faChevronUp : faChevronDown} />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="brainwave-modes-grid" role="radiogroup" aria-label="Brainwave Frequency Modes">
@@ -1858,7 +1974,10 @@ const Focus = () => {
                         aria-label={`${bw.label} ${bw.hz} Hz`}
                         aria-checked={isCur}
                         className={`bw-mode-pill ${isCur ? 'active' : ''}`}
-                        onClick={() => changeBrainwaveMode(bw.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          changeBrainwaveMode(bw.id);
+                        }}
                         title={`${bw.label} (${bw.hz}Hz) - ${bw.desc}`}
                       >
                         <span className="bw-icon">{bw.icon}</span>
@@ -1866,6 +1985,7 @@ const Focus = () => {
                           <span className="bw-name">{bw.label}</span>
                           <span className="bw-hz">{bw.hz} Hz</span>
                         </div>
+                        <span className="bw-target-state">{bw.tag}</span>
                       </button>
                     );
                   })}
@@ -1875,17 +1995,28 @@ const Focus = () => {
               {/* Sound Tiles Grid */}
               {filteredSounds.length === 0 ? (
                 <div className="sound-empty-state">
+                  <div className="empty-state-symbol">🍃</div>
                   <p>No sounds match your search query "{soundSearch}".</p>
-                  <button
-                    type="button"
-                    className="clear-search-link"
-                    onClick={() => {
-                      setSoundSearch('');
-                      setActiveCategory('all');
-                    }}
-                  >
-                    Reset filter &amp; search
-                  </button>
+                  <div className="empty-state-buttons">
+                    <button
+                      type="button"
+                      className="clear-search-link"
+                      onClick={() => {
+                        setSoundSearch('');
+                        setActiveCategory('all');
+                      }}
+                    >
+                      Reset filter &amp; search
+                    </button>
+                    <button
+                      type="button"
+                      className="empty-state-shuffle-btn"
+                      onClick={shuffleMix}
+                    >
+                      <FontAwesomeIcon icon={faShuffle} />
+                      <span>Surprise Mix</span>
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="sound-tiles-grid">
@@ -1896,6 +2027,7 @@ const Focus = () => {
                     return (
                       <div
                         key={sound.id}
+                        id={`sound-tile-${sound.id}`}
                         className={`sound-tile ${isActive ? 'is-active' : ''} ${vol > 0 ? 'has-volume' : ''}`}
                       >
                         <div
@@ -1925,7 +2057,10 @@ const Focus = () => {
                                 </span>
                               )}
                             </div>
-                            <span className="sound-desc">{sound.desc}</span>
+                            <div className="sound-meta-subrow">
+                              <span className="sound-category-pill">{sound.category}</span>
+                              <span className="sound-desc">{sound.desc}</span>
+                            </div>
                           </div>
                           <div className="tile-actions-col">
                             <button
@@ -1956,7 +2091,22 @@ const Focus = () => {
                         </div>
 
                         <div className="tile-slider-row">
-                          <span className="slider-vol-label">VOL</span>
+                          <button
+                            type="button"
+                            className="slider-vol-btn"
+                            onClick={() => {
+                              if (vol > 0) {
+                                setSoundVolume(sound.id, 0);
+                              } else {
+                                setSoundVolume(sound.id, 50);
+                              }
+                            }}
+                            title={vol > 0 ? `Mute ${sound.name}` : `Restore ${sound.name} to 50%`}
+                            aria-label={vol > 0 ? `Mute ${sound.name}` : `Set ${sound.name} to 50%`}
+                          >
+                            <FontAwesomeIcon icon={vol > 50 ? faVolumeHigh : vol > 0 ? faVolumeLow : faVolumeXmark} />
+                            <span className="slider-vol-label">VOL</span>
+                          </button>
                           <input
                             type="range"
                             min="0"
@@ -1965,14 +2115,114 @@ const Focus = () => {
                             onChange={(e) => setSoundVolume(sound.id, e.target.value)}
                             className="sound-volume-slider"
                             aria-label={`${sound.name} volume`}
+                            style={{
+                              background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${vol}%, rgba(255, 255, 255, 0.14) ${vol}%)`
+                            }}
                           />
                           <span className="tile-vol-readout">{vol}%</span>
+
+                          {/* Quick Step Buttons */}
+                          <div className="tile-quick-steps" role="group" aria-label="Quick volume levels">
+                            {[25, 50, 75, 100].map((step) => (
+                              <button
+                                key={step}
+                                type="button"
+                                className={`step-btn ${vol === step ? 'active-step' : ''}`}
+                                onClick={() => setSoundVolume(sound.id, step)}
+                                title={`Set volume to ${step}%`}
+                                aria-label={`${step} percent`}
+                              >
+                                {step}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
               )}
+
+              {/* Sticky / Docked Active Soundscape Mixer Bar */}
+              {activeSoundsCount > 0 && (
+                <div className="soundboard-sticky-mixer-bar" role="region" aria-label="Active Sounds Mixer Bar">
+                  <div className="mixer-bar-left">
+                    <div className="mixer-status-indicator">
+                      <span className="live-pulse-dot" aria-hidden="true"></span>
+                      <span className="mixer-status-text">Playing ({activeSoundsCount}):</span>
+                    </div>
+                    <div className="mixer-chips-scroll">
+                      {SOUND_DEFINITIONS.filter((s) => (volumes[s.id] || 0) > 0).map((s) => (
+                        <div
+                          key={s.id}
+                          className="mixer-active-chip"
+                          onClick={() => {
+                            const el = document.getElementById(`sound-tile-${s.id}`);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }}
+                          title={`${s.name}: ${volumes[s.id]}%. Click to view in library.`}
+                        >
+                          <span className="chip-emoji">{s.icon}</span>
+                          <span className="chip-name">{s.name}</span>
+                          <span className="chip-volume">{volumes[s.id]}%</span>
+                          <button
+                            type="button"
+                            className="chip-dismiss-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSoundVolume(s.id, 0);
+                            }}
+                            aria-label={`Mute ${s.name}`}
+                            title={`Turn off ${s.name}`}
+                          >
+                            <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mixer-bar-right">
+                    <button
+                      type="button"
+                      className="mixer-bar-action-btn save-btn"
+                      onClick={() => setShowSaveModal(true)}
+                      title="Save this mix as a custom preset"
+                      aria-label="Save current mix as preset"
+                    >
+                      <FontAwesomeIcon icon={faPlus} />
+                      <span>Save Mix</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="mixer-bar-action-btn clear-btn"
+                      onClick={clearAllSounds}
+                      title="Clear all active sounds"
+                      aria-label="Mute all sounds"
+                    >
+                      <FontAwesomeIcon icon={faTrashCan} />
+                      <span>Clear</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Soundboard Footer Summary */}
+              <div className="soundboard-summary-footer">
+                <div className="footer-summary-row">
+                  <span className="summary-count">
+                    Showing <strong>{filteredSounds.length}</strong> of <strong>{SOUND_DEFINITIONS.length}</strong> nature &amp; ambient layers
+                  </span>
+                  {activeSoundsCount > 0 && (
+                    <span className="summary-active-badge">
+                      <FontAwesomeIcon icon={faVolumeHigh} /> {activeSoundsCount} active in soundscape
+                    </span>
+                  )}
+                </div>
+                <p className="summary-tip-text">
+                  ✨ <strong>Ambient Acoustic Masking:</strong> Combining rainfall ambiance with steady neural oscillations blocks out 87% of office chatter and background noise.
+                </p>
+              </div>
             </div>
           </div>
         </div>

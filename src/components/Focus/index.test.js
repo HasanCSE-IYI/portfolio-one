@@ -256,6 +256,51 @@ describe('Focus Station Page', () => {
     expect(screen.getByLabelText(/Show video/i)).toBeInTheDocument();
   });
 
+  test('tests upgraded Nature Soundboard features: active category filter, surprise mix, and quick step volume', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Soundboard header actions
+    expect(screen.getByRole('button', { name: /Surprise nature sound mix/i })).toBeInTheDocument();
+
+    // Category pills including Active, Rain, Animals, etc.
+    const activeCatBtn = screen.getByRole('button', { name: /Filter by Active/i });
+    expect(activeCatBtn).toBeInTheDocument();
+    const rainCatBtn = screen.getByRole('button', { name: /Filter by Rain/i });
+    expect(rainCatBtn).toBeInTheDocument();
+
+    // Filter by Rain
+    fireEvent.click(rainCatBtn);
+    expect(screen.getByText('Tin Roof Rain')).toBeInTheDocument();
+    expect(screen.queryByText('Campfire')).not.toBeInTheDocument();
+
+    // Toggle sound playback
+    const toggleTinRoof = screen.getByLabelText(/Play Tin Roof Rain/i);
+    fireEvent.click(toggleTinRoof);
+
+    // Now Tin Roof Rain is active with volume row
+    const volSlider = screen.getByLabelText(/Tin Roof Rain volume/i);
+    expect(volSlider).toBeInTheDocument();
+
+    // Quick-step buttons (25, 50, 75, 100)
+    const step75Btns = screen.getAllByRole('button', { name: /75 percent/i });
+    expect(step75Btns.length).toBeGreaterThan(0);
+    fireEvent.click(step75Btns[0]);
+    expect(volSlider).toHaveValue('75');
+
+    // Switch to Active category filter
+    fireEvent.click(activeCatBtn);
+    expect(screen.getAllByText('Tin Roof Rain').length).toBeGreaterThanOrEqual(1);
+
+    // Sticky mixer bar shows active playing sounds and clear button
+    expect(screen.getByRole('region', { name: /Active Sounds Mixer Bar/i })).toBeInTheDocument();
+  });
+
   test('renders Apple Dynamic Island inside Zen Mode with expand action', () => {
     render(
       <FocusProvider>
