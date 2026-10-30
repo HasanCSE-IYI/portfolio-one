@@ -41,11 +41,45 @@ const Portfolio = () => {
   }, []);
 
   const handleCopyRepoUrl = (id, url) => {
-    if (navigator.clipboard && url) {
-      navigator.clipboard.writeText(url).then(() => {
-        setCopiedRepoId(id);
-        setTimeout(() => setCopiedRepoId(null), 2000);
-      });
+    if (!url) return;
+    const triggerSuccess = () => {
+      setCopiedRepoId(id);
+      setTimeout(() => setCopiedRepoId(null), 2000);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(url)
+        .then(triggerSuccess)
+        .catch(() => {
+          try {
+            const el = document.createElement('textarea');
+            el.value = url;
+            el.style.position = 'fixed';
+            el.style.opacity = '0';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            triggerSuccess();
+          } catch (e) {
+            // ignore
+          }
+        });
+    } else {
+      try {
+        const el = document.createElement('textarea');
+        el.value = url;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        triggerSuccess();
+      } catch (e) {
+        // ignore
+      }
     }
   };
 
@@ -108,19 +142,20 @@ const Portfolio = () => {
                 </button>
               )}
             </div>
-            <span className="search-count-badge">
+            <span className="search-count-badge" role="status" aria-live="polite">
               {searchQuery
                 ? `Found ${filteredPortfolio.length} of ${portfolio.length} repos`
                 : `${portfolio.length} Production Repositories`}
             </span>
           </div>
 
-          <div className="category-filters">
+          <div className="category-filters" role="toolbar" aria-label="Project category filters">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
                 onClick={() => setActiveCategory(cat.id)}
+                aria-pressed={activeCategory === cat.id}
               >
                 <span>{cat.label}</span>
                 <span className="cat-count">({getCategoryCount(cat.id)})</span>

@@ -125,6 +125,30 @@ const About = () => {
     setRotation({ x: -12, y: 20 })
   }
 
+  const handleKeyDownCube = (e) => {
+    const step = 15
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      setHasInteracted(true)
+      setRotation((prev) => ({ ...prev, y: prev.y - step }))
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      setHasInteracted(true)
+      setRotation((prev) => ({ ...prev, y: prev.y + step }))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setHasInteracted(true)
+      setRotation((prev) => ({ ...prev, x: prev.x - step }))
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setHasInteracted(true)
+      setRotation((prev) => ({ ...prev, x: prev.x + step }))
+    } else if (e.key.toLowerCase() === 'r' || e.key === 'Escape') {
+      e.preventDefault()
+      handleResetCube()
+    }
+  }
+
   return (
     <>
       <div className="container about-page">
@@ -148,9 +172,12 @@ const About = () => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-          title="Click and drag to rotate the 3D cube"
+          onKeyDown={handleKeyDownCube}
+          tabIndex={0}
+          title="Click and drag or use arrow keys to rotate the 3D cube"
           role="region"
-          aria-label="Interactive 3D Tech Cube"
+          aria-label="Interactive 3D Tech Cube. Use Arrow keys to rotate, R or Escape to reset."
+          aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown r Escape"
         >
           <div
             className="cube-orbit-wrap"
@@ -191,7 +218,7 @@ const About = () => {
           </div>
           <div className="cube-hint-pill">
             <span className="hint-icon">✋</span>
-            <span>{hasInteracted ? 'Drag freely to inspect ·' : 'Click & drag to rotate 3D cube'}</span>
+            <span>{hasInteracted ? 'Drag or arrow keys to inspect ·' : 'Click & drag or arrow keys to rotate 3D cube'}</span>
             {hasInteracted && (
               <button
                 type="button"
@@ -200,6 +227,7 @@ const About = () => {
                   e.stopPropagation()
                   handleResetCube()
                 }}
+                aria-label="Reset cube to auto spin"
               >
                 Auto Spin ↺
               </button>

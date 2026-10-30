@@ -25,6 +25,31 @@ import {
 import './index.scss';
 import portfolioData from '../../data/portfolio.json';
 
+const safeCopyText = (text) => {
+  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {
+      fallbackCopy(text)
+    })
+  } else {
+    fallbackCopy(text)
+  }
+}
+
+const fallbackCopy = (text) => {
+  try {
+    const el = document.createElement('textarea')
+    el.value = text
+    el.style.position = 'fixed'
+    el.style.opacity = '0'
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
+  } catch (e) {
+    // ignore
+  }
+}
+
 const BASE_COMMANDS = [
   // Navigation
   {
@@ -108,7 +133,7 @@ const BASE_COMMANDS = [
     subtitle: 'mahmud.csem@gmail.com',
     icon: faCopy,
     action: () => {
-      navigator.clipboard?.writeText('mahmud.csem@gmail.com');
+      safeCopyText('mahmud.csem@gmail.com');
       return 'Email copied to clipboard!';
     },
   },
@@ -119,7 +144,7 @@ const BASE_COMMANDS = [
     subtitle: '+880 1727-328200',
     icon: faPhone,
     action: () => {
-      navigator.clipboard?.writeText('+8801727328200');
+      safeCopyText('+8801727328200');
       return 'Phone number copied to clipboard!';
     },
   },
@@ -256,7 +281,13 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="command-palette-overlay" onClick={onClose} aria-modal="true" role="dialog">
+    <div
+      className="command-palette-overlay"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+      aria-label="Command Spotlight Palette"
+    >
       <div
         className="command-palette-modal"
         onClick={(e) => e.stopPropagation()}
@@ -267,6 +298,11 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
             ref={inputRef}
             type="text"
             className="palette-input"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={filteredCommands.length > 0}
+            aria-controls="command-palette-list"
+            aria-activedescendant={filteredCommands.length > 0 ? `cmd-opt-${selectedIndex}` : undefined}
             placeholder="Type a command or search (e.g. Mappi, Store API, Resume, WhatsApp)..."
             value={query}
             onChange={(e) => {
@@ -292,17 +328,26 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
         </div>
 
         {toastMessage && (
-          <div className="palette-toast">
+          <div className="palette-toast" role="status" aria-live="polite">
             <FontAwesomeIcon icon={faCheck} className="toast-icon" />
             <span>{toastMessage}</span>
           </div>
         )}
 
-        <div className="palette-list" ref={listRef}>
+        <div
+          className="palette-list"
+          ref={listRef}
+          id="command-palette-list"
+          role="listbox"
+          aria-label="Suggested commands"
+        >
           {filteredCommands.length > 0 ? (
             filteredCommands.map((cmd, idx) => (
               <div
                 key={cmd.id}
+                id={`cmd-opt-${idx}`}
+                role="option"
+                aria-selected={selectedIndex === idx}
                 className={`command-item ${selectedIndex === idx ? 'selected' : ''}`}
                 onClick={() => executeCommand(cmd)}
                 onMouseEnter={() => setSelectedIndex(idx)}

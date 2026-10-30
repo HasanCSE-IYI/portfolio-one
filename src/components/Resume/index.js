@@ -116,11 +116,44 @@ MSc in Computer Science, MBA
 Head of IT (Ex) | Island Securities Ltd.
 Phone: +880 1919-316231 | Email: eng.iftekhar@gmail.com`;
 
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(plainTextResume).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2200);
-      });
+    const triggerSuccess = () => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(plainTextResume)
+        .then(triggerSuccess)
+        .catch(() => {
+          try {
+            const el = document.createElement('textarea');
+            el.value = plainTextResume;
+            el.style.position = 'fixed';
+            el.style.opacity = '0';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            triggerSuccess();
+          } catch (e) {
+            // ignore
+          }
+        });
+    } else {
+      try {
+        const el = document.createElement('textarea');
+        el.value = plainTextResume;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        triggerSuccess();
+      } catch (e) {
+        // ignore
+      }
     }
   };
 

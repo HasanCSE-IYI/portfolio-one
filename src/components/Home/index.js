@@ -487,7 +487,13 @@ const Home = () => {
                 onClick={() => setActiveCapability(idx)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && setActiveCapability(idx)}
+                aria-pressed={activeCapability === idx}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setActiveCapability(idx)
+                  }
+                }}
               >
                 <div className="cap-top">
                   <span className="cap-tag">{cap.tag}</span>

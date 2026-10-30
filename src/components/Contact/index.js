@@ -312,11 +312,44 @@ const Contact = () => {
     if (!formFeedback?.formData) return
     const { name, email, subject: sub, message } = formFeedback.formData
     const textToCopy = `Sender: ${name} (${email})\nSubject: ${sub}\n\n${message}`
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        setCopiedMessage(true)
-        setTimeout(() => setCopiedMessage(false), 2400)
-      })
+    const triggerSuccess = () => {
+      setCopiedMessage(true)
+      setTimeout(() => setCopiedMessage(false), 2400)
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(triggerSuccess)
+        .catch(() => {
+          try {
+            const el = document.createElement('textarea')
+            el.value = textToCopy
+            el.style.position = 'fixed'
+            el.style.opacity = '0'
+            document.body.appendChild(el)
+            el.select()
+            document.execCommand('copy')
+            document.body.removeChild(el)
+            triggerSuccess()
+          } catch (e) {
+            // ignore
+          }
+        })
+    } else {
+      try {
+        const el = document.createElement('textarea')
+        el.value = textToCopy
+        el.style.position = 'fixed'
+        el.style.opacity = '0'
+        document.body.appendChild(el)
+        el.select()
+        document.execCommand('copy')
+        document.body.removeChild(el)
+        triggerSuccess()
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
