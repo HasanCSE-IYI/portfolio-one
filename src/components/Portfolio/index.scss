@@ -589,8 +589,12 @@
       background: rgba(18, 22, 30, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 8px 16px;
+      min-height: 44px;
       border-radius: 8px;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       transition: all 0.25s ease;
 
       &:hover {

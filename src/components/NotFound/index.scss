@@ -79,6 +79,7 @@
       .btn-primary,
       .btn-secondary {
         padding: 12px 28px;
+        min-height: 44px;
         border-radius: 9999px;
         font-size: 1.35rem;
         font-weight: 600;
@@ -86,6 +87,7 @@
         transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         display: inline-flex;
         align-items: center;
+        justify-content: center;
 
         &:active {
           transform: scale(0.96);

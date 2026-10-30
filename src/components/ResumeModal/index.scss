@@ -12,6 +12,10 @@
   box-sizing: border-box;
   animation: fadeIn 0.25s ease-out;
 
+  @media screen and (max-width: 600px) {
+    padding: 10px 8px;
+  }
+
   .resume-modal-content {
     background: #11141a;
     border: 1px solid rgba(245, 158, 11, 0.35);
@@ -24,6 +28,10 @@
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     overflow: hidden;
 
+    @media screen and (max-width: 600px) {
+      max-height: 96vh;
+    }
+
     .modal-top-bar {
       background: #181c24;
       padding: 12px 20px;
@@ -31,6 +39,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      @media screen and (max-width: 600px) {
+        padding: 10px 14px;
+      }
 
       .modal-title-wrap {
         display: flex;
