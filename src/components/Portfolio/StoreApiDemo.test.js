@@ -47,4 +47,17 @@ describe('StoreApiDemo Component', () => {
     expect(screen.getByText(/200 OK/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /copy json/i })).toBeInTheDocument();
   });
+
+  test('filters live query dynamically when searching keyword', () => {
+    render(<StoreApiDemo />);
+
+    const searchInput = screen.getByLabelText(/filter products by keyword/i);
+    fireEvent.change(searchInput, { target: { value: 'keyboard' } });
+
+    // Verify URL preview updated with search=keyboard
+    expect(screen.getByText(/search=keyboard/i)).toBeInTheDocument();
+
+    // Verify compiled SQL contains LIKE '%keyboard%'
+    expect(screen.getByText(/LIKE '%keyboard%'/i)).toBeInTheDocument();
+  });
 });

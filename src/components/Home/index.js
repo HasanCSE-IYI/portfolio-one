@@ -22,6 +22,17 @@ const CAPABILITIES = [
     project: 'Store API',
     link: '/portfolio',
     codeHint: 'Repository Pattern · Unit of Work · EF Core LINQ',
+    architecture: {
+      headline: 'Enterprise Clean Architecture & ASP.NET Core 8 Web API',
+      overview: 'Strict separation of concerns decoupling core business domain entities from external persistence providers and HTTP transport.',
+      flowSteps: [
+        { layer: 'Domain', title: 'Entities & POCO Models', detail: 'Pure domain entities free from external framework dependencies' },
+        { layer: 'Application', title: 'Services & Contracts', detail: 'Interface abstractions, DTO contracts, and query pipelines' },
+        { layer: 'Infrastructure', title: 'EF Core & Persistence', detail: 'DbContext, Code-First migrations, AsNoTracking() read optimization' },
+        { layer: 'Presentation', title: 'ASP.NET Core Web API', detail: 'Controllers with JWT Bearer, RFC 7807 ProblemDetails & OpenAPI' },
+      ],
+      metrics: '<60ms response latency · AsNoTracking() read optimization · Granular RBAC',
+    },
   },
   {
     name: 'High-Concurrency Telemedicine',
@@ -30,6 +41,17 @@ const CAPABILITIES = [
     project: 'Doctor Dekhao',
     link: '/portfolio',
     codeHint: 'Zero-Downtime Migrations · Real-Time Doctor Sync',
+    architecture: {
+      headline: 'Real-Time Telemedicine Engine (Doctor Dekhao)',
+      overview: 'High-availability relational platform synchronizing live patient queues and doctor consultation video sessions.',
+      flowSteps: [
+        { layer: 'Client Gateway', title: 'Mobile & Web Apps', detail: 'Token-authenticated consultation dispatch' },
+        { layer: 'Queue Tier', title: 'Redis & Event Bus', detail: 'Instant doctor availability and lock coordination' },
+        { layer: 'Relational DB', title: 'MySQL with ACID', detail: 'Normalized medical records, zero-downtime schema evolution' },
+        { layer: 'Cloud Infrastructure', title: 'AWS EC2, S3 & Docker', detail: '99.9% SLA uptime, automated health probes and multi-stage containers' },
+      ],
+      metrics: '4-member team led · 99.9% production SLA · Zero transactional deadlocks',
+    },
   },
   {
     name: 'Cloud Infrastructure & DevOps',
@@ -38,6 +60,17 @@ const CAPABILITIES = [
     project: 'AWS / Docker',
     link: '/about',
     codeHint: 'Docker Multi-Stage · Nginx Reverse Proxy · AWS S3',
+    architecture: {
+      headline: 'Containerized Cloud Architecture (AWS & Linux)',
+      overview: 'Resilient multi-tier deployment topology balancing zero-trust networking with automated CI/CD.',
+      flowSteps: [
+        { layer: 'Ingress', title: 'Cloudflare / Route 53', detail: 'DNS resolution, DDoS mitigation, and SSL/TLS 1.3 termination' },
+        { layer: 'Reverse Proxy', title: 'Nginx on Ubuntu', detail: 'Static caching, compression, and HTTP/2 proxy buffering' },
+        { layer: 'Containers', title: 'Docker Containers', detail: 'Multi-stage lean Alpine images with isolated process sandboxing' },
+        { layer: 'Persistence', title: 'AWS RDS & S3', detail: 'Automated snapshots, encrypted asset buckets, and managed read replicas' },
+      ],
+      metrics: 'Sub-minute automated deploys · Immutable image tags · Encrypted cloud storage',
+    },
   },
   {
     name: 'Event-Driven Data Pipelines',
@@ -46,6 +79,17 @@ const CAPABILITIES = [
     project: 'Shuni Live',
     link: '/portfolio',
     codeHint: 'Scrapy Crawler · Celery Workers · Redis Pub/Sub',
+    architecture: {
+      headline: 'Distributed Asynchronous Ingestion (Shuni Live)',
+      overview: 'Event-driven pipeline continuously crawling, parsing, and queueing high-frequency live data streams.',
+      flowSteps: [
+        { layer: 'Crawler Pool', title: 'Scrapy Ingestion', detail: 'Concurrent asynchronous web extractors and rate limiters' },
+        { layer: 'Message Broker', title: 'Redis Pub/Sub', detail: 'Low-latency in-memory message transport and deduplication queues' },
+        { layer: 'Worker Farm', title: 'Celery Distributed Tasks', detail: 'Scalable worker processes transforming and sanitizing payloads' },
+        { layer: 'Store & Feed', title: 'Relational DB / Stream', detail: 'Indexed analytics storage and real-time client publication' },
+      ],
+      metrics: 'High-throughput concurrency · Fault-tolerant queue retries · Zero data loss',
+    },
   },
 ]
 
@@ -519,6 +563,43 @@ const Home = () => {
               </div>
             ))}
           </div>
+
+          {/* Dynamic Architectural Deep-Dive Inspector */}
+          {CAPABILITIES[activeCapability] && (
+            <div className="capability-deep-inspector" role="region" aria-label="Selected Domain Architecture">
+              <div className="inspector-top">
+                <div className="inspector-left">
+                  <span className="inspector-badge">
+                    <span className="beacon-dot" aria-hidden="true"></span>
+                    ARCHITECTURAL BREAKDOWN
+                  </span>
+                  <h4 className="inspector-headline">{CAPABILITIES[activeCapability].architecture.headline}</h4>
+                  <p className="inspector-overview">{CAPABILITIES[activeCapability].architecture.overview}</p>
+                </div>
+                <Link to={CAPABILITIES[activeCapability].link} className="inspector-link">
+                  <span>Explore in Project ↗</span>
+                </Link>
+              </div>
+
+              <div className="inspector-flow-grid">
+                {CAPABILITIES[activeCapability].architecture.flowSteps.map((step, sIdx) => (
+                  <div className="flow-step-card" key={sIdx}>
+                    <div className="step-header">
+                      <span className="step-index">0{sIdx + 1}</span>
+                      <span className="step-layer">{step.layer}</span>
+                    </div>
+                    <div className="step-title">{step.title}</div>
+                    <div className="step-detail">{step.detail}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="inspector-metrics-bar">
+                <span className="metric-tag-label">Production Guarantee:</span>
+                <span className="metric-tag-val">{CAPABILITIES[activeCapability].architecture.metrics}</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Systems in Motion: REST API Request Lifecycle Pipeline */}

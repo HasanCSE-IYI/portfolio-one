@@ -177,13 +177,16 @@ const StoreApiDemo = () => {
 
   // Interactive Query Parameters for get-products
   const [queryCategory, setQueryCategory] = useState('All');
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [queryPage, setQueryPage] = useState(1);
   const [queryPageSize, setQueryPageSize] = useState(2);
 
   // Compute filtered items for get-products
-  const filteredCatalog = CATALOG_ITEMS.filter((item) =>
-    queryCategory === 'All' ? true : item.category === queryCategory
-  );
+  const filteredCatalog = CATALOG_ITEMS.filter((item) => {
+    const matchesCategory = queryCategory === 'All' ? true : item.category === queryCategory;
+    const matchesSearch = !searchKeyword.trim() ? true : item.name.toLowerCase().includes(searchKeyword.toLowerCase().trim());
+    return matchesCategory && matchesSearch;
+  });
   const totalCount = filteredCatalog.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / queryPageSize));
   const safePage = Math.min(queryPage, totalPages);
@@ -196,25 +199,45 @@ const StoreApiDemo = () => {
   if (queryCategory !== 'All') {
     queryParams.set('category', queryCategory);
   }
+  if (searchKeyword.trim()) {
+    queryParams.set('search', searchKeyword.trim());
+  }
   const queryString = queryParams.toString();
   const dynamicGetPath = `/api/products?${queryString}`;
 
+  const whereClauses = [];
+  if (queryCategory !== 'All') {
+    whereClauses.push(`[p].[Category] = '${queryCategory}'`);
+  }
+  if (searchKeyword.trim()) {
+    whereClauses.push(`[p].[Name] LIKE '%${searchKeyword.trim()}%'`);
+  }
+  const whereSql = whereClauses.length > 0 ? `\nWHERE ${whereClauses.join(' AND ')}` : '';
+
   const dynamicGetSql = `SELECT [p].[Id], [p].[Name], [p].[Category], [p].[Price], [p].[Stock]
-FROM [Products] AS [p]${queryCategory !== 'All' ? `\nWHERE [p].[Category] = '${queryCategory}'` : ''}
+FROM [Products] AS [p]${whereSql}
 ORDER BY [p].[CreatedAt] DESC
 LIMIT ${queryPageSize} OFFSET ${offset};`;
 
   const dynamicGetCurl = `curl -X GET "https://api.store.local${dynamicGetPath}" \\
   -H "Accept: application/json"`;
 
+  const linqFilters = [];
+  if (queryCategory !== 'All') {
+    linqFilters.push(`query = query.Where(p => p.Category == category);`);
+  }
+  if (searchKeyword.trim()) {
+    linqFilters.push(`query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));`);
+  }
+
   const dynamicGetCsharp = `// ProductsController.cs
 [HttpGet]
 public async Task<ActionResult<PagedResult<ProductDto>>> GetProducts(
     [FromQuery] int page = ${safePage},
-    [FromQuery] int pageSize = ${queryPageSize}${queryCategory !== 'All' ? `,\n    [FromQuery] string category = "${queryCategory}"` : ''})
+    [FromQuery] int pageSize = ${queryPageSize}${queryCategory !== 'All' ? `,\n    [FromQuery] string category = "${queryCategory}"` : ''}${searchKeyword.trim() ? `,\n    [FromQuery] string search = "${searchKeyword.trim()}"` : ''})
 {
     var query = _context.Products.AsNoTracking();
-${queryCategory !== 'All' ? `    query = query.Where(p => p.Category == category);\n` : ''}    var total = await query.CountAsync();
+${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    var total = await query.CountAsync();
     var items = await query
         .OrderByDescending(p => p.CreatedAt)
         .Skip((${safePage} - 1) * ${queryPageSize})
@@ -223,7 +246,7 @@ ${queryCategory !== 'All' ? `    query = query.Where(p => p.Category == category
         .ToListAsync();
 
     return Ok(new PagedResult<ProductDto>(items, total, ${safePage}, ${queryPageSize}));
-}`;
+};`;
 
   const dynamicGetResponse = {
     status: 200,
@@ -361,6 +384,38 @@ ${queryCategory !== 'All' ? `    query = query.Where(p => p.Category == category
             </div>
 
             <div className="param-group-row">
+              <div className="param-group search-group">
+                <span className="param-label">Search Keyword:</span>
+                <div className="search-pill-wrap">
+                  <input
+                    type="text"
+                    className="simulator-search-input"
+                    placeholder="Search by title (e.g. keyboard, monitor)..."
+                    value={searchKeyword}
+                    onChange={(e) => {
+                      setSearchKeyword(e.target.value);
+                      setQueryPage(1);
+                      setHasExecuted(false);
+                    }}
+                    aria-label="Filter products by keyword in simulator"
+                  />
+                  {searchKeyword && (
+                    <button
+                      type="button"
+                      className="clear-sim-search"
+                      onClick={() => {
+                        setSearchKeyword('');
+                        setQueryPage(1);
+                        setHasExecuted(false);
+                      }}
+                      aria-label="Clear keyword search"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
+
               <div className="param-group">
                 <span className="param-label">Page:</span>
                 <div className="param-pills">
