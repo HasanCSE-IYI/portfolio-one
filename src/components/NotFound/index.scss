@@ -53,10 +53,11 @@
       position: relative;
       z-index: 1;
       font-size: clamp(24px, 4vw, 34px);
-      font-family: 'Coolvetica', var(--font-sans);
+      font-family: var(--font-sans);
+      font-weight: 700;
       color: #f8fafc;
       margin: 0 0 12px;
-      letter-spacing: 0.5px;
+      letter-spacing: -0.02em;
     }
 
     .error-desc {
