@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './index.scss';
 
 const PIPELINE_STEPS = [
@@ -69,8 +69,19 @@ const PIPELINE_STEPS = [
 
 const RequestPipeline = () => {
   const [activeStepId, setActiveStepId] = useState('auth');
+  const activeBtnRef = useRef(null);
 
   const activeStep = PIPELINE_STEPS.find((s) => s.id === activeStepId) || PIPELINE_STEPS[1];
+
+  useEffect(() => {
+    if (activeBtnRef.current && typeof activeBtnRef.current.scrollIntoView === 'function') {
+      activeBtnRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  }, [activeStepId]);
 
   const handleNodeKeyDown = (e, idx) => {
     if (e.key === 'ArrowRight') {
@@ -99,6 +110,7 @@ const RequestPipeline = () => {
           {PIPELINE_STEPS.map((step, idx) => (
             <React.Fragment key={step.id}>
               <button
+                ref={activeStepId === step.id ? activeBtnRef : null}
                 type="button"
                 role="tab"
                 aria-selected={activeStepId === step.id}

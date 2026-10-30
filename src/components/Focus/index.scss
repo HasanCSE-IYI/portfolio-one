@@ -286,17 +286,17 @@
     }
 
     .page-title {
-      font-size: clamp(1.75rem, 5.2vw, 2.8rem);
+      font-size: clamp(1.7rem, 3.8vw, 2.4rem);
       font-weight: 800;
       color: #f8fafc;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       margin: 0 0 8px;
-      line-height: 1.15;
+      line-height: 1.18;
     }
 
     .focus-lead {
       color: #94a3b8;
-      font-size: clamp(1.3rem, 2.5vw, 1.45rem);
+      font-size: 1.32rem;
       max-width: 68ch;
       line-height: 1.6;
       margin: 0;
