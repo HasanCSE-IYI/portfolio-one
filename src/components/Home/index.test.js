@@ -78,4 +78,58 @@ describe('Home Component', () => {
     expect(logoM).toBeInTheDocument();
     expect(logoM).toHaveClass('name-logo-m');
   });
+
+  test('supports command autocompletion with Tab and executes neofetch command', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText(/Interactive CLI command prompt/i);
+    fireEvent.change(input, { target: { value: 'neo' } });
+    fireEvent.keyDown(input, { key: 'Tab' });
+
+    expect(input.value).toBe('neofetch');
+
+    const runBtn = screen.getByRole('button', { name: /Execute CLI command/i });
+    fireEvent.click(runBtn);
+
+    expect(screen.getByText(/Ubuntu 24.04 LTS/i)).toBeInTheDocument();
+  });
+
+  test('executes health probe and clears terminal with Ctrl+L shortcut', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const healthBtn = screen.getByRole('button', { name: /curl health/i });
+    fireEvent.click(healthBtn);
+
+    expect(screen.getAllByText(/HTTP\/2 200 OK \(14ms\)/i).length).toBeGreaterThan(0);
+
+    const input = screen.getByLabelText(/Interactive CLI command prompt/i);
+    fireEvent.keyDown(input, { key: 'l', ctrlKey: true });
+
+    expect(screen.queryByText(/HTTP\/2 200 OK \(14ms\)/i)).not.toBeInTheDocument();
+  });
+
+  test('toggles expanded terminal mode', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const expandBtn = screen.getByRole('button', { name: /Expand terminal height/i });
+    expect(expandBtn).toBeInTheDocument();
+
+    fireEvent.click(expandBtn);
+    expect(screen.getByRole('button', { name: /Collapse terminal height/i })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Collapse terminal height/i }));
+    expect(screen.getByRole('button', { name: /Expand terminal height/i })).toBeInTheDocument();
+  });
 });
