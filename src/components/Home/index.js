@@ -27,6 +27,8 @@ import {
   faListUl,
   faVolumeUp,
   faVolumeMute,
+  faPaperPlane,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons'
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
@@ -135,6 +137,15 @@ const Home = () => {
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const cliHistoryRef = useRef(null)
   const cliInputRef = useRef(null)
+  const copyTimerRef = useRef(null)
+
+  useEffect(() => {
+    return () => {
+      if (copyTimerRef.current) {
+        clearTimeout(copyTimerRef.current)
+      }
+    }
+  }, [])
 
   const THEMES = ['amber', 'emerald', 'cyber', 'dracula']
 
@@ -215,12 +226,18 @@ const Home = () => {
         await navigator.clipboard.writeText(rawText)
       }
       setCopiedHistoryIdx(hIdx)
-      setTimeout(() => {
+      if (copyTimerRef.current) {
+        clearTimeout(copyTimerRef.current)
+      }
+      copyTimerRef.current = setTimeout(() => {
         setCopiedHistoryIdx(null)
       }, 2000)
     } catch (e) {
       setCopiedHistoryIdx(hIdx)
-      setTimeout(() => {
+      if (copyTimerRef.current) {
+        clearTimeout(copyTimerRef.current)
+      }
+      copyTimerRef.current = setTimeout(() => {
         setCopiedHistoryIdx(null)
       }, 2000)
     }
@@ -983,13 +1000,17 @@ const Home = () => {
               <Link to="/portfolio" className="flat-button button-primary-glow">
                 <FontAwesomeIcon icon={faLayerGroup} className="btn-icon" />
                 <span>EXPLORE ARCHITECTURE &amp; SIMULATOR</span>
+                <FontAwesomeIcon icon={faChevronRight} className="btn-arrow-icon" />
               </Link>
               <Link to="/resume" className="flat-button button-cv">
                 <FontAwesomeIcon icon={faFilePdf} className="btn-icon" />
                 <span>EXECUTIVE RESUME</span>
+                <FontAwesomeIcon icon={faChevronRight} className="btn-arrow-icon" />
               </Link>
               <Link to="/contact" className="flat-button button-secondary">
+                <FontAwesomeIcon icon={faPaperPlane} className="btn-icon" />
                 <span>GET IN TOUCH</span>
+                <FontAwesomeIcon icon={faChevronRight} className="btn-arrow-icon" />
               </Link>
             </div>
           </div>
@@ -1088,6 +1109,7 @@ const Home = () => {
                       cycleTheme()
                     }}
                   >
+                    <span className={`theme-swatch theme-swatch-${terminalTheme}`} aria-hidden="true" />
                     <FontAwesomeIcon icon={faPalette} />
                     <span className="theme-name">{terminalTheme}</span>
                   </button>
@@ -1102,6 +1124,7 @@ const Home = () => {
                     }}
                   >
                     <FontAwesomeIcon icon={isSoundEnabled ? faVolumeUp : faVolumeMute} />
+                    {isSoundEnabled && <span className="sound-indicator-dot" aria-hidden="true" />}
                   </button>
                   <button
                     type="button"
@@ -1274,8 +1297,8 @@ const Home = () => {
                                 <span className="history-timestamp">{item.timestamp}</span>
                                 <button
                                   type="button"
-                                  className="copy-output-btn"
-                                  title="Copy output"
+                                  className={`copy-output-btn ${copiedHistoryIdx === hIdx ? 'is-copied' : ''}`}
+                                  title={copiedHistoryIdx === hIdx ? 'Copied to clipboard' : 'Copy output'}
                                   aria-label={`Copy output for ${item.command}`}
                                   onClick={(e) => {
                                     e.stopPropagation()
@@ -1378,37 +1401,37 @@ const Home = () => {
                     <div className="cli-hints-bar">
                       <div className="cli-quick-tags">
                         <span className="quick-label">Quick run:</span>
-                        <button type="button" onClick={() => executeCliCommand('skills')}>
-                          <FontAwesomeIcon icon={faBolt} className="quick-icon" />
+                        <button type="button" onClick={() => executeCliCommand('skills')} title="Execute 'skills' command">
+                          <FontAwesomeIcon icon={faBolt} className="quick-icon bolt" />
                           <span>skills</span>
                         </button>
-                        <button type="button" onClick={() => executeCliCommand('projects')}>
-                          <FontAwesomeIcon icon={faFolderOpen} className="quick-icon" />
+                        <button type="button" onClick={() => executeCliCommand('projects')} title="Execute 'projects' command">
+                          <FontAwesomeIcon icon={faFolderOpen} className="quick-icon folder" />
                           <span>projects</span>
                         </button>
-                        <button type="button" onClick={() => executeCliCommand('docker ps')}>
-                          <FontAwesomeIcon icon={faBoxesStacked} className="quick-icon" />
+                        <button type="button" onClick={() => executeCliCommand('docker ps')} title="Execute 'docker ps' command">
+                          <FontAwesomeIcon icon={faBoxesStacked} className="quick-icon docker" />
                           <span>docker</span>
                         </button>
-                        <button type="button" onClick={() => executeCliCommand('curl /api/health')}>
-                          <FontAwesomeIcon icon={faHeartbeat} className="quick-icon green" />
+                        <button type="button" onClick={() => executeCliCommand('curl /api/health')} title="Execute 'curl /api/health' command">
+                          <FontAwesomeIcon icon={faHeartbeat} className="quick-icon health green" />
                           <span>curl health</span>
                         </button>
-                        <button type="button" onClick={() => executeCliCommand('neofetch')}>
-                          <FontAwesomeIcon icon={faTerminal} className="quick-icon" />
+                        <button type="button" onClick={() => executeCliCommand('neofetch')} title="Execute 'neofetch' command">
+                          <FontAwesomeIcon icon={faTerminal} className="quick-icon neo" />
                           <span>neofetch</span>
                         </button>
-                        <button type="button" onClick={() => executeCliCommand('whoami')}>
-                          <FontAwesomeIcon icon={faLaptopCode} className="quick-icon" />
+                        <button type="button" onClick={() => executeCliCommand('whoami')} title="Execute 'whoami' command">
+                          <FontAwesomeIcon icon={faLaptopCode} className="quick-icon whoami" />
                           <span>whoami</span>
                         </button>
-                        <button type="button" onClick={() => executeCliCommand('help')}>
-                          <FontAwesomeIcon icon={faInfoCircle} className="quick-icon" />
+                        <button type="button" onClick={() => executeCliCommand('help')} title="Execute 'help' command">
+                          <FontAwesomeIcon icon={faInfoCircle} className="quick-icon help" />
                           <span>help</span>
                         </button>
                         {terminalHistory.length > 0 && (
-                          <button type="button" className="clear-tag" onClick={() => executeCliCommand('clear')}>
-                            <FontAwesomeIcon icon={faBroom} className="quick-icon" />
+                          <button type="button" className="clear-tag" onClick={() => executeCliCommand('clear')} title="Clear terminal output (Ctrl+L)">
+                            <FontAwesomeIcon icon={faBroom} className="quick-icon clear" />
                             <span>clear</span>
                           </button>
                         )}
@@ -1468,8 +1491,9 @@ const Home = () => {
                       Active
                     </span>
                   )}
-                  <Link to={cap.link} className="cap-trace" onClick={(e) => e.stopPropagation()}>
-                    Traced to: {cap.project} ↗
+                  <Link to={cap.link} className="cap-trace" onClick={(e) => e.stopPropagation()} title={`View ${cap.project} project details`}>
+                    <span>Traced to: {cap.project}</span>
+                    <span className="trace-arrow" aria-hidden="true">↗</span>
                   </Link>
                 </div>
                 <h4 className="cap-title">{cap.name}</h4>
@@ -1494,8 +1518,9 @@ const Home = () => {
                   <h4 className="inspector-headline">{CAPABILITIES[activeCapability].architecture.headline}</h4>
                   <p className="inspector-overview">{CAPABILITIES[activeCapability].architecture.overview}</p>
                 </div>
-                <Link to={CAPABILITIES[activeCapability].link} className="inspector-link">
-                  <span>Explore in Project ↗</span>
+                <Link to={CAPABILITIES[activeCapability].link} className="inspector-link" title={`Explore ${CAPABILITIES[activeCapability].project} in Project`}>
+                  <span>Explore in Project</span>
+                  <span className="link-arrow" aria-hidden="true">↗</span>
                 </Link>
               </div>
 
