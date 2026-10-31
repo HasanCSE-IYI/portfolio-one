@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="627.255" height="564.0844062947067" viewBox="1.457796852646652 23.457796852646652 627.255 564.0844062947067" xml:space="preserve">
+<desc>Created with Fabric.js 4.6.0</desc>
+<defs>
+<linearGradient id="SVGID_330" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 -314.63 -305.04)" x1="0" y1="309.5" x2="639.54" y2="309.5">
+<stop offset="0%" style="stop-color:#31A8F7;stop-opacity: 1"/>
+<stop offset="50%" style="stop-color:#6C3BF4;stop-opacity: 1"/>
+<stop offset="100%" style="stop-color:#FFFFFF;stop-opacity: 1"/>
+</linearGradient>
+<filter id="SVGID_635" y="-21%" height="142%" x="-22%" width="144%">
+	<feGaussianBlur in="SourceAlpha" stdDeviation="0.5"/>
+	<feOffset dx="10" dy="4" result="oBlur"/>
+	<feFlood flood-color="rgb(112,29,252)" flood-opacity="1"/>
+	<feComposite in2="oBlur" operator="in"/>
+	<feMerge>
+		<feMergeNode/>
+		<feMergeNode in="SourceGraphic"/>
+	</feMerge>
+</filter>
+</defs>
+<g transform="matrix(1 0 0 1 315.09 305.5)" style="filter: url(#SVGID_635);" id="-RbpVoBUZDD1A2Y2Qocgr">
+	<path d="M -78.41 -134 Q -71 -132.66 -45.43 -82.52 Q -19.86 -32.38 17.16 47.03 L 38.7 92.12 Q 52.83 76.64 64.94 56.12 Q 77.06 35.59 95.23 0.59 Q 116.09 -39.11 124.17 -50.55 Q 156.47 -99.68 194.16 -154.87 Q 198.87 -162.27 210.98 -164.96 Q 213 -165.64 217.71 -165.64 Q 233.87 -165.64 253.72 -152.18 Q 273.57 -138.72 279.63 -124.58 Q 280.98 -121.89 280.98 -114.49 Q 280.98 -107.76 280.3 -104.39 Q 278.96 -98.34 277.27 -89.25 Q 275.59 -80.17 274.25 -68.05 Q 252.71 96.16 243.29 178.27 Q 240.6 197.11 240.6 220.67 L 239.25 242.2 Q 238.58 248.93 238.58 257.68 Q 238.58 266.43 236.56 269.8 Q 234.54 273.16 229.15 273.16 Q 225.12 273.16 217.04 271.14 Q 195.5 266.43 184.06 253.98 Q 172.62 241.53 171.28 219.32 Q 170.6 207.88 170.6 183.65 Q 170.6 158.75 171.95 107.6 L 172.62 70.59 L 173.97 17.42 Q 167.91 22.8 143.34 59.48 Q 118.78 96.16 95.22 135.87 Q 71.67 175.57 64.27 197.11 Q 57.54 213.94 51.14 222.01 Q 44.75 230.09 36 230.09 Q 27.93 230.09 15.14 222.69 Q -21.2 200.48 -29.28 161.44 Q -42.06 101.54 -60.91 36.94 Q -64.27 24.82 -74.03 3.96 Q -83.79 -16.9 -86.48 -22.29 L -95.23 -39.79 Q -193.49 90.78 -228.49 199.8 Q -235.22 222.69 -241.28 232.44 Q -247.33 242.2 -255.41 242.2 Q -268.19 242.2 -291.75 219.32 Q -309.92 203.17 -309.92 182.98 Q -309.92 172.21 -305.88 161.44 Q -277.62 77.99 -221.76 3.29 L -200.89 -24.31 Q -158.49 -80.17 -136.96 -111.8 Q -120.81 -135.35 -93.89 -135.35 Q -89.17 -135.35 -78.41 -134 Z" fill="url(#SVGID_330)" />
+</g>
+</svg>
