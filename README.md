@@ -14,7 +14,7 @@ A high-performance, dark-mode engineering portfolio designed in Apple VisionOS &
 - **💻 Interactive Unix/macOS Terminal:** Live command runner supporting `help`, `skills`, `projects`, `curl /api/health`, `whoami`, `contact`, command history, and quick tags.
 - **⚡ Systems in Motion (REST Request Pipeline):** Step-by-step interactive lifecycle pipeline tracing an HTTP request through TLS termination, JWT middleware, DTO validation, Clean Architecture domain service, EF Core LINQ, and SQL execution.
 - **🔬 Store API (.NET 8) Simulator:** Realistic interactive simulator of an ASP.NET Core Web API demonstrating C# controller endpoints, EF Core `AsNoTracking()` queries, compiled SQL execution, and RFC 7807 problem details.
-- **🎧 Focus Station & Lo-Fi Audio Engine:** Built-in Web Audio API binaural beats (Alpha 10Hz, Beta 15Hz, Gamma 40Hz, Theta 6Hz, Delta 2Hz), 13 curated sound presets, ambient scenes, customizable Pomodoro timer, and persistent mini-player.
+- **🎧 Focus Station & Ambient Audio Engine:** Built-in Web Audio API binaural beats (Alpha 10Hz, Beta 15Hz, Gamma 40Hz, Theta 6Hz, Delta 2Hz), 13 curated sound presets, ambient scenes, customizable Pomodoro timer, and persistent mini-player.
 - **🔍 Apple Spotlight Command Palette (⌘K / Ctrl+K):** Global keyboard shortcut palette for rapid page navigation, repository lookup, and direct contact actions.
 - **📄 Executive A4 Print-Ready CV:** Clean Curriculum Vitae with single-click PDF export, verified references, and plain text clipboard copy.
 - **🗺️ Interactive Map with Live Traffic & Weather:** Leaflet-powered Google 2x Retina map with Satellite, Roadmap, Terrain, live real-time traffic overlay, Dhaka BST clock, and Open-Meteo live weather data.

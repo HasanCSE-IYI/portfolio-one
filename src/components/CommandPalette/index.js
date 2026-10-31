@@ -97,7 +97,7 @@ const BASE_COMMANDS = [
     id: 'nav-focus',
     category: 'Navigation',
     title: 'Go to Focus Station',
-    subtitle: 'Deep work ambient soundscapes, Pomodoro interval timer & lo-fi beats',
+    subtitle: 'Deep work ambient soundscapes, Pomodoro interval timer & binaural audio',
     icon: faHeadphones,
     action: (navigate) => navigate('/focus'),
   },

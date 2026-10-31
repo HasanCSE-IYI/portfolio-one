@@ -485,6 +485,11 @@
         &:active {
           transform: scale(0.96);
         }
+
+        &:focus-visible {
+          outline: 2px solid #f59e0b;
+          outline-offset: 2px;
+        }
       }
     }
   }

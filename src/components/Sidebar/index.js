@@ -363,7 +363,7 @@ const Sidebar = () => {
                   </span>
                   <div className="item-text-group">
                     <span className="item-main-title">Focus Station</span>
-                    <span className="item-sub-title">Ambient Lo-Fi &amp; Pomodoro</span>
+                    <span className="item-sub-title">Ambient Soundscapes &amp; Pomodoro</span>
                   </div>
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
