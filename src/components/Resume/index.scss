@@ -68,44 +68,59 @@
       .action-btn {
         display: inline-flex;
         align-items: center;
-        gap: 7px;
-        padding: 9px 18px;
+        gap: 8px;
+        padding: 10px 20px;
+        min-height: 44px;
         border-radius: 10px;
         font-size: 1.35rem;
         font-weight: 600;
         font-family: var(--font-sans);
         cursor: pointer;
+        user-select: none;
         text-decoration: none;
-        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-        border: 1px solid transparent;
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                    background 0.2s ease,
+                    color 0.2s ease,
+                    border-color 0.2s ease;
+        border: 1.5px solid transparent;
 
         &:active {
-          transform: scale(0.96);
+          transform: translateY(0) scale(0.97);
+        }
+
+        &:focus-visible {
+          outline: 2px solid #f59e0b;
+          outline-offset: 3px;
         }
 
         &.copy-btn {
           background: rgba(255, 255, 255, 0.05);
           color: #e2e8f0;
           border-color: rgba(255, 255, 255, 0.12);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
           &:hover {
             background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(245, 158, 11, 0.4);
             color: #fff;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
           }
         }
 
         &.print-btn {
           background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.25));
-          border-color: rgba(245, 158, 11, 0.45);
+          border-color: rgba(245, 158, 11, 0.5);
           color: #f59e0b;
+          box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
 
           &:hover {
             background: #f59e0b;
             color: #0f172a;
             border-color: #f59e0b;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
           }
         }
 
@@ -113,13 +128,14 @@
           background: rgba(56, 189, 248, 0.12);
           border-color: rgba(56, 189, 248, 0.35);
           color: #38bdf8;
+          box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
 
           &:hover {
             background: #38bdf8;
             color: #0f172a;
             border-color: #38bdf8;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
           }
         }
       }
@@ -756,45 +772,59 @@
           .action-btn {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            padding: 9px 18px;
+            gap: 8px;
+            padding: 10px 20px;
             min-height: 44px;
             border-radius: 10px;
             font-size: 1.35rem;
             font-weight: 600;
             font-family: var(--font-sans);
             cursor: pointer;
+            user-select: none;
             text-decoration: none;
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid transparent;
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        background 0.2s ease,
+                        color 0.2s ease,
+                        border-color 0.2s ease;
+            border: 1.5px solid transparent;
 
             &:active {
-              transform: scale(0.96);
+              transform: translateY(0) scale(0.97);
+            }
+
+            &:focus-visible {
+              outline: 2px solid #f59e0b;
+              outline-offset: 3px;
             }
 
             &.copy-btn {
               background: rgba(255, 255, 255, 0.05);
               color: #e2e8f0;
               border-color: rgba(255, 255, 255, 0.12);
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
               &:hover {
                 background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(245, 158, 11, 0.4);
                 color: #fff;
-                transform: translateY(-1px);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
               }
             }
 
             &.print-btn {
               background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.25));
-              border-color: rgba(245, 158, 11, 0.45);
+              border-color: rgba(245, 158, 11, 0.5);
               color: #f59e0b;
+              box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
 
               &:hover {
                 background: #f59e0b;
                 color: #0f172a;
                 border-color: #f59e0b;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
               }
             }
 
@@ -802,13 +832,14 @@
               background: rgba(56, 189, 248, 0.12);
               border-color: rgba(56, 189, 248, 0.35);
               color: #38bdf8;
+              box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
 
               &:hover {
                 background: #38bdf8;
                 color: #0f172a;
                 border-color: #38bdf8;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
               }
             }
 

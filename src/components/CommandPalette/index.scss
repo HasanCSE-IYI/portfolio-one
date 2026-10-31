@@ -66,18 +66,31 @@
 
     .palette-clear-btn {
       background: transparent;
-      border: none;
+      border: 1px solid transparent;
       color: #94a3b8;
       cursor: pointer;
-      padding: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       font-size: 1.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: color 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
         color: #f59e0b;
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.3);
+      }
+
+      &:active {
+        transform: scale(0.92);
+      }
+
+      &:focus-visible {
+        outline: 2px solid #f59e0b;
+        outline-offset: 2px;
       }
     }
 
@@ -211,6 +224,7 @@
           color: #0f172a;
           border-color: #f59e0b;
           box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+          transform: scale(1.05);
         }
 
         .item-content {
@@ -227,6 +241,15 @@
           opacity: 1;
           transform: translateX(0);
         }
+      }
+
+      &:active {
+        transform: scale(0.985);
+      }
+
+      &:focus-visible {
+        outline: 2px solid #f59e0b;
+        outline-offset: -2px;
       }
     }
 

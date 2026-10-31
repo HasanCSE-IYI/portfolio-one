@@ -7,6 +7,53 @@ select {
   font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
 }
 
+// Universal Button UI/UX Best Practices (WCAG AA/AAA, Tactile Haptics & Accessible Focus)
+button {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-accent, #f59e0b) !important;
+    outline-offset: 3px !important;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+a.flat-button,
+a.action-btn,
+a.btn-primary,
+a.btn-secondary {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-accent, #f59e0b) !important;
+    outline-offset: 3px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button,
+  a.flat-button,
+  a.action-btn,
+  a.btn-primary,
+  a.btn-secondary {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 // Mobile iOS Viewport Auto-Zoom Prevention (WCAG & Apple HIG Standard)
 @media screen and (max-width: 768px) {
   input[type='text'],
