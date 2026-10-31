@@ -66,4 +66,16 @@ describe('Home Component', () => {
     expect(screen.getByRole('region', { name: /Selected Domain Architecture/i })).toBeInTheDocument();
     expect(screen.getByText(/Real-Time Telemedicine Engine \(Doctor Dekhao\)/i)).toBeInTheDocument();
   });
+
+  test('renders Mahmud initial M logo vector image with correct class and attributes', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const logoM = screen.getByRole('img', { name: 'M' });
+    expect(logoM).toBeInTheDocument();
+    expect(logoM).toHaveClass('name-logo-m');
+  });
 });
