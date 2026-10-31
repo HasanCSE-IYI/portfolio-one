@@ -28,3 +28,14 @@ test('renders 404 NotFound page when route does not exist', async () => {
   expect(notFoundTitle).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /Return to Home/i })).toBeInTheDocument();
 });
+
+test('renders blog page when navigating to /blog', async () => {
+  render(
+    <MemoryRouter initialEntries={['/blog']}>
+      <App />
+    </MemoryRouter>
+  );
+
+  const blogBadge = await screen.findByText(/Architecture & Engineering/i);
+  expect(blogBadge).toBeInTheDocument();
+});

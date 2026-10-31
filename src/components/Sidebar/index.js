@@ -10,18 +10,30 @@ import {
   faEnvelope,
   faFileAlt,
   faHome,
-  faPhone,
   faSuitcase,
   faUser,
   faSearch,
   faHeadphones,
   faChevronRight,
+  faBookOpen,
+  faTerminal,
+  faPalette,
+  faVolumeHigh,
+  faVolumeXmark,
+  faKeyboard,
+  faComments,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import LogoS from '../../assets/images/logo.svg'
 import ResumeModal from '../ResumeModal'
 import CommandPalette from '../CommandPalette'
+import AvailabilityBadge from '../AvailabilityBadge'
+import Terminal from '../Terminal'
+import Cheatsheet from '../Cheatsheet'
+import ThemeSwitcher from '../ThemeSwitcher'
+import Guestbook from '../Guestbook'
+import { useUi } from '../../context/UiContext'
 import './index.scss'
 
 const Sidebar = () => {
@@ -31,6 +43,24 @@ const Sidebar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMac, setIsMac] = useState(true)
   const location = useLocation()
+
+  const {
+    soundEnabled,
+    toggleSound,
+    isTerminalOpen,
+    openTerminal,
+    closeTerminal,
+    isCheatsheetOpen,
+    openCheatsheet,
+    closeCheatsheet,
+    isGuestbookOpen,
+    openGuestbook,
+    closeGuestbook,
+    isThemePickerOpen,
+    openThemePicker,
+    closeThemePicker,
+    playSound,
+  } = useUi()
 
   // Detect client platform for Spotlight shortcut badge (⌘K vs Ctrl K)
   useEffect(() => {
@@ -98,18 +128,8 @@ const Sidebar = () => {
               </div>
             </Link>
 
-            <Link
-              to="/contact"
-              className="status-hire-capsule"
-              aria-label="Available for hire · Click to open contact"
-              title="Open to backend & .NET engineering opportunities · Click to get in touch"
-            >
-              <span className="beacon-indicator">
-                <span className="beacon-ping"></span>
-                <span className="beacon-dot"></span>
-              </span>
-              <span className="status-text">Available for hire</span>
-            </Link>
+            {/* Live Availability & BST Timezone Badge */}
+            <AvailabilityBadge />
           </div>
 
           {/* Desktop Navigation Links */}
@@ -118,7 +138,10 @@ const Sidebar = () => {
               end
               to="/"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
-              onClick={handleHomeClick}
+              onClick={() => {
+                handleHomeClick()
+                playSound('click')
+              }}
             >
               <FontAwesomeIcon icon={faHome} className="nav-icon" />
               <span>Home</span>
@@ -126,6 +149,7 @@ const Sidebar = () => {
             <NavLink
               to="/about"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faUser} className="nav-icon" />
               <span>About</span>
@@ -133,6 +157,7 @@ const Sidebar = () => {
             <NavLink
               to="/resume"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faFileAlt} className="nav-icon" />
               <span>Resume</span>
@@ -140,6 +165,7 @@ const Sidebar = () => {
             <NavLink
               to="/portfolio"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faSuitcase} className="nav-icon" />
               <span>Portfolio</span>
@@ -147,20 +173,30 @@ const Sidebar = () => {
             <NavLink
               to="/focus"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faHeadphones} className="nav-icon" />
               <span>Focus</span>
             </NavLink>
             <NavLink
+              to="/blog"
+              className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={() => playSound('click')}
+            >
+              <FontAwesomeIcon icon={faBookOpen} className="nav-icon" />
+              <span>Blog</span>
+            </NavLink>
+            <NavLink
               to="/contact"
               className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faEnvelope} className="nav-icon" />
               <span>Contact</span>
             </NavLink>
           </nav>
 
-          {/* Actions: Socials + Resume / More */}
+          {/* Actions: Socials + Tools + Resume / More */}
           <div className="nav-actions">
             <div className="social-links">
               <a
@@ -195,11 +231,72 @@ const Sidebar = () => {
               </a>
             </div>
 
+            {/* Power Tools Toolbar */}
+            <div className="tools-toolbar">
+              {/* Terminal Quick Button */}
+              <button
+                type="button"
+                className="action-tool-btn"
+                onClick={openTerminal}
+                aria-label="Open Interactive Terminal (Ctrl+~)"
+                title="Interactive Terminal CLI (Ctrl+~)"
+              >
+                <FontAwesomeIcon icon={faTerminal} />
+              </button>
+
+              {/* Theme Accent Color Picker */}
+              <button
+                type="button"
+                className="action-tool-btn"
+                onClick={openThemePicker}
+                aria-label="Change Accent Color Theme"
+                title="Accent Color Themes"
+              >
+                <FontAwesomeIcon icon={faPalette} />
+              </button>
+
+              {/* UI Sound Effects Toggle */}
+              <button
+                type="button"
+                className={`action-tool-btn ${!soundEnabled ? 'muted' : ''}`}
+                onClick={toggleSound}
+                aria-label={soundEnabled ? 'Mute UI sounds (M)' : 'Enable UI sounds (M)'}
+                title={soundEnabled ? 'Mute UI sounds (M)' : 'Enable UI sounds (M)'}
+              >
+                <FontAwesomeIcon icon={soundEnabled ? faVolumeHigh : faVolumeXmark} />
+              </button>
+
+              {/* Public Guestbook & Wall */}
+              <button
+                type="button"
+                className="action-tool-btn"
+                onClick={openGuestbook}
+                aria-label="Open Public Guestbook"
+                title="Public Guestbook & Wall"
+              >
+                <FontAwesomeIcon icon={faComments} />
+              </button>
+
+              {/* Keyboard Shortcuts Cheatsheet */}
+              <button
+                type="button"
+                className="action-tool-btn"
+                onClick={openCheatsheet}
+                aria-label="Keyboard Shortcuts (?)"
+                title="Keyboard Shortcuts (?)"
+              >
+                <FontAwesomeIcon icon={faKeyboard} />
+              </button>
+            </div>
+
             {/* Quick Spotlight Trigger */}
             <button
               type="button"
               className="spotlight-quick-btn"
-              onClick={() => setIsPaletteOpen(true)}
+              onClick={() => {
+                playSound('pop')
+                setIsPaletteOpen(true)
+              }}
               aria-label="Open Command Search (Cmd+K / Ctrl+K)"
               title="Quick Search commands, pages & actions (⌘K / Ctrl+K)"
             >
@@ -211,7 +308,10 @@ const Sidebar = () => {
             <button
               type="button"
               className="resume-pill-btn"
-              onClick={() => setIsResumeOpen(true)}
+              onClick={() => {
+                playSound('pop')
+                setIsResumeOpen(true)
+              }}
               aria-label="View Resume"
             >
               <FontAwesomeIcon icon={faFileAlt} className="resume-icon" />
@@ -222,7 +322,10 @@ const Sidebar = () => {
             <button
               type="button"
               className={`more-toggle-btn ${showMoreMenu ? 'active' : ''}`}
-              onClick={() => setShowMoreMenu(!showMoreMenu)}
+              onClick={() => {
+                playSound('click')
+                setShowMoreMenu(!showMoreMenu)
+              }}
               aria-label="Quick Connect Options"
               aria-expanded={showMoreMenu}
               aria-controls="mobile-more-dropdown"
@@ -232,7 +335,7 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* Mobile Dropdown for Extra Contact Links */}
+        {/* Mobile Dropdown for Extra Contact Links & Power Tools */}
         {showMoreMenu && (
           <>
             <div
@@ -250,7 +353,7 @@ const Sidebar = () => {
               <div className="dropdown-header">
                 <div className="header-title-wrap">
                   <span className="header-badge">QUICK MENU</span>
-                  <span className="header-text">Channels &amp; Navigation</span>
+                  <span className="header-text">Channels &amp; Tools</span>
                 </div>
                 <button
                   type="button"
@@ -258,81 +361,12 @@ const Sidebar = () => {
                   onClick={() => setShowMoreMenu(false)}
                   aria-label="Close menu"
                 >
-                  ✕
+                  <FontAwesomeIcon icon={faClose} />
                 </button>
               </div>
 
-              <div className="dropdown-links" role="menu">
-                <div className="dropdown-section-label">DIRECT CHANNELS</div>
-
-                <a
-                  href="https://github.com/HasanCSE-IYI"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="dropdown-item"
-                  role="menuitem"
-                >
-                  <span className="item-icon-box github-box">
-                    <FontAwesomeIcon icon={faGithub} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">GitHub Profile</span>
-                    <span className="item-sub-title">/HasanCSE-IYI · Source &amp; Repos</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </a>
-
-                <a
-                  href="https://www.linkedin.com/in/mahmud-al-hasan/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="dropdown-item"
-                  role="menuitem"
-                >
-                  <span className="item-icon-box linkedin-box">
-                    <FontAwesomeIcon icon={faLinkedin} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">LinkedIn Network</span>
-                    <span className="item-sub-title">/mahmud-al-hasan · Engineering</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </a>
-
-                <a
-                  href="https://wa.me/8801727328200"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="dropdown-item"
-                  role="menuitem"
-                >
-                  <span className="item-icon-box whatsapp-box">
-                    <FontAwesomeIcon icon={faWhatsapp} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">WhatsApp Chat</span>
-                    <span className="item-sub-title">+880 1727 328200 · Instant Message</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </a>
-
-                <a
-                  href="tel:+8801727328200"
-                  className="dropdown-item"
-                  role="menuitem"
-                >
-                  <span className="item-icon-box phone-box">
-                    <FontAwesomeIcon icon={faPhone} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">Direct Call</span>
-                    <span className="item-sub-title">+880 1727 328200 · Voice Hotline</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </a>
-
-                <div className="dropdown-section-label">TOOLS &amp; QUICK ACTIONS</div>
-
+              <div className="dropdown-items" role="menu">
+                {/* Spotlight Search Mobile Item */}
                 <button
                   type="button"
                   className="dropdown-item spotlight-item"
@@ -352,6 +386,104 @@ const Sidebar = () => {
                   <span className="item-kbd-badge">{isMac ? '⌘K' : 'Ctrl K'}</span>
                 </button>
 
+                {/* Interactive Terminal Mobile Item */}
+                <button
+                  type="button"
+                  className="dropdown-item terminal-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    openTerminal()
+                  }}
+                >
+                  <span className="item-icon-box terminal-box">
+                    <FontAwesomeIcon icon={faTerminal} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Terminal CLI</span>
+                    <span className="item-sub-title">Interactive shell console (Ctrl+~)</span>
+                  </div>
+                  <span className="item-kbd-badge">Ctrl+~</span>
+                </button>
+
+                {/* Theme Switcher Mobile Item */}
+                <button
+                  type="button"
+                  className="dropdown-item theme-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    openThemePicker()
+                  }}
+                >
+                  <span className="item-icon-box theme-box">
+                    <FontAwesomeIcon icon={faPalette} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Accent Theme</span>
+                    <span className="item-sub-title">Amber, Cyan, Emerald, Violet, Rose</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </button>
+
+                {/* Public Guestbook Mobile Item */}
+                <button
+                  type="button"
+                  className="dropdown-item guestbook-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    openGuestbook()
+                  }}
+                >
+                  <span className="item-icon-box guestbook-box">
+                    <FontAwesomeIcon icon={faComments} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Public Guestbook</span>
+                    <span className="item-sub-title">Sign the visitor wall &amp; endorsements</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </button>
+
+                {/* Keyboard Shortcuts Cheatsheet Mobile Item */}
+                <button
+                  type="button"
+                  className="dropdown-item cheatsheet-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    openCheatsheet()
+                  }}
+                >
+                  <span className="item-icon-box cheatsheet-box">
+                    <FontAwesomeIcon icon={faKeyboard} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Keyboard Shortcuts</span>
+                    <span className="item-sub-title">Hotkeys cheatsheet (?)</span>
+                  </div>
+                  <span className="item-kbd-badge">?</span>
+                </button>
+
+                {/* Blog Link */}
+                <Link
+                  to="/blog"
+                  className="dropdown-item blog-item"
+                  role="menuitem"
+                  onClick={() => setShowMoreMenu(false)}
+                >
+                  <span className="item-icon-box blog-box">
+                    <FontAwesomeIcon icon={faBookOpen} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Engineering Blog</span>
+                    <span className="item-sub-title">Architectural Deep-Dives &amp; Notes</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </Link>
+
+                {/* Focus Station Link */}
                 <Link
                   to="/focus"
                   className="dropdown-item focus-item"
@@ -368,6 +500,7 @@ const Sidebar = () => {
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
 
+                {/* Resume Link */}
                 <Link
                   to="/resume"
                   className="dropdown-item resume-item"
@@ -396,7 +529,10 @@ const Sidebar = () => {
           to="/"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Home"
-          onClick={handleHomeClick}
+          onClick={() => {
+            handleHomeClick()
+            playSound('click')
+          }}
         >
           <FontAwesomeIcon icon={faHome} className="dock-icon" />
           <span className="dock-label">Home</span>
@@ -405,6 +541,7 @@ const Sidebar = () => {
           to="/about"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="About"
+          onClick={() => playSound('click')}
         >
           <FontAwesomeIcon icon={faUser} className="dock-icon" />
           <span className="dock-label">About</span>
@@ -413,6 +550,7 @@ const Sidebar = () => {
           to="/resume"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Resume"
+          onClick={() => playSound('click')}
         >
           <FontAwesomeIcon icon={faFileAlt} className="dock-icon" />
           <span className="dock-label">Resume</span>
@@ -421,6 +559,7 @@ const Sidebar = () => {
           to="/portfolio"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Portfolio"
+          onClick={() => playSound('click')}
         >
           <FontAwesomeIcon icon={faSuitcase} className="dock-icon" />
           <span className="dock-label">Works</span>
@@ -429,14 +568,25 @@ const Sidebar = () => {
           to="/focus"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Focus"
+          onClick={() => playSound('click')}
         >
           <FontAwesomeIcon icon={faHeadphones} className="dock-icon" />
           <span className="dock-label">Focus</span>
         </NavLink>
         <NavLink
+          to="/blog"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Blog"
+          onClick={() => playSound('click')}
+        >
+          <FontAwesomeIcon icon={faBookOpen} className="dock-icon" />
+          <span className="dock-label">Blog</span>
+        </NavLink>
+        <NavLink
           to="/contact"
           className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
           aria-label="Contact"
+          onClick={() => playSound('click')}
         >
           <FontAwesomeIcon icon={faEnvelope} className="dock-icon" />
           <span className="dock-label">Contact</span>
@@ -454,6 +604,31 @@ const Sidebar = () => {
         isOpen={isPaletteOpen}
         onClose={() => setIsPaletteOpen(false)}
         onOpenResumeModal={() => setIsResumeOpen(true)}
+      />
+
+      {/* Global Interactive Terminal CLI */}
+      <Terminal
+        isOpen={isTerminalOpen}
+        onClose={closeTerminal}
+        onOpenResumeModal={() => setIsResumeOpen(true)}
+      />
+
+      {/* Global Keyboard Shortcuts Cheatsheet */}
+      <Cheatsheet
+        isOpen={isCheatsheetOpen}
+        onClose={closeCheatsheet}
+      />
+
+      {/* Global Accent Theme Color Picker */}
+      <ThemeSwitcher
+        isOpen={isThemePickerOpen}
+        onClose={closeThemePicker}
+      />
+
+      {/* Global Public Guestbook & Social Wall */}
+      <Guestbook
+        isOpen={isGuestbookOpen}
+        onClose={closeGuestbook}
       />
     </>
   )

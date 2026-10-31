@@ -263,6 +263,53 @@
       }
     }
 
+    .tools-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      @media screen and (max-width: 1024px) {
+        display: none;
+      }
+
+      .action-tool-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+        &:hover {
+          color: var(--primary-accent, #f59e0b);
+          border-color: rgba(245, 158, 11, 0.4);
+          background: rgba(245, 158, 11, 0.12);
+          transform: translateY(-1.5px);
+          box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+
+        &.muted {
+          color: #ef4444;
+          border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        &:active {
+          transform: scale(0.92);
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--primary-accent, #f59e0b);
+          outline-offset: 2px;
+        }
+      }
+    }
+
     .spotlight-quick-btn {
       display: inline-flex;
       align-items: center;
@@ -666,6 +713,27 @@
             border-color: #f59e0b;
           }
         }
+
+        &.terminal-item .terminal-box {
+          background: rgba(56, 189, 248, 0.15);
+          color: #38bdf8;
+        }
+        &.theme-item .theme-box {
+          background: rgba(168, 85, 247, 0.15);
+          color: #c084fc;
+        }
+        &.guestbook-item .guestbook-box {
+          background: rgba(244, 63, 94, 0.15);
+          color: #fb7185;
+        }
+        &.cheatsheet-item .cheatsheet-box {
+          background: rgba(16, 185, 129, 0.15);
+          color: #34d399;
+        }
+        &.blog-item .blog-box {
+          background: rgba(245, 158, 11, 0.15);
+          color: #f59e0b;
+        }
       }
     }
   }
@@ -985,6 +1053,10 @@
 
       .social-links {
         display: none; // Kept accessible in the '...' quick connect dropdown
+      }
+
+      .tools-toolbar {
+        display: none; // Accessible in mobile '...' menu
       }
 
       .spotlight-quick-btn {

@@ -78,11 +78,12 @@ body.breathing-mode-active .container {
 .container.contact-page,
 .container.about-page,
 .container.portfolio-page,
-.container.focus-page {
+.container.focus-page,
+.container.blog-page {
   h1 {
     font-size: clamp(24px, 3.8vw, 36px);
     font-family: var(--font-sans);
-    color: #f59e0b;
+    color: var(--primary-accent, #f59e0b);
     font-weight: 700;
     margin-top: 10px;
     margin-bottom: 20px;

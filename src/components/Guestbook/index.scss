@@ -1,0 +1,344 @@
+.guestbook-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2120;
+  background: rgba(3, 7, 18, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: gbFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .guestbook-modal {
+    width: 100%;
+    max-width: 860px;
+    height: 600px;
+    max-height: 90vh;
+    background: #0f1523;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: gbSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .guestbook-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+
+      .header-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .guestbook-icon {
+          color: var(--primary-accent, #f59e0b);
+          font-size: 1.6rem;
+        }
+
+        h3 {
+          margin: 0;
+          color: #f8fafc;
+          font-size: 1.6rem;
+          font-weight: 700;
+        }
+
+        .guestbook-subtitle {
+          margin: 2px 0 0;
+          color: #94a3b8;
+          font-size: 1.15rem;
+        }
+      }
+
+      .close-guestbook-btn {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        font-size: 1.3rem;
+        padding: 6px;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: #f8fafc;
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    // Split Body (Form + Feed)
+    .guestbook-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      @media screen and (min-width: 768px) {
+        flex-direction: row;
+      }
+
+      h4 {
+        margin: 0 0 14px;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #f8fafc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .heart-icon {
+          color: #ef4444;
+          font-size: 0.9em;
+        }
+
+        .entry-counter {
+          color: #94a3b8;
+          font-size: 1.15rem;
+        }
+      }
+
+      // Form Pane
+      .guestbook-form-pane {
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        overflow-y: auto;
+
+        @media screen and (min-width: 768px) {
+          width: 45%;
+          border-bottom: none;
+          border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .success-banner {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(16, 185, 129, 0.15);
+          border: 1px solid rgba(16, 185, 129, 0.35);
+          color: #34d399;
+          font-size: 1.15rem;
+          padding: 8px 12px;
+          border-radius: 8px;
+          margin-bottom: 12px;
+        }
+
+        .error-banner {
+          background: rgba(239, 68, 68, 0.15);
+          border: 1px solid rgba(239, 68, 68, 0.35);
+          color: #f87171;
+          font-size: 1.15rem;
+          padding: 8px 12px;
+          border-radius: 8px;
+          margin-bottom: 12px;
+        }
+
+        .guestbook-form {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+
+          .avatar-picker-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            .picker-label {
+              font-size: 1.15rem;
+              color: #cbd5e1;
+              font-weight: 600;
+            }
+
+            .avatar-options {
+              display: flex;
+              gap: 6px;
+              flex-wrap: wrap;
+
+              .avatar-option-btn {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                padding: 4px 8px;
+                font-size: 1.3rem;
+                cursor: pointer;
+                transition: all 0.15s ease;
+
+                &:hover {
+                  background: rgba(255, 255, 255, 0.12);
+                  transform: scale(1.1);
+                }
+
+                &.active {
+                  background: rgba(245, 158, 11, 0.2);
+                  border-color: var(--primary-accent, #f59e0b);
+                  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+                }
+              }
+            }
+          }
+
+          .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: relative;
+
+            label {
+              font-size: 1.15rem;
+              color: #cbd5e1;
+              font-weight: 600;
+            }
+
+            input,
+            textarea {
+              background: rgba(15, 23, 42, 0.8);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              border-radius: 8px;
+              padding: 8px 12px;
+              color: #f8fafc;
+              font-size: 1.25rem;
+              outline: none;
+              transition: all 0.2s ease;
+
+              &:focus {
+                border-color: var(--primary-accent, #f59e0b);
+                box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+              }
+
+              &::placeholder {
+                color: #64748b;
+              }
+            }
+
+            .char-count {
+              align-self: flex-end;
+              font-size: 1.05rem;
+              color: #64748b;
+              margin-top: 2px;
+            }
+          }
+
+          .submit-guestbook-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--primary-accent, #f59e0b);
+            color: #0b0f19;
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 4px;
+
+            &:hover {
+              background: var(--primary-accent-hover, #fbbf24);
+              box-shadow: 0 0 16px var(--primary-accent-glow, rgba(245, 158, 11, 0.3));
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+
+      // Feed Pane
+      .guestbook-feed-pane {
+        flex: 1;
+        padding: 20px 24px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+
+        .feed-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+
+          .feed-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            transition: background 0.15s ease;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.06);
+            }
+
+            .feed-card-header {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 8px;
+
+              .user-avatar {
+                font-size: 1.5rem;
+                flex-shrink: 0;
+              }
+
+              .user-meta {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+
+                .user-name {
+                  color: #f8fafc;
+                  font-size: 1.25rem;
+                  font-weight: 700;
+                }
+
+                .user-role {
+                  color: #94a3b8;
+                  font-size: 1.05rem;
+                }
+              }
+
+              .user-date {
+                font-size: 1.05rem;
+                color: #64748b;
+                font-family: var(--font-mono);
+              }
+            }
+
+            .user-message {
+              margin: 0;
+              font-size: 1.2rem;
+              line-height: 1.5;
+              color: #cbd5e1;
+              font-style: italic;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes gbFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gbSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

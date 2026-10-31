@@ -16,6 +16,12 @@ import {
   faCode,
   faFolder,
   faHeadphones,
+  faBookOpen,
+  faTerminal,
+  faKeyboard,
+  faPalette,
+  faVolumeHigh,
+  faComments,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -24,6 +30,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import './index.scss';
 import portfolioData from '../../data/portfolio.json';
+import { useUi } from '../../context/UiContext';
 
 const safeCopyText = (text) => {
   if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
@@ -102,6 +109,14 @@ const BASE_COMMANDS = [
     action: (navigate) => navigate('/focus'),
   },
   {
+    id: 'nav-blog',
+    category: 'Navigation',
+    title: 'Go to Engineering Blog',
+    subtitle: 'Architectural deep-dives, database indexing, microservices & technical notes',
+    icon: faBookOpen,
+    action: (navigate) => navigate('/blog'),
+  },
+  {
     id: 'nav-contact',
     category: 'Navigation',
     title: 'Go to Contact',
@@ -111,6 +126,49 @@ const BASE_COMMANDS = [
   },
 
   // Actions & Quick Connect
+  {
+    id: 'act-terminal',
+    category: 'Developer Tools',
+    title: 'Open Interactive Terminal CLI',
+    subtitle: 'Zsh shell emulator (Ctrl+~) with skills, bio, theme & hiring commands',
+    icon: faTerminal,
+    action: (navigate, onOpenResumeModal, ui) => ui?.openTerminal?.(),
+  },
+  {
+    id: 'act-theme',
+    category: 'Developer Tools',
+    title: 'Change Accent Color Theme',
+    subtitle: 'Switch between Amber Gold, Cyber Cyan, Emerald, Violet, and Rose',
+    icon: faPalette,
+    action: (navigate, onOpenResumeModal, ui) => ui?.openThemePicker?.(),
+  },
+  {
+    id: 'act-sound',
+    category: 'Developer Tools',
+    title: 'Toggle UI Sound Effects',
+    subtitle: 'Mute or unmute procedural Web Audio clicks and harmonic chimes (M)',
+    icon: faVolumeHigh,
+    action: (navigate, onOpenResumeModal, ui) => {
+      ui?.toggleSound?.();
+      return 'Sound effect preferences updated!';
+    },
+  },
+  {
+    id: 'act-guestbook',
+    category: 'Developer Tools',
+    title: 'Open Public Guestbook & Social Wall',
+    subtitle: 'Sign the visitor wall or read peer recommendations and endorsements',
+    icon: faComments,
+    action: (navigate, onOpenResumeModal, ui) => ui?.openGuestbook?.(),
+  },
+  {
+    id: 'act-cheatsheet',
+    category: 'Developer Tools',
+    title: 'Open Keyboard Shortcuts Cheatsheet',
+    subtitle: 'View full cheat sheet of navigation and developer hotkeys (?)',
+    icon: faKeyboard,
+    action: (navigate, onOpenResumeModal, ui) => ui?.openCheatsheet?.(),
+  },
   {
     id: 'act-cv-modal',
     category: 'Quick Actions',
@@ -201,6 +259,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   const inputRef = useRef(null);
   const listRef = useRef(null);
   const navigate = useNavigate();
+  const ui = useUi();
 
   // Filter commands by title, subtitle, or category
   const filteredCommands = ALL_COMMANDS.filter((cmd) => {
@@ -231,7 +290,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
 
   const executeCommand = useCallback(
     (cmd) => {
-      const result = cmd.action(navigate, onOpenResumeModal);
+      const result = cmd.action(navigate, onOpenResumeModal, ui);
       if (typeof result === 'string') {
         setToastMessage(result);
         setTimeout(() => {
@@ -242,7 +301,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
         onClose();
       }
     },
-    [navigate, onOpenResumeModal, onClose]
+    [navigate, onOpenResumeModal, onClose, ui]
   );
 
   // Handle keyboard navigation inside the palette
