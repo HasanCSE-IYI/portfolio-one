@@ -15,6 +15,7 @@ import {
   faUser,
   faSearch,
   faHeadphones,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink, useLocation } from 'react-router-dom'
@@ -244,10 +245,13 @@ const Sidebar = () => {
               className="mobile-more-dropdown"
               role="dialog"
               aria-modal="true"
-              aria-label="Quick Connect Channels"
+              aria-label="Quick Connect Channels and Navigation Menu"
             >
               <div className="dropdown-header">
-                <span>Quick Connect &amp; Channels</span>
+                <div className="header-title-wrap">
+                  <span className="header-badge">QUICK MENU</span>
+                  <span className="header-text">Channels &amp; Navigation</span>
+                </div>
                 <button
                   type="button"
                   className="close-dropdown-btn"
@@ -257,67 +261,127 @@ const Sidebar = () => {
                   ✕
                 </button>
               </div>
-              <div className="dropdown-links">
+
+              <div className="dropdown-links" role="menu">
+                <div className="dropdown-section-label">DIRECT CHANNELS</div>
+
                 <a
                   href="https://github.com/HasanCSE-IYI"
                   target="_blank"
                   rel="noreferrer"
                   className="dropdown-item"
+                  role="menuitem"
                 >
-                  <FontAwesomeIcon icon={faGithub} />
-                  <span>GitHub · /HasanCSE-IYI</span>
+                  <span className="item-icon-box github-box">
+                    <FontAwesomeIcon icon={faGithub} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">GitHub Profile</span>
+                    <span className="item-sub-title">/HasanCSE-IYI · Source &amp; Repos</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
+
                 <a
                   href="https://www.linkedin.com/in/mahmud-al-hasan/"
                   target="_blank"
                   rel="noreferrer"
                   className="dropdown-item"
+                  role="menuitem"
                 >
-                  <FontAwesomeIcon icon={faLinkedin} />
-                  <span>LinkedIn · /mahmud-al-hasan</span>
+                  <span className="item-icon-box linkedin-box">
+                    <FontAwesomeIcon icon={faLinkedin} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">LinkedIn Network</span>
+                    <span className="item-sub-title">/mahmud-al-hasan · Engineering</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
+
                 <a
                   href="https://wa.me/8801727328200"
                   target="_blank"
                   rel="noreferrer"
                   className="dropdown-item"
+                  role="menuitem"
                 >
-                  <FontAwesomeIcon icon={faWhatsapp} />
-                  <span>WhatsApp · +880 1727 328200</span>
+                  <span className="item-icon-box whatsapp-box">
+                    <FontAwesomeIcon icon={faWhatsapp} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">WhatsApp Chat</span>
+                    <span className="item-sub-title">+880 1727 328200 · Instant Message</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
+
                 <a
                   href="tel:+8801727328200"
                   className="dropdown-item"
+                  role="menuitem"
                 >
-                  <FontAwesomeIcon icon={faPhone} />
-                  <span>Direct Call · +880 1727 328200</span>
+                  <span className="item-icon-box phone-box">
+                    <FontAwesomeIcon icon={faPhone} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Direct Call</span>
+                    <span className="item-sub-title">+880 1727 328200 · Voice Hotline</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
+
+                <div className="dropdown-section-label">TOOLS &amp; QUICK ACTIONS</div>
+
                 <button
                   type="button"
                   className="dropdown-item spotlight-item"
+                  role="menuitem"
                   onClick={() => {
                     setShowMoreMenu(false)
                     setIsPaletteOpen(true)
                   }}
                 >
-                  <FontAwesomeIcon icon={faSearch} />
-                  <span>Spotlight Search · {isMac ? '⌘K' : 'Ctrl K'}</span>
+                  <span className="item-icon-box spotlight-box">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Spotlight Search</span>
+                    <span className="item-sub-title">Quick commands, pages &amp; actions</span>
+                  </div>
+                  <span className="item-kbd-badge">{isMac ? '⌘K' : 'Ctrl K'}</span>
                 </button>
+
                 <Link
                   to="/focus"
-                  className="dropdown-item"
+                  className="dropdown-item focus-item"
+                  role="menuitem"
                   onClick={() => setShowMoreMenu(false)}
                 >
-                  <FontAwesomeIcon icon={faHeadphones} />
-                  <span>Focus Station · Lo-Fi &amp; Pomodoro</span>
+                  <span className="item-icon-box focus-box">
+                    <FontAwesomeIcon icon={faHeadphones} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Focus Station</span>
+                    <span className="item-sub-title">Ambient Lo-Fi &amp; Pomodoro</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
+
                 <Link
                   to="/resume"
                   className="dropdown-item resume-item"
+                  role="menuitem"
                   onClick={() => setShowMoreMenu(false)}
                 >
-                  <FontAwesomeIcon icon={faFileAlt} />
-                  <span>View Full Executive Resume</span>
+                  <span className="item-icon-box resume-box">
+                    <FontAwesomeIcon icon={faFileAlt} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Executive Resume</span>
+                    <span className="item-sub-title">Verified CV &amp; Credentials</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
               </div>
             </div>
