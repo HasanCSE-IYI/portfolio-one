@@ -132,4 +132,47 @@ describe('Home Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /Collapse terminal height/i }));
     expect(screen.getByRole('button', { name: /Expand terminal height/i })).toBeInTheDocument();
   });
+
+  test('switches terminal views via tabs and cycles color themes', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const dockerTab = screen.getByRole('tab', { name: /docker/i });
+    fireEvent.click(dockerTab);
+    expect(screen.getByText(/Active Microservices \(Docker Compose\)/i)).toBeInTheDocument();
+
+    const healthTab = screen.getByRole('tab', { name: /health/i });
+    fireEvent.click(healthTab);
+    expect(screen.getByText(/Live REST API Health & SLA Probe/i)).toBeInTheDocument();
+
+    const bashTab = screen.getByRole('tab', { name: /bash/i });
+    fireEvent.click(bashTab);
+    expect(screen.getByLabelText(/Interactive CLI command prompt/i)).toBeInTheDocument();
+
+    const themeBtn = screen.getByRole('button', { name: /Click to switch theme/i });
+    expect(themeBtn).toBeInTheDocument();
+    fireEvent.click(themeBtn);
+  });
+
+  test('executes docker ps command and allows deleting an individual output block', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const dockerBtn = screen.getByRole('button', { name: 'docker' });
+    fireEvent.click(dockerBtn);
+
+    expect(screen.getByText(/storeapi:dotnet8/i)).toBeInTheDocument();
+
+    const deleteBtn = screen.getByRole('button', { name: /Remove block docker ps/i });
+    expect(deleteBtn).toBeInTheDocument();
+    fireEvent.click(deleteBtn);
+
+    expect(screen.queryByText(/storeapi:dotnet8/i)).not.toBeInTheDocument();
+  });
 });

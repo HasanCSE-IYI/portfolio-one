@@ -18,6 +18,15 @@ import {
   faHeartbeat,
   faUserSecret,
   faInfoCircle,
+  faPalette,
+  faTimes,
+  faBoxesStacked,
+  faServer,
+  faNetworkWired,
+  faChartLine,
+  faListUl,
+  faVolumeUp,
+  faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons'
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
@@ -120,27 +129,38 @@ const Home = () => {
   const [pastCommands, setPastCommands] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [copiedHistoryIdx, setCopiedHistoryIdx] = useState(null)
+  const [terminalTheme, setTerminalTheme] = useState('amber')
+  const [activeTerminalTab, setActiveTerminalTab] = useState('bash')
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false)
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const cliHistoryRef = useRef(null)
   const cliInputRef = useRef(null)
 
-  const AVAILABLE_COMMANDS = [
-    'help',
-    'skills',
-    'projects',
-    'curl /api/health',
-    'health',
-    'neofetch',
-    'sysinfo',
-    'whoami',
-    'experience',
-    'contact',
-    'resume',
-    'history',
-    'clear',
-    'sudo',
-    'uptime',
-    'date',
+  const THEMES = ['amber', 'emerald', 'cyber', 'dracula']
+
+  const COMMAND_METADATA = [
+    { cmd: 'help', desc: 'Display all available commands & shortcuts', icon: faInfoCircle, cat: 'Core' },
+    { cmd: 'skills', desc: 'Full backend technical stack & proficiencies', icon: faBolt, cat: 'Core' },
+    { cmd: 'projects', desc: 'Top production systems & GitHub repositories', icon: faFolderOpen, cat: 'Core' },
+    { cmd: 'docker ps', desc: 'List active containerized services & ports', icon: faBoxesStacked, cat: 'DevOps' },
+    { cmd: 'curl /api/health', desc: 'Run live REST healthcheck probe', icon: faHeartbeat, cat: 'DevOps' },
+    { cmd: 'ping', desc: 'Simulate latency ping to API gateway', icon: faNetworkWired, cat: 'DevOps' },
+    { cmd: 'top', desc: 'Display server memory & process allocation', icon: faChartLine, cat: 'DevOps' },
+    { cmd: 'neofetch', desc: 'Print system architecture & ASCII specs', icon: faTerminal, cat: 'System' },
+    { cmd: 'tree', desc: 'Display project codebase architecture tree', icon: faListUl, cat: 'System' },
+    { cmd: 'whoami', desc: 'Senior Backend Engineer profile statement', icon: faLaptopCode, cat: 'Profile' },
+    { cmd: 'experience', desc: '8+ years timeline & startup achievements', icon: faServer, cat: 'Profile' },
+    { cmd: 'contact', desc: 'Direct email, WhatsApp & GitHub channels', icon: faMapMarkerAlt, cat: 'Channels' },
+    { cmd: 'resume', desc: 'View & download executive PDF resume', icon: faFilePdf, cat: 'Profile' },
+    { cmd: 'theme', desc: 'Switch terminal color scheme (amber, emerald, cyber, dracula)', icon: faPalette, cat: 'Settings' },
+    { cmd: 'history', desc: 'Show session command history', icon: faTerminal, cat: 'Utility' },
+    { cmd: 'uptime', desc: 'Server SLA & high-concurrency uptime', icon: faTerminal, cat: 'System' },
+    { cmd: 'date', desc: 'Server timestamps (UTC & Asia/Dhaka)', icon: faTerminal, cat: 'System' },
+    { cmd: 'sudo', desc: 'Execute command with elevated privileges', icon: faUserSecret, cat: 'Utility' },
+    { cmd: 'clear', desc: 'Clear terminal screen (Ctrl+L)', icon: faBroom, cat: 'Utility' },
   ]
+
+  const AVAILABLE_COMMANDS = COMMAND_METADATA.map((c) => c.cmd)
 
   const trimmedInput = commandInput.trim().toLowerCase()
   const ghostSuggestion = trimmedInput
@@ -148,6 +168,46 @@ const Home = () => {
         (c) => c.startsWith(trimmedInput) && c !== trimmedInput
       ) || ''
     : ''
+
+  const suggestedCommands = trimmedInput
+    ? COMMAND_METADATA.filter(
+        (item) => item.cmd.toLowerCase().startsWith(trimmedInput) && item.cmd.toLowerCase() !== trimmedInput
+      ).slice(0, 4)
+    : []
+
+  const cycleTheme = () => {
+    setTerminalTheme((prev) => {
+      const idx = THEMES.indexOf(prev)
+      return THEMES[(idx + 1) % THEMES.length]
+    })
+  }
+
+  const playTerminalClick = () => {
+    if (!isSoundEnabled) return
+    try {
+      if (typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext)) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext
+        const ctx = new AudioCtx()
+        const osc = ctx.createOscillator()
+        const gain = ctx.createGain()
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(750, ctx.currentTime)
+        osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.025)
+        gain.gain.setValueAtTime(0.035, ctx.currentTime)
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025)
+        osc.connect(gain)
+        gain.connect(ctx.destination)
+        osc.start()
+        osc.stop(ctx.currentTime + 0.025)
+      }
+    } catch (err) {
+      // Audio context might be restricted
+    }
+  }
+
+  const handleDeleteHistoryItem = (idToDelete) => {
+    setTerminalHistory((prev) => prev.filter((item) => item.id !== idToDelete))
+  }
 
   const handleCopyOutput = async (hIdx, rawText) => {
     try {
@@ -187,6 +247,10 @@ const Home = () => {
     const trimmed = cmd.trim().toLowerCase()
     if (!trimmed) return
 
+    playTerminalClick()
+    setActiveTerminalTab('bash')
+    setIsSuggestionsOpen(false)
+
     setPastCommands((prev) => [...prev, cmd])
     setHistoryIndex(-1)
 
@@ -197,12 +261,13 @@ const Home = () => {
     }
 
     const timestamp = new Date().toLocaleTimeString('en-GB', { hour12: false })
+    const execMs = Math.floor(Math.random() * 8) + 6
     let result = null
     let rawText = ''
 
     switch (trimmed) {
       case 'help':
-        rawText = `Available Backend CLI Commands:\n• skills           - Technical stack (.NET 8, Laravel, AWS, Docker)\n• projects         - Top production systems & repositories\n• experience       - 8+ years timeline & achievements\n• whoami           - Senior Backend Engineer profile\n• curl /api/health - Live REST healthcheck probe\n• neofetch         - Architecture specs & ASCII info\n• contact          - Email, WhatsApp & GitHub channels\n• resume           - View & download PDF resume\n• history          - List session command history\n• clear            - Clear terminal (Ctrl+L)`
+        rawText = `Available Backend CLI Commands:\n• skills           - Technical stack (.NET 8, Laravel, AWS, Docker)\n• projects         - Top production systems & repositories\n• docker ps        - List active containerized services & ports\n• curl /api/health - Live REST healthcheck probe\n• ping             - Simulate latency ping to API gateway\n• top              - Server resource allocation & processes\n• neofetch         - Architecture specs & ASCII info\n• tree             - Project codebase architecture tree\n• whoami           - Senior Backend Engineer profile\n• experience       - 8+ years timeline & achievements\n• contact          - Email, WhatsApp & GitHub channels\n• resume           - View & download PDF resume\n• theme            - Switch terminal theme (amber, emerald, cyber, dracula)\n• history          - List session command history\n• clear            - Clear terminal (Ctrl+L)`
         result = (
           <div className="cli-output help-output">
             <div className="output-header-badge help-badge">HELP</div>
@@ -217,15 +282,18 @@ const Home = () => {
               </div>
               <div className="help-col">
                 <div className="help-section-title">DevOps &amp; System</div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('docker ps')}>docker ps</button><span>- List running containers &amp; ports</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('curl /api/health')}>curl /api/health</button><span>- Live REST healthcheck probe</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('ping')}>ping</button><span>- Latency ping test to API gateway</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('top')}>top</button><span>- Memory, CPU &amp; processes</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('neofetch')}>neofetch</button><span>- Architecture specs &amp; ASCII info</span></div>
-                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('uptime')}>uptime</button><span>- Server SLA &amp; worker pool uptime</span></div>
-                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('date')}>date</button><span>- Server time (UTC &amp; Asia/Dhaka)</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('tree')}>tree</button><span>- Codebase architecture tree</span></div>
               </div>
               <div className="help-col">
-                <div className="help-section-title">Contact &amp; Utilities</div>
+                <div className="help-section-title">Contact &amp; Settings</div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('contact')}>contact</button><span>- Direct email, WhatsApp &amp; GitHub</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('resume')}>resume</button><span>- View &amp; download PDF resume</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('theme')}>theme</button><span>- Switch colors (amber, emerald...)</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('history')}>history</button><span>- List session command history</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('clear')}>clear</button><span>- Clear terminal screen (Ctrl+L)</span></div>
               </div>
@@ -336,6 +404,172 @@ const Home = () => {
           </div>
         )
         break
+      case 'docker ps':
+      case 'docker':
+        rawText = `CONTAINER ID   IMAGE                 SERVICE           PORTS                    STATUS\na8f93e2b10c4   storeapi:dotnet8      store-api-core    0.0.0.0:5001->5001/tcp   Up 4 hours (healthy)\n3d7211bf5a9e   doctordekhao:v3.2     telemed-backend   0.0.0.0:9000->9000/tcp   Up 2 days (healthy)\n7c4e819a02d3   redis:7.2-alpine      redis-broker      0.0.0.0:6379->6379/tcp   Up 2 days (healthy)\ne9b14c770512   mysql:8.0-cluster     mysql-primary     0.0.0.0:3306->3306/tcp   Up 2 days (healthy)\n4f1a8c903120   nginx:alpine-edge     nginx-proxy       80/tcp, 443/tcp          Up 2 days (healthy)`
+        result = (
+          <div className="cli-output docker-output">
+            <div className="output-header-badge sys-badge">DOCKER COMPOSE</div>
+            <p className="output-subtitle">Active Production Services (Compose Cluster):</p>
+            <div className="docker-cli-table-wrapper">
+              <table className="docker-cli-table">
+                <thead>
+                  <tr>
+                    <th>CONTAINER ID</th>
+                    <th>IMAGE</th>
+                    <th>SERVICE</th>
+                    <th>PORTS</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="c-id">a8f93e2b10c4</td>
+                    <td className="c-img">storeapi:dotnet8</td>
+                    <td className="c-name">store-api-core</td>
+                    <td className="c-ports">5001/tcp</td>
+                    <td><span className="status-pill up">Up 4 hours (healthy)</span></td>
+                  </tr>
+                  <tr>
+                    <td className="c-id">3d7211bf5a9e</td>
+                    <td className="c-img">doctordekhao:v3.2</td>
+                    <td className="c-name">telemed-backend</td>
+                    <td className="c-ports">9000/tcp</td>
+                    <td><span className="status-pill up">Up 2 days (healthy)</span></td>
+                  </tr>
+                  <tr>
+                    <td className="c-id">7c4e819a02d3</td>
+                    <td className="c-img">redis:7.2-alpine</td>
+                    <td className="c-name">redis-broker</td>
+                    <td className="c-ports">6379/tcp</td>
+                    <td><span className="status-pill up">Up 2 days (healthy)</span></td>
+                  </tr>
+                  <tr>
+                    <td className="c-id">e9b14c770512</td>
+                    <td className="c-img">mysql:8.0-cluster</td>
+                    <td className="c-name">mysql-primary</td>
+                    <td className="c-ports">3306/tcp</td>
+                    <td><span className="status-pill up">Up 2 days (healthy)</span></td>
+                  </tr>
+                  <tr>
+                    <td className="c-id">4f1a8c903120</td>
+                    <td className="c-img">nginx:alpine-edge</td>
+                    <td className="c-name">nginx-proxy</td>
+                    <td className="c-ports">80/tcp, 443/tcp</td>
+                    <td><span className="status-pill up">Up 2 days (healthy)</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+        break
+      case 'ping':
+        rawText = `PING api.mahmud.dev (104.21.45.12): 56 data bytes\n64 bytes from 104.21.45.12: icmp_seq=0 ttl=58 time=12.4 ms\n64 bytes from 104.21.45.12: icmp_seq=1 ttl=58 time=11.8 ms\n64 bytes from 104.21.45.12: icmp_seq=2 ttl=58 time=13.1 ms\n--- api.mahmud.dev ping statistics ---\n3 packets transmitted, 3 packets received, 0.0% packet loss\nround-trip min/avg/max = 11.8/12.4/13.1 ms`
+        result = (
+          <div className="cli-output ping-output">
+            <div className="output-header-badge sys-badge">ICMP PING</div>
+            <p className="ping-headline">PING api.mahmud.dev (104.21.45.12): 56 data bytes</p>
+            <div className="ping-lines">
+              <p>64 bytes from 104.21.45.12: icmp_seq=0 ttl=58 time=12.4 ms</p>
+              <p>64 bytes from 104.21.45.12: icmp_seq=1 ttl=58 time=11.8 ms</p>
+              <p>64 bytes from 104.21.45.12: icmp_seq=2 ttl=58 time=13.1 ms</p>
+            </div>
+            <div className="ping-stats">
+              <p>--- api.mahmud.dev ping statistics ---</p>
+              <p>3 packets transmitted, 3 packets received, <span className="stat-ok">0.0% packet loss</span></p>
+              <p>round-trip min/avg/max = <span className="accent">11.8</span>/<span className="accent">12.4</span>/<span className="accent">13.1</span> ms</p>
+            </div>
+          </div>
+        )
+        break
+      case 'top':
+      case 'htop':
+        rawText = `Tasks: 4 running, 118 sleeping | CPU: 2.1% usr, 97.5% idle | Memory: 1,420MB / 32,768MB (4.3% used)\nLoad average: 0.12, 0.08, 0.05\nPID   USER      %CPU  %MEM  COMMAND\n1402  mahmud    1.2   2.1   dotnet StoreApi.dll\n1520  www-data  0.6   1.4   php-fpm: pool www\n1630  redis     0.2   0.5   redis-server *:6379\n1740  mysql     0.1   0.3   mysqld --innodb-buffer-pool`
+        result = (
+          <div className="cli-output top-output">
+            <div className="output-header-badge sys-badge">TOP / PROCESS MONITOR</div>
+            <div className="top-metrics-grid">
+              <div className="top-stat"><span className="lbl">Tasks:</span> <span className="val">4 running, 118 sleeping</span></div>
+              <div className="top-stat"><span className="lbl">CPU:</span> <span className="val success">2.1% usr, 0.4% sys, 97.5% idle</span></div>
+              <div className="top-stat"><span className="lbl">Memory:</span> <span className="val">1,420MB / 32,768MB (4.3% used)</span></div>
+              <div className="top-stat"><span className="lbl">Load avg:</span> <span className="val accent">0.12, 0.08, 0.05 (4 vCPU)</span></div>
+            </div>
+            <div className="top-proc-table-wrapper">
+              <table className="top-proc-table">
+                <thead>
+                  <tr>
+                    <th>PID</th>
+                    <th>USER</th>
+                    <th>%CPU</th>
+                    <th>%MEM</th>
+                    <th>COMMAND</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>1402</td><td>mahmud</td><td>1.2</td><td>2.1</td><td>dotnet StoreApi.dll</td></tr>
+                  <tr><td>1520</td><td>www-data</td><td>0.6</td><td>1.4</td><td>php-fpm: pool www</td></tr>
+                  <tr><td>1630</td><td>redis</td><td>0.2</td><td>0.5</td><td>redis-server *:6379</td></tr>
+                  <tr><td>1740</td><td>mysql</td><td>0.1</td><td>0.3</td><td>mysqld --innodb-buffer-pool</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+        break
+      case 'tree':
+      case 'ls':
+        rawText = `.\n├── src/\n│   ├── components/\n│   │   ├── Home/          # Hero, System Specs & Interactive CLI\n│   │   ├── Architecture/  # Enterprise ASP.NET Core & Clean Architecture\n│   │   ├── Portfolio/     # Production Systems (Doctor Dekhao, Mappi)\n│   │   ├── Resume/        # Executive Career Roadmap & PDF\n│   │   └── Contact/       # Direct Communication Channels\n│   ├── assets/            # Vector Icons, Diagrams & Schemas\n│   └── data/\n│       └── portfolio.json # Live Project & Metric Source\n├── public/                # Static Distribution & Manifest\n└── package.json           # React 18, SCSS & Testing Suite`
+        result = (
+          <div className="cli-output tree-output">
+            <div className="output-header-badge sys-badge">CODEBASE TREE</div>
+            <pre className="tree-pre">
+{`.
+├── src/
+│   ├── components/
+│   │   ├── Home/          # Hero, System Specs & Interactive CLI
+│   │   ├── Architecture/  # Enterprise ASP.NET Core & Clean Architecture
+│   │   ├── Portfolio/     # Production Systems (Doctor Dekhao, Mappi)
+│   │   ├── Resume/        # Executive Career Roadmap & PDF
+│   │   └── Contact/       # Direct Communication Channels
+│   ├── assets/            # Vector Icons, Diagrams & Schemas
+│   └── data/
+│       └── portfolio.json # Live Project & Metric Source
+├── public/                # Static Distribution & Manifest
+└── package.json           # React 18, SCSS & Testing Suite`}
+            </pre>
+          </div>
+        )
+        break
+      case 'theme':
+      case 'theme amber':
+      case 'theme emerald':
+      case 'theme cyber':
+      case 'theme dracula': {
+        const requested = trimmed.replace('theme', '').trim()
+        if (THEMES.includes(requested)) {
+          setTerminalTheme(requested)
+          rawText = `Terminal theme switched to: '${requested}'.`
+          result = (
+            <div className="cli-output theme-output">
+              <div className="output-header-badge sys-badge">THEME</div>
+              <p>Terminal theme successfully updated to: <strong className="accent">{requested}</strong></p>
+            </div>
+          )
+        } else {
+          rawText = `Current theme: '${terminalTheme}'. Available themes: ${THEMES.join(', ')}`
+          result = (
+            <div className="cli-output theme-output">
+              <div className="output-header-badge sys-badge">THEME</div>
+              <p>Current theme: <strong className="accent">{terminalTheme}</strong></p>
+              <p>Available presets: {THEMES.map((t) => (
+                <button key={t} type="button" className="help-cmd-btn" onClick={() => executeCliCommand(`theme ${t}`)} style={{ marginRight: '6px' }}>{t}</button>
+              ))}</p>
+            </div>
+          )
+        }
+        break
+      }
       case 'curl /api/health':
       case 'health':
         rawText = `HTTP/2 200 OK (14ms)\n{\n  "status": "HEALTHY",\n  "uptime": "8+ Years Production",\n  "activeFocus": ".NET Core Web API & C#",\n  "availability": "Open to Opportunities"\n}`
@@ -538,6 +772,7 @@ const Home = () => {
         id: Date.now() + Math.random(),
         command: cmd,
         timestamp,
+        execMs,
         result,
         rawText,
       },
@@ -553,10 +788,13 @@ const Home = () => {
   }, [terminalHistory])
 
   const handleKeyDown = (e) => {
+    playTerminalClick()
+
     if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L' || e.key === 'k' || e.key === 'K')) {
       e.preventDefault()
       setTerminalHistory([])
       setCommandInput('')
+      setIsSuggestionsOpen(false)
       return
     }
 
@@ -564,6 +802,10 @@ const Home = () => {
       e.preventDefault()
       if (ghostSuggestion) {
         setCommandInput(ghostSuggestion)
+        setIsSuggestionsOpen(false)
+      } else if (suggestedCommands.length > 0) {
+        setCommandInput(suggestedCommands[0].cmd)
+        setIsSuggestionsOpen(false)
       }
       return
     }
@@ -579,6 +821,7 @@ const Home = () => {
     if (e.key === 'Escape') {
       e.preventDefault()
       setCommandInput('')
+      setIsSuggestionsOpen(false)
       return
     }
 
@@ -588,6 +831,7 @@ const Home = () => {
       const nextIndex = historyIndex === -1 ? pastCommands.length - 1 : Math.max(0, historyIndex - 1)
       setHistoryIndex(nextIndex)
       setCommandInput(pastCommands[nextIndex])
+      setIsSuggestionsOpen(false)
     } else if (e.key === 'ArrowDown') {
       e.preventDefault()
       if (historyIndex === -1) return
@@ -599,6 +843,7 @@ const Home = () => {
         setHistoryIndex(nextIndex)
         setCommandInput(pastCommands[nextIndex])
       }
+      setIsSuggestionsOpen(false)
     }
   }
 
@@ -752,7 +997,7 @@ const Home = () => {
           {/* System Specification & Interactive macOS/Unix Terminal */}
           <div className="hero-spec">
             <div
-              className={`terminal-card ${isTerminalExpanded ? 'is-expanded' : ''}`}
+              className={`terminal-card theme-${terminalTheme} ${isTerminalExpanded ? 'is-expanded' : ''}`}
               onClick={handleTerminalClick}
             >
               <div className="terminal-header">
@@ -789,18 +1034,78 @@ const Home = () => {
                     }}
                   />
                 </div>
-                <div className="terminal-title-wrap">
-                  <FontAwesomeIcon icon={faTerminal} className="terminal-icon-mini" />
-                  <span className="terminal-title">mahmud@backend-core:~$</span>
-                </div>
-                <div className="terminal-header-controls">
-                  <span className="terminal-live-badge">
-                    <span className="live-dot" aria-hidden="true"></span>
-                    <span>zsh 5.9</span>
-                  </span>
+
+                <div className="terminal-tabs" role="tablist" aria-label="Terminal views">
                   <button
                     type="button"
-                    className="terminal-ctrl-btn"
+                    role="tab"
+                    aria-selected={activeTerminalTab === 'bash'}
+                    className={`tab-btn ${activeTerminalTab === 'bash' ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveTerminalTab('bash')
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faTerminal} className="tab-icon" />
+                    <span>bash</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTerminalTab === 'containers'}
+                    className={`tab-btn ${activeTerminalTab === 'containers' ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveTerminalTab('containers')
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faBoxesStacked} className="tab-icon" />
+                    <span>docker</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTerminalTab === 'health'}
+                    className={`tab-btn ${activeTerminalTab === 'health' ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveTerminalTab('health')
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faHeartbeat} className="tab-icon" />
+                    <span>health</span>
+                  </button>
+                </div>
+
+                <div className="terminal-header-controls">
+                  <button
+                    type="button"
+                    className="terminal-ctrl-btn theme-btn"
+                    title={`Theme: ${terminalTheme} (Click to switch)`}
+                    aria-label={`Current theme: ${terminalTheme}. Click to switch theme.`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      cycleTheme()
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faPalette} />
+                    <span className="theme-name">{terminalTheme}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`terminal-ctrl-btn sound-btn ${isSoundEnabled ? 'sound-active' : ''}`}
+                    title={isSoundEnabled ? 'Mute terminal sound' : 'Enable terminal sound'}
+                    aria-label={isSoundEnabled ? 'Mute terminal sound' : 'Enable terminal sound'}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setIsSoundEnabled((prev) => !prev)
+                    }}
+                  >
+                    <FontAwesomeIcon icon={isSoundEnabled ? faVolumeUp : faVolumeMute} />
+                  </button>
+                  <button
+                    type="button"
+                    className="terminal-ctrl-btn expand-btn"
                     title={isTerminalExpanded ? 'Collapse terminal height' : 'Expand terminal height'}
                     aria-label={isTerminalExpanded ? 'Collapse terminal height' : 'Expand terminal height'}
                     onClick={(e) => {
@@ -850,126 +1155,272 @@ const Home = () => {
                   </div>
                 )}
 
-                {/* Interactive CLI Console Zone */}
-                <div className="terminal-cli-zone">
-                  {terminalHistory.length === 0 ? (
-                    <div className="cli-welcome-banner" aria-hidden="true">
-                      <div className="welcome-tag">
-                        <span className="beacon"></span>
-                        <span className="title">Backend Core Shell v2.4</span>
-                        <span className="arch">x86_64-linux</span>
+                {activeTerminalTab === 'containers' && (
+                  <div className="terminal-tab-panel docker-panel">
+                    <div className="panel-header">
+                      <span className="panel-title">Active Microservices (Docker Compose)</span>
+                      <button
+                        type="button"
+                        className="panel-action-btn"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setActiveTerminalTab('bash')
+                          executeCliCommand('docker ps')
+                        }}
+                      >
+                        <span>Run in CLI</span>
+                        <FontAwesomeIcon icon={faTerminal} />
+                      </button>
+                    </div>
+                    <div className="container-cards-grid">
+                      <div className="container-status-card">
+                        <div className="card-top">
+                          <span className="c-name">StoreApi Core</span>
+                          <span className="c-tag dotnet">.NET 8 Web API</span>
+                        </div>
+                        <div className="card-body">
+                          <p>Image: <code>storeapi:dotnet8</code></p>
+                          <p>Port: <code>0.0.0.0:5001-&gt;5001</code></p>
+                          <p className="c-uptime">Status: <span className="up-pill">Up 4 hrs · Healthy</span></p>
+                        </div>
                       </div>
-                      <p className="welcome-hint">
-                        Interactive shell ready. Type a command or select quick tags below. Press <kbd>Tab</kbd> to autocomplete.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="cli-history" ref={cliHistoryRef} role="log" aria-live="polite">
-                      {terminalHistory.map((item, hIdx) => (
-                        <div key={item.id || hIdx} className="history-block">
-                          <div className="history-prompt">
-                            <div className="history-prompt-left">
-                              <span className="prompt-sym">❯</span>
-                              <span className="cmd-echo">{item.command}</span>
-                            </div>
-                            <div className="history-prompt-right">
-                              <span className="history-timestamp">{item.timestamp}</span>
-                              <button
-                                type="button"
-                                className="copy-output-btn"
-                                title="Copy output"
-                                aria-label={`Copy output for ${item.command}`}
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleCopyOutput(hIdx, item.rawText)
-                                }}
-                              >
-                                <FontAwesomeIcon icon={copiedHistoryIdx === hIdx ? faCheck : faCopy} />
-                                <span>{copiedHistoryIdx === hIdx ? 'Copied' : 'Copy'}</span>
-                              </button>
-                            </div>
-                          </div>
-                          {item.result}
+                      <div className="container-status-card">
+                        <div className="card-top">
+                          <span className="c-name">Doctor Dekhao</span>
+                          <span className="c-tag cloud">Laravel / PHP</span>
                         </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <form onSubmit={handleRunCommand} className="cli-input-form">
-                    <span className="prompt-sym">❯</span>
-                    <div className="cli-input-wrapper">
-                      <input
-                        ref={cliInputRef}
-                        type="text"
-                        className="cli-terminal-input"
-                        value={commandInput}
-                        onChange={(e) => setCommandInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Type 'help', 'skills', 'projects', 'curl /api/health'..."
-                        aria-label="Interactive CLI command prompt"
-                        spellCheck="false"
-                        autoCapitalize="off"
-                        autoComplete="off"
-                      />
-                      {ghostSuggestion && (
-                        <div className="cli-ghost-layer" aria-hidden="true">
-                          <span className="invisible-prefix">{commandInput}</span>
-                          <span className="ghost-suffix">{ghostSuggestion.slice(commandInput.length)}</span>
+                        <div className="card-body">
+                          <p>Image: <code>doctordekhao:v3.2</code></p>
+                          <p>Port: <code>0.0.0.0:9000-&gt;9000</code></p>
+                          <p className="c-uptime">Status: <span className="up-pill">Up 2 days · 99.9% SLA</span></p>
                         </div>
-                      )}
-                    </div>
-                    <button
-                      type="submit"
-                      className="cli-submit-btn"
-                      aria-label="Execute CLI command"
-                      disabled={!commandInput.trim()}
-                    >
-                      <span>Run</span>
-                      <span className="btn-return-icon" aria-hidden="true">↵</span>
-                    </button>
-                  </form>
-
-                  <div className="cli-hints-bar">
-                    <div className="cli-quick-tags">
-                      <span className="quick-label">Quick run:</span>
-                      <button type="button" onClick={() => executeCliCommand('skills')}>
-                        <FontAwesomeIcon icon={faBolt} className="quick-icon" />
-                        <span>skills</span>
-                      </button>
-                      <button type="button" onClick={() => executeCliCommand('projects')}>
-                        <FontAwesomeIcon icon={faFolderOpen} className="quick-icon" />
-                        <span>projects</span>
-                      </button>
-                      <button type="button" onClick={() => executeCliCommand('curl /api/health')}>
-                        <FontAwesomeIcon icon={faHeartbeat} className="quick-icon" />
-                        <span>curl health</span>
-                      </button>
-                      <button type="button" onClick={() => executeCliCommand('neofetch')}>
-                        <FontAwesomeIcon icon={faTerminal} className="quick-icon" />
-                        <span>neofetch</span>
-                      </button>
-                      <button type="button" onClick={() => executeCliCommand('whoami')}>
-                        <FontAwesomeIcon icon={faLaptopCode} className="quick-icon" />
-                        <span>whoami</span>
-                      </button>
-                      <button type="button" onClick={() => executeCliCommand('help')}>
-                        <FontAwesomeIcon icon={faInfoCircle} className="quick-icon" />
-                        <span>help</span>
-                      </button>
-                      {terminalHistory.length > 0 && (
-                        <button type="button" className="clear-tag" onClick={() => executeCliCommand('clear')}>
-                          <FontAwesomeIcon icon={faBroom} className="quick-icon" />
-                          <span>clear</span>
-                        </button>
-                      )}
-                    </div>
-                    <div className="cli-keyboard-pills" aria-hidden="true">
-                      <span className="kbd-pill"><kbd>Tab</kbd> Complete</span>
-                      <span className="kbd-pill"><kbd>↑↓</kbd> History</span>
-                      <span className="kbd-pill"><kbd>Ctrl+L</kbd> Clear</span>
+                      </div>
+                      <div className="container-status-card">
+                        <div className="card-top">
+                          <span className="c-name">Redis Broker</span>
+                          <span className="c-tag database">Redis 7.2</span>
+                        </div>
+                        <div className="card-body">
+                          <p>Image: <code>redis:7.2-alpine</code></p>
+                          <p>Port: <code>0.0.0.0:6379-&gt;6379</code></p>
+                          <p className="c-uptime">Status: <span className="up-pill">Up 2 days · Pub/Sub</span></p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
+
+                {activeTerminalTab === 'health' && (
+                  <div className="terminal-tab-panel health-panel">
+                    <div className="panel-header">
+                      <span className="panel-title">Live REST API Health &amp; SLA Probe</span>
+                      <button
+                        type="button"
+                        className="panel-action-btn"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setActiveTerminalTab('bash')
+                          executeCliCommand('curl /api/health')
+                        }}
+                      >
+                        <span>Run curl probe</span>
+                        <FontAwesomeIcon icon={faTerminal} />
+                      </button>
+                    </div>
+                    <div className="health-probe-grid">
+                      <div className="probe-stat-card">
+                        <span className="stat-label">Response Latency</span>
+                        <span className="stat-value success">14 ms</span>
+                        <span className="stat-note">&lt;60ms REST SLA target</span>
+                      </div>
+                      <div className="probe-stat-card">
+                        <span className="stat-label">Production SLA</span>
+                        <span className="stat-value accent">99.9%</span>
+                        <span className="stat-note">8+ Years Production</span>
+                      </div>
+                      <div className="probe-stat-card">
+                        <span className="stat-label">Cluster Status</span>
+                        <span className="stat-value success">HEALTHY</span>
+                        <span className="stat-note">ap-southeast-1 node</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTerminalTab === 'bash' && (
+                  <div className="terminal-cli-zone">
+                    {terminalHistory.length === 0 ? (
+                      <div className="cli-welcome-banner" aria-hidden="true">
+                        <div className="welcome-tag">
+                          <span className="beacon"></span>
+                          <span className="title">Backend Core Shell v2.4</span>
+                          <span className="arch">x86_64-linux</span>
+                        </div>
+                        <p className="welcome-hint">
+                          Interactive shell ready. Type a command or select quick tags below. Press <kbd>Tab</kbd> to autocomplete.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="cli-history" ref={cliHistoryRef} role="log" aria-live="polite">
+                        {terminalHistory.map((item, hIdx) => (
+                          <div key={item.id || hIdx} className="history-block">
+                            <div className="history-prompt">
+                              <div className="history-prompt-left">
+                                <span className="prompt-sym">❯</span>
+                                <span className="cmd-echo">{item.command}</span>
+                              </div>
+                              <div className="history-prompt-right">
+                                {item.execMs && <span className="exec-duration">~{item.execMs}ms</span>}
+                                <span className="history-timestamp">{item.timestamp}</span>
+                                <button
+                                  type="button"
+                                  className="copy-output-btn"
+                                  title="Copy output"
+                                  aria-label={`Copy output for ${item.command}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleCopyOutput(hIdx, item.rawText)
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={copiedHistoryIdx === hIdx ? faCheck : faCopy} />
+                                  <span>{copiedHistoryIdx === hIdx ? 'Copied' : 'Copy'}</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  className="del-output-btn"
+                                  title="Remove block"
+                                  aria-label={`Remove block ${item.command}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleDeleteHistoryItem(item.id)
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faTimes} />
+                                </button>
+                              </div>
+                            </div>
+                            {item.result}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {isSuggestionsOpen && suggestedCommands.length > 0 && (
+                      <div className="cli-suggestions-popup" role="listbox" aria-label="Command suggestions">
+                        <div className="suggestions-header">
+                          <span>Command Suggestions</span>
+                          <span className="hint"><kbd>Tab</kbd> to complete</span>
+                        </div>
+                        <div className="suggestions-list">
+                          {suggestedCommands.map((item) => (
+                            <button
+                              key={item.cmd}
+                              type="button"
+                              className="suggestion-item"
+                              role="option"
+                              aria-selected={false}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                executeCliCommand(item.cmd)
+                                setIsSuggestionsOpen(false)
+                              }}
+                            >
+                              <span className="s-cmd">
+                                <FontAwesomeIcon icon={item.icon} className="s-icon" />
+                                <strong>{item.cmd}</strong>
+                              </span>
+                              <span className="s-desc">{item.desc}</span>
+                              <span className="s-cat">{item.cat}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <form onSubmit={handleRunCommand} className="cli-input-form">
+                      <span className="prompt-sym">❯</span>
+                      <div className="cli-input-wrapper">
+                        <input
+                          ref={cliInputRef}
+                          type="text"
+                          className="cli-terminal-input"
+                          value={commandInput}
+                          onChange={(e) => {
+                            setCommandInput(e.target.value)
+                            setIsSuggestionsOpen(true)
+                            playTerminalClick()
+                          }}
+                          onKeyDown={handleKeyDown}
+                          placeholder="Type 'help', 'skills', 'docker ps', 'curl /api/health'..."
+                          aria-label="Interactive CLI command prompt"
+                          spellCheck="false"
+                          autoCapitalize="off"
+                          autoComplete="off"
+                        />
+                        {ghostSuggestion && (
+                          <div className="cli-ghost-layer" aria-hidden="true">
+                            <span className="invisible-prefix">{commandInput}</span>
+                            <span className="ghost-suffix">{ghostSuggestion.slice(commandInput.length)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="submit"
+                        className="cli-submit-btn"
+                        aria-label="Execute CLI command"
+                        disabled={!commandInput.trim()}
+                      >
+                        <span>Run</span>
+                        <span className="btn-return-icon" aria-hidden="true">↵</span>
+                      </button>
+                    </form>
+
+                    <div className="cli-hints-bar">
+                      <div className="cli-quick-tags">
+                        <span className="quick-label">Quick run:</span>
+                        <button type="button" onClick={() => executeCliCommand('skills')}>
+                          <FontAwesomeIcon icon={faBolt} className="quick-icon" />
+                          <span>skills</span>
+                        </button>
+                        <button type="button" onClick={() => executeCliCommand('projects')}>
+                          <FontAwesomeIcon icon={faFolderOpen} className="quick-icon" />
+                          <span>projects</span>
+                        </button>
+                        <button type="button" onClick={() => executeCliCommand('docker ps')}>
+                          <FontAwesomeIcon icon={faBoxesStacked} className="quick-icon" />
+                          <span>docker</span>
+                        </button>
+                        <button type="button" onClick={() => executeCliCommand('curl /api/health')}>
+                          <FontAwesomeIcon icon={faHeartbeat} className="quick-icon green" />
+                          <span>curl health</span>
+                        </button>
+                        <button type="button" onClick={() => executeCliCommand('neofetch')}>
+                          <FontAwesomeIcon icon={faTerminal} className="quick-icon" />
+                          <span>neofetch</span>
+                        </button>
+                        <button type="button" onClick={() => executeCliCommand('whoami')}>
+                          <FontAwesomeIcon icon={faLaptopCode} className="quick-icon" />
+                          <span>whoami</span>
+                        </button>
+                        <button type="button" onClick={() => executeCliCommand('help')}>
+                          <FontAwesomeIcon icon={faInfoCircle} className="quick-icon" />
+                          <span>help</span>
+                        </button>
+                        {terminalHistory.length > 0 && (
+                          <button type="button" className="clear-tag" onClick={() => executeCliCommand('clear')}>
+                            <FontAwesomeIcon icon={faBroom} className="quick-icon" />
+                            <span>clear</span>
+                          </button>
+                        )}
+                      </div>
+                      <div className="cli-keyboard-pills" aria-hidden="true">
+                        <span className="kbd-pill"><kbd>Tab</kbd> Complete</span>
+                        <span className="kbd-pill"><kbd>↑↓</kbd> History</span>
+                        <span className="kbd-pill"><kbd>Ctrl+L</kbd> Clear</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
