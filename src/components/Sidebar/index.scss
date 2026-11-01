@@ -754,8 +754,137 @@
   }
 }
 
+// =============================================================================
+// Modern Floating Bottom Island Dock (Mobile & Tablet Thumb Zone Navigation)
+// Ergonomic, tactile capsule with dynamic glassmorphism and theme awareness
+// =============================================================================
+.mobile-bottom-dock {
+  position: fixed;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 24px);
+  max-width: 440px;
+  height: 62px;
+  padding: 4px 6px;
+  background: rgba(12, 16, 26, 0.94);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.8),
+              0 0 24px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12),
+              inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1000;
+  box-sizing: border-box;
+
+  .dock-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 52px;
+    border-radius: 9999px;
+    text-decoration: none;
+    color: #94a3b8;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    position: relative;
+
+    .dock-icon {
+      font-size: 16px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.2s ease,
+                  filter 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .dock-label {
+      font-size: 1.12rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      transition: color 0.2s ease;
+    }
+
+    &:hover {
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.06);
+
+      .dock-icon {
+        transform: translateY(-1.5px);
+        color: var(--primary-accent, #f59e0b);
+      }
+    }
+
+    &:active {
+      transform: scale(0.92);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-accent, #f59e0b);
+      outline-offset: 2px;
+    }
+
+    &.active {
+      background: linear-gradient(
+        135deg,
+        rgba(var(--primary-accent-rgb, 245, 158, 11), 0.22),
+        rgba(var(--primary-accent-rgb, 245, 158, 11), 0.08)
+      );
+      border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.4);
+      color: var(--primary-accent, #f59e0b);
+      box-shadow: 0 0 16px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.25),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+      .dock-icon {
+        color: var(--primary-accent, #f59e0b);
+        transform: translateY(-1px) scale(1.12);
+        filter: drop-shadow(0 0 8px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.6));
+      }
+
+      .dock-label {
+        font-weight: 700;
+        color: var(--primary-accent, #f59e0b);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 2px;
+        border-radius: 9999px;
+        background: var(--primary-accent, #f59e0b);
+        box-shadow: 0 0 8px var(--primary-accent, #f59e0b);
+      }
+    }
+  }
+}
+
 // Desktop & Large Tablet Styling (min-width: 992px)
 @media screen and (min-width: 992px) {
+  .mobile-bottom-dock {
+    display: none !important;
+  }
+
   .modern-navbar {
     top: 14px;
     padding: 0 24px;
@@ -957,6 +1086,25 @@
       }
     }
   }
+
+  .mobile-bottom-dock {
+    width: calc(100% - 16px);
+    height: 58px;
+    padding: 3px 5px;
+
+    .dock-item {
+      height: 48px;
+
+      .dock-icon {
+        font-size: 15px;
+      }
+
+      .dock-label {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+    }
+  }
 }
 
 // Extra Narrow Devices (<= 360px)
@@ -966,13 +1114,38 @@
       display: none; // Leaves glowing live green beacon icon
     }
   }
+
+  .mobile-bottom-dock {
+    height: 54px;
+    padding: 2px 4px;
+
+    .dock-item {
+      height: 44px;
+
+      .dock-icon {
+        font-size: 14px;
+      }
+
+      .dock-label {
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+// Print Media Hide
+@media print {
+  .modern-navbar,
+  .mobile-bottom-dock {
+    display: none !important;
+  }
 }
 
 // Hide navigation in full immersive modes (Zen Mode & Mindful Box Breathing)
 body.zen-mode-active,
 body.breathing-mode-active {
   .modern-navbar,
-  .circular-nav-container {
+  .mobile-bottom-dock {
     display: none !important;
     pointer-events: none !important;
     opacity: 0 !important;

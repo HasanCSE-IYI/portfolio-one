@@ -33,7 +33,6 @@ import Terminal from '../Terminal'
 import Cheatsheet from '../Cheatsheet'
 import ThemeSwitcher from '../ThemeSwitcher'
 import Guestbook from '../Guestbook'
-import CircularNav from '../CircularNav'
 import { useUi } from '../../context/UiContext'
 import './index.scss'
 
@@ -523,8 +522,67 @@ const Sidebar = () => {
         )}
       </header>
 
-      {/* Circular Animated Navigation Menu (Radial Floating Hub for all devices) */}
-      <CircularNav />
+      {/* Modern Floating Bottom Island Dock (Mobile & Tablet Thumb Zone Navigation) */}
+      <nav className="mobile-bottom-dock" aria-label="Mobile Navigation">
+        <NavLink
+          end
+          to="/"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Home"
+          onClick={() => {
+            handleHomeClick()
+            playSound('click')
+          }}
+        >
+          <FontAwesomeIcon icon={faHome} className="dock-icon" />
+          <span className="dock-label">Home</span>
+        </NavLink>
+        <NavLink
+          to="/about"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="About"
+          onClick={() => playSound('click')}
+        >
+          <FontAwesomeIcon icon={faUser} className="dock-icon" />
+          <span className="dock-label">About</span>
+        </NavLink>
+        <NavLink
+          to="/resume"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Resume"
+          onClick={() => playSound('click')}
+        >
+          <FontAwesomeIcon icon={faFileAlt} className="dock-icon" />
+          <span className="dock-label">Resume</span>
+        </NavLink>
+        <NavLink
+          to="/portfolio"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Portfolio"
+          onClick={() => playSound('click')}
+        >
+          <FontAwesomeIcon icon={faSuitcase} className="dock-icon" />
+          <span className="dock-label">Works</span>
+        </NavLink>
+        <NavLink
+          to="/focus"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Focus"
+          onClick={() => playSound('click')}
+        >
+          <FontAwesomeIcon icon={faHeadphones} className="dock-icon" />
+          <span className="dock-label">Focus</span>
+        </NavLink>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) => (isActive ? 'dock-item active' : 'dock-item')}
+          aria-label="Contact"
+          onClick={() => playSound('click')}
+        >
+          <FontAwesomeIcon icon={faEnvelope} className="dock-icon" />
+          <span className="dock-label">Contact</span>
+        </NavLink>
+      </nav>
 
       {/* Global Executive Resume Modal */}
       <ResumeModal
