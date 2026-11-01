@@ -271,10 +271,26 @@ const Sidebar = () => {
               </button>
             </div>
 
-            {/* Resume Button */}
+            {/* Three-dot More Menu Toggle (Available on Desktop & Mobile) */}
             <button
               type="button"
-              className="resume-pill-btn"
+              className={`more-toggle-btn ${showMoreMenu ? 'active' : ''}`}
+              onClick={() => {
+                playSound('click')
+                setShowMoreMenu(!showMoreMenu)
+              }}
+              aria-label="Quick Connect Options & Menu"
+              aria-expanded={showMoreMenu}
+              aria-controls="mobile-more-dropdown"
+              title="Quick Menu, Channels & Tools"
+            >
+              <FontAwesomeIcon icon={showMoreMenu ? faClose : faEllipsisVertical} />
+            </button>
+
+            {/* Accessible Executive Resume Modal Trigger */}
+            <button
+              type="button"
+              className="resume-pill-btn sr-only-btn"
               onClick={() => {
                 playSound('pop')
                 setIsResumeOpen(true)
@@ -283,22 +299,7 @@ const Sidebar = () => {
               title="Open Executive CV Preview & Download"
             >
               <FontAwesomeIcon icon={faFileAlt} className="resume-icon" />
-              <span>CV</span>
-            </button>
-
-            {/* More Menu Toggle (Mobile) */}
-            <button
-              type="button"
-              className={`more-toggle-btn ${showMoreMenu ? 'active' : ''}`}
-              onClick={() => {
-                playSound('click')
-                setShowMoreMenu(!showMoreMenu)
-              }}
-              aria-label="Quick Connect Options"
-              aria-expanded={showMoreMenu}
-              aria-controls="mobile-more-dropdown"
-            >
-              <FontAwesomeIcon icon={showMoreMenu ? faClose : faEllipsisVertical} />
+              <span>Resume</span>
             </button>
           </div>
         </div>
@@ -468,10 +469,35 @@ const Sidebar = () => {
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
 
-                {/* Resume Link */}
+                {/* Executive Resume Section */}
+                <div className="dropdown-section-label">EXECUTIVE RESUME</div>
+
+                {/* Quick CV Modal Preview Button */}
+                <button
+                  type="button"
+                  className="dropdown-item resume-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('pop')
+                    setIsResumeOpen(true)
+                  }}
+                  aria-label="Preview Executive CV"
+                >
+                  <span className="item-icon-box resume-box">
+                    <FontAwesomeIcon icon={faFileAlt} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Quick CV Preview</span>
+                    <span className="item-sub-title">Interactive Resume Modal &amp; PDF</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </button>
+
+                {/* Full Dedicated Resume Page Link */}
                 <Link
                   to="/resume"
-                  className="dropdown-item resume-item"
+                  className="dropdown-item resume-page-link"
                   role="menuitem"
                   onClick={() => setShowMoreMenu(false)}
                 >
@@ -479,8 +505,8 @@ const Sidebar = () => {
                     <FontAwesomeIcon icon={faFileAlt} />
                   </span>
                   <div className="item-text-group">
-                    <span className="item-main-title">Executive Resume</span>
-                    <span className="item-sub-title">Verified CV &amp; Credentials</span>
+                    <span className="item-main-title">Full Resume Page</span>
+                    <span className="item-sub-title">Verified CV, Print Styles &amp; Details</span>
                   </div>
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
