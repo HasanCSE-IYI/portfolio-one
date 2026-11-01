@@ -69,10 +69,11 @@
 
     .badge-divider {
       color: rgba(255, 255, 255, 0.25);
+      display: none;
     }
 
     .badge-time-text {
-      display: inline-flex;
+      display: none;
       align-items: center;
       gap: 5px;
       color: #cbd5e1;
@@ -236,14 +237,14 @@
   }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (min-width: 1440px) {
   .availability-badge-wrapper {
     .availability-pill {
-      padding: 5px 10px;
-
-      .badge-divider,
+      .badge-divider {
+        display: inline;
+      }
       .badge-time-text {
-        display: none !important;
+        display: inline-flex;
       }
     }
   }

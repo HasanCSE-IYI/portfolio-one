@@ -196,40 +196,22 @@ const Sidebar = () => {
             </NavLink>
           </nav>
 
-          {/* Actions: Socials + Tools + Resume / More */}
+          {/* Actions: Spotlight + Tools + Resume / More */}
           <div className="nav-actions">
-            <div className="social-links">
-              <a
-                href="https://github.com/HasanCSE-IYI"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub Profile"
-                className="social-btn"
-                title="GitHub"
-              >
-                <FontAwesomeIcon icon={faGithub} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/mahmud-al-hasan/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn Profile"
-                className="social-btn"
-                title="LinkedIn"
-              >
-                <FontAwesomeIcon icon={faLinkedin} />
-              </a>
-              <a
-                href="https://wa.me/8801727328200"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="WhatsApp: +880 1727 328200"
-                className="social-btn whatsapp"
-                title="WhatsApp"
-              >
-                <FontAwesomeIcon icon={faWhatsapp} />
-              </a>
-            </div>
+            {/* Quick Spotlight Trigger */}
+            <button
+              type="button"
+              className="spotlight-quick-btn"
+              onClick={() => {
+                playSound('pop')
+                setIsPaletteOpen(true)
+              }}
+              aria-label="Open Command Search (Cmd+K / Ctrl+K)"
+              title="Quick Search commands, pages & actions (⌘K / Ctrl+K)"
+            >
+              <FontAwesomeIcon icon={faSearch} className="spotlight-icon" />
+              <span className="spotlight-kbd">{isMac ? '⌘K' : 'Ctrl K'}</span>
+            </button>
 
             {/* Power Tools Toolbar */}
             <div className="tools-toolbar" role="toolbar" aria-label="Quick Tools">
@@ -288,21 +270,6 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faKeyboard} />
               </button>
             </div>
-
-            {/* Quick Spotlight Trigger */}
-            <button
-              type="button"
-              className="spotlight-quick-btn"
-              onClick={() => {
-                playSound('pop')
-                setIsPaletteOpen(true)
-              }}
-              aria-label="Open Command Search (Cmd+K / Ctrl+K)"
-              title="Quick Search commands, pages & actions (⌘K / Ctrl+K)"
-            >
-              <FontAwesomeIcon icon={faSearch} className="spotlight-icon" />
-              <span className="spotlight-kbd">{isMac ? '⌘K' : 'Ctrl K'}</span>
-            </button>
 
             {/* Resume Button */}
             <button
@@ -517,6 +484,60 @@ const Sidebar = () => {
                   </div>
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </Link>
+
+                {/* Social & Contact Channels */}
+                <div className="dropdown-section-label">CHANNELS &amp; CONNECT</div>
+                <a
+                  href="https://github.com/HasanCSE-IYI"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                  role="menuitem"
+                  onClick={() => setShowMoreMenu(false)}
+                >
+                  <span className="item-icon-box github-box">
+                    <FontAwesomeIcon icon={faGithub} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">GitHub Profile</span>
+                    <span className="item-sub-title">github.com/HasanCSE-IYI</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/mahmud-al-hasan/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                  role="menuitem"
+                  onClick={() => setShowMoreMenu(false)}
+                >
+                  <span className="item-icon-box linkedin-box">
+                    <FontAwesomeIcon icon={faLinkedin} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">LinkedIn Profile</span>
+                    <span className="item-sub-title">linkedin.com/in/mahmud-al-hasan</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </a>
+                <a
+                  href="https://wa.me/8801727328200"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="dropdown-item"
+                  role="menuitem"
+                  onClick={() => setShowMoreMenu(false)}
+                >
+                  <span className="item-icon-box whatsapp-box">
+                    <FontAwesomeIcon icon={faWhatsapp} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">WhatsApp Chat</span>
+                    <span className="item-sub-title">+880 1727-328200</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </a>
               </div>
             </div>
           </>
