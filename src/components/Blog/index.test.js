@@ -75,4 +75,19 @@ describe('Blog Component', () => {
     expect(screen.getByText('Mahmud al Hasan')).toBeInTheDocument();
     expect(screen.getByText(/The Challenge with Monolithic Layering/i)).toBeInTheDocument();
   });
+
+  it('renders Article Not Found fallback when slug does not exist', () => {
+    render(
+      <MemoryRouter initialEntries={['/blog/non-existent-article-slug']}>
+        <UiProvider>
+          <Routes>
+            <Route path="/blog/:slug" element={<Blog />} />
+          </Routes>
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(/Article Not Found/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Browse All Engineering Articles/i })).toBeInTheDocument();
+  });
 });

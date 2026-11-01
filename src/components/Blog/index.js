@@ -77,6 +77,38 @@ const Blog = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Handle Invalid Slug (Article Not Found)
+  if (slug && !currentArticle) {
+    return (
+      <div className="container blog-page blog-article-view">
+        <div className="article-container not-found-article">
+          <nav className="article-nav-bar" aria-label="Breadcrumb">
+            <Link
+              to="/blog"
+              className="back-btn"
+              onClick={() => playSound('click')}
+              aria-label="Back to all articles"
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
+              <span>Back to Articles</span>
+            </Link>
+          </nav>
+          <header className="article-header">
+            <h1 className="article-title">Article Not Found</h1>
+            <p className="article-subtitle">
+              The engineering note you requested does not exist or may have been relocated.
+            </p>
+          </header>
+          <div style={{ marginTop: '24px' }}>
+            <Link to="/blog" className="callout-action-btn" onClick={() => playSound('click')}>
+              <span>Browse All Engineering Articles</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Render Single Article Detail View
   if (slug && currentArticle) {
     return (
