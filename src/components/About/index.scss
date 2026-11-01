@@ -13,7 +13,7 @@
       font-size: clamp(24px, 4vw, 36px);
       font-family: var(--font-sans);
       font-weight: 700;
-      color: #f59e0b;
+      color: var(--primary-accent, #f59e0b);
       letter-spacing: -0.02em;
     }
 
@@ -626,9 +626,9 @@
     justify-content: flex-start;
 
     .about-cv-btn {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.28));
-      border: 1.5px solid #f59e0b;
-      color: #f59e0b;
+      background: linear-gradient(135deg, rgba(var(--primary-accent-rgb, 245, 158, 11), 0.22), rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12));
+      border: 1.5px solid var(--primary-accent, #f59e0b);
+      color: var(--primary-accent, #f59e0b);
       font-family: var(--font-sans);
       font-size: 1.35rem;
       font-weight: 700;
@@ -651,9 +651,9 @@
       }
 
       &:hover {
-        background: #f59e0b;
+        background: var(--primary-accent, #f59e0b);
         color: #0f172a;
-        box-shadow: 0 8px 30px rgba(245, 158, 11, 0.55);
+        box-shadow: 0 8px 30px var(--primary-accent-glow, rgba(245, 158, 11, 0.55));
         transform: translateY(-2.5px);
 
         .cv-btn-icon {
@@ -667,7 +667,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid #f59e0b;
+        outline: 2px solid var(--primary-accent, #f59e0b);
         outline-offset: 3px;
       }
     }

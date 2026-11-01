@@ -40,6 +40,13 @@ const Blog = () => {
     return () => clearTimeout(timer);
   }, [slug]);
 
+  // Set document title to article title when reading a specific article
+  useEffect(() => {
+    if (currentArticle?.title && typeof document !== 'undefined') {
+      document.title = `${currentArticle.title} | Mahmud al Hasan`;
+    }
+  }, [currentArticle]);
+
   // Robust cross-browser clipboard copy with execCommand fallback
   const safeCopyText = (text, onSuccess) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {

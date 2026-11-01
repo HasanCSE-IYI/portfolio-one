@@ -1,6 +1,16 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
+const PAGE_TITLES = {
+  '/': 'Mahmud al Hasan | Senior Backend Software Engineer',
+  '/about': 'About Me | Mahmud al Hasan (8+ Years Backend Engineering)',
+  '/resume': 'Executive Resume (CV) | Mahmud al Hasan',
+  '/contact': 'Contact & Collaboration | Mahmud al Hasan',
+  '/portfolio': 'Portfolio & Repositories | Mahmud al Hasan',
+  '/focus': 'Focus Station · Ambient Workspace | Mahmud al Hasan',
+  '/blog': 'Engineering Notes & Architecture Blog | Mahmud al Hasan',
+}
+
 const ScrollToTop = () => {
   const { pathname } = useLocation()
 
@@ -29,6 +39,17 @@ const ScrollToTop = () => {
         } catch {
           // ignore in testing environments without window.scrollTo support
         }
+      }
+    }
+
+    // Dynamic Route Titles for Accessibility (WCAG 2.4.2) and Browser History
+    if (typeof document !== 'undefined') {
+      if (PAGE_TITLES[pathname]) {
+        document.title = PAGE_TITLES[pathname]
+      } else if (pathname.startsWith('/blog/')) {
+        document.title = 'Engineering Article | Mahmud al Hasan'
+      } else {
+        document.title = 'Mahmud al Hasan | Senior Backend Software Engineer'
       }
     }
   }, [pathname])
