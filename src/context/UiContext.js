@@ -101,6 +101,9 @@ export const UiProvider = ({ children }) => {
     root.style.setProperty('--primary-accent-rgb', themeObj.rgb);
     root.style.setProperty('--primary-accent-glow', themeObj.glow);
     root.style.setProperty('--border-hover', `rgba(${themeObj.rgb}, 0.45)`);
+    root.style.setProperty('--accent-gold', themeObj.hex);
+    root.style.setProperty('--accent-gold-hover', themeObj.hoverHex);
+    root.style.setProperty('--accent-gold-glow', themeObj.glow);
     root.setAttribute('data-accent-theme', themeObj.id);
 
     try {

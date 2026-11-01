@@ -815,6 +815,17 @@ const Home = () => {
       return
     }
 
+    // Unix shell Ctrl+C cancel line behavior
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+      const hasSelection = typeof window !== 'undefined' && window.getSelection && window.getSelection().toString().length > 0;
+      if (!hasSelection && commandInput) {
+        e.preventDefault();
+        setCommandInput('');
+        setIsSuggestionsOpen(false);
+        return;
+      }
+    }
+
     if (e.key === 'Tab') {
       e.preventDefault()
       if (ghostSuggestion) {

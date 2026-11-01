@@ -33,6 +33,19 @@ const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // Dismiss tooltip on Escape (WCAG 2.1 AA SC 1.4.13)
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isTooltipVisible) {
+        setIsTooltipVisible(false);
+      }
+    };
+    if (isTooltipVisible) {
+      window.addEventListener('keydown', handleEscape);
+    }
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isTooltipVisible]);
+
   return (
     <div
       className={`availability-badge-wrapper ${compact ? 'compact' : ''}`}
