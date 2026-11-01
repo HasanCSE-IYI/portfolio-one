@@ -232,7 +232,7 @@ const Sidebar = () => {
             </div>
 
             {/* Power Tools Toolbar */}
-            <div className="tools-toolbar">
+            <div className="tools-toolbar" role="toolbar" aria-label="Quick Tools">
               {/* Terminal Quick Button */}
               <button
                 type="button"
@@ -269,7 +269,7 @@ const Sidebar = () => {
               {/* Public Guestbook & Wall */}
               <button
                 type="button"
-                className="action-tool-btn"
+                className="action-tool-btn tool-secondary"
                 onClick={openGuestbook}
                 aria-label="Open Public Guestbook"
                 title="Public Guestbook & Wall"
@@ -280,7 +280,7 @@ const Sidebar = () => {
               {/* Keyboard Shortcuts Cheatsheet */}
               <button
                 type="button"
-                className="action-tool-btn"
+                className="action-tool-btn tool-secondary"
                 onClick={openCheatsheet}
                 aria-label="Keyboard Shortcuts (?)"
                 title="Keyboard Shortcuts (?)"
@@ -313,9 +313,10 @@ const Sidebar = () => {
                 setIsResumeOpen(true)
               }}
               aria-label="View Resume"
+              title="Open Executive CV Preview & Download"
             >
               <FontAwesomeIcon icon={faFileAlt} className="resume-icon" />
-              <span>Resume</span>
+              <span>CV</span>
             </button>
 
             {/* More Menu Toggle (Mobile) */}

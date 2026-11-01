@@ -236,6 +236,19 @@
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .availability-badge-wrapper {
+    .availability-pill {
+      padding: 5px 10px;
+
+      .badge-divider,
+      .badge-time-text {
+        display: none !important;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 640px) {
   .availability-badge-wrapper {
     .availability-popover {
