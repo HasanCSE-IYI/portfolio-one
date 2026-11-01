@@ -152,6 +152,7 @@ const Portfolio = () => {
           <div className="category-filters" role="toolbar" aria-label="Project category filters">
             {CATEGORIES.map((cat) => (
               <button
+                type="button"
                 key={cat.id}
                 className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
                 onClick={() => setActiveCategory(cat.id)}
@@ -173,8 +174,10 @@ const Portfolio = () => {
                 FEATURED ARCHITECTURAL PROTOTYPE · .NET CORE 8
               </span>
               <button
+                type="button"
                 className="toggle-simulator-btn"
                 onClick={() => setShowSimulator(!showSimulator)}
+                aria-expanded={showSimulator}
               >
                 {showSimulator ? '▲ Hide API Simulator' : '▼ Open Interactive API Simulator'}
               </button>

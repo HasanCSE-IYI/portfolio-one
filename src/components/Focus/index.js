@@ -511,11 +511,36 @@ const Focus = () => {
     try {
       const encoded = btoa(JSON.stringify(active));
       const url = `${window.location.origin}/focus?mix=${encoded}`;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(url);
+
+      const triggerSuccess = () => {
         setShareCopied(true);
         setTimeout(() => setShareCopied(false), 2500);
+      };
+
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard
+          .writeText(url)
+          .then(triggerSuccess)
+          .catch(() => {
+            fallbackShareCopy(url, triggerSuccess);
+          });
+      } else {
+        fallbackShareCopy(url, triggerSuccess);
       }
+    } catch {}
+  };
+
+  const fallbackShareCopy = (text, onSuccess) => {
+    try {
+      const el = document.createElement('textarea');
+      el.value = text;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      if (onSuccess) onSuccess();
     } catch {}
   };
 

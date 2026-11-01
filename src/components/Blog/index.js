@@ -40,29 +40,56 @@ const Blog = () => {
     return () => clearTimeout(timer);
   }, [slug]);
 
+  // Robust cross-browser clipboard copy with execCommand fallback
+  const safeCopyText = (text, onSuccess) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          if (onSuccess) onSuccess();
+        })
+        .catch(() => {
+          fallbackCopy(text, onSuccess);
+        });
+    } else {
+      fallbackCopy(text, onSuccess);
+    }
+  };
+
+  const fallbackCopy = (text, onSuccess) => {
+    try {
+      const el = document.createElement('textarea');
+      el.value = text;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      if (onSuccess) onSuccess();
+    } catch {
+      // ignore
+    }
+  };
+
   // Handle code snippet copy
   const handleCopyCode = (codeText, id) => {
-    try {
-      navigator.clipboard.writeText(codeText.trim());
+    safeCopyText(codeText.trim(), () => {
       setCopiedCodeId(id);
       playSound('chime');
       setTimeout(() => setCopiedCodeId(null), 2500);
-    } catch {
-      // Fallback
-    }
+    });
   };
 
   // Handle article share link
   const handleShare = () => {
-    try {
-      const url = window.location.href;
-      navigator.clipboard.writeText(url);
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    if (!url) return;
+    safeCopyText(url, () => {
       setShareToast('Link copied to clipboard!');
       playSound('chime');
       setTimeout(() => setShareToast(''), 3000);
-    } catch {
-      // Fallback
-    }
+    });
   };
 
   // Filter articles by category and search

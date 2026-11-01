@@ -325,6 +325,24 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
   };
 
   const handleKeyDown = (e) => {
+    // Escape key to dismiss terminal
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      onClose();
+      return;
+    }
+
+    // Unix Ctrl+C: Cancel current input line if no text is selected
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+      const selection = window.getSelection()?.toString();
+      if (!selection) {
+        e.preventDefault();
+        setHistory((prev) => [...prev, { type: 'input', text: `${inputVal}^C` }]);
+        setInputVal('');
+        return;
+      }
+    }
+
     // Arrow Up / Down for command history
     if (e.key === 'ArrowUp') {
       e.preventDefault();

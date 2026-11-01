@@ -250,29 +250,40 @@ export const UiProvider = ({ children }) => {
         return;
       }
 
+      // 2. Close open modals via Escape (Always available even when input/textarea is focused)
+      if (e.key === 'Escape') {
+        if (isTerminalOpen) {
+          closeTerminal();
+          return;
+        }
+        if (isCheatsheetOpen) {
+          closeCheatsheet();
+          return;
+        }
+        if (isGuestbookOpen) {
+          closeGuestbook();
+          return;
+        }
+        if (isThemePickerOpen) {
+          closeThemePicker();
+          return;
+        }
+      }
+
       // If user is actively typing in an input or textarea, don't hijack alphanumeric single keys
       if (isInput) return;
 
-      // 2. Open Cheatsheet via '?'
+      // 3. Open Cheatsheet via '?'
       if (e.key === '?' && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         toggleCheatsheet();
         return;
       }
 
-      // 3. Toggle Sound Effects via 'M' or 'm'
+      // 4. Toggle Sound Effects via 'M' or 'm'
       if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         toggleSound();
-        return;
-      }
-
-      // 4. Close open modals via Escape
-      if (e.key === 'Escape') {
-        if (isTerminalOpen) closeTerminal();
-        if (isCheatsheetOpen) closeCheatsheet();
-        if (isGuestbookOpen) closeGuestbook();
-        if (isThemePickerOpen) closeThemePicker();
         return;
       }
 

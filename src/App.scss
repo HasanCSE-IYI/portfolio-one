@@ -79,7 +79,11 @@ a.btn-secondary {
     width: 64px;
     height: 4px;
     border-radius: 4px;
-    background: linear-gradient(90deg, #f59e0b, #38bdf8);
+    background: linear-gradient(
+      90deg,
+      var(--primary-accent, #f59e0b),
+      var(--primary-accent-glow, rgba(56, 189, 248, 0.6))
+    );
     animation: loaderBarAnim 1.4s ease-in-out infinite;
   }
 }

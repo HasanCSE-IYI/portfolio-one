@@ -78,10 +78,10 @@ const ResumeModal = ({ isOpen, onClose }) => {
             <Link to="/resume" className="full-page-link" onClick={onClose}>
               ↗ Open Full Page
             </Link>
-            <button className="print-btn" onClick={handlePrint}>
+            <button type="button" className="print-btn" onClick={handlePrint}>
               <FontAwesomeIcon icon={faPrint} /> Print / Save PDF
             </button>
-            <button className="close-btn" onClick={onClose} aria-label="Close modal">
+            <button type="button" className="close-btn" onClick={onClose} aria-label="Close modal">
               ✕
             </button>
           </div>
