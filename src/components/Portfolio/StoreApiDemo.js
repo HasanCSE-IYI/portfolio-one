@@ -547,19 +547,26 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
             </div>
             <div className="tab-switch">
               <button
+                type="button"
                 className={`tab-btn ${viewTab === 'csharp' ? 'active' : ''}`}
                 onClick={() => setViewTab('csharp')}
               >
                 C# Controller &amp; LINQ
               </button>
               <button
+                type="button"
                 className={`tab-btn ${viewTab === 'curl' ? 'active' : ''}`}
                 onClick={() => setViewTab('curl')}
               >
                 cURL Command
               </button>
             </div>
-            <button className="copy-btn" onClick={handleCopyCode}>
+            <button
+              type="button"
+              className="copy-btn"
+              onClick={handleCopyCode}
+              aria-label="Copy code snippet"
+            >
               {copiedCode ? '✓ Copied' : 'Copy'}
             </button>
           </div>
@@ -598,7 +605,12 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
             <div className="header-actions">
               {hasExecuted && (
                 <>
-                  <button className="copy-btn" onClick={handleCopyJson}>
+                  <button
+                    type="button"
+                    className="copy-btn"
+                    onClick={handleCopyJson}
+                    aria-label="Copy JSON response"
+                  >
                     {copiedJson ? '✓ Copied' : 'Copy JSON'}
                   </button>
                   <span className={`status-pill ${isErrorStatus ? 'error' : 'success'}`}>

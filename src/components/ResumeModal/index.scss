@@ -186,6 +186,8 @@
     .resume-sheet {
       padding: 30px;
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(245, 158, 11, 0.3) transparent;
       color: #e2e8f0;
       font-family: var(--font-resume, var(--font-sans));
       -webkit-font-smoothing: antialiased;

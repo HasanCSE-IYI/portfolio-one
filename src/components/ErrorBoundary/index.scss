@@ -206,6 +206,26 @@
         overflow-y: auto;
         white-space: pre-wrap;
         word-break: break-all;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(248, 113, 113, 0.35) rgba(0, 0, 0, 0.3);
+
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba(248, 113, 113, 0.35);
+          border-radius: 3px;
+
+          &:hover {
+            background: rgba(248, 113, 113, 0.6);
+          }
+        }
       }
     }
   }

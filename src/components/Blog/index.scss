@@ -619,6 +619,24 @@
           line-height: 1.6;
           color: #e2e8f0;
           -webkit-overflow-scrolling: touch;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(245, 158, 11, 0.35) rgba(255, 255, 255, 0.04);
+
+          &::-webkit-scrollbar {
+            height: 6px;
+          }
+          &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 3px;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.35);
+            border-radius: 3px;
+
+            &:hover {
+              background: rgba(245, 158, 11, 0.6);
+            }
+          }
         }
       }
     }
