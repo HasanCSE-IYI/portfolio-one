@@ -33,9 +33,9 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(245, 158, 11, 0.12);
-        color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.3);
+        background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12);
+        color: var(--primary-accent, #f59e0b);
+        border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
         padding: 5px 12px;
         border-radius: 20px;
         font-size: 1.25rem;
@@ -90,7 +90,7 @@
         }
 
         &:focus-visible {
-          outline: 2px solid #f59e0b;
+          outline: 2px solid var(--primary-accent, #f59e0b);
           outline-offset: 3px;
         }
 
@@ -102,7 +102,7 @@
 
           &:hover {
             background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(245, 158, 11, 0.4);
+            border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.4);
             color: #fff;
             transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
@@ -110,17 +110,17 @@
         }
 
         &.print-btn {
-          background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.25));
-          border-color: rgba(245, 158, 11, 0.5);
-          color: #f59e0b;
-          box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
+          background: linear-gradient(135deg, rgba(var(--primary-accent-rgb, 245, 158, 11), 0.22), rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12));
+          border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.5);
+          color: var(--primary-accent, #f59e0b);
+          box-shadow: 0 2px 10px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.2);
 
           &:hover {
-            background: #f59e0b;
+            background: var(--primary-accent, #f59e0b);
             color: #0f172a;
-            border-color: #f59e0b;
+            border-color: var(--primary-accent, #f59e0b);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+            box-shadow: 0 6px 20px var(--primary-accent-glow, rgba(245, 158, 11, 0.45));
           }
         }
 
@@ -369,12 +369,12 @@
 
         &:hover {
           background: rgba(255, 255, 255, 0.038);
-          border-color: rgba(245, 158, 11, 0.35);
+          border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
           transform: translateY(-1.5px);
           box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 
           &::before {
-            background: #f59e0b;
+            background: var(--primary-accent, #f59e0b);
           }
         }
 
@@ -512,15 +512,15 @@
               &.project-link-badge {
                 color: #fbbf24;
                 background: rgba(245, 158, 11, 0.1);
-                border: 1px solid rgba(245, 158, 11, 0.28);
+                border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.28);
                 text-decoration: none;
 
                 .cal-icon {
-                  color: #fbbf24;
+                  color: var(--primary-accent-hover, #fbbf24);
                 }
 
                 &:hover {
-                  background: #f59e0b;
+                  background: var(--primary-accent, #f59e0b);
                   color: #0f172a;
                   transform: translateY(-1px);
                   .cal-icon {
@@ -794,7 +794,7 @@
             }
 
             &:focus-visible {
-              outline: 2px solid #f59e0b;
+              outline: 2px solid var(--primary-accent, #f59e0b);
               outline-offset: 3px;
             }
 
@@ -806,7 +806,7 @@
 
               &:hover {
                 background: rgba(255, 255, 255, 0.1);
-                border-color: rgba(245, 158, 11, 0.4);
+                border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.4);
                 color: #fff;
                 transform: translateY(-2px);
                 box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
@@ -814,17 +814,17 @@
             }
 
             &.print-btn {
-              background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.25));
-              border-color: rgba(245, 158, 11, 0.5);
-              color: #f59e0b;
-              box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
+              background: linear-gradient(135deg, rgba(var(--primary-accent-rgb, 245, 158, 11), 0.22), rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12));
+              border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.5);
+              color: var(--primary-accent, #f59e0b);
+              box-shadow: 0 2px 10px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.2);
 
               &:hover {
-                background: #f59e0b;
+                background: var(--primary-accent, #f59e0b);
                 color: #0f172a;
-                border-color: #f59e0b;
+                border-color: var(--primary-accent, #f59e0b);
                 transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+                box-shadow: 0 6px 20px var(--primary-accent-glow, rgba(245, 158, 11, 0.45));
               }
             }
 

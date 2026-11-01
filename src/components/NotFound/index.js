@@ -1,7 +1,14 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './index.scss'
 
 const NotFound = () => {
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = '404 - Page Not Found | Mahmud al Hasan'
+    }
+  }, [])
+
   return (
     <div className="container not-found-page">
       <div className="not-found-card">

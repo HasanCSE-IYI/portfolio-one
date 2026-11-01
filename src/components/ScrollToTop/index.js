@@ -49,7 +49,7 @@ const ScrollToTop = () => {
       } else if (pathname.startsWith('/blog/')) {
         document.title = 'Engineering Article | Mahmud al Hasan'
       } else {
-        document.title = 'Mahmud al Hasan | Senior Backend Software Engineer'
+        document.title = '404 - Page Not Found | Mahmud al Hasan'
       }
     }
   }, [pathname])
