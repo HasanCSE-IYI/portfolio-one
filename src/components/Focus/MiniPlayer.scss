@@ -107,7 +107,7 @@
           font-size: 1.25rem;
 
           &.gold {
-            color: #f59e0b;
+            color: var(--primary-accent, #f59e0b);
           }
           &.red {
             color: #ef4444;
@@ -133,14 +133,14 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        background: rgba(245, 158, 11, 0.14);
-        border: 1px solid rgba(245, 158, 11, 0.3);
+        background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.14);
+        border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
         border-radius: 9999px;
         padding: 2px 8px;
 
         .timer-icon {
           font-size: 1.15rem;
-          color: #f59e0b;
+          color: var(--primary-accent, #f59e0b);
         }
 
         .timer-readout {
@@ -154,7 +154,7 @@
         .phase-indicator {
           font-size: 1.05rem;
           font-weight: 700;
-          color: #f59e0b;
+          color: var(--primary-accent, #f59e0b);
           letter-spacing: 0.04em;
         }
       }
@@ -210,7 +210,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid #f59e0b;
+        outline: 2px solid var(--primary-accent, #f59e0b);
         outline-offset: 2px;
       }
 
@@ -225,10 +225,10 @@
 
       &.timer-toggle {
         &.running {
-          background: #f59e0b;
+          background: var(--primary-accent, #f59e0b);
           color: #0f172a;
-          border-color: #f59e0b;
-          box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+          border-color: var(--primary-accent, #f59e0b);
+          box-shadow: 0 0 12px var(--primary-accent-glow, rgba(245, 158, 11, 0.6));
         }
       }
 
