@@ -352,40 +352,6 @@
         }
       }
 
-      // Closed State Mini Capsule Label
-      .trigger-mini-badge {
-        position: absolute;
-        top: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        background: rgba(13, 17, 24, 0.94);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 2px 8px;
-        border-radius: 9999px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        white-space: nowrap;
-        pointer-events: none;
-
-        .trigger-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #10b981;
-          box-shadow: 0 0 6px #10b981;
-        }
-
-        .trigger-text {
-          font-size: 1rem;
-          font-weight: 700;
-          color: #cbd5e1;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-      }
-
       &:hover {
         transform: scale(1.08);
         border-color: var(--primary-accent, #f59e0b);

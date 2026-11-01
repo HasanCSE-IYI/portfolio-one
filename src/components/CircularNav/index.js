@@ -111,6 +111,17 @@ const CircularNav = () => {
     setHoveredItem(null)
   }, [location.pathname])
 
+  // Close menu when user scrolls
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isOpen) {
+        setIsOpen(false)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [isOpen])
+
   // Keyboard accessibility: Escape closes menu, traps/handles focus
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -281,16 +292,6 @@ const CircularNav = () => {
                 className={`trigger-icon ${isOpen ? 'icon-close' : 'icon-compass'}`}
               />
             </span>
-
-            {/* Closed State Mini Label Capsule */}
-            {!isOpen && (
-              <span className="trigger-mini-badge">
-                <span className="trigger-dot" />
-                <span className="trigger-text">
-                  {currentActiveItem ? currentActiveItem.label : 'Menu'}
-                </span>
-              </span>
-            )}
           </button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 // Home Page Modern Hero Styles (Clean, Powerful, Professional)
 .home-page {
-  padding-bottom: 60px;
+  padding-bottom: calc(120px + env(safe-area-inset-bottom, 20px));
 
   .hero-grid {
     display: grid;
@@ -200,10 +200,15 @@
 
     @media screen and (max-width: 480px) {
       flex-direction: column;
+      gap: 10px;
+      margin-top: 18px;
 
       .flat-button {
         width: 100%;
         text-align: center;
+        min-height: 44px;
+        padding: 10px 18px;
+        font-size: 1.18rem;
       }
     }
   }
