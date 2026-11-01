@@ -46,31 +46,48 @@
   }
 
   .pipeline-flow-cont {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    padding-bottom: 1rem;
-    margin-bottom: 1.5rem;
-
+    // Hide ugly native scrollbars completely across all browsers and engines
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     &::-webkit-scrollbar {
-      height: 6px;
+      display: none;
+      width: 0;
+      height: 0;
     }
-    &::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: rgba(245, 158, 11, 0.3);
-      border-radius: 4px;
+
+    // Default for smaller / overflowing screens: smooth swipe scrolling
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    padding: 0.4rem 0.2rem 0.8rem 0.2rem;
+    margin-bottom: 1.2rem;
+
+    // Desktop: fit all 7 nodes naturally without overflow or scrollbars
+    @media (min-width: 1024px) {
+      overflow-x: visible;
+      overflow-y: visible;
+      padding: 0.4rem 0;
+      margin-bottom: 1.5rem;
     }
   }
 
   .pipeline-nodes {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     min-width: max-content;
-    padding: 0.4rem 0.2rem;
+    padding: 0.2rem;
+
+    @media (min-width: 1024px) {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 0.35rem;
+      padding: 0;
+    }
   }
 
   .pipeline-node-btn {
@@ -85,8 +102,14 @@
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: left;
-    min-width: 140px;
+    min-width: 135px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    @media (min-width: 1024px) {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0.8rem 0.65rem;
+    }
 
     &:active {
       transform: scale(0.96);
@@ -107,20 +130,35 @@
 
     .step-name {
       font-family: var(--font-sans);
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 600;
       color: #e2e8f0;
       white-space: nowrap;
+
+      @media (min-width: 1024px) {
+        font-size: 1.16rem;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     .step-badge {
       font-family: var(--font-mono);
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       color: #38bdf8;
       background: rgba(56, 189, 248, 0.1);
       padding: 0.15rem 0.45rem;
       border-radius: 6px;
       white-space: nowrap;
+
+      @media (min-width: 1024px) {
+        font-size: 1rem;
+        padding: 0.15rem 0.35rem;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     &:hover {
@@ -159,6 +197,14 @@
     user-select: none;
     padding: 0 0.1rem;
     animation: pulseArrow 2.5s ease-in-out infinite;
+
+    @media (min-width: 1024px) {
+      align-self: center;
+      flex-shrink: 0;
+      font-size: 1.05rem;
+      margin: 0 2px;
+      padding: 0;
+    }
   }
 
   @keyframes pulseArrow {
@@ -188,7 +234,7 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 0.8rem;
+      gap: 1rem;
       padding-bottom: 1.1rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       margin-bottom: 1.1rem;
@@ -217,15 +263,70 @@
         }
       }
 
-      .tech-badge {
-        font-family: var(--font-mono);
-        font-size: 1.15rem;
-        font-weight: 500;
-        color: #38bdf8;
-        background: rgba(56, 189, 248, 0.08);
-        border: 1px solid rgba(56, 189, 248, 0.25);
-        padding: 0.35rem 0.75rem;
-        border-radius: 8px;
+      .inspector-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+
+        .tech-badge {
+          font-family: var(--font-mono);
+          font-size: 1.15rem;
+          font-weight: 500;
+          color: #38bdf8;
+          background: rgba(56, 189, 248, 0.08);
+          border: 1px solid rgba(56, 189, 248, 0.25);
+          padding: 0.35rem 0.75rem;
+          border-radius: 8px;
+        }
+
+        .stage-nav-controls {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 10px;
+          padding: 3px 6px;
+
+          .stage-nav-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+
+            &:hover {
+              background: rgba(245, 158, 11, 0.18);
+              border-color: #f59e0b;
+              color: #f59e0b;
+              transform: translateY(-1px);
+            }
+
+            &:active {
+              transform: scale(0.94);
+            }
+
+            &:focus-visible {
+              outline: 2px solid #f59e0b;
+              outline-offset: 2px;
+            }
+          }
+
+          .stage-nav-counter {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: #94a3b8;
+            padding: 0 4px;
+            white-space: nowrap;
+          }
+        }
       }
     }
 
@@ -286,6 +387,17 @@
 
     .pipeline-inspector {
       padding: 1.2rem 1rem;
+
+      .inspector-header {
+        .inspector-actions {
+          width: 100%;
+          justify-content: space-between;
+
+          .stage-nav-controls {
+            margin-left: auto;
+          }
+        }
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { playClickSound } from '../../utils/soundEffects';
 import './index.scss';
 
 const PIPELINE_STEPS = [
@@ -73,7 +74,8 @@ const RequestPipeline = () => {
   const flowContainerRef = useRef(null);
   const isInitialMount = useRef(true);
 
-  const activeStep = PIPELINE_STEPS.find((s) => s.id === activeStepId) || PIPELINE_STEPS[1];
+  const currentStepIdx = PIPELINE_STEPS.findIndex((s) => s.id === activeStepId);
+  const activeStep = PIPELINE_STEPS[currentStepIdx] || PIPELINE_STEPS[1];
 
   useEffect(() => {
     // Avoid any scrolling on initial mount so the window scroll position stays at the top
@@ -108,13 +110,32 @@ const RequestPipeline = () => {
     }
   }, [activeStepId]);
 
+  const handleSelectStep = (stepId) => {
+    playClickSound();
+    setActiveStepId(stepId);
+  };
+
+  const handlePrevStep = () => {
+    playClickSound();
+    const prevIdx = (currentStepIdx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
+    setActiveStepId(PIPELINE_STEPS[prevIdx].id);
+  };
+
+  const handleNextStep = () => {
+    playClickSound();
+    const nextIdx = (currentStepIdx + 1) % PIPELINE_STEPS.length;
+    setActiveStepId(PIPELINE_STEPS[nextIdx].id);
+  };
+
   const handleNodeKeyDown = (e, idx) => {
     if (e.key === 'ArrowRight') {
       e.preventDefault();
+      playClickSound();
       const nextIdx = (idx + 1) % PIPELINE_STEPS.length;
       setActiveStepId(PIPELINE_STEPS[nextIdx].id);
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
+      playClickSound();
       const prevIdx = (idx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
       setActiveStepId(PIPELINE_STEPS[prevIdx].id);
     }
@@ -136,11 +157,13 @@ const RequestPipeline = () => {
             <React.Fragment key={step.id}>
               <button
                 ref={activeStepId === step.id ? activeBtnRef : null}
+                id={`tab-${step.id}`}
                 type="button"
                 role="tab"
                 aria-selected={activeStepId === step.id}
+                aria-controls={`panel-${step.id}`}
                 className={`pipeline-node-btn ${activeStepId === step.id ? 'active' : ''}`}
-                onClick={() => setActiveStepId(step.id)}
+                onClick={() => handleSelectStep(step.id)}
                 onKeyDown={(e) => handleNodeKeyDown(e, idx)}
                 title={`Stage ${step.step}: ${step.name} (${step.badge})`}
               >
@@ -156,14 +179,46 @@ const RequestPipeline = () => {
         </div>
       </div>
 
-      <div className="pipeline-inspector">
+      <div
+        className="pipeline-inspector"
+        role="tabpanel"
+        id={`panel-${activeStep.id}`}
+        aria-labelledby={`tab-${activeStep.id}`}
+      >
         <div className="inspector-header">
           <div className="inspector-title">
             <span className="stage-tag">{activeStep.step}</span>
             <span className="stage-name">{activeStep.name}</span>
           </div>
-          <span className="tech-badge">{activeStep.tech}</span>
+
+          <div className="inspector-actions">
+            <span className="tech-badge">{activeStep.tech}</span>
+            <div className="stage-nav-controls" role="group" aria-label="Pipeline navigation controls">
+              <button
+                type="button"
+                className="stage-nav-btn prev-btn"
+                onClick={handlePrevStep}
+                aria-label="Previous pipeline stage"
+                title="Previous Stage (ArrowLeft)"
+              >
+                ← Prev
+              </button>
+              <span className="stage-nav-counter">
+                {currentStepIdx + 1} / {PIPELINE_STEPS.length}
+              </span>
+              <button
+                type="button"
+                className="stage-nav-btn next-btn"
+                onClick={handleNextStep}
+                aria-label="Next pipeline stage"
+                title="Next Stage (ArrowRight)"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
         </div>
+
         <div className="inspector-body">
           <div className="detail-item">
             <span className="detail-label">Responsibility:</span>

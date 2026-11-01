@@ -38,3 +38,25 @@ test('handles arrow key navigation between stages without scrolling the window',
   expect(screen.getByRole('tab', { name: /Controller & DTO/i })).toHaveClass('active');
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
+
+test('supports stepping through pipeline stages via Next and Prev controls', () => {
+  render(<RequestPipeline />);
+
+  // Initially on stage 2 (JWT Middleware)
+  expect(screen.getByText(/2 \/ 7/i)).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: /JWT Middleware/i })).toHaveClass('active');
+
+  // Click Next
+  const nextBtn = screen.getByRole('button', { name: /Next pipeline stage/i });
+  fireEvent.click(nextBtn);
+
+  expect(screen.getByText(/3 \/ 7/i)).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: /Controller & DTO/i })).toHaveClass('active');
+
+  // Click Prev
+  const prevBtn = screen.getByRole('button', { name: /Previous pipeline stage/i });
+  fireEvent.click(prevBtn);
+
+  expect(screen.getByText(/2 \/ 7/i)).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: /JWT Middleware/i })).toHaveClass('active');
+});
