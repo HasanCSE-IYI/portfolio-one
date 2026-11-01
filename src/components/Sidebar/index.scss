@@ -739,134 +739,8 @@
   }
 }
 
-// Modern Floating Bottom Island Dock (Mobile & Tablet)
-.mobile-bottom-dock {
-  position: fixed;
-  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 24px);
-  max-width: 430px;
-  height: 64px;
-  padding: 4px 10px;
-  background: rgba(12, 16, 24, 0.94);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 36px;
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 1000;
-  box-sizing: border-box;
-
-  .dock-item {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    height: 54px;
-    border-radius: 27px;
-    text-decoration: none;
-    color: #94a3b8;
-    background: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
-    font-family: var(--font-sans);
-    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
-    position: relative;
-
-    .dock-icon {
-      font-size: 17px;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease, filter 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .dock-label {
-      font-size: 1.15rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      line-height: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-      transition: color 0.2s ease;
-    }
-
-    &:hover {
-      color: #f8fafc;
-      background: rgba(255, 255, 255, 0.05);
-
-      .dock-icon {
-        transform: translateY(-1.5px);
-        color: #f59e0b;
-      }
-    }
-
-    &:active {
-      transform: scale(0.92);
-    }
-
-    &:focus-visible {
-      outline: 2px solid #f59e0b;
-      outline-offset: 2px;
-    }
-
-    &.active {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.14));
-      border-color: rgba(245, 158, 11, 0.4);
-      color: #f59e0b;
-      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-
-      .dock-icon {
-        color: #f59e0b;
-        transform: translateY(-1px) scale(1.12);
-        filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
-      }
-
-      .dock-label {
-        font-weight: 700;
-        color: #f59e0b;
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 3px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 14px;
-        height: 2px;
-        border-radius: 9999px;
-        background: #f59e0b;
-        box-shadow: 0 0 8px #f59e0b;
-      }
-    }
-
-    &.cv-btn {
-      color: #f59e0b;
-
-      &:hover {
-        background: rgba(245, 158, 11, 0.2);
-      }
-    }
-  }
-}
-
 // Desktop & Large Tablet Styling (min-width: 992px)
 @media screen and (min-width: 992px) {
-  // Hide bottom mobile dock on desktop
-  .mobile-bottom-dock {
-    display: none !important;
-  }
-
   .modern-navbar {
     top: 14px;
     padding: 0 24px;
@@ -1068,25 +942,6 @@
       }
     }
   }
-
-  .mobile-bottom-dock {
-    width: calc(100% - 16px);
-    height: 60px;
-    padding: 3px 6px;
-
-    .dock-item {
-      height: 48px;
-
-      .dock-icon {
-        font-size: 16px;
-      }
-
-      .dock-label {
-        font-size: 1.1rem;
-        font-weight: 600;
-      }
-    }
-  }
 }
 
 // Extra Narrow Devices (<= 360px)
@@ -1102,7 +957,7 @@
 body.zen-mode-active,
 body.breathing-mode-active {
   .modern-navbar,
-  .mobile-bottom-dock {
+  .circular-nav-container {
     display: none !important;
     pointer-events: none !important;
     opacity: 0 !important;
