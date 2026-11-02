@@ -2141,7 +2141,7 @@ const Focus = () => {
                             className="sound-volume-slider"
                             aria-label={`${sound.name} volume`}
                             style={{
-                              background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${vol}%, rgba(255, 255, 255, 0.14) ${vol}%)`
+                              background: `linear-gradient(to right, var(--primary-accent, #f59e0b) 0%, var(--primary-accent, #f59e0b) ${vol}%, rgba(255, 255, 255, 0.14) ${vol}%)`
                             }}
                           />
                           <span className="tile-vol-readout">{vol}%</span>
