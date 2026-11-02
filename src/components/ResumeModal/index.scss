@@ -18,7 +18,7 @@
 
   .resume-modal-content {
     background: #11141a;
-    border: 1px solid rgba(245, 158, 11, 0.35);
+    border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
     border-radius: 12px;
     width: 100%;
     max-width: 860px;
@@ -187,7 +187,7 @@
       padding: 30px;
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: rgba(245, 158, 11, 0.3) transparent;
+      scrollbar-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3) transparent;
       color: #e2e8f0;
       font-family: var(--font-resume, var(--font-sans));
       -webkit-font-smoothing: antialiased;
@@ -203,12 +203,12 @@
         width: 6px;
       }
       &::-webkit-scrollbar-thumb {
-        background: rgba(245, 158, 11, 0.3);
+        background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
         border-radius: 4px;
       }
 
       .resume-header {
-        border-bottom: 2px solid rgba(245, 158, 11, 0.35);
+        border-bottom: 2px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
         padding-bottom: 16px;
         margin-bottom: 20px;
 
@@ -373,9 +373,9 @@
             .period {
               font-size: 1.25rem;
               font-family: var(--font-mono);
-              color: #fbbf24;
-              background: rgba(245, 158, 11, 0.1);
-              border: 1px solid rgba(245, 158, 11, 0.25);
+              color: var(--primary-accent-hover, #fbbf24);
+              background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.1);
+              border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.25);
               padding: 4px 10px;
               border-radius: 4px;
               white-space: nowrap;
@@ -442,9 +442,9 @@
                 font-family: var(--font-mono);
                 font-size: 1.2rem;
                 font-weight: 600;
-                color: #fbbf24;
-                background: rgba(245, 158, 11, 0.12);
-                border: 1px solid rgba(245, 158, 11, 0.3);
+                color: var(--primary-accent-hover, #fbbf24);
+                background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12);
+                border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
                 padding: 3px 10px;
                 border-radius: 999px;
               }

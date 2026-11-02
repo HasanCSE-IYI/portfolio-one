@@ -27,7 +27,7 @@
       transform: translateX(-50%);
       width: 220px;
       height: 220px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, rgba(239, 68, 68, 0.08) 50%, transparent 75%);
+      background: radial-gradient(circle, rgba(var(--primary-accent-rgb, 245, 158, 11), 0.22) 0%, rgba(239, 68, 68, 0.08) 50%, transparent 75%);
       pointer-events: none;
       z-index: 0;
       filter: blur(24px);
@@ -39,14 +39,14 @@
       font-size: clamp(72px, 14vw, 108px);
       font-weight: 800;
       font-family: var(--font-mono);
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 45%, #ef4444 100%);
+      background: linear-gradient(135deg, var(--primary-accent-hover, #fbbf24) 0%, var(--primary-accent, #f59e0b) 45%, #ef4444 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       line-height: 1;
       display: block;
       margin-bottom: 12px;
       letter-spacing: -3px;
-      text-shadow: 0 0 40px rgba(245, 158, 11, 0.25);
+      text-shadow: 0 0 40px var(--primary-accent-glow, rgba(245, 158, 11, 0.25));
     }
 
     .error-title {
@@ -146,10 +146,10 @@
 
         &:hover {
           background: rgba(255, 255, 255, 0.12);
-          border-color: rgba(245, 158, 11, 0.5);
-          color: #fbbf24;
+          border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.5);
+          color: var(--primary-accent-hover, #fbbf24);
           transform: translateY(-2.5px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 18px rgba(245, 158, 11, 0.25);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 18px var(--primary-accent-glow, rgba(245, 158, 11, 0.25));
         }
       }
     }

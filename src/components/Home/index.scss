@@ -104,7 +104,7 @@
           display: inline-block;
           animation: rotateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 0.42s;
-          filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+          filter: drop-shadow(0 0 16px var(--primary-accent-glow, rgba(245, 158, 11, 0.6)));
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 
           @media (prefers-reduced-motion: reduce) {
@@ -114,7 +114,7 @@
 
           &:hover {
             transform: scale(1.15) translateY(-4px) rotate(4deg);
-            filter: drop-shadow(0 0 24px rgba(245, 158, 11, 0.85));
+            filter: drop-shadow(0 0 24px var(--primary-accent-glow, rgba(245, 158, 11, 0.85)));
           }
         }
       }
@@ -833,7 +833,7 @@
                     border-radius: 4px;
 
                     &.dotnet { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
-                    &.cloud { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+                    &.cloud { background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.15); color: var(--primary-accent, #f59e0b); }
                     &.database { background: rgba(16, 185, 129, 0.15); color: #34d399; }
                   }
                 }
@@ -906,7 +906,7 @@
         .terminal-cli-zone {
           margin-top: 10px;
           padding-top: 10px;
-          border-top: 1px dashed rgba(245, 158, 11, 0.25);
+          border-top: 1px dashed rgba(var(--primary-accent-rgb, 245, 158, 11), 0.25);
           display: flex;
           flex-direction: column;
           gap: 10px;
@@ -971,7 +971,7 @@
             overflow-y: auto;
             padding-right: 4px;
             scrollbar-width: thin;
-            scrollbar-color: rgba(245, 158, 11, 0.35) rgba(0, 0, 0, 0.2);
+            scrollbar-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35) rgba(0, 0, 0, 0.2);
 
             &::-webkit-scrollbar {
               width: 5px;
@@ -980,11 +980,11 @@
               background: rgba(0, 0, 0, 0.2);
             }
             &::-webkit-scrollbar-thumb {
-              background: rgba(245, 158, 11, 0.35);
+              background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
               border-radius: 4px;
 
               &:hover {
-                background: rgba(245, 158, 11, 0.55);
+                background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.55);
               }
             }
 
@@ -1114,9 +1114,9 @@
                     border: 1px solid rgba(56, 189, 248, 0.3);
                   }
                   &.skills-badge {
-                    background: rgba(245, 158, 11, 0.15);
-                    color: #f59e0b;
-                    border: 1px solid rgba(245, 158, 11, 0.3);
+                    background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.15);
+                    color: var(--primary-accent, #f59e0b);
+                    border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
                   }
                   &.projects-badge {
                     background: rgba(99, 102, 241, 0.15);
@@ -1134,9 +1134,9 @@
                     border: 1px solid rgba(236, 72, 153, 0.3);
                   }
                   &.exp-badge {
-                    background: rgba(245, 158, 11, 0.15);
-                    color: #f59e0b;
-                    border: 1px solid rgba(245, 158, 11, 0.3);
+                    background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.15);
+                    color: var(--primary-accent, #f59e0b);
+                    border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
                   }
                   &.contact-badge {
                     background: rgba(34, 197, 94, 0.15);
@@ -1310,9 +1310,9 @@
                           border: 1px solid rgba(96, 165, 250, 0.3);
                         }
                         &.backend {
-                          background: rgba(245, 158, 11, 0.15);
-                          color: #f59e0b;
-                          border: 1px solid rgba(245, 158, 11, 0.3);
+                          background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.15);
+                          color: var(--primary-accent, #f59e0b);
+                          border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
                         }
                         &.database {
                           background: rgba(16, 185, 129, 0.15);
@@ -1389,8 +1389,8 @@
                             color: #38bdf8;
                           }
                           &.backend {
-                            background: rgba(245, 158, 11, 0.15);
-                            color: #f59e0b;
+                            background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.15);
+                            color: var(--primary-accent, #f59e0b);
                           }
                           &.edge {
                             background: rgba(16, 185, 129, 0.15);
@@ -1489,8 +1489,8 @@
                       font-family: var(--font-mono);
                       font-size: 1.15rem;
                       line-height: 1.15;
-                      color: #f59e0b;
-                      text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+                      color: var(--primary-accent, #f59e0b);
+                      text-shadow: 0 0 10px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.4);
                     }
 
                     .neofetch-meta {
@@ -1578,7 +1578,7 @@
                     gap: 8px;
 
                     .exp-cli-item {
-                      border-left: 2px solid rgba(245, 158, 11, 0.4);
+                      border-left: 2px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.4);
                       padding-left: 8px;
 
                       .exp-cli-header {
@@ -1595,7 +1595,7 @@
                         }
 
                         .exp-company {
-                          color: #f59e0b;
+                          color: var(--primary-accent, #f59e0b);
                           font-size: 1.15rem;
                         }
 
@@ -1640,9 +1640,9 @@
                     align-items: center;
 
                     .resume-btn {
-                      background: rgba(245, 158, 11, 0.15);
-                      border: 1px solid rgba(245, 158, 11, 0.35);
-                      color: #f59e0b;
+                      background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.15);
+                      border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
+                      color: var(--primary-accent, #f59e0b);
                       padding: 4px 10px;
                       border-radius: 5px;
                       font-weight: 600;
@@ -1915,8 +1915,8 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
             &:focus-within {
-              border-color: #f59e0b;
-              box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+              border-color: var(--primary-accent, #f59e0b);
+              box-shadow: 0 0 0 2px rgba(var(--primary-accent-rgb, 245, 158, 11), 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.4);
             }
 
             .prompt-sym {
@@ -1980,7 +1980,7 @@
 
                 .ghost-suffix {
                   color: rgba(148, 163, 184, 0.5);
-                  background: rgba(245, 158, 11, 0.08);
+                  background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.08);
                   border-radius: 2px;
                   padding: 0 2px;
                 }
@@ -2456,7 +2456,7 @@
       background: rgba(14, 18, 26, 0.88);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(245, 158, 11, 0.35);
+      border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
       border-radius: 14px;
       padding: 24px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);

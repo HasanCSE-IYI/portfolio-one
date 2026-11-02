@@ -54,8 +54,8 @@
           font-size: 1.05rem;
           font-weight: 700;
           text-transform: uppercase;
-          background: rgba(245, 158, 11, 0.12);
-          border: 1px solid rgba(245, 158, 11, 0.25);
+          background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12);
+          border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.25);
           color: var(--primary-accent, #f59e0b);
           padding: 2px 8px;
           border-radius: 9999px;

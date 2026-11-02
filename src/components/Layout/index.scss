@@ -115,7 +115,7 @@ body.breathing-mode-active .container {
   .text-animate-hover {
     transition: all 0.2s ease;
     &:hover {
-      color: #f59e0b;
+      color: var(--primary-accent, #f59e0b);
     }
   }
 }

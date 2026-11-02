@@ -143,13 +143,17 @@ const Guestbook = ({ isOpen, onClose }) => {
             </h4>
 
             {isSuccess && (
-              <div className="success-banner">
+              <div className="success-banner" role="status" aria-live="polite">
                 <FontAwesomeIcon icon={faCheck} />
                 <span>Thank you! Your note has been pinned to the guestbook wall.</span>
               </div>
             )}
 
-            {errorMsg && <div className="error-banner">{errorMsg}</div>}
+            {errorMsg && (
+              <div className="error-banner" role="alert" aria-live="assertive">
+                {errorMsg}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="guestbook-form">
               <div className="avatar-picker-row">
