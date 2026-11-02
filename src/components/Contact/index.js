@@ -361,6 +361,19 @@ const Contact = () => {
 
   const sendEmail = (e) => {
     e.preventDefault()
+
+    // Bot detection via honeypot field
+    if (form.current?._gotcha?.value) {
+      setIsSubmitting(false)
+      setFormFeedback({
+        type: 'success',
+        title: 'Message Delivered Successfully!',
+        message: 'Thank you for reaching out! Mahmud has received your message and will reply shortly.',
+      })
+      if (form.current) form.current.reset()
+      return
+    }
+
     setIsSubmitting(true)
     setFormFeedback(null)
 
@@ -495,12 +508,21 @@ const Contact = () => {
           {/* Collaboration Tiers (Inspired by Al Nahian's Work With Me section) */}
           <div className="collaboration-section">
             <h2 className="section-title">Ways We Can Work Together</h2>
-            <div className="tiers-grid">
+            <div className="tiers-grid" role="group" aria-label="Collaboration and engagement types">
               {COLLABORATION_TIERS.map((tier, idx) => (
                 <div
                   className={`tier-card ${selectedTier === tier.title ? 'selected' : ''}`}
                   key={idx}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={selectedTier === tier.title}
                   onClick={() => handleSelectTier(tier.title)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleSelectTier(tier.title)
+                    }
+                  }}
                   title="Click to select this engagement type"
                 >
                   <div className="tier-header">
@@ -586,6 +608,15 @@ const Contact = () => {
 
             <div className="contact-form">
               <form ref={form} onSubmit={sendEmail}>
+                {/* Honeypot field for anti-bot spam protection */}
+                <input
+                  type="text"
+                  name="_gotcha"
+                  style={{ display: 'none' }}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
                 <ul>
                   <li className="half">
                     <input

@@ -400,8 +400,12 @@ const Focus = () => {
         const barCount = 28;
         const totalSpacing = (barCount - 1) * 3;
         const barWidth = Math.max(3, (width - totalSpacing) / barCount);
+        const themeAccent =
+          (typeof window !== 'undefined' &&
+            getComputedStyle(document.documentElement).getPropertyValue('--primary-accent')?.trim()) ||
+          '#f59e0b';
         const grad = ctx.createLinearGradient(0, height, 0, 0);
-        grad.addColorStop(0, '#f59e0b');
+        grad.addColorStop(0, themeAccent);
         grad.addColorStop(0.5, '#38bdf8');
         grad.addColorStop(1, '#a855f7');
 

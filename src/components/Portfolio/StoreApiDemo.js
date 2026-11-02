@@ -355,8 +355,11 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
       </div>
 
       <div className="demo-controls">
-        <div className="endpoint-selector">
+        <div className="endpoint-selector" role="tablist" aria-label="API Endpoints">
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeEndpointId === 'get-products'}
             className={`endpoint-btn ${activeEndpointId === 'get-products' ? 'active' : ''}`}
             onClick={() => {
               setActiveEndpointId('get-products');
@@ -369,6 +372,9 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
           {STATIC_ENDPOINTS.map((ep) => (
             <button
               key={ep.id}
+              type="button"
+              role="tab"
+              aria-selected={activeEndpointId === ep.id}
               className={`endpoint-btn ${activeEndpointId === ep.id ? 'active' : ''}`}
               onClick={() => {
                 setActiveEndpointId(ep.id);
@@ -391,6 +397,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                   <button
                     key={cat}
                     type="button"
+                    aria-pressed={queryCategory === cat}
                     className={`param-pill ${queryCategory === cat ? 'active' : ''}`}
                     onClick={() => {
                       setQueryCategory(cat);
@@ -444,6 +451,8 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                     <button
                       key={p}
                       type="button"
+                      aria-label={`Page ${p}`}
+                      aria-current={safePage === p ? 'page' : undefined}
                       className={`param-pill page-pill ${safePage === p ? 'active' : ''}`}
                       onClick={() => {
                         setQueryPage(p);
@@ -463,6 +472,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                     <button
                       key={size}
                       type="button"
+                      aria-pressed={queryPageSize === size}
                       className={`param-pill ${queryPageSize === size ? 'active' : ''}`}
                       onClick={() => {
                         setQueryPageSize(size);
