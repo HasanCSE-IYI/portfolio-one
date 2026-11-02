@@ -98,6 +98,18 @@ const Sidebar = () => {
     setShowMoreMenu(false)
   }, [location.pathname])
 
+  // Prevent background scrolling while mobile extra menu is open
+  useEffect(() => {
+    if (showMoreMenu) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [showMoreMenu])
+
   // Scroll to top if clicking Home while already on the home page
   const handleHomeClick = () => {
     if (location.pathname === '/') {

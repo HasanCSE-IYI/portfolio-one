@@ -33,6 +33,7 @@ import {
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
 import RequestPipeline from '../RequestPipeline'
+import { playTickSound } from '../../utils/soundEffects'
 import './index.scss'
 import portfolioData from '../../data/portfolio.json'
 
@@ -195,25 +196,7 @@ const Home = () => {
 
   const playTerminalClick = () => {
     if (!isSoundEnabled) return
-    try {
-      if (typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext)) {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext
-        const ctx = new AudioCtx()
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
-        osc.type = 'sine'
-        osc.frequency.setValueAtTime(750, ctx.currentTime)
-        osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.025)
-        gain.gain.setValueAtTime(0.035, ctx.currentTime)
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025)
-        osc.connect(gain)
-        gain.connect(ctx.destination)
-        osc.start()
-        osc.stop(ctx.currentTime + 0.025)
-      }
-    } catch (err) {
-      // Audio context might be restricted
-    }
+    playTickSound(true)
   }
 
   const handleDeleteHistoryItem = (idToDelete) => {

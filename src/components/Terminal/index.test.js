@@ -93,4 +93,36 @@ describe('Terminal Component', () => {
     fireEvent.click(closeDot);
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
+
+  it('executes focus command and displays navigation message', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'focus' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/Launching Focus Station/i)).toBeInTheDocument();
+  });
+
+  it('executes portfolio command and displays navigation message', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'portfolio' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/Navigating to Portfolio & Repositories/i)).toBeInTheDocument();
+  });
 });

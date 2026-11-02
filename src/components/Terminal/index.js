@@ -8,12 +8,16 @@ import './index.scss';
 
 const COMMANDS_LIST = [
   { cmd: 'help', desc: 'Display all available shell commands' },
+  { cmd: 'home', desc: 'Navigate to portfolio home page' },
   { cmd: 'about', desc: 'Read executive engineer bio & summary' },
   { cmd: 'skills', desc: 'List core backend & fullstack technical stack' },
   { cmd: 'projects', desc: 'Display featured production architecture repositories' },
+  { cmd: 'portfolio', desc: 'Navigate to interactive portfolio & GitHub repos' },
+  { cmd: 'focus', desc: 'Launch ambient Focus Station & Pomodoro workspace' },
   { cmd: 'contact', desc: 'Get direct communication channels & coordinates' },
   { cmd: 'resume', desc: 'Open the printable executive resume modal' },
   { cmd: 'blog', desc: 'Browse latest engineering articles & deep-dives' },
+  { cmd: 'cheatsheet', desc: 'Open keyboard shortcuts cheatsheet modal' },
   { cmd: 'theme', desc: 'Switch accent theme: theme [gold|cyan|emerald|violet|rose]' },
   { cmd: 'sound', desc: 'Toggle sound effects: sound [on|off]' },
   { cmd: 'time', desc: 'Print current Bangladesh Standard Time (BST / UTC+6)' },
@@ -40,7 +44,7 @@ const INITIAL_GREETING = [
 
 const Terminal = ({ isOpen, onClose, onOpenResumeModal }) => {
   const navigate = useNavigate();
-  const { playSound, setAccentTheme, toggleSound, soundEnabled, openGuestbook } = useUi();
+  const { playSound, setAccentTheme, toggleSound, soundEnabled, openGuestbook, openCheatsheet } = useUi();
 
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState(INITIAL_GREETING);
@@ -50,6 +54,18 @@ const Terminal = ({ isOpen, onClose, onOpenResumeModal }) => {
 
   const inputRef = useRef(null);
   const terminalBodyRef = useRef(null);
+
+  // Prevent background scrolling while terminal modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   // Focus input on terminal open
   useEffect(() => {
@@ -172,6 +188,59 @@ Navigating to /contact in 2 seconds...`,
         playSound('chime');
         onClose();
         if (onOpenResumeModal) onOpenResumeModal();
+        break;
+      }
+
+      case 'home': {
+        newHistory.push({
+          type: 'output',
+          text: `Navigating to Home...`,
+        });
+        playSound('chime');
+        setTimeout(() => {
+          onClose();
+          navigate('/');
+        }, 1200);
+        break;
+      }
+
+      case 'portfolio':
+      case 'repos':
+      case 'work': {
+        newHistory.push({
+          type: 'output',
+          text: `Navigating to Portfolio & Repositories...`,
+        });
+        playSound('chime');
+        setTimeout(() => {
+          onClose();
+          navigate('/portfolio');
+        }, 1200);
+        break;
+      }
+
+      case 'focus': {
+        newHistory.push({
+          type: 'output',
+          text: `Launching Focus Station · Ambient Nature Workspace...`,
+        });
+        playSound('chime');
+        setTimeout(() => {
+          onClose();
+          navigate('/focus');
+        }, 1200);
+        break;
+      }
+
+      case 'cheatsheet':
+      case 'shortcuts': {
+        newHistory.push({
+          type: 'output',
+          text: `Opening Keyboard Shortcuts Cheatsheet...`,
+        });
+        playSound('chime');
+        onClose();
+        if (openCheatsheet) openCheatsheet();
         break;
       }
 
