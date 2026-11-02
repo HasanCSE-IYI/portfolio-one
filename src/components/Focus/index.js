@@ -586,6 +586,7 @@ const Focus = () => {
                 src={currentSceneObj.image}
                 alt=""
                 className="zen-bg-image focus-drift"
+                decoding="async"
               />
               <div className="zen-backdrop-gradient"></div>
             </div>
@@ -613,6 +614,8 @@ const Focus = () => {
                       }
                       alt=""
                       className="island-art-thumb"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <span className="island-compact-title">
                       {isYtPlaying && currentYtTrack
@@ -638,6 +641,8 @@ const Focus = () => {
                         }
                         alt=""
                         className="island-expanded-art"
+                        loading="lazy"
+                        decoding="async"
                       />
                       <div className="island-track-meta">
                         <span className="island-status-pill">
@@ -1124,6 +1129,7 @@ const Focus = () => {
               src={currentSceneObj.image}
               alt=""
               className="hero-scene-image focus-drift"
+              decoding="async"
             />
             <div className="hero-scene-gradient"></div>
           </div>

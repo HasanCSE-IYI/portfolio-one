@@ -787,6 +787,9 @@ export const FocusProvider = ({ children }) => {
 
     const ctx = initAudioEngine();
     if (!ctx || !masterGainRef.current) return;
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
 
     SOUND_DEFINITIONS.forEach((sound) => {
       const vol = volumes[sound.id] || 0;
@@ -925,8 +928,10 @@ export const FocusProvider = ({ children }) => {
   }, [isBreathingMode]);
 
   // Browser Tab Title Synchronization
+  const wasTimerRunningRef = useRef(false);
   useEffect(() => {
     if (timerStatus === 'running') {
+      wasTimerRunningRef.current = true;
       const formatTime = (secs) => {
         const h = Math.floor(secs / 3600);
         const m = Math.floor((secs % 3600) / 60);
@@ -942,10 +947,56 @@ export const FocusProvider = ({ children }) => {
         : formatTime(timeRemaining);
       const phaseStr = timerPhase === 'focus' ? 'Focus' : 'Break';
       document.title = `(${timeStr}) ${phaseStr} · Focus Station`;
-    } else {
-      document.title = 'Focus Station · Hasan';
+    } else if (wasTimerRunningRef.current) {
+      wasTimerRunningRef.current = false;
+      const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+      const titles = {
+        '/': 'Mahmud al Hasan | Senior Backend Software Engineer',
+        '/about': 'About Me | Mahmud al Hasan (8+ Years Backend Engineering)',
+        '/resume': 'Executive Resume (CV) | Mahmud al Hasan',
+        '/contact': 'Contact & Collaboration | Mahmud al Hasan',
+        '/portfolio': 'Portfolio & Repositories | Mahmud al Hasan',
+        '/focus': 'Focus Station · Ambient Workspace | Mahmud al Hasan',
+        '/blog': 'Engineering Notes & Architecture Blog | Mahmud al Hasan',
+      };
+      if (titles[path]) {
+        document.title = titles[path];
+      } else if (path.startsWith('/blog/')) {
+        document.title = 'Engineering Article | Mahmud al Hasan';
+      } else {
+        document.title = 'Mahmud al Hasan | Senior Backend Software Engineer';
+      }
     }
   }, [timerStatus, timeRemaining, stopwatchSeconds, timerMode, timerPhase]);
+
+  // Clean up all active Web Audio resources when FocusProvider unmounts
+  useEffect(() => {
+    return () => {
+      Object.keys(soundNodesRef.current).forEach((soundId) => {
+        const nodeObj = soundNodesRef.current[soundId];
+        if (nodeObj && nodeObj.stopFn) {
+          try {
+            nodeObj.stopFn();
+          } catch {}
+        }
+      });
+      soundNodesRef.current = {};
+
+      if (binauralNodesRef.current) {
+        try {
+          binauralNodesRef.current.leftOsc.stop();
+          binauralNodesRef.current.rightOsc.stop();
+        } catch {}
+        binauralNodesRef.current = null;
+      }
+
+      if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
+        try {
+          audioCtxRef.current.close().catch(() => {});
+        } catch {}
+      }
+    };
+  }, []);
 
   const activeSoundsCount = Object.values(volumes).filter((v) => v > 0).length;
 

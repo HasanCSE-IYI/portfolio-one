@@ -124,7 +124,7 @@ const Sidebar = () => {
           <div className="brand-zone">
             <Link className="brand-logo" to="/" aria-label="Home · Mahmud al Hasan" onClick={handleHomeClick}>
               <div className="logo-icon-wrap">
-                <img className="logo-img" src={LogoS} alt="Mahmud al Hasan Logo" />
+                <img className="logo-img" src={LogoS} alt="Mahmud al Hasan Logo" width="32" height="32" decoding="async" />
               </div>
             </Link>
 

@@ -965,6 +965,7 @@ const Home = () => {
                     src={LogoTitle}
                     alt="M"
                     className="name-logo-m"
+                    decoding="async"
                   />
                   <AnimatedLetters
                     letterClass={letterClass}

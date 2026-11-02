@@ -72,4 +72,18 @@ describe('Guestbook Component', () => {
     fireEvent.click(closeBtn);
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
+
+  it('calls onClose when Escape key is pressed', () => {
+    const handleClose = jest.fn();
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Guestbook isOpen={true} onClose={handleClose} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(handleClose).toHaveBeenCalledTimes(1);
+  });
 });

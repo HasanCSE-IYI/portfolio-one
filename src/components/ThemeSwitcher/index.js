@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useUi, ACCENT_THEMES } from '../../context/UiContext';
@@ -6,6 +6,25 @@ import './index.scss';
 
 const ThemeSwitcher = ({ isOpen, onClose }) => {
   const { accentTheme, setAccentTheme } = useUi();
+
+  // Handle Escape key & body scroll lock for accessible modal behavior
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

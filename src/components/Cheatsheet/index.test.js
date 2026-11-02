@@ -26,4 +26,12 @@ describe('Cheatsheet Component', () => {
     fireEvent.click(closeBtn);
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
+
+  it('calls onClose when Escape key is pressed', () => {
+    const handleClose = jest.fn();
+    render(<Cheatsheet isOpen={true} onClose={handleClose} />);
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(handleClose).toHaveBeenCalledTimes(1);
+  });
 });
