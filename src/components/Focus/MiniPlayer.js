@@ -13,10 +13,12 @@ import {
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { useFocus, FOCUS_PRESETS } from '../../context/FocusContext';
+import { useUi } from '../../context/UiContext';
 import './MiniPlayer.scss';
 
 const MiniPlayer = () => {
   const location = useLocation();
+  const { playSound } = useUi();
   const {
     isPlaying,
     toggleMasterPlay,
@@ -62,6 +64,7 @@ const MiniPlayer = () => {
   const presetObj = activePreset ? FOCUS_PRESETS.find((p) => p.id === activePreset) : null;
 
   const handleStopAll = () => {
+    playSound('close');
     if (isPlaying) toggleMasterPlay();
     if (isYtPlaying) toggleYtPlay();
     clearAllSounds();
@@ -138,7 +141,10 @@ const MiniPlayer = () => {
             <button
               type="button"
               className="mini-btn yt-toggle"
-              onClick={toggleYtFold}
+              onClick={() => {
+                playSound('click');
+                toggleYtFold();
+              }}
               aria-label={isYtFolded ? 'Show video' : 'Hide video'}
               title={isYtFolded ? 'Show video' : 'Hide video'}
             >
@@ -151,6 +157,7 @@ const MiniPlayer = () => {
             type="button"
             className={`mini-btn sound-toggle ${isPlaying || isYtPlaying ? 'playing' : ''}`}
             onClick={() => {
+              playSound('pop');
               if (isYoutubeActive) toggleYtPlay();
               toggleMasterPlay();
             }}
@@ -165,7 +172,14 @@ const MiniPlayer = () => {
             <button
               type="button"
               className={`mini-btn timer-toggle ${timerStatus === 'running' ? 'running' : ''}`}
-              onClick={timerStatus === 'running' ? pauseTimer : startTimer}
+              onClick={() => {
+                playSound('tick');
+                if (timerStatus === 'running') {
+                  pauseTimer();
+                } else {
+                  startTimer();
+                }
+              }}
               aria-label={timerStatus === 'running' ? 'Pause Pomodoro timer' : 'Resume Pomodoro timer'}
               title={timerStatus === 'running' ? 'Pause Timer' : 'Resume Timer'}
             >
@@ -177,6 +191,7 @@ const MiniPlayer = () => {
           <Link
             to="/focus"
             className="mini-btn expand-link"
+            onClick={() => playSound('click')}
             aria-label="Open full Focus Station"
             title="Open Focus Station"
           >

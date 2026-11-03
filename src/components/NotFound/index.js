@@ -1,8 +1,11 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useUi } from '../../context/UiContext'
 import './index.scss'
 
 const NotFound = () => {
+  const { playSound } = useUi()
+
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.title = '404 - Page Not Found | Mahmud al Hasan'
@@ -18,10 +21,10 @@ const NotFound = () => {
           The route you navigated to doesn&apos;t exist or may have been relocated.
         </p>
         <div className="error-actions">
-          <Link to="/" className="btn-primary">
+          <Link to="/" className="btn-primary" onClick={() => playSound('click')}>
             ← Return to Home
           </Link>
-          <Link to="/portfolio" className="btn-secondary">
+          <Link to="/portfolio" className="btn-secondary" onClick={() => playSound('click')}>
             Browse Projects
           </Link>
         </div>

@@ -302,12 +302,14 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
     (cmd) => {
       const result = cmd.action(navigate, onOpenResumeModal, ui);
       if (typeof result === 'string') {
+        ui?.playSound?.('chime');
         setToastMessage(result);
         setTimeout(() => {
           setToastMessage(null);
           onClose();
         }, 1200);
       } else {
+        ui?.playSound?.('click');
         onClose();
       }
     },
@@ -324,11 +326,13 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
         onClose();
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
+        ui?.playSound?.('tick');
         setSelectedIndex((prev) =>
           filteredCommands.length ? (prev + 1) % filteredCommands.length : 0
         );
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
+        ui?.playSound?.('tick');
         setSelectedIndex((prev) =>
           filteredCommands.length
             ? (prev - 1 + filteredCommands.length) % filteredCommands.length
@@ -344,7 +348,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, selectedIndex, filteredCommands, onClose, executeCommand]);
+  }, [isOpen, selectedIndex, filteredCommands, onClose, executeCommand, ui]);
 
   // Keep selected item scrolled into view
   useEffect(() => {
@@ -394,6 +398,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
               type="button"
               className="palette-clear-btn"
               onClick={() => {
+                ui?.playSound?.('pop');
                 setQuery('');
                 inputRef.current?.focus();
               }}
