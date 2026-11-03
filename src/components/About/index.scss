@@ -456,6 +456,8 @@
         font-family: var(--font-mono);
         font-weight: 500;
         color: #d1d5db;
+        text-decoration: none;
+        cursor: pointer;
         background: rgba(24, 30, 42, 0.7);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);

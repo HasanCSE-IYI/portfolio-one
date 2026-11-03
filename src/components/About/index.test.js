@@ -68,4 +68,20 @@ describe('About Component', () => {
     expect(screen.getByText(/High Throughput & Database Indexing/i)).toBeInTheDocument();
     expect(screen.getByText(/Defensive Security & RBAC/i)).toBeInTheDocument();
   });
+
+  test('renders tech tags as interactive links pointing to portfolio', () => {
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
+
+    const csharpLink = screen.getByRole('link', { name: /C# \(\.NET 8\)/i });
+    expect(csharpLink).toBeInTheDocument();
+    expect(csharpLink).toHaveAttribute('href', '/portfolio');
+
+    const dockerLink = screen.getByRole('link', { name: /Docker/i });
+    expect(dockerLink).toBeInTheDocument();
+    expect(dockerLink).toHaveAttribute('href', '/portfolio');
+  });
 });

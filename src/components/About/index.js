@@ -296,24 +296,52 @@ const About = () => {
           <div className="tech-groups">
             <div className="group-label">CURRENT FOCUS:</div>
             <div className="tech-tags">
-              <span className="tag highlight">C# (.NET 8)</span>
-              <span className="tag highlight">ASP.NET Core Web API</span>
-              <span className="tag highlight">Entity Framework Core</span>
-              <span className="tag highlight">JWT &amp; RBAC</span>
+              <Link to="/portfolio" className="tag highlight" onClick={() => playSound('click')}>
+                C# (.NET 8)
+              </Link>
+              <Link to="/portfolio" className="tag highlight" onClick={() => playSound('click')}>
+                ASP.NET Core Web API
+              </Link>
+              <Link to="/portfolio" className="tag highlight" onClick={() => playSound('click')}>
+                Entity Framework Core
+              </Link>
+              <Link to="/portfolio" className="tag highlight" onClick={() => playSound('click')}>
+                JWT &amp; RBAC
+              </Link>
             </div>
 
             <div className="group-label">CORE BACKEND FOUNDATION:</div>
             <div className="tech-tags">
-              <span className="tag">Laravel (PHP)</span>
-              <span className="tag">NestJS</span>
-              <span className="tag">Node.js / Express</span>
-              <span className="tag">MySQL</span>
-              <span className="tag">MongoDB</span>
-              <span className="tag">SQLite</span>
-              <span className="tag">AWS (EC2, S3, RDS)</span>
-              <span className="tag">Docker</span>
-              <span className="tag">Linux</span>
-              <span className="tag">Python / Scrapy</span>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                Laravel (PHP)
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                NestJS
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                Node.js / Express
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                MySQL
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                MongoDB
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                SQLite
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                AWS (EC2, S3, RDS)
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                Docker
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                Linux
+              </Link>
+              <Link to="/portfolio" className="tag" onClick={() => playSound('click')}>
+                Python / Scrapy
+              </Link>
             </div>
           </div>
 
