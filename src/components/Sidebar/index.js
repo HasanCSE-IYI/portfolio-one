@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   faGithub,
   faLinkedin,
@@ -34,6 +34,7 @@ import Cheatsheet from '../Cheatsheet'
 import ThemeSwitcher from '../ThemeSwitcher'
 import Guestbook from '../Guestbook'
 import { useUi } from '../../context/UiContext'
+import { useFocusTrap } from '../../utils/useFocusTrap'
 import './index.scss'
 
 const Sidebar = () => {
@@ -43,6 +44,9 @@ const Sidebar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMac, setIsMac] = useState(true)
   const location = useLocation()
+  const moreMenuRef = useRef(null)
+
+  useFocusTrap(showMoreMenu, moreMenuRef)
 
   const {
     soundEnabled,
@@ -327,6 +331,7 @@ const Sidebar = () => {
             <div
               id="mobile-more-dropdown"
               className="mobile-more-dropdown"
+              ref={moreMenuRef}
               role="dialog"
               aria-modal="true"
               aria-label="Quick Connect Channels and Navigation Menu"

@@ -1318,6 +1318,9 @@ const Home = () => {
                                 >
                                   <FontAwesomeIcon icon={copiedHistoryIdx === hIdx ? faCheck : faCopy} />
                                   <span>{copiedHistoryIdx === hIdx ? 'Copied' : 'Copy'}</span>
+                                  <span className="sr-only" role="status" aria-live="polite">
+                                    {copiedHistoryIdx === hIdx ? 'Terminal output copied to clipboard' : ''}
+                                  </span>
                                 </button>
                                 <button
                                   type="button"

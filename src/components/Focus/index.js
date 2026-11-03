@@ -47,6 +47,7 @@ import {
   FOCUS_QUOTES,
 } from '../../context/FocusContext';
 import { useUi } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 import './index.scss';
 
 const Focus = () => {
@@ -59,6 +60,11 @@ const Focus = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const saveModalRef = useRef(null);
+  const shortcutsModalRef = useRef(null);
+
+  useFocusTrap(showSaveModal, saveModalRef);
+  useFocusTrap(showShortcutsModal, shortcutsModalRef);
   const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('timer'); // 'timer' (Pomodoro & YouTube priority) | 'soundboard'
   const [customLinkInput, setCustomLinkInput] = useState('');
   const [isIslandExpanded, setIsIslandExpanded] = useState(false);
@@ -1046,6 +1052,7 @@ const Focus = () => {
           >
             <div
               className="preset-save-modal"
+              ref={saveModalRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby="save-preset-heading"
@@ -1126,6 +1133,7 @@ const Focus = () => {
           >
             <div
               className="shortcuts-hud-card"
+              ref={shortcutsModalRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby="shortcuts-hud-heading"
@@ -1515,6 +1523,9 @@ const Focus = () => {
                 >
                   <FontAwesomeIcon icon={shareCopied ? faCheck : faLink} />
                   <span>{shareCopied ? 'Copied Link!' : 'Share Mix'}</span>
+                  <span className="sr-only" role="status" aria-live="polite">
+                    {shareCopied ? 'Sound mix link copied to clipboard' : ''}
+                  </span>
                 </button>
 
                 <button
@@ -2096,6 +2107,9 @@ const Focus = () => {
                         >
                           <FontAwesomeIcon icon={shareCopied ? faCheck : faLink} />
                           <span>{shareCopied ? 'Copied Link!' : 'Share Mix'}</span>
+                          <span className="sr-only" role="status" aria-live="polite">
+                            {shareCopied ? 'Sound mix link copied to clipboard' : ''}
+                          </span>
                         </button>
                       </>
                     )}

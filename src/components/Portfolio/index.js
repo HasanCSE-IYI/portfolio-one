@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFolder,
@@ -31,6 +31,31 @@ const Portfolio = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedRepoId, setCopiedRepoId] = useState(null);
   const [showSimulator, setShowSimulator] = useState(true);
+  const categoryBtnsRef = useRef([]);
+
+  const handleCategoryKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight') {
+      nextIndex = (index + 1) % CATEGORIES.length;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = (index - 1 + CATEGORIES.length) % CATEGORIES.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = CATEGORIES.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const nextCat = CATEGORIES[nextIndex];
+      setActiveCategory(nextCat.id);
+      playSound('tick');
+      const targetBtn = categoryBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -158,15 +183,19 @@ const Portfolio = () => {
           </div>
 
           <div className="category-filters" role="toolbar" aria-label="Project category filters">
-            {CATEGORIES.map((cat) => (
+            {CATEGORIES.map((cat, idx) => (
               <button
                 type="button"
                 key={cat.id}
+                ref={(el) => {
+                  categoryBtnsRef.current[idx] = el;
+                }}
                 className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
                 onClick={() => {
                   playSound('click');
                   setActiveCategory(cat.id);
                 }}
+                onKeyDown={(e) => handleCategoryKeyDown(e, idx)}
                 aria-pressed={activeCategory === cat.id}
               >
                 <span>{cat.label}</span>

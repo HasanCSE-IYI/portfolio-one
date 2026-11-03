@@ -32,6 +32,7 @@ import './index.scss';
 import portfolioData from '../../data/portfolio.json';
 import { getAllArticles } from '../../data/blogData';
 import { useUi } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 
 const safeCopyText = (text) => {
   if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
@@ -268,8 +269,11 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   const [toastMessage, setToastMessage] = useState(null);
   const inputRef = useRef(null);
   const listRef = useRef(null);
+  const modalRef = useRef(null);
   const navigate = useNavigate();
   const ui = useUi();
+
+  useFocusTrap(isOpen, modalRef);
 
   // Filter commands by title, subtitle, or category
   const filteredCommands = ALL_COMMANDS.filter((cmd) => {
@@ -372,6 +376,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
     >
       <div
         className="command-palette-modal"
+        ref={modalRef}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="palette-header">
