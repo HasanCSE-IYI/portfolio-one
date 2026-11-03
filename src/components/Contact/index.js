@@ -308,6 +308,24 @@ const Contact = () => {
     }
   }
 
+  const handleMapTabKeyDown = (e, currentType) => {
+    const types = Object.keys(MAP_TYPES)
+    const currentIndex = types.indexOf(currentType)
+    if (currentIndex === -1) return
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault()
+      const nextIndex = (currentIndex + 1) % types.length
+      playSound('click')
+      setActiveBaseType(types[nextIndex])
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const prevIndex = (currentIndex - 1 + types.length) % types.length
+      playSound('click')
+      setActiveBaseType(types[prevIndex])
+    }
+  }
+
   const handleSelectTier = (tierTitle) => {
     playSound('click')
     setSelectedTier(tierTitle)
@@ -608,6 +626,9 @@ const Contact = () => {
                     >
                       <FontAwesomeIcon icon={copiedMessage ? faCheck : faCopy} />
                       <span>{copiedMessage ? 'Copied to Clipboard!' : 'Copy Full Message'}</span>
+                      <span className="sr-only" role="status" aria-live="polite">
+                        {copiedMessage ? 'Full message copied to clipboard' : ''}
+                      </span>
                     </button>
                   </div>
                 )}
@@ -636,6 +657,7 @@ const Contact = () => {
                       type="text"
                       name="name"
                       aria-label="Your Name"
+                      disabled={isSubmitting}
                       required
                     />
                   </li>
@@ -653,6 +675,7 @@ const Contact = () => {
                         onChange={(e) => setEmailText(e.target.value)}
                         aria-label="Your Email"
                         aria-invalid={Boolean(emailText && !isEmailValid)}
+                        disabled={isSubmitting}
                         required
                       />
                       {emailText && (
@@ -677,6 +700,7 @@ const Contact = () => {
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
                       aria-label="Message Subject"
+                      disabled={isSubmitting}
                       required
                     />
                   </li>
@@ -692,6 +716,7 @@ const Contact = () => {
                       value={messageText}
                       onChange={(e) => setMessageText(e.target.value)}
                       aria-label="Your Message"
+                      disabled={isSubmitting}
                       required
                     ></textarea>
                     <div className="textarea-footer">
@@ -777,6 +802,7 @@ const Contact = () => {
                       playSound('click')
                       setActiveBaseType(type.id)
                     }}
+                    onKeyDown={(e) => handleMapTabKeyDown(e, type.id)}
                     title={type.title}
                   >
                     <FontAwesomeIcon icon={type.icon} className="tab-icon" />
@@ -878,7 +904,7 @@ const Contact = () => {
               <span className="live-radar-dot" aria-hidden="true"></span>
               <span className="coords-text">22.3911° N, 91.8177° E · Bayazid, Chattogram</span>
 
-              <span className="pill-divider" aria-hidden="true"></span>
+              <span className="pill-divider coords-divider" aria-hidden="true"></span>
 
               <div className="pill-meta-group" title="Current Local Time in Bayazid (BST · UTC+6)">
                 <span className="meta-icon" aria-hidden="true">🕒</span>

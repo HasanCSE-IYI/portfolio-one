@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useUi } from '../../context/UiContext';
 import './StoreApiDemo.scss';
 
@@ -349,6 +349,31 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
     activeEndpoint.responseStatus.startsWith('4') ||
     activeEndpoint.responseStatus.startsWith('5');
 
+  const allEndpointIds = useMemo(
+    () => ['get-products', ...STATIC_ENDPOINTS.map((e) => e.id)],
+    []
+  );
+
+  const handleEndpointKeyDown = (e, currentId) => {
+    const currentIndex = allEndpointIds.indexOf(currentId);
+    if (currentIndex === -1) return;
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % allEndpointIds.length;
+      playSound('tick');
+      setActiveEndpointId(allEndpointIds[nextIndex]);
+      setHasExecuted(false);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIndex =
+        (currentIndex - 1 + allEndpointIds.length) % allEndpointIds.length;
+      playSound('tick');
+      setActiveEndpointId(allEndpointIds[prevIndex]);
+      setHasExecuted(false);
+    }
+  };
+
   return (
     <div className="store-api-demo">
       <div className="demo-header">
@@ -373,6 +398,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               setActiveEndpointId('get-products');
               setHasExecuted(false);
             }}
+            onKeyDown={(e) => handleEndpointKeyDown(e, 'get-products')}
           >
             <span className="method-badge get">GET</span>
             <span className="ep-title">Browse Catalog (Interactive EF Core)</span>
@@ -389,6 +415,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                 setActiveEndpointId(ep.id);
                 setHasExecuted(false);
               }}
+              onKeyDown={(e) => handleEndpointKeyDown(e, ep.id)}
             >
               <span className={`method-badge ${ep.method.toLowerCase()}`}>{ep.method}</span>
               <span className="ep-title">{ep.name}</span>
@@ -599,6 +626,9 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               aria-label="Copy code snippet"
             >
               {copiedCode ? '✓ Copied' : 'Copy'}
+              <span className="sr-only" role="status" aria-live="polite">
+                {copiedCode ? 'Code snippet copied to clipboard' : ''}
+              </span>
             </button>
           </div>
 
@@ -617,6 +647,9 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                 aria-label="Copy generated SQL query"
               >
                 {copiedSql ? '✓ Copied' : 'Copy SQL'}
+                <span className="sr-only" role="status" aria-live="polite">
+                  {copiedSql ? 'Generated SQL query copied to clipboard' : ''}
+                </span>
               </button>
             </div>
           </div>
@@ -643,6 +676,9 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                     aria-label="Copy JSON response"
                   >
                     {copiedJson ? '✓ Copied' : 'Copy JSON'}
+                    <span className="sr-only" role="status" aria-live="polite">
+                      {copiedJson ? 'JSON response copied to clipboard' : ''}
+                    </span>
                   </button>
                   <span className={`status-pill ${isErrorStatus ? 'error' : 'success'}`}>
                     {isForbidden ? '403 Forbidden' : activeEndpoint.responseStatus} ({activeEndpoint.latency})

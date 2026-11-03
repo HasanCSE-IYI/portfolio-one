@@ -458,7 +458,7 @@
 
           &:hover {
             color: var(--primary-accent, #f59e0b);
-            border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.45);
+            border-color: var(--border-hover);
             background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12);
             transform: translateY(-1px);
           }

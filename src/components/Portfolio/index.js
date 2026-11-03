@@ -307,6 +307,9 @@ const Portfolio = () => {
                             aria-hidden="true"
                           />
                           <span>{copiedRepoId === (port.id || idx) ? 'Copied!' : 'Clone URL'}</span>
+                          <span className="sr-only" role="status" aria-live="polite">
+                            {copiedRepoId === (port.id || idx) ? 'Git clone URL copied to clipboard' : ''}
+                          </span>
                         </button>
                       </>
                     )}

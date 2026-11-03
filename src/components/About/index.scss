@@ -177,7 +177,7 @@
       position: absolute;
       width: 180px;
       height: 180px;
-      border: 1.5px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.45);
+      border: 1.5px solid var(--border-hover);
       background: rgba(15, 23, 42, 0.28);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -562,7 +562,7 @@
 
         &:hover {
           transform: translateY(-4px);
-          border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.45);
+          border-color: var(--border-hover);
           box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px var(--primary-accent-glow, rgba(245, 158, 11, 0.15));
         }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -25,14 +25,19 @@ import {
   REFERENCES,
 } from '../../data/resumeData';
 import { useUi } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 import './index.scss';
 
 const ResumeModal = ({ isOpen, onClose }) => {
   const { playSound } = useUi();
+  const modalRef = useRef(null);
+
+  useFocusTrap(isOpen, modalRef);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        playSound('close');
         onClose();
       }
     };
@@ -49,7 +54,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
       document.body.classList.remove('resume-modal-open');
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, playSound]);
 
   if (!isOpen) return null;
 
@@ -58,16 +63,27 @@ const ResumeModal = ({ isOpen, onClose }) => {
     const originalTitle = document.title;
     document.title = 'Mahmud_Al_Hasan_CV_Backend_Software_Engineer';
     document.body.classList.add('resume-modal-open');
-    window.print();
-    setTimeout(() => {
+
+    const cleanup = () => {
       document.title = originalTitle;
-    }, 1500);
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    window.print();
+    setTimeout(cleanup, 2000);
   };
 
   return (
-    <div className="resume-modal-overlay" onClick={onClose}>
+    <div
+      className="resume-modal-overlay"
+      onClick={() => {
+        playSound('close');
+        onClose();
+      }}
+    >
       <div
         className="resume-modal-content"
+        ref={modalRef}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -76,16 +92,33 @@ const ResumeModal = ({ isOpen, onClose }) => {
         <div className="modal-top-bar">
           <div className="modal-title-wrap">
             <span className="dot green"></span>
-            <span className="title-text">Curriculum Vitae · {RESUME_META.name}</span>
+            <span id="resume-modal-title" className="title-text">
+              Curriculum Vitae · {RESUME_META.name}
+            </span>
           </div>
           <div className="modal-actions">
-            <Link to="/resume" className="full-page-link" onClick={onClose}>
+            <Link
+              to="/resume"
+              className="full-page-link"
+              onClick={() => {
+                playSound('click');
+                onClose();
+              }}
+            >
               ↗ Open Full Page
             </Link>
             <button type="button" className="print-btn" onClick={handlePrint}>
               <FontAwesomeIcon icon={faPrint} /> Print / Save PDF
             </button>
-            <button type="button" className="close-btn" onClick={onClose} aria-label="Close modal">
+            <button
+              type="button"
+              className="close-btn"
+              onClick={() => {
+                playSound('close');
+                onClose();
+              }}
+              aria-label="Close modal"
+            >
               ✕
             </button>
           </div>

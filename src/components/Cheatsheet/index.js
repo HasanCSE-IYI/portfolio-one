@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKeyboard, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useUi } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 import './index.scss';
 
 const SHORTCUT_GROUPS = [
@@ -38,6 +39,9 @@ const SHORTCUT_GROUPS = [
 const Cheatsheet = ({ isOpen, onClose }) => {
   const { playSound } = useUi();
   const [filterQuery, setFilterQuery] = useState('');
+  const modalRef = useRef(null);
+
+  useFocusTrap(isOpen, modalRef, { initialFocusSelector: '.cs-filter-input' });
 
   // Handle Escape key & body scroll lock for accessible modal behavior
   useEffect(() => {
@@ -85,7 +89,7 @@ const Cheatsheet = ({ isOpen, onClose }) => {
       aria-modal="true"
       aria-labelledby="cheatsheet-modal-title"
     >
-      <div className="cheatsheet-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="cheatsheet-modal" ref={modalRef} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="cheatsheet-header">
           <div className="header-title-wrap">

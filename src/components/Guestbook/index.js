@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments, faTimes, faPaperPlane, faHeart, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useUi } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 import './index.scss';
 
 const DEFAULT_AVATARS = ['💻', '🚀', '⚡', '☕', '🎯', '🧠', '🛠️', '🌟'];
@@ -41,6 +42,9 @@ const INITIAL_ENTRIES = [
 
 const Guestbook = ({ isOpen, onClose }) => {
   const { playSound } = useUi();
+  const modalRef = useRef(null);
+
+  useFocusTrap(isOpen, modalRef, { initialFocusSelector: '#gb-name' });
   const [entries, setEntries] = useState(() => {
     try {
       const saved = localStorage.getItem('portfolio_guestbook_entries');
@@ -138,7 +142,7 @@ const Guestbook = ({ isOpen, onClose }) => {
       aria-modal="true"
       aria-labelledby="guestbook-modal-title"
     >
-      <div className="guestbook-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="guestbook-modal" ref={modalRef} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="guestbook-header">
           <div className="header-title-wrap">

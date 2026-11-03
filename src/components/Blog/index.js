@@ -156,6 +156,23 @@ const Blog = () => {
     });
   }, [articles, activeCategory, searchQuery]);
 
+  const handleCategoryKeyDown = (e, currentCat) => {
+    const currentIndex = CATEGORIES.indexOf(currentCat);
+    if (currentIndex === -1) return;
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % CATEGORIES.length;
+      playSound('click');
+      setActiveCategory(CATEGORIES[nextIndex]);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIndex = (currentIndex - 1 + CATEGORIES.length) % CATEGORIES.length;
+      playSound('click');
+      setActiveCategory(CATEGORIES[prevIndex]);
+    }
+  };
+
   // Handle Invalid Slug (Article Not Found)
   if (slug && !currentArticle) {
     return (
@@ -229,6 +246,9 @@ const Blog = () => {
               >
                 <FontAwesomeIcon icon={shareToast ? faCheck : faShareNodes} />
                 <span>{shareToast ? 'Link Copied!' : 'Share Article'}</span>
+                <span className="sr-only" role="status" aria-live="polite">
+                  {shareToast ? 'Article link copied to clipboard' : ''}
+                </span>
               </button>
             </div>
           </nav>
@@ -318,6 +338,9 @@ const Blog = () => {
                         >
                           <FontAwesomeIcon icon={isCopied ? faCheck : faCopy} />
                           <span>{isCopied ? 'Copied!' : 'Copy'}</span>
+                          <span className="sr-only" role="status" aria-live="polite">
+                            {isCopied ? 'Code snippet copied to clipboard' : ''}
+                          </span>
                         </button>
                       </div>
                       <pre className="code-pre">
@@ -452,6 +475,7 @@ const Blog = () => {
                     setActiveCategory(cat);
                     playSound('click');
                   }}
+                  onKeyDown={(e) => handleCategoryKeyDown(e, cat)}
                 >
                   {cat}
                 </button>

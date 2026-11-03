@@ -1,11 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useUi, ACCENT_THEMES } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 import './index.scss';
 
 const ThemeSwitcher = ({ isOpen, onClose }) => {
   const { accentTheme, setAccentTheme, playSound } = useUi();
+  const modalRef = useRef(null);
+
+  useFocusTrap(isOpen, modalRef);
 
   // Handle Escape key & body scroll lock for accessible modal behavior
   useEffect(() => {
@@ -40,7 +44,7 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
       aria-modal="true"
       aria-labelledby="theme-switcher-title"
     >
-      <div className="theme-switcher-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="theme-switcher-modal" ref={modalRef} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="theme-header">
           <div className="theme-title-wrap">
