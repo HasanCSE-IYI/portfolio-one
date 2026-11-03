@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useUi } from '../../context/UiContext';
 import './StoreApiDemo.scss';
 
@@ -177,6 +177,8 @@ const StoreApiDemo = () => {
   const [copiedJson, setCopiedJson] = useState(false);
   const [copiedSql, setCopiedSql] = useState(false);
   const [viewTab, setViewTab] = useState('csharp'); // 'csharp' or 'curl'
+  const endpointBtnsRef = useRef([]);
+  const viewTabBtnsRef = useRef([]);
 
   // Interactive Query Parameters for get-products
   const [queryCategory, setQueryCategory] = useState('All');
@@ -358,19 +360,49 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
     const currentIndex = allEndpointIds.indexOf(currentId);
     if (currentIndex === -1) return;
 
+    let nextIndex = null;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % allEndpointIds.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + allEndpointIds.length) % allEndpointIds.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = allEndpointIds.length - 1;
+    }
+
+    if (nextIndex !== null) {
       e.preventDefault();
-      const nextIndex = (currentIndex + 1) % allEndpointIds.length;
       playSound('tick');
       setActiveEndpointId(allEndpointIds[nextIndex]);
       setHasExecuted(false);
+      const targetBtn = endpointBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
+
+  const handleViewTabKeyDown = (e, currentTab) => {
+    const tabs = ['csharp', 'curl'];
+    const currentIndex = tabs.indexOf(currentTab);
+    if (currentIndex === -1) return;
+
+    let nextIndex = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % tabs.length;
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    }
+
+    if (nextIndex !== null) {
       e.preventDefault();
-      const prevIndex =
-        (currentIndex - 1 + allEndpointIds.length) % allEndpointIds.length;
       playSound('tick');
-      setActiveEndpointId(allEndpointIds[prevIndex]);
-      setHasExecuted(false);
+      setViewTab(tabs[nextIndex]);
+      const targetBtn = viewTabBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
     }
   };
 
@@ -389,8 +421,13 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
       <div className="demo-controls">
         <div className="endpoint-selector" role="tablist" aria-label="API Endpoints">
           <button
+            ref={(el) => {
+              endpointBtnsRef.current[0] = el;
+            }}
+            id="store-endpoint-tab-get-products"
             type="button"
             role="tab"
+            tabIndex={activeEndpointId === 'get-products' ? 0 : -1}
             aria-selected={activeEndpointId === 'get-products'}
             className={`endpoint-btn ${activeEndpointId === 'get-products' ? 'active' : ''}`}
             onClick={() => {
@@ -403,11 +440,16 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
             <span className="method-badge get">GET</span>
             <span className="ep-title">Browse Catalog (Interactive EF Core)</span>
           </button>
-          {STATIC_ENDPOINTS.map((ep) => (
+          {STATIC_ENDPOINTS.map((ep, idx) => (
             <button
               key={ep.id}
+              ref={(el) => {
+                endpointBtnsRef.current[idx + 1] = el;
+              }}
+              id={`store-endpoint-tab-${ep.id}`}
               type="button"
               role="tab"
+              tabIndex={activeEndpointId === ep.id ? 0 : -1}
               aria-selected={activeEndpointId === ep.id}
               className={`endpoint-btn ${activeEndpointId === ep.id ? 'active' : ''}`}
               onClick={() => {
@@ -597,24 +639,40 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               <span className="dot yellow"></span>
               <span className="dot green"></span>
             </div>
-            <div className="tab-switch">
+            <div className="tab-switch" role="tablist" aria-label="Code view">
               <button
+                ref={(el) => {
+                  viewTabBtnsRef.current[0] = el;
+                }}
+                id="store-view-tab-csharp"
                 type="button"
+                role="tab"
+                tabIndex={viewTab === 'csharp' ? 0 : -1}
+                aria-selected={viewTab === 'csharp'}
                 className={`tab-btn ${viewTab === 'csharp' ? 'active' : ''}`}
                 onClick={() => {
                   playSound('tick');
                   setViewTab('csharp');
                 }}
+                onKeyDown={(e) => handleViewTabKeyDown(e, 'csharp')}
               >
                 C# Controller &amp; LINQ
               </button>
               <button
+                ref={(el) => {
+                  viewTabBtnsRef.current[1] = el;
+                }}
+                id="store-view-tab-curl"
                 type="button"
+                role="tab"
+                tabIndex={viewTab === 'curl' ? 0 : -1}
+                aria-selected={viewTab === 'curl'}
                 className={`tab-btn ${viewTab === 'curl' ? 'active' : ''}`}
                 onClick={() => {
                   playSound('tick');
                   setViewTab('curl');
                 }}
+                onKeyDown={(e) => handleViewTabKeyDown(e, 'curl')}
               >
                 cURL Command
               </button>
@@ -724,4 +782,4 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
   );
 };
 
-export default StoreApiDemo;
+export default React.memo(StoreApiDemo);

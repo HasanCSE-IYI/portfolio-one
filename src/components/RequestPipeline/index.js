@@ -72,6 +72,7 @@ const RequestPipeline = () => {
   const { playSound } = useUi();
   const [activeStepId, setActiveStepId] = useState('auth');
   const activeBtnRef = useRef(null);
+  const stepBtnsRef = useRef([]);
   const flowContainerRef = useRef(null);
   const isInitialMount = useRef(true);
 
@@ -129,16 +130,25 @@ const RequestPipeline = () => {
   };
 
   const handleNodeKeyDown = (e, idx) => {
-    if (e.key === 'ArrowRight') {
+    let nextIdx = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIdx = (idx + 1) % PIPELINE_STEPS.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIdx = (idx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
+    } else if (e.key === 'Home') {
+      nextIdx = 0;
+    } else if (e.key === 'End') {
+      nextIdx = PIPELINE_STEPS.length - 1;
+    }
+
+    if (nextIdx !== null) {
       e.preventDefault();
       playSound('click');
-      const nextIdx = (idx + 1) % PIPELINE_STEPS.length;
       setActiveStepId(PIPELINE_STEPS[nextIdx].id);
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      playSound('click');
-      const prevIdx = (idx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
-      setActiveStepId(PIPELINE_STEPS[prevIdx].id);
+      const targetBtn = stepBtnsRef.current[nextIdx];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
     }
   };
 
@@ -157,10 +167,16 @@ const RequestPipeline = () => {
           {PIPELINE_STEPS.map((step, idx) => (
             <React.Fragment key={step.id}>
               <button
-                ref={activeStepId === step.id ? activeBtnRef : null}
+                ref={(el) => {
+                  stepBtnsRef.current[idx] = el;
+                  if (activeStepId === step.id) {
+                    activeBtnRef.current = el;
+                  }
+                }}
                 id={`tab-${step.id}`}
                 type="button"
                 role="tab"
+                tabIndex={activeStepId === step.id ? 0 : -1}
                 aria-selected={activeStepId === step.id}
                 aria-controls={`panel-${step.id}`}
                 className={`pipeline-node-btn ${activeStepId === step.id ? 'active' : ''}`}
@@ -235,4 +251,4 @@ const RequestPipeline = () => {
   );
 };
 
-export default RequestPipeline;
+export default React.memo(RequestPipeline);

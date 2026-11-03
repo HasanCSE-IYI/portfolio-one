@@ -64,4 +64,4 @@ const AnimatedLetters = ({ letterClass, strArray, idx = 1 }) => {
   )
 }
 
-export default AnimatedLetters
+export default React.memo(AnimatedLetters)

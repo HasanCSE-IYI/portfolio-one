@@ -60,4 +60,31 @@ describe('StoreApiDemo Component', () => {
     // Verify compiled SQL contains LIKE '%keyboard%'
     expect(screen.getByText(/LIKE '%keyboard%'/i)).toBeInTheDocument();
   });
+
+  test('navigates endpoints and view tabs using arrow keys', () => {
+    render(<StoreApiDemo />);
+
+    const getCatalogTab = screen.getByRole('tab', { name: /Browse Catalog/i });
+    expect(getCatalogTab).toHaveAttribute('aria-selected', 'true');
+    expect(getCatalogTab).toHaveAttribute('tabIndex', '0');
+
+    // ArrowRight to next endpoint
+    fireEvent.keyDown(getCatalogTab, { key: 'ArrowRight' });
+    expect(screen.getByRole('tab', { name: /JWT Authentication/i })).toHaveAttribute('aria-selected', 'true');
+
+    // End key to last endpoint
+    fireEvent.keyDown(screen.getByRole('tab', { name: /JWT Authentication/i }), { key: 'End' });
+    expect(screen.getByRole('tab', { name: /RFC 7807 Exception/i })).toHaveAttribute('aria-selected', 'true');
+
+    // Home key back to first endpoint
+    fireEvent.keyDown(screen.getByRole('tab', { name: /RFC 7807 Exception/i }), { key: 'Home' });
+    expect(screen.getByRole('tab', { name: /Browse Catalog/i })).toHaveAttribute('aria-selected', 'true');
+
+    // Test code view tabs (C# vs cURL)
+    const csharpTab = screen.getByRole('tab', { name: /C# Controller & LINQ/i });
+    expect(csharpTab).toHaveAttribute('aria-selected', 'true');
+    fireEvent.keyDown(csharpTab, { key: 'ArrowRight' });
+    const curlTab = screen.getByRole('tab', { name: /cURL Command/i });
+    expect(curlTab).toHaveAttribute('aria-selected', 'true');
+  });
 });

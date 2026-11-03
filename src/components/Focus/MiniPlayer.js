@@ -214,4 +214,4 @@ const MiniPlayer = () => {
   );
 };
 
-export default MiniPlayer;
+export default React.memo(MiniPlayer);

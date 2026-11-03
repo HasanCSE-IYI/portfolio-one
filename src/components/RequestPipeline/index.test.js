@@ -37,6 +37,15 @@ test('handles arrow key navigation between stages without scrolling the window',
 
   expect(screen.getByRole('tab', { name: /Controller & DTO/i })).toHaveClass('active');
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
+
+  // Test End and Home keys
+  const controllerBtn = screen.getByRole('tab', { name: /Controller & DTO/i });
+  fireEvent.keyDown(controllerBtn, { key: 'End' });
+  expect(screen.getByRole('tab', { name: /JSON Response/i })).toHaveClass('active');
+
+  const jsonBtn = screen.getByRole('tab', { name: /JSON Response/i });
+  fireEvent.keyDown(jsonBtn, { key: 'Home' });
+  expect(screen.getByRole('tab', { name: /Client Request/i })).toHaveClass('active');
 });
 
 test('supports stepping through pipeline stages via Next and Prev controls', () => {
