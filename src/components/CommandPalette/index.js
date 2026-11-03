@@ -30,6 +30,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import './index.scss';
 import portfolioData from '../../data/portfolio.json';
+import { getAllArticles } from '../../data/blogData';
 import { useUi } from '../../context/UiContext';
 
 const safeCopyText = (text) => {
@@ -250,7 +251,16 @@ const PROJECT_COMMANDS = (portfolioData.portfolio || []).map((port) => ({
   action: (navigate) => navigate('/portfolio'),
 }));
 
-const ALL_COMMANDS = [...BASE_COMMANDS, ...PROJECT_COMMANDS];
+const BLOG_COMMANDS = getAllArticles().map((art) => ({
+  id: `blog-${art.slug}`,
+  category: 'Engineering Articles & Notes',
+  title: art.title,
+  subtitle: `${art.category} · ${art.readTime} · ${art.subtitle || ''}`,
+  icon: faBookOpen,
+  action: (navigate) => navigate(`/blog/${art.slug}`),
+}));
+
+const ALL_COMMANDS = [...BASE_COMMANDS, ...PROJECT_COMMANDS, ...BLOG_COMMANDS];
 
 const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   const [query, setQuery] = useState('');

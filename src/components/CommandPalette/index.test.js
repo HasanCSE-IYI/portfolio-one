@@ -60,6 +60,23 @@ describe('CommandPalette Component', () => {
     expect(screen.getByText(/Launch Store API Simulator/i)).toBeInTheDocument();
   });
 
+  test('searches and finds engineering blog articles in command palette', () => {
+    render(
+      <MemoryRouter>
+        <CommandPalette
+          isOpen={true}
+          onClose={mockOnClose}
+          onOpenResumeModal={mockOnOpenResumeModal}
+        />
+      </MemoryRouter>
+    );
+
+    const input = screen.getByRole('combobox', { name: /Command search/i });
+    fireEvent.change(input, { target: { value: 'RabbitMQ' } });
+
+    expect(screen.getByText(/Building Resilient Microservices with Laravel/i)).toBeInTheDocument();
+  });
+
   test('closes on Escape key press', () => {
     render(
       <MemoryRouter>
