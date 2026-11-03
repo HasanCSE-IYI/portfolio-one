@@ -6,6 +6,8 @@ import {
   faHome,
   faChevronDown,
   faChevronUp,
+  faCopy,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import './index.scss';
 
@@ -17,6 +19,7 @@ class ErrorBoundary extends React.Component {
       error: null,
       errorInfo: null,
       showDetails: false,
+      copiedTrace: false,
     };
   }
 
@@ -42,6 +45,54 @@ class ErrorBoundary extends React.Component {
 
   toggleDetails = () => {
     this.setState((prev) => ({ showDetails: !prev.showDetails }));
+  };
+
+  handleCopyTrace = () => {
+    const errorText = `Fault: ${this.state.error?.toString() || 'Unknown'}\n\nComponent Stack:\n${
+      this.state.errorInfo?.componentStack || 'No component stack trace available.'
+    }`;
+
+    const triggerSuccess = () => {
+      this.setState({ copiedTrace: true });
+      setTimeout(() => {
+        this.setState({ copiedTrace: false });
+      }, 2400);
+    };
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(errorText)
+        .then(triggerSuccess)
+        .catch(() => {
+          try {
+            const el = document.createElement('textarea');
+            el.value = errorText;
+            el.style.position = 'fixed';
+            el.style.opacity = '0';
+            document.body.appendChild(el);
+            if (typeof el.select === 'function') el.select();
+            if (typeof document.execCommand === 'function') document.execCommand('copy');
+            document.body.removeChild(el);
+          } catch (e) {
+            // ignore
+          }
+          triggerSuccess();
+        });
+    } else {
+      try {
+        const el = document.createElement('textarea');
+        el.value = errorText;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        if (typeof el.select === 'function') el.select();
+        if (typeof document.execCommand === 'function') document.execCommand('copy');
+        document.body.removeChild(el);
+      } catch (e) {
+        // ignore
+      }
+      triggerSuccess();
+    }
   };
 
   render() {
@@ -86,14 +137,31 @@ class ErrorBoundary extends React.Component {
                 </button>
 
                 {this.state.showDetails && (
-                  <pre className="error-trace-log">
-                    <code>
-                      <strong>Fault:</strong> {this.state.error.toString()}
-                      {'\n\n'}
-                      <strong>Component Stack:</strong>
-                      {this.state.errorInfo?.componentStack || 'No component stack trace available.'}
-                    </code>
-                  </pre>
+                  <div className="error-trace-container">
+                    <div className="trace-actions-bar">
+                      <span className="trace-heading">Diagnostic Trace</span>
+                      <button
+                        type="button"
+                        className="copy-trace-btn"
+                        onClick={this.handleCopyTrace}
+                        aria-label="Copy technical diagnostics to clipboard"
+                      >
+                        <FontAwesomeIcon icon={this.state.copiedTrace ? faCheck : faCopy} />
+                        <span>{this.state.copiedTrace ? 'Copied Diagnostic Trace' : 'Copy Trace'}</span>
+                        <span className="sr-only" role="status" aria-live="polite">
+                          {this.state.copiedTrace ? 'Technical diagnostics copied to clipboard' : ''}
+                        </span>
+                      </button>
+                    </div>
+                    <pre className="error-trace-log">
+                      <code>
+                        <strong>Fault:</strong> {this.state.error.toString()}
+                        {'\n\n'}
+                        <strong>Component Stack:</strong>
+                        {this.state.errorInfo?.componentStack || 'No component stack trace available.'}
+                      </code>
+                    </pre>
+                  </div>
                 )}
               </div>
             )}

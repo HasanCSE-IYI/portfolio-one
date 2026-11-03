@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTerminal, faTimes, faWindowMaximize, faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 import { useUi } from '../../context/UiContext';
+import { useFocusTrap } from '../../utils/useFocusTrap';
 import { getAllArticles } from '../../data/blogData';
 import './index.scss';
 
@@ -54,6 +55,14 @@ const Terminal = ({ isOpen, onClose, onOpenResumeModal }) => {
 
   const inputRef = useRef(null);
   const terminalBodyRef = useRef(null);
+  const modalRef = useRef(null);
+
+  useFocusTrap(isOpen, modalRef, { initialFocusSelector: '.terminal-input-field' });
+
+  const handleClose = useCallback(() => {
+    playSound('close');
+    onClose();
+  }, [playSound, onClose]);
 
   // Prevent background scrolling while terminal modal is open
   useEffect(() => {
@@ -377,7 +386,7 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
 
       case 'exit':
       case 'quit': {
-        onClose();
+        handleClose();
         return;
       }
 
@@ -397,7 +406,7 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
     // Escape key to dismiss terminal
     if (e.key === 'Escape') {
       e.preventDefault();
-      onClose();
+      handleClose();
       return;
     }
 
@@ -465,9 +474,13 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
   };
 
   return (
-    <div className="terminal-overlay-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-label="Interactive Terminal CLI">
+    <div className="terminal-overlay-backdrop" onClick={handleClose}>
       <div
         className={`terminal-window ${isMaximized ? 'maximized' : ''}`}
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Interactive Terminal CLI"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Terminal Header Chrome */}
@@ -476,14 +489,14 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
             <button
               type="button"
               className="ctrl-dot close"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close terminal"
               title="Close (Esc)"
             />
             <button
               type="button"
               className="ctrl-dot minimize"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Minimize terminal"
               title="Minimize"
             />
@@ -513,7 +526,7 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
             <button
               type="button"
               className="term-action-btn close"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close terminal"
             >
               <FontAwesomeIcon icon={faTimes} />

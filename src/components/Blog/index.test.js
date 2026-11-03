@@ -91,4 +91,36 @@ describe('Blog Component', () => {
     expect(screen.getByText(/Article Not Found/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Browse All Engineering Articles/i })).toBeInTheDocument();
   });
+
+  it('navigates category tabs using arrow keys and home/end keys', () => {
+    render(
+      <MemoryRouter initialEntries={['/blog']}>
+        <UiProvider>
+          <Routes>
+            <Route path="/blog" element={<Blog />} />
+          </Routes>
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const allTab = screen.getByRole('tab', { name: /^All$/i });
+    expect(allTab).toHaveAttribute('aria-selected', 'true');
+    expect(allTab).toHaveAttribute('tabIndex', '0');
+
+    // ArrowRight to Architecture
+    fireEvent.keyDown(allTab, { key: 'ArrowRight' });
+    const archTab = screen.getByRole('tab', { name: /^Architecture$/i });
+    expect(archTab).toHaveAttribute('aria-selected', 'true');
+    expect(archTab).toHaveAttribute('tabIndex', '0');
+    expect(allTab).toHaveAttribute('tabIndex', '-1');
+
+    // End key to DevOps (last tab)
+    fireEvent.keyDown(archTab, { key: 'End' });
+    const devopsTab = screen.getByRole('tab', { name: /^DevOps$/i });
+    expect(devopsTab).toHaveAttribute('aria-selected', 'true');
+
+    // Home key back to All
+    fireEvent.keyDown(devopsTab, { key: 'Home' });
+    expect(screen.getByRole('tab', { name: /^All$/i })).toHaveAttribute('aria-selected', 'true');
+  });
 });

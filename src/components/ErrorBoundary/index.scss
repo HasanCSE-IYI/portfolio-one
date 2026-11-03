@@ -192,8 +192,57 @@
         }
       }
 
-      .error-trace-log {
+      .trace-actions-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 10px;
+        margin-bottom: 6px;
+        padding: 0 4px;
+
+        .trace-heading {
+          font-family: var(--font-mono);
+          font-size: 1.1rem;
+          color: #94a3b8;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .copy-trace-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 6px;
+          color: #e2e8f0;
+          font-family: var(--font-mono);
+          font-size: 1.1rem;
+          font-weight: 500;
+          padding: 4px 10px;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+          &:hover {
+            color: #ffffff;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+          }
+
+          &:active {
+            transform: scale(0.96);
+          }
+
+          &:focus-visible {
+            outline: 2px solid #ef4444;
+            outline-offset: 2px;
+          }
+        }
+      }
+
+      .error-trace-log {
+        margin-top: 4px;
         background: rgba(7, 10, 16, 0.9);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 8px;

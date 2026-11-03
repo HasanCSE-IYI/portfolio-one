@@ -449,6 +449,7 @@ const Contact = () => {
           }
         },
         () => {
+          playSound('notification')
           setIsSubmitting(false)
           const mailtoUrl = `mailto:mahmud.csem@gmail.com?subject=${encodeURIComponent(
             subjectVal
@@ -497,6 +498,7 @@ const Contact = () => {
               rel="noreferrer"
               className="quick-link whatsapp"
               title="Chat directly on WhatsApp"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faWhatsapp} className="channel-icon" />
               <span>WhatsApp · +880 1727 328200</span>
@@ -505,6 +507,7 @@ const Contact = () => {
               href="mailto:mahmud.csem@gmail.com"
               className="quick-link email"
               title="Send an email to mahmud.csem@gmail.com"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faEnvelope} className="channel-icon" />
               <span>mahmud.csem@gmail.com</span>
@@ -515,6 +518,7 @@ const Contact = () => {
               rel="noreferrer"
               className="quick-link linkedin"
               title="Connect on LinkedIn"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faLinkedin} className="channel-icon" />
               <span>LinkedIn Profile</span>
@@ -525,6 +529,7 @@ const Contact = () => {
               rel="noreferrer"
               className="quick-link github"
               title="View GitHub Repositories"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faGithub} className="channel-icon" />
               <span>GitHub Repositories</span>

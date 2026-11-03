@@ -46,5 +46,11 @@ describe('ErrorBoundary Component', () => {
     fireEvent.click(toggleBtn);
 
     expect(screen.getByText(/Test boundary crash/i)).toBeInTheDocument();
+
+    // Copy trace button
+    const copyBtn = screen.getByRole('button', { name: /copy technical diagnostics/i });
+    expect(copyBtn).toBeInTheDocument();
+    fireEvent.click(copyBtn);
+    expect(screen.getByText(/Copied Diagnostic Trace/i)).toBeInTheDocument();
   });
 });

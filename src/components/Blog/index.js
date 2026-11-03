@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -47,6 +47,7 @@ const Blog = () => {
   const [copiedCodeId, setCopiedCodeId] = useState(null);
   const [shareToast, setShareToast] = useState('');
   const [readingProgress, setReadingProgress] = useState(0);
+  const categoryBtnsRef = useRef([]);
 
   const articles = useMemo(() => getAllArticles(), []);
   const currentArticle = useMemo(() => (slug ? getArticleBySlug(slug) : null), [slug]);
@@ -156,20 +157,27 @@ const Blog = () => {
     });
   }, [articles, activeCategory, searchQuery]);
 
-  const handleCategoryKeyDown = (e, currentCat) => {
-    const currentIndex = CATEGORIES.indexOf(currentCat);
-    if (currentIndex === -1) return;
-
+  const handleCategoryKeyDown = (e, index) => {
+    let nextIndex = null;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      const nextIndex = (currentIndex + 1) % CATEGORIES.length;
-      playSound('click');
-      setActiveCategory(CATEGORIES[nextIndex]);
+      nextIndex = (index + 1) % CATEGORIES.length;
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + CATEGORIES.length) % CATEGORIES.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = CATEGORIES.length - 1;
+    }
+
+    if (nextIndex !== null) {
       e.preventDefault();
-      const prevIndex = (currentIndex - 1 + CATEGORIES.length) % CATEGORIES.length;
+      const nextCat = CATEGORIES[nextIndex];
+      setActiveCategory(nextCat);
       playSound('click');
-      setActiveCategory(CATEGORIES[prevIndex]);
+      const targetBtn = categoryBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
     }
   };
 
@@ -464,18 +472,24 @@ const Blog = () => {
             </div>
 
             <div className="category-pill-strip" role="tablist" aria-label="Filter articles by category">
-              {CATEGORIES.map((cat) => (
+              {CATEGORIES.map((cat, idx) => (
                 <button
                   key={cat}
+                  ref={(el) => {
+                    categoryBtnsRef.current[idx] = el;
+                  }}
+                  id={`blog-tab-${cat.toLowerCase()}`}
                   type="button"
                   role="tab"
+                  tabIndex={activeCategory === cat ? 0 : -1}
                   aria-selected={activeCategory === cat}
+                  aria-controls="articles-grid"
                   className={`category-pill ${activeCategory === cat ? 'active' : ''}`}
                   onClick={() => {
                     setActiveCategory(cat);
                     playSound('click');
                   }}
-                  onKeyDown={(e) => handleCategoryKeyDown(e, cat)}
+                  onKeyDown={(e) => handleCategoryKeyDown(e, idx)}
                 >
                   {cat}
                 </button>
@@ -485,7 +499,12 @@ const Blog = () => {
         </header>
 
         {/* Articles Grid */}
-        <div className="articles-grid">
+        <div
+          id="articles-grid"
+          role="tabpanel"
+          aria-labelledby={`blog-tab-${activeCategory.toLowerCase()}`}
+          className="articles-grid"
+        >
           {filteredArticles.length > 0 ? (
             filteredArticles.map((art) => (
               <article key={art.slug} className="article-card">
