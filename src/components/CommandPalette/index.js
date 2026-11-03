@@ -320,6 +320,11 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
     [navigate, onOpenResumeModal, onClose, ui]
   );
 
+  const handleClose = useCallback(() => {
+    ui?.playSound?.('close');
+    onClose();
+  }, [ui, onClose]);
+
   // Handle keyboard navigation inside the palette
   useEffect(() => {
     if (!isOpen) return;
@@ -327,7 +332,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        onClose();
+        handleClose();
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
         ui?.playSound?.('tick');
@@ -352,7 +357,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, selectedIndex, filteredCommands, onClose, executeCommand, ui]);
+  }, [isOpen, selectedIndex, filteredCommands, handleClose, executeCommand, ui]);
 
   // Keep selected item scrolled into view
   useEffect(() => {
@@ -369,7 +374,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   return (
     <div
       className="command-palette-overlay"
-      onClick={onClose}
+      onClick={handleClose}
       aria-modal="true"
       role="dialog"
       aria-label="Command Spotlight Palette"

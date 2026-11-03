@@ -457,7 +457,10 @@ const Sidebar = () => {
                   to="/blog"
                   className="dropdown-item blog-item"
                   role="menuitem"
-                  onClick={() => setShowMoreMenu(false)}
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
                 >
                   <span className="item-icon-box blog-box">
                     <FontAwesomeIcon icon={faBookOpen} />
@@ -474,7 +477,10 @@ const Sidebar = () => {
                   to="/focus"
                   className="dropdown-item focus-item"
                   role="menuitem"
-                  onClick={() => setShowMoreMenu(false)}
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
                 >
                   <span className="item-icon-box focus-box">
                     <FontAwesomeIcon icon={faHeadphones} />
@@ -516,7 +522,10 @@ const Sidebar = () => {
                   to="/resume"
                   className="dropdown-item resume-page-link"
                   role="menuitem"
-                  onClick={() => setShowMoreMenu(false)}
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
                 >
                   <span className="item-icon-box resume-box">
                     <FontAwesomeIcon icon={faFileAlt} />
@@ -536,7 +545,10 @@ const Sidebar = () => {
                   rel="noreferrer"
                   className="dropdown-item"
                   role="menuitem"
-                  onClick={() => setShowMoreMenu(false)}
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
                 >
                   <span className="item-icon-box github-box">
                     <FontAwesomeIcon icon={faGithub} />
@@ -553,7 +565,10 @@ const Sidebar = () => {
                   rel="noreferrer"
                   className="dropdown-item"
                   role="menuitem"
-                  onClick={() => setShowMoreMenu(false)}
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
                 >
                   <span className="item-icon-box linkedin-box">
                     <FontAwesomeIcon icon={faLinkedin} />
@@ -570,7 +585,10 @@ const Sidebar = () => {
                   rel="noreferrer"
                   className="dropdown-item"
                   role="menuitem"
-                  onClick={() => setShowMoreMenu(false)}
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
                 >
                   <span className="item-icon-box whatsapp-box">
                     <FontAwesomeIcon icon={faWhatsapp} />
