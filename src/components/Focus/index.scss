@@ -29,7 +29,7 @@
     outline: none;
 
     &:focus-visible {
-      outline: 2px solid var(--accent-gold);
+      outline: 2px solid var(--primary-accent, #f59e0b);
       outline-offset: 2px;
     }
   }
@@ -42,7 +42,7 @@
     outline: none;
 
     &:focus-visible {
-      outline: 2px solid var(--accent-gold);
+      outline: 2px solid var(--primary-accent, #f59e0b);
       outline-offset: 2px;
     }
   }
@@ -1527,7 +1527,7 @@
         }
 
         &:focus-visible {
-          outline: 2px solid #f59e0b;
+          outline: 2px solid var(--primary-accent, #f59e0b);
           outline-offset: 2px;
         }
       }
@@ -1888,7 +1888,7 @@
             }
 
             &:focus-visible {
-              outline: 2px solid #f59e0b;
+              outline: 2px solid var(--primary-accent, #f59e0b);
               outline-offset: 2px;
             }
 
@@ -2442,7 +2442,7 @@
           border-radius: 10px;
 
           &:focus-visible {
-            outline: 2px solid var(--accent-gold);
+            outline: 2px solid var(--primary-accent, #f59e0b);
             outline-offset: 2px;
           }
 
@@ -2668,7 +2668,7 @@
             cursor: pointer;
 
             &:focus-visible {
-              outline: 2px solid var(--accent-gold);
+              outline: 2px solid var(--primary-accent, #f59e0b);
               outline-offset: 4px;
               border-radius: 4px;
             }

@@ -31,7 +31,7 @@ html {
   /* Specular Borders & Glass Highlights */
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.14);
-  --border-hover: rgba(245, 158, 11, 0.45);
+  --border-hover: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.45);
   --glass-specular: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 
   /* Accents */
@@ -101,7 +101,7 @@ samp {
 
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent-gold);
+  box-shadow: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--primary-accent, #f59e0b);
 }
 
 h1, h2, h3, h4, h5, h6 {
