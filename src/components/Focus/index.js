@@ -46,9 +46,11 @@ import {
   FOCUS_SCENES,
   FOCUS_QUOTES,
 } from '../../context/FocusContext';
+import { useUi } from '../../context/UiContext';
 import './index.scss';
 
 const Focus = () => {
+  const { playSound } = useUi();
   const [letterClass, setLetterClass] = useState('text-animate');
   const [activeCategory, setActiveCategory] = useState('all');
   const [isBrainwaveExpanded, setIsBrainwaveExpanded] = useState(true);
@@ -260,15 +262,19 @@ const Focus = () => {
 
       if (e.code === 'Space') {
         e.preventDefault();
+        playSound('pop');
         toggleMasterPlay();
       } else if (e.key === 'm' || e.key === 'M') {
         e.preventDefault();
+        playSound('click');
         setIsMuted(!isMuted);
       } else if (e.key === 'v' || e.key === 'V') {
         e.preventDefault();
+        playSound('pop');
         setIsZenMode((prev) => !prev);
       } else if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
+        playSound('pop');
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(() => {});
           setIsZenMode(true);
@@ -277,24 +283,31 @@ const Focus = () => {
         }
       } else if (e.key === 't' || e.key === 'T') {
         e.preventDefault();
+        playSound('pop');
         if (timerStatus === 'running') pauseTimer();
         else startTimer();
       } else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault();
+        playSound('pop');
         resetTimer();
       } else if (e.key === 'b' || e.key === 'B') {
         e.preventDefault();
+        playSound('pop');
         setIsBreathingMode((prev) => !prev);
       } else if (e.key === 's' || e.key === 'S') {
         e.preventDefault();
+        playSound('chime');
         shuffleMix();
       } else if (e.key === 'y' || e.key === 'Y') {
         e.preventDefault();
+        playSound('pop');
         toggleYtFold();
       } else if (e.key === '?') {
         e.preventDefault();
+        playSound('pop');
         setShowShortcutsModal((prev) => !prev);
       } else if (e.key === 'Escape') {
+        playSound('close');
         if (showSaveModal) setShowSaveModal(false);
         if (showShortcutsModal) setShowShortcutsModal(false);
         if (isBreathingMode) setIsBreathingMode(false);
@@ -305,6 +318,7 @@ const Focus = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [
+    playSound,
     toggleMasterPlay,
     isMuted,
     setIsMuted,
@@ -517,6 +531,7 @@ const Focus = () => {
       const url = `${window.location.origin}/focus?mix=${encoded}`;
 
       const triggerSuccess = () => {
+        playSound('chime');
         setShareCopied(true);
         setTimeout(() => setShareCopied(false), 2500);
       };
@@ -554,6 +569,7 @@ const Focus = () => {
     if (!customLinkInput.trim()) return;
     const ok = addCustomYtLink(customLinkInput.trim());
     if (ok) {
+      playSound('click');
       setCustomLinkInput('');
     }
   };
@@ -602,7 +618,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className="island-compact-btn"
-                    onClick={() => setIsIslandExpanded(true)}
+                    onClick={() => {
+                      playSound('pop');
+                      setIsIslandExpanded(true);
+                    }}
                     aria-expanded="false"
                     aria-label="Expand now playing controller"
                   >
@@ -658,7 +677,10 @@ const Focus = () => {
                       <button
                         type="button"
                         className="island-close-btn"
-                        onClick={() => setIsIslandExpanded(false)}
+                        onClick={() => {
+                          playSound('close');
+                          setIsIslandExpanded(false);
+                        }}
                         aria-label="Close island controller"
                       >
                         <FontAwesomeIcon icon={faTimes} />
@@ -669,7 +691,10 @@ const Focus = () => {
                       <button
                         type="button"
                         className="island-step-btn"
-                        onClick={prevYtTrack}
+                        onClick={() => {
+                          playSound('tick');
+                          prevYtTrack();
+                        }}
                         title="Previous Track"
                         aria-label="Previous Track"
                       >
@@ -678,7 +703,10 @@ const Focus = () => {
                       <button
                         type="button"
                         className="island-main-btn"
-                        onClick={toggleYtPlay}
+                        onClick={() => {
+                          playSound('pop');
+                          toggleYtPlay();
+                        }}
                         title={isYtPlaying ? 'Pause' : 'Play'}
                         aria-label={isYtPlaying ? 'Pause' : 'Play'}
                       >
@@ -687,7 +715,10 @@ const Focus = () => {
                       <button
                         type="button"
                         className="island-step-btn"
-                        onClick={nextYtTrack}
+                        onClick={() => {
+                          playSound('tick');
+                          nextYtTrack();
+                        }}
                         title="Next Track"
                         aria-label="Next Track"
                       >
@@ -705,6 +736,7 @@ const Focus = () => {
                 type="button"
                 className="zen-action-pill-btn"
                 onClick={() => {
+                  playSound('pop');
                   if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen().catch(() => {});
                   } else {
@@ -719,7 +751,10 @@ const Focus = () => {
               <button
                 type="button"
                 className="zen-exit-btn"
-                onClick={() => setIsZenMode(false)}
+                onClick={() => {
+                  playSound('close');
+                  setIsZenMode(false);
+                }}
                 aria-label="Exit Zen Mode (Esc)"
                 title="Exit Zen Mode (Esc)"
               >
@@ -756,12 +791,26 @@ const Focus = () => {
               {/* Action Controls */}
               <div className="zen-controls-row">
                 {timerStatus === 'running' ? (
-                  <button type="button" className="zen-action-btn pause" onClick={pauseTimer}>
+                  <button
+                    type="button"
+                    className="zen-action-btn pause"
+                    onClick={() => {
+                      playSound('pop');
+                      pauseTimer();
+                    }}
+                  >
                     <FontAwesomeIcon icon={faPause} />
                     <span>Pause Timer</span>
                   </button>
                 ) : (
-                  <button type="button" className="zen-action-btn start" onClick={startTimer}>
+                  <button
+                    type="button"
+                    className="zen-action-btn start"
+                    onClick={() => {
+                      playSound('pop');
+                      startTimer();
+                    }}
+                  >
                     <FontAwesomeIcon icon={faPlay} />
                     <span>Start Timer</span>
                   </button>
@@ -770,7 +819,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className={`zen-action-btn sound ${isPlaying ? 'playing' : ''}`}
-                  onClick={toggleMasterPlay}
+                  onClick={() => {
+                    playSound('pop');
+                    toggleMasterPlay();
+                  }}
                 >
                   <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
                   <span>{isPlaying ? 'Pause Sounds' : 'Play Sounds'}</span>
@@ -795,7 +847,10 @@ const Focus = () => {
                 <select
                   className="zen-scene-select"
                   value={activeScene}
-                  onChange={(e) => changeScene(e.target.value)}
+                  onChange={(e) => {
+                    playSound('click');
+                    changeScene(e.target.value);
+                  }}
                   aria-label="Select Scene Atmosphere"
                 >
                   {FOCUS_SCENES.map((sc) => (
@@ -810,7 +865,10 @@ const Focus = () => {
               <button
                 type="button"
                 className="zen-dock-btn"
-                onClick={shuffleMix}
+                onClick={() => {
+                  playSound('chime');
+                  shuffleMix();
+                }}
                 title="Shuffle surprise mix (S)"
                 aria-label="Shuffle surprise mix"
               >
@@ -822,7 +880,10 @@ const Focus = () => {
               <button
                 type="button"
                 className="zen-dock-btn"
-                onClick={nextQuote}
+                onClick={() => {
+                  playSound('tick');
+                  nextQuote();
+                }}
                 title="Next inspiring quote"
                 aria-label="Next inspiring quote"
               >
@@ -833,7 +894,10 @@ const Focus = () => {
               <button
                 type="button"
                 className={`zen-dock-btn ${showZenMixer ? 'active' : ''}`}
-                onClick={() => setShowZenMixer(!showZenMixer)}
+                onClick={() => {
+                  playSound(showZenMixer ? 'close' : 'pop');
+                  setShowZenMixer(!showZenMixer);
+                }}
                 title="Soundboard quick mixer"
                 aria-label="Soundboard quick mixer"
               >
@@ -850,7 +914,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className="mixer-close-btn"
-                    onClick={() => setShowZenMixer(false)}
+                    onClick={() => {
+                      playSound('close');
+                      setShowZenMixer(false);
+                    }}
                     aria-label="Close mixer"
                   >
                     <FontAwesomeIcon icon={faTimes} />
@@ -892,13 +959,17 @@ const Focus = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Apple Mindful Box Breathing"
-            onClick={() => setIsBreathingMode(false)}
+            onClick={() => {
+              playSound('close');
+              setIsBreathingMode(false);
+            }}
           >
             <button
               type="button"
               className="breathing-exit-btn"
               onClick={(e) => {
                 e.stopPropagation();
+                playSound('close');
                 setIsBreathingMode(false);
               }}
               aria-label="Exit Mindful Breathing (Esc)"
@@ -942,7 +1013,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className="breathing-finish-btn"
-                  onClick={() => setIsBreathingMode(false)}
+                  onClick={() => {
+                    playSound('chime');
+                    setIsBreathingMode(false);
+                  }}
                   aria-label="Done with breathing session"
                 >
                   <FontAwesomeIcon icon={faCheck} className="finish-icon" />
@@ -957,7 +1031,13 @@ const Focus = () => {
             SAVE PRESET MODAL
            ========================================================================= */}
         {showSaveModal && (
-          <div className="modal-backdrop" onClick={() => setShowSaveModal(false)}>
+          <div
+            className="modal-backdrop"
+            onClick={() => {
+              playSound('close');
+              setShowSaveModal(false);
+            }}
+          >
             <div
               className="preset-save-modal"
               role="dialog"
@@ -970,7 +1050,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className="modal-close-btn"
-                  onClick={() => setShowSaveModal(false)}
+                  onClick={() => {
+                    playSound('close');
+                    setShowSaveModal(false);
+                  }}
                   aria-label="Close save modal"
                 >
                   <FontAwesomeIcon icon={faTimes} />
@@ -983,6 +1066,7 @@ const Focus = () => {
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (newPresetName.trim()) {
+                    playSound('chime');
                     saveUserPreset(newPresetName.trim());
                     setNewPresetName('');
                     setShowSaveModal(false);
@@ -1003,7 +1087,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className="btn-cancel"
-                    onClick={() => setShowSaveModal(false)}
+                    onClick={() => {
+                      playSound('close');
+                      setShowSaveModal(false);
+                    }}
                   >
                     Cancel
                   </button>
@@ -1024,7 +1111,13 @@ const Focus = () => {
             KEYBOARD SHORTCUTS HUD MODAL
            ========================================================================= */}
         {showShortcutsModal && (
-          <div className="modal-backdrop" onClick={() => setShowShortcutsModal(false)}>
+          <div
+            className="modal-backdrop"
+            onClick={() => {
+              playSound('close');
+              setShowShortcutsModal(false);
+            }}
+          >
             <div
               className="shortcuts-hud-card"
               role="dialog"
@@ -1040,7 +1133,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className="modal-close-btn"
-                  onClick={() => setShowShortcutsModal(false)}
+                  onClick={() => {
+                    playSound('close');
+                    setShowShortcutsModal(false);
+                  }}
                   aria-label="Close shortcuts modal"
                 >
                   <FontAwesomeIcon icon={faTimes} />
@@ -1110,7 +1206,10 @@ const Focus = () => {
               <button
                 type="button"
                 className="toast-dismiss-btn"
-                onClick={() => setShowTimeToast(false)}
+                onClick={() => {
+                  playSound('close');
+                  setShowTimeToast(false);
+                }}
                 aria-label="Dismiss greeting"
               >
                 <FontAwesomeIcon icon={faTimes} />
@@ -1148,7 +1247,10 @@ const Focus = () => {
                     key={sc.id}
                     type="button"
                     className={`scene-pill ${activeScene === sc.id ? 'active' : ''}`}
-                    onClick={() => changeScene(sc.id)}
+                    onClick={() => {
+                      playSound('click');
+                      changeScene(sc.id);
+                    }}
                     title={`Atmospheric scene: ${sc.name}`}
                   >
                     <span>{sc.icon}</span>
@@ -1184,7 +1286,10 @@ const Focus = () => {
               <button
                 type="button"
                 className="quote-next-btn"
-                onClick={nextQuote}
+                onClick={() => {
+                  playSound('tick');
+                  nextQuote();
+                }}
                 title="Another line"
                 aria-label="Show another inspiring line"
               >
@@ -1204,7 +1309,10 @@ const Focus = () => {
             <button
               type="button"
               className={`master-play-btn ${isPlaying ? 'playing' : ''}`}
-              onClick={toggleMasterPlay}
+              onClick={() => {
+                playSound('pop');
+                toggleMasterPlay();
+              }}
               aria-label={isPlaying ? 'Pause All Ambient Sounds' : 'Play All Ambient Sounds'}
               title={isPlaying ? 'Pause All Sounds (Space)' : 'Play All Sounds (Space)'}
             >
@@ -1216,7 +1324,10 @@ const Focus = () => {
               <button
                 type="button"
                 className="mute-btn"
-                onClick={() => setIsMuted(!isMuted)}
+                onClick={() => {
+                  playSound('click');
+                  setIsMuted(!isMuted);
+                }}
                 title={isMuted ? 'Unmute (M)' : 'Mute (M)'}
                 aria-label={isMuted ? 'Unmute master volume' : 'Mute master volume'}
               >
@@ -1241,7 +1352,10 @@ const Focus = () => {
             <button
               type="button"
               className={`analog-warmth-btn ${isVinylWarmth ? 'active' : ''}`}
-              onClick={() => setIsVinylWarmth(!isVinylWarmth)}
+              onClick={() => {
+                playSound('click');
+                setIsVinylWarmth(!isVinylWarmth);
+              }}
               title="Toggle analog tape saturation & subtle warmth"
               aria-label={isVinylWarmth ? 'Turn off analog tape warmth' : 'Turn on analog tape warmth'}
             >
@@ -1253,7 +1367,10 @@ const Focus = () => {
             <button
               type="button"
               className={`mindful-btn ${isBreathingMode ? 'active' : ''}`}
-              onClick={() => setIsBreathingMode(true)}
+              onClick={() => {
+                playSound('pop');
+                setIsBreathingMode(true);
+              }}
               title="Open Mindful Box Breathing Reset (B)"
               aria-label="Open Mindful Box Breathing Reset (Press B)"
             >
@@ -1267,6 +1384,7 @@ const Focus = () => {
               type="button"
               className={`sleep-timer-btn ${sleepTimerMinutes ? 'active' : ''}`}
               onClick={() => {
+                playSound('tick');
                 const steps = [null, 15, 30, 45, 60];
                 const curIdx = steps.indexOf(sleepTimerMinutes);
                 const nextStep = steps[(curIdx + 1) % steps.length];
@@ -1293,7 +1411,10 @@ const Focus = () => {
             <button
               type="button"
               className="shuffle-mix-btn"
-              onClick={shuffleMix}
+              onClick={() => {
+                playSound('chime');
+                shuffleMix();
+              }}
               title="Shuffle: surprise mix (S)"
               aria-label="Shuffle: a surprise mix"
             >
@@ -1314,7 +1435,10 @@ const Focus = () => {
                   key={preset.id}
                   type="button"
                   className={`preset-pill ${isActive ? 'active' : ''}`}
-                  onClick={() => applyPreset(preset)}
+                  onClick={() => {
+                    playSound('click');
+                    applyPreset(preset);
+                  }}
                   title={preset.desc}
                 >
                   <span className="preset-icon">{preset.icon}</span>
@@ -1332,7 +1456,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className={`preset-pill user-preset ${isActive ? 'active' : ''}`}
-                    onClick={() => applyPreset(preset)}
+                    onClick={() => {
+                      playSound('click');
+                      applyPreset(preset);
+                    }}
                     title={preset.desc}
                   >
                     <span className="preset-icon">{preset.icon}</span>
@@ -1344,6 +1471,7 @@ const Focus = () => {
                     className="delete-user-preset-btn"
                     onClick={(e) => {
                       e.stopPropagation();
+                      playSound('pop');
                       deleteUserPreset(preset.id);
                     }}
                     title={`Delete "${preset.name}" preset`}
@@ -1361,7 +1489,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className="save-preset-btn"
-                  onClick={() => setShowSaveModal(true)}
+                  onClick={() => {
+                    playSound('pop');
+                    setShowSaveModal(true);
+                  }}
                   title="Save current nature mix as custom preset"
                   aria-label="Save current mix as preset"
                 >
@@ -1383,7 +1514,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className="clear-mix-btn"
-                  onClick={clearAllSounds}
+                  onClick={() => {
+                    playSound('close');
+                    clearAllSounds();
+                  }}
                   title="Mute and reset all sound layers"
                   aria-label="Mute and clear all active ambient sound layers"
                 >
@@ -1398,7 +1532,10 @@ const Focus = () => {
             <button
               type="button"
               className="shortcuts-hud-btn"
-              onClick={() => setShowShortcutsModal(true)}
+              onClick={() => {
+                playSound('pop');
+                setShowShortcutsModal(true);
+              }}
               title="Keyboard Shortcuts (?)"
               aria-label="Keyboard Shortcuts"
             >
@@ -1410,7 +1547,10 @@ const Focus = () => {
             <button
               type="button"
               className="zen-mode-toggle-btn"
-              onClick={() => setIsZenMode(true)}
+              onClick={() => {
+                playSound('pop');
+                setIsZenMode(true);
+              }}
               title="Enter Zen Fullscreen Mode (Press F)"
               aria-label="Enter Zen Fullscreen Mode"
             >
@@ -1431,7 +1571,10 @@ const Focus = () => {
               role="tab"
               aria-selected={activeWorkspaceTab === 'soundboard'}
               className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
-              onClick={() => setActiveWorkspaceTab('soundboard')}
+              onClick={() => {
+                playSound('tick');
+                setActiveWorkspaceTab('soundboard');
+              }}
             >
               <span className="tab-symbol">🌿</span>
               <span className="tab-text">Nature Soundboard</span>
@@ -1445,7 +1588,10 @@ const Focus = () => {
               role="tab"
               aria-selected={activeWorkspaceTab === 'timer'}
               className={`view-tab ${activeWorkspaceTab === 'timer' ? 'active' : ''}`}
-              onClick={() => setActiveWorkspaceTab('timer')}
+              onClick={() => {
+                playSound('tick');
+                setActiveWorkspaceTab('timer');
+              }}
             >
               <span className="tab-symbol">⏱️</span>
               <span className="tab-text">Flow Timer &amp; Log</span>
@@ -1486,7 +1632,10 @@ const Focus = () => {
                     aria-selected={timerMode === mode.id}
                     aria-label={mode.label}
                     className={`mode-tab ${timerMode === mode.id ? 'active' : ''}`}
-                    onClick={() => changeTimerMode(mode.id)}
+                    onClick={() => {
+                      playSound('tick');
+                      changeTimerMode(mode.id);
+                    }}
                   >
                     <span className="mode-tab-title">{mode.label}</span>
                     <span className="mode-tab-duration">
@@ -1544,7 +1693,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className="timer-action-btn pause-btn"
-                    onClick={pauseTimer}
+                    onClick={() => {
+                      playSound('pop');
+                      pauseTimer();
+                    }}
                   >
                     <FontAwesomeIcon icon={faPause} />
                     <span>PAUSE</span>
@@ -1553,7 +1705,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className="timer-action-btn start-btn"
-                    onClick={startTimer}
+                    onClick={() => {
+                      playSound('pop');
+                      startTimer();
+                    }}
                   >
                     <FontAwesomeIcon icon={faPlay} />
                     <span>{timerStatus === 'paused' ? 'RESUME' : 'START FOCUS'}</span>
@@ -1563,7 +1718,10 @@ const Focus = () => {
                 <button
                   type="button"
                   className="timer-reset-btn"
-                  onClick={() => resetTimer()}
+                  onClick={() => {
+                    playSound('pop');
+                    resetTimer();
+                  }}
                   title="Reset Timer (R)"
                   aria-label="Reset Timer"
                 >
@@ -1601,7 +1759,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className={`viz-mode-btn ${visualizerMode === 'bars' ? 'active' : ''}`}
-                      onClick={() => setVisualizerMode('bars')}
+                      onClick={() => {
+                        playSound('tick');
+                        setVisualizerMode('bars');
+                      }}
                       aria-pressed={visualizerMode === 'bars'}
                     >
                       Bars
@@ -1609,7 +1770,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className={`viz-mode-btn ${visualizerMode === 'wave' ? 'active' : ''}`}
-                      onClick={() => setVisualizerMode('wave')}
+                      onClick={() => {
+                        playSound('tick');
+                        setVisualizerMode('wave');
+                      }}
                       aria-pressed={visualizerMode === 'wave'}
                     >
                       Wave
@@ -1617,7 +1781,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className={`viz-mode-btn ${visualizerMode === 'radial' ? 'active' : ''}`}
-                      onClick={() => setVisualizerMode('radial')}
+                      onClick={() => {
+                        playSound('tick');
+                        setVisualizerMode('radial');
+                      }}
                       aria-pressed={visualizerMode === 'radial'}
                     >
                       Radial
@@ -1649,7 +1816,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className="yt-fold-btn"
-                    onClick={toggleYtFold}
+                    onClick={() => {
+                      playSound('pop');
+                      toggleYtFold();
+                    }}
                     title={isYtFolded ? 'Show video' : 'Hide video'}
                     aria-label={isYtFolded ? 'Show video' : 'Hide video'}
                   >
@@ -1679,7 +1849,10 @@ const Focus = () => {
                   <button
                     type="button"
                     className={`yt-play-toggle-btn ${isYtPlaying ? 'playing' : ''}`}
-                    onClick={toggleYtPlay}
+                    onClick={() => {
+                      playSound('pop');
+                      toggleYtPlay();
+                    }}
                     aria-label={isYtPlaying ? 'Pause YouTube video' : 'Play YouTube video'}
                     title={isYtPlaying ? 'Pause video' : 'Play video'}
                   >
@@ -1727,7 +1900,10 @@ const Focus = () => {
                       <button
                         type="button"
                         className="yt-clear-input-btn"
-                        onClick={() => setCustomLinkInput('')}
+                        onClick={() => {
+                          playSound('close');
+                          setCustomLinkInput('');
+                        }}
                         aria-label="Clear link input"
                       >
                         <FontAwesomeIcon icon={faTimes} />
@@ -1757,7 +1933,10 @@ const Focus = () => {
                             <button
                               type="button"
                               className="chip-select-btn"
-                              onClick={() => playYtTrack(track)}
+                              onClick={() => {
+                                playSound('click');
+                                playYtTrack(track);
+                              }}
                               title={`Play ${track.title}`}
                             >
                               <FontAwesomeIcon
@@ -1769,7 +1948,10 @@ const Focus = () => {
                             <button
                               type="button"
                               className="chip-delete-btn"
-                              onClick={() => removeCustomYtLink(track.id)}
+                              onClick={() => {
+                                playSound('pop');
+                                removeCustomYtLink(track.id);
+                              }}
                               title="Remove video"
                               aria-label={`Remove ${track.title}`}
                             >
@@ -1805,7 +1987,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className="history-clear-btn"
-                      onClick={clearSessionHistory}
+                      onClick={() => {
+                        playSound('close');
+                        clearSessionHistory();
+                      }}
                       title="Clear session history"
                       aria-label="Clear session history"
                     >
@@ -1869,7 +2054,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className="soundboard-action-btn shuffle-action-btn"
-                      onClick={shuffleMix}
+                      onClick={() => {
+                        playSound('chime');
+                        shuffleMix();
+                      }}
                       title="Surprise Mix: Generate a random relaxing combination (S)"
                       aria-label="Surprise nature sound mix"
                     >
@@ -1882,7 +2070,10 @@ const Focus = () => {
                         <button
                           type="button"
                           className="soundboard-action-btn clear-action-btn"
-                          onClick={clearAllSounds}
+                          onClick={() => {
+                            playSound('close');
+                            clearAllSounds();
+                          }}
                           title="Mute and clear all active sounds"
                           aria-label="Clear all active sounds"
                         >
@@ -1922,7 +2113,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className="sound-search-clear"
-                      onClick={() => setSoundSearch('')}
+                      onClick={() => {
+                        playSound('close');
+                        setSoundSearch('');
+                      }}
                       aria-label="Clear search"
                     >
                       <FontAwesomeIcon icon={faTimes} />
@@ -1947,7 +2141,10 @@ const Focus = () => {
                       key={cat}
                       type="button"
                       className={`cat-pill ${isCur ? 'active' : ''} ${catKey === 'active' && activeSoundsCount > 0 ? 'has-live-active' : ''}`}
-                      onClick={() => setActiveCategory(catKey)}
+                      onClick={() => {
+                        playSound('click');
+                        setActiveCategory(catKey);
+                      }}
                       title={`Filter by ${cat} (${count})`}
                       aria-label={`Filter by ${cat} (${count})`}
                     >
@@ -1966,7 +2163,10 @@ const Focus = () => {
               <div className={`brainwave-tuner-panel ${isBrainwaveExpanded ? 'is-expanded' : 'is-collapsed'}`}>
                 <div
                   className="tuner-header"
-                  onClick={() => setIsBrainwaveExpanded(!isBrainwaveExpanded)}
+                  onClick={() => {
+                    playSound('click');
+                    setIsBrainwaveExpanded(!isBrainwaveExpanded);
+                  }}
                   role="button"
                   tabIndex={0}
                   aria-expanded={isBrainwaveExpanded}
@@ -1974,6 +2174,7 @@ const Focus = () => {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
+                      playSound('click');
                       setIsBrainwaveExpanded(!isBrainwaveExpanded);
                     }
                   }}
@@ -2011,6 +2212,7 @@ const Focus = () => {
                         className={`bw-mode-pill ${isCur ? 'active' : ''}`}
                         onClick={(e) => {
                           e.stopPropagation();
+                          playSound('click');
                           changeBrainwaveMode(bw.id);
                         }}
                         title={`${bw.label} (${bw.hz}Hz) - ${bw.desc}`}
@@ -2037,6 +2239,7 @@ const Focus = () => {
                       type="button"
                       className="clear-search-link"
                       onClick={() => {
+                        playSound('click');
                         setSoundSearch('');
                         setActiveCategory('all');
                       }}
@@ -2046,7 +2249,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className="empty-state-shuffle-btn"
-                      onClick={shuffleMix}
+                      onClick={() => {
+                        playSound('chime');
+                        shuffleMix();
+                      }}
                     >
                       <FontAwesomeIcon icon={faShuffle} />
                       <span>Surprise Mix</span>
@@ -2067,7 +2273,10 @@ const Focus = () => {
                       >
                         <div
                           className="tile-top-row"
-                          onClick={() => toggleSound(sound.id)}
+                          onClick={() => {
+                            playSound('pop');
+                            toggleSound(sound.id);
+                          }}
                           role="button"
                           tabIndex={0}
                           aria-label={`Toggle ${sound.name}`}
@@ -2075,6 +2284,7 @@ const Focus = () => {
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                               e.preventDefault();
+                              playSound('pop');
                               toggleSound(sound.id);
                             }
                           }}
@@ -2103,6 +2313,7 @@ const Focus = () => {
                               className={`sound-fav-star ${isStarred ? 'starred' : ''}`}
                               onClick={(e) => {
                                 e.stopPropagation();
+                                playSound('chime');
                                 toggleFavorite(sound.id);
                               }}
                               title={isStarred ? `Unfavorite ${sound.name}` : `Star ${sound.name} as favorite`}
@@ -2115,6 +2326,7 @@ const Focus = () => {
                               className={`sound-power-toggle ${isActive ? 'active' : ''}`}
                               onClick={(e) => {
                                 e.stopPropagation();
+                                playSound('pop');
                                 toggleSound(sound.id);
                               }}
                               aria-label={isActive ? `Turn off ${sound.name}` : `Play ${sound.name}`}
@@ -2130,6 +2342,7 @@ const Focus = () => {
                             type="button"
                             className="slider-vol-btn"
                             onClick={() => {
+                              playSound('click');
                               if (vol > 0) {
                                 setSoundVolume(sound.id, 0);
                               } else {
@@ -2163,7 +2376,10 @@ const Focus = () => {
                                 key={step}
                                 type="button"
                                 className={`step-btn ${vol === step ? 'active-step' : ''}`}
-                                onClick={() => setSoundVolume(sound.id, step)}
+                                onClick={() => {
+                                  playSound('tick');
+                                  setSoundVolume(sound.id, step);
+                                }}
                                 title={`Set volume to ${step}%`}
                                 aria-label={`${step} percent`}
                               >
@@ -2205,6 +2421,7 @@ const Focus = () => {
                             className="chip-dismiss-btn"
                             onClick={(e) => {
                               e.stopPropagation();
+                              playSound('close');
                               setSoundVolume(s.id, 0);
                             }}
                             aria-label={`Mute ${s.name}`}
@@ -2221,7 +2438,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className="mixer-bar-action-btn save-btn"
-                      onClick={() => setShowSaveModal(true)}
+                      onClick={() => {
+                        playSound('pop');
+                        setShowSaveModal(true);
+                      }}
                       title="Save this mix as a custom preset"
                       aria-label="Save current mix as preset"
                     >
@@ -2231,7 +2451,10 @@ const Focus = () => {
                     <button
                       type="button"
                       className="mixer-bar-action-btn clear-btn"
-                      onClick={clearAllSounds}
+                      onClick={() => {
+                        playSound('close');
+                        clearAllSounds();
+                      }}
                       title="Clear all active sounds"
                       aria-label="Mute all sounds"
                     >
