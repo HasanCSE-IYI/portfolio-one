@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { playClickSound } from '../../utils/soundEffects';
+import { useUi } from '../../context/UiContext';
 import './index.scss';
 
 const PIPELINE_STEPS = [
@@ -69,6 +69,7 @@ const PIPELINE_STEPS = [
 ];
 
 const RequestPipeline = () => {
+  const { playSound } = useUi();
   const [activeStepId, setActiveStepId] = useState('auth');
   const activeBtnRef = useRef(null);
   const flowContainerRef = useRef(null);
@@ -111,18 +112,18 @@ const RequestPipeline = () => {
   }, [activeStepId]);
 
   const handleSelectStep = (stepId) => {
-    playClickSound();
+    playSound('click');
     setActiveStepId(stepId);
   };
 
   const handlePrevStep = () => {
-    playClickSound();
+    playSound('click');
     const prevIdx = (currentStepIdx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
     setActiveStepId(PIPELINE_STEPS[prevIdx].id);
   };
 
   const handleNextStep = () => {
-    playClickSound();
+    playSound('click');
     const nextIdx = (currentStepIdx + 1) % PIPELINE_STEPS.length;
     setActiveStepId(PIPELINE_STEPS[nextIdx].id);
   };
@@ -130,12 +131,12 @@ const RequestPipeline = () => {
   const handleNodeKeyDown = (e, idx) => {
     if (e.key === 'ArrowRight') {
       e.preventDefault();
-      playClickSound();
+      playSound('click');
       const nextIdx = (idx + 1) % PIPELINE_STEPS.length;
       setActiveStepId(PIPELINE_STEPS[nextIdx].id);
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      playClickSound();
+      playSound('click');
       const prevIdx = (idx - 1 + PIPELINE_STEPS.length) % PIPELINE_STEPS.length;
       setActiveStepId(PIPELINE_STEPS[prevIdx].id);
     }

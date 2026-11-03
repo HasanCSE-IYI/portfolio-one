@@ -33,7 +33,7 @@ import {
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
 import RequestPipeline from '../RequestPipeline'
-import { playTickSound } from '../../utils/soundEffects'
+import { useUi } from '../../context/UiContext'
 import './index.scss'
 import portfolioData from '../../data/portfolio.json'
 
@@ -117,6 +117,7 @@ const CAPABILITIES = [
 ]
 
 const Home = () => {
+  const { soundEnabled, toggleSound, playSound } = useUi()
   const [letterClass, setLetterClass] = useState('text-animate')
   const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
@@ -134,7 +135,6 @@ const Home = () => {
   const [copiedHistoryIdx, setCopiedHistoryIdx] = useState(null)
   const [terminalTheme, setTerminalTheme] = useState('amber')
   const [activeTerminalTab, setActiveTerminalTab] = useState('bash')
-  const [isSoundEnabled, setIsSoundEnabled] = useState(false)
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const cliHistoryRef = useRef(null)
   const cliInputRef = useRef(null)
@@ -195,8 +195,7 @@ const Home = () => {
   }
 
   const playTerminalClick = () => {
-    if (!isSoundEnabled) return
-    playTickSound(true)
+    playSound('tick')
   }
 
   const handleDeleteHistoryItem = (idToDelete) => {
@@ -208,6 +207,7 @@ const Home = () => {
       if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(rawText)
       }
+      playSound('chime')
       setCopiedHistoryIdx(hIdx)
       if (copyTimerRef.current) {
         clearTimeout(copyTimerRef.current)
@@ -216,6 +216,7 @@ const Home = () => {
         setCopiedHistoryIdx(null)
       }, 2000)
     } catch (e) {
+      playSound('chime')
       setCopiedHistoryIdx(hIdx)
       if (copyTimerRef.current) {
         clearTimeout(copyTimerRef.current)
@@ -992,17 +993,17 @@ const Home = () => {
             </div>
 
             <div className="cta-buttons">
-              <Link to="/portfolio" className="flat-button button-primary-glow">
+              <Link to="/portfolio" className="flat-button button-primary-glow" onClick={() => playSound('click')}>
                 <FontAwesomeIcon icon={faLayerGroup} className="btn-icon" />
                 <span>EXPLORE ARCHITECTURE &amp; SIMULATOR</span>
                 <FontAwesomeIcon icon={faChevronRight} className="btn-arrow-icon" />
               </Link>
-              <Link to="/resume" className="flat-button button-cv">
+              <Link to="/resume" className="flat-button button-cv" onClick={() => playSound('click')}>
                 <FontAwesomeIcon icon={faFilePdf} className="btn-icon" />
                 <span>EXECUTIVE RESUME</span>
                 <FontAwesomeIcon icon={faChevronRight} className="btn-arrow-icon" />
               </Link>
-              <Link to="/contact" className="flat-button button-secondary">
+              <Link to="/contact" className="flat-button button-secondary" onClick={() => playSound('click')}>
                 <FontAwesomeIcon icon={faPaperPlane} className="btn-icon" />
                 <span>GET IN TOUCH</span>
                 <FontAwesomeIcon icon={faChevronRight} className="btn-arrow-icon" />
@@ -1025,6 +1026,7 @@ const Home = () => {
                     aria-label="Clear console output"
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('pop')
                       setTerminalHistory([])
                       setCommandInput('')
                     }}
@@ -1036,6 +1038,7 @@ const Home = () => {
                     aria-label={isSpecCollapsed ? 'Expand system specs' : 'Minimize system specs'}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('click')
                       setIsSpecCollapsed((prev) => !prev)
                     }}
                   />
@@ -1046,6 +1049,7 @@ const Home = () => {
                     aria-label={isTerminalExpanded ? 'Collapse terminal view' : 'Expand terminal view'}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('pop')
                       setIsTerminalExpanded((prev) => !prev)
                     }}
                   />
@@ -1059,6 +1063,7 @@ const Home = () => {
                     className={`tab-btn ${activeTerminalTab === 'bash' ? 'active' : ''}`}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('tick')
                       setActiveTerminalTab('bash')
                     }}
                   >
@@ -1072,6 +1077,7 @@ const Home = () => {
                     className={`tab-btn ${activeTerminalTab === 'containers' ? 'active' : ''}`}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('tick')
                       setActiveTerminalTab('containers')
                     }}
                   >
@@ -1085,6 +1091,7 @@ const Home = () => {
                     className={`tab-btn ${activeTerminalTab === 'health' ? 'active' : ''}`}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('tick')
                       setActiveTerminalTab('health')
                     }}
                   >
@@ -1101,6 +1108,7 @@ const Home = () => {
                     aria-label={`Current theme: ${terminalTheme}. Click to switch theme.`}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('tick')
                       cycleTheme()
                     }}
                   >
@@ -1110,16 +1118,16 @@ const Home = () => {
                   </button>
                   <button
                     type="button"
-                    className={`terminal-ctrl-btn sound-btn ${isSoundEnabled ? 'sound-active' : ''}`}
-                    title={isSoundEnabled ? 'Mute terminal sound' : 'Enable terminal sound'}
-                    aria-label={isSoundEnabled ? 'Mute terminal sound' : 'Enable terminal sound'}
+                    className={`terminal-ctrl-btn sound-btn ${soundEnabled ? 'sound-active' : ''}`}
+                    title={soundEnabled ? 'Mute terminal sound' : 'Enable terminal sound'}
+                    aria-label={soundEnabled ? 'Mute terminal sound' : 'Enable terminal sound'}
                     onClick={(e) => {
                       e.stopPropagation()
-                      setIsSoundEnabled((prev) => !prev)
+                      toggleSound()
                     }}
                   >
-                    <FontAwesomeIcon icon={isSoundEnabled ? faVolumeUp : faVolumeMute} />
-                    {isSoundEnabled && <span className="sound-indicator-dot" aria-hidden="true" />}
+                    <FontAwesomeIcon icon={soundEnabled ? faVolumeUp : faVolumeMute} />
+                    {soundEnabled && <span className="sound-indicator-dot" aria-hidden="true" />}
                   </button>
                   <button
                     type="button"
@@ -1128,6 +1136,7 @@ const Home = () => {
                     aria-label={isTerminalExpanded ? 'Collapse terminal height' : 'Expand terminal height'}
                     onClick={(e) => {
                       e.stopPropagation()
+                      playSound('pop')
                       setIsTerminalExpanded((prev) => !prev)
                     }}
                   >
@@ -1467,13 +1476,17 @@ const Home = () => {
               <div
                 className={`capability-node ${activeCapability === idx ? 'active' : ''}`}
                 key={idx}
-                onClick={() => setActiveCapability(idx)}
+                onClick={() => {
+                  playSound('click')
+                  setActiveCapability(idx)
+                }}
                 role="button"
                 tabIndex={0}
                 aria-pressed={activeCapability === idx}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
+                    playSound('click')
                     setActiveCapability(idx)
                   }
                 }}
@@ -1486,7 +1499,15 @@ const Home = () => {
                       Active
                     </span>
                   )}
-                  <Link to={cap.link} className="cap-trace" onClick={(e) => e.stopPropagation()} title={`View ${cap.project} project details`}>
+                  <Link
+                    to={cap.link}
+                    className="cap-trace"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      playSound('click')
+                    }}
+                    title={`View ${cap.project} project details`}
+                  >
                     <span>Traced to: {cap.project}</span>
                     <span className="trace-arrow" aria-hidden="true">↗</span>
                   </Link>
@@ -1513,7 +1534,12 @@ const Home = () => {
                   <h4 className="inspector-headline">{CAPABILITIES[activeCapability].architecture.headline}</h4>
                   <p className="inspector-overview">{CAPABILITIES[activeCapability].architecture.overview}</p>
                 </div>
-                <Link to={CAPABILITIES[activeCapability].link} className="inspector-link" title={`Explore ${CAPABILITIES[activeCapability].project} in Project`}>
+                <Link
+                  to={CAPABILITIES[activeCapability].link}
+                  className="inspector-link"
+                  onClick={() => playSound('click')}
+                  title={`Explore ${CAPABILITIES[activeCapability].project} in Project`}
+                >
                   <span>Explore in Project</span>
                   <span className="link-arrow" aria-hidden="true">↗</span>
                 </Link>
