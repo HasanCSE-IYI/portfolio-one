@@ -135,6 +135,11 @@ const Cheatsheet = ({ isOpen, onClose }) => {
                 ✕
               </button>
             )}
+            <span className="sr-only" role="status" aria-live="polite">
+              {filterQuery
+                ? `Found ${filteredGroups.reduce((acc, g) => acc + g.shortcuts.length, 0)} matching shortcuts`
+                : ''}
+            </span>
           </div>
         </div>
 

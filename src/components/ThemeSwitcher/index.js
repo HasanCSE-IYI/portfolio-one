@@ -8,8 +8,32 @@ import './index.scss';
 const ThemeSwitcher = ({ isOpen, onClose }) => {
   const { accentTheme, setAccentTheme, playSound } = useUi();
   const modalRef = useRef(null);
+  const themeBtnsRef = useRef([]);
+  const themeList = Object.values(ACCENT_THEMES);
 
   useFocusTrap(isOpen, modalRef);
+
+  const handleKeyDownGrid = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % themeList.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + themeList.length) % themeList.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = themeList.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      playSound('tick');
+      const targetBtn = themeBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
 
   // Handle Escape key & body scroll lock for accessible modal behavior
   useEffect(() => {
@@ -65,19 +89,25 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
         </div>
 
         {/* Theme Grid */}
-        <div className="theme-grid">
-          {Object.values(ACCENT_THEMES).map((th) => {
+        <div className="theme-grid" role="radiogroup" aria-label="Accent color themes">
+          {themeList.map((th, idx) => {
             const isSelected = accentTheme === th.id;
             return (
               <button
                 key={th.id}
+                ref={(el) => {
+                  themeBtnsRef.current[idx] = el;
+                }}
                 type="button"
+                role="radio"
                 className={`theme-card-btn ${isSelected ? 'selected' : ''}`}
                 onClick={() => {
                   playSound('click');
                   setAccentTheme(th.id);
                 }}
-                aria-pressed={isSelected}
+                onKeyDown={(e) => handleKeyDownGrid(e, idx)}
+                aria-checked={isSelected}
+                aria-label={`${th.name}: ${th.desc}${isSelected ? ' (Currently selected)' : ''}`}
               >
                 <div className="color-swatch-wrap">
                   <span
@@ -98,6 +128,9 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
             );
           })}
         </div>
+        <span className="sr-only" role="status" aria-live="polite">
+          Active theme: {ACCENT_THEMES[accentTheme]?.name || accentTheme}
+        </span>
 
         {/* Footer */}
         <div className="theme-footer">

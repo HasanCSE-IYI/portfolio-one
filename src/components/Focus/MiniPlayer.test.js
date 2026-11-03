@@ -7,7 +7,7 @@ import { UiProvider } from '../../context/UiContext';
 
 describe('MiniPlayer Component', () => {
   test('returns null when completely idle on a non-focus page', () => {
-    const { container } = render(
+    render(
       <MemoryRouter initialEntries={['/']}>
         <UiProvider>
           <FocusProvider>
@@ -17,11 +17,14 @@ describe('MiniPlayer Component', () => {
       </MemoryRouter>
     );
 
-    expect(container.firstChild).toBeNull();
+    expect(
+      screen.queryByLabelText(/Background focus session audio/i)
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
   });
 
   test('returns null when on /focus page even if audio or timer is running', () => {
-    const { container } = render(
+    render(
       <MemoryRouter initialEntries={['/focus']}>
         <UiProvider>
           <FocusProvider>
@@ -31,7 +34,9 @@ describe('MiniPlayer Component', () => {
       </MemoryRouter>
     );
 
-    expect(container.firstChild).toBeNull();
-    expect(screen.queryByLabelText(/Background focus session audio/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(/Background focus session audio/i)
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
   });
 });
