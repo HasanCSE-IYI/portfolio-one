@@ -157,6 +157,33 @@ describe('Home Component', () => {
     fireEvent.click(themeBtn);
   });
 
+  test('navigates terminal tabs using arrow keys', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const bashTab = screen.getByRole('tab', { name: /bash/i });
+    expect(bashTab).toHaveAttribute('aria-selected', 'true');
+
+    // ArrowRight to switch to docker tab
+    fireEvent.keyDown(bashTab, { key: 'ArrowRight' });
+    const dockerTab = screen.getByRole('tab', { name: /docker/i });
+    expect(dockerTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Active Microservices \(Docker Compose\)/i)).toBeInTheDocument();
+
+    // ArrowRight to switch to health tab
+    fireEvent.keyDown(dockerTab, { key: 'ArrowRight' });
+    const healthTab = screen.getByRole('tab', { name: /health/i });
+    expect(healthTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Live REST API Health & SLA Probe/i)).toBeInTheDocument();
+
+    // ArrowLeft to switch back to docker tab
+    fireEvent.keyDown(healthTab, { key: 'ArrowLeft' });
+    expect(dockerTab).toHaveAttribute('aria-selected', 'true');
+  });
+
   test('executes docker ps command and allows deleting an individual output block', () => {
     render(
       <MemoryRouter>

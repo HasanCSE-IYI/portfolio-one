@@ -76,6 +76,8 @@ const Focus = () => {
   const canvasRef = useRef(null);
   const idleTimerRef = useRef(null);
   const ytIframeRef = useRef(null);
+  const workspaceTabBtnsRef = useRef([]);
+  const timerModeBtnsRef = useRef([]);
 
   const {
     // Soundboard
@@ -161,6 +163,56 @@ const Focus = () => {
     isZenMode,
     setIsZenMode,
   } = useFocus();
+
+  const timerModesList = useMemo(() => Object.values(TIMER_MODES), []);
+
+  const handleWorkspaceTabKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight') {
+      nextIndex = (index + 1) % 2;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = (index - 1 + 2) % 2;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const nextTab = nextIndex === 0 ? 'soundboard' : 'timer';
+      setActiveWorkspaceTab(nextTab);
+      playSound('tick');
+      const targetBtn = workspaceTabBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
+
+  const handleTimerModeKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight') {
+      nextIndex = (index + 1) % timerModesList.length;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = (index - 1 + timerModesList.length) % timerModesList.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = timerModesList.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const nextMode = timerModesList[nextIndex];
+      changeTimerMode(nextMode.id);
+      playSound('tick');
+      const targetBtn = timerModeBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
 
   // Letter entrance animation trigger
   useEffect(() => {
@@ -1584,14 +1636,21 @@ const Focus = () => {
         <div className="focus-view-switcher-sticky-wrap">
           <div className="focus-view-switcher" role="tablist" aria-label="Workspace views">
             <button
+              ref={(el) => {
+                workspaceTabBtnsRef.current[0] = el;
+              }}
               type="button"
               role="tab"
+              id="focus-tab-soundboard"
+              aria-controls="focus-right-column-soundboard"
               aria-selected={activeWorkspaceTab === 'soundboard'}
+              tabIndex={activeWorkspaceTab === 'soundboard' ? 0 : -1}
               className={`view-tab ${activeWorkspaceTab === 'soundboard' ? 'active' : ''}`}
               onClick={() => {
                 playSound('tick');
                 setActiveWorkspaceTab('soundboard');
               }}
+              onKeyDown={(e) => handleWorkspaceTabKeyDown(e, 0)}
             >
               <span className="tab-symbol">🌿</span>
               <span className="tab-text">Nature Soundboard</span>
@@ -1601,14 +1660,21 @@ const Focus = () => {
             </button>
 
             <button
+              ref={(el) => {
+                workspaceTabBtnsRef.current[1] = el;
+              }}
               type="button"
               role="tab"
+              id="focus-tab-timer"
+              aria-controls="focus-left-column-timer"
               aria-selected={activeWorkspaceTab === 'timer'}
+              tabIndex={activeWorkspaceTab === 'timer' ? 0 : -1}
               className={`view-tab ${activeWorkspaceTab === 'timer' ? 'active' : ''}`}
               onClick={() => {
                 playSound('tick');
                 setActiveWorkspaceTab('timer');
               }}
+              onKeyDown={(e) => handleWorkspaceTabKeyDown(e, 1)}
             >
               <span className="tab-symbol">⏱️</span>
               <span className="tab-text">Flow Timer &amp; Log</span>
@@ -1624,7 +1690,12 @@ const Focus = () => {
            ========================================================================= */}
         <div className={`focus-grid-container view-${activeWorkspaceTab}`}>
           {/* LEFT COLUMN: Pomodoro Timer, Spectrum Visualizer, YouTube Studio & Today's Log */}
-          <div className={`focus-left-column ${activeWorkspaceTab === 'timer' ? 'mobile-visible' : 'mobile-hidden'}`}>
+          <div
+            id="focus-left-column-timer"
+            role="tabpanel"
+            aria-labelledby="focus-tab-timer"
+            className={`focus-left-column ${activeWorkspaceTab === 'timer' ? 'mobile-visible' : 'mobile-hidden'}`}
+          >
             
             {/* 1. Pomodoro Timer Station */}
             <div className="focus-card pomodoro-card">
@@ -1640,19 +1711,25 @@ const Focus = () => {
               </div>
 
               {/* Mode Selector Tabs */}
-              <div className="mode-selector-tabs" role="tablist">
-                {Object.values(TIMER_MODES).map((mode) => (
+              <div className="mode-selector-tabs" role="tablist" aria-label="Timer modes">
+                {timerModesList.map((mode, mIdx) => (
                   <button
                     key={mode.id}
+                    ref={(el) => {
+                      timerModeBtnsRef.current[mIdx] = el;
+                    }}
                     type="button"
                     role="tab"
+                    id={`timer-mode-tab-${mode.id}`}
                     aria-selected={timerMode === mode.id}
+                    tabIndex={timerMode === mode.id ? 0 : -1}
                     aria-label={mode.label}
                     className={`mode-tab ${timerMode === mode.id ? 'active' : ''}`}
                     onClick={() => {
                       playSound('tick');
                       changeTimerMode(mode.id);
                     }}
+                    onKeyDown={(e) => handleTimerModeKeyDown(e, mIdx)}
                   >
                     <span className="mode-tab-title">{mode.label}</span>
                     <span className="mode-tab-duration">
@@ -2041,7 +2118,12 @@ const Focus = () => {
           </div>
 
           {/* RIGHT COLUMN: Complete Nature Soundboard (All 61 Sounds) */}
-          <div className={`focus-right-column ${activeWorkspaceTab === 'soundboard' ? 'mobile-visible' : 'mobile-hidden'}`}>
+          <div
+            id="focus-right-column-soundboard"
+            role="tabpanel"
+            aria-labelledby="focus-tab-soundboard"
+            className={`focus-right-column ${activeWorkspaceTab === 'soundboard' ? 'mobile-visible' : 'mobile-hidden'}`}
+          >
             <div className="focus-card soundboard-card">
               {/* Soundboard Header with Quick Mix Actions */}
               <div className="soundboard-header">

@@ -397,6 +397,38 @@ describe('Focus Station Page', () => {
     fireEvent.click(favCategoryBtn);
     expect(favCategoryBtn).toHaveClass('active');
   });
+
+  test('navigates timer modes and workspace views using arrow keys', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Test workspace views arrow navigation
+    const timerWorkspaceTab = screen.getByRole('tab', { name: /Flow Timer & Log/i });
+    expect(timerWorkspaceTab).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(timerWorkspaceTab, { key: 'ArrowLeft' });
+    const soundboardTab = screen.getByRole('tab', { name: /Nature Soundboard/i });
+    expect(soundboardTab).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(soundboardTab, { key: 'ArrowRight' });
+    expect(timerWorkspaceTab).toHaveAttribute('aria-selected', 'true');
+
+    // Test timer modes arrow navigation
+    const pomodoroModeTab = screen.getByRole('tab', { name: /Classic Pomodoro/i });
+    expect(pomodoroModeTab).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(pomodoroModeTab, { key: 'ArrowRight' });
+    const sprintModeTab = screen.getByRole('tab', { name: /Focus Sprint/i });
+    expect(sprintModeTab).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(sprintModeTab, { key: 'ArrowLeft' });
+    expect(pomodoroModeTab).toHaveAttribute('aria-selected', 'true');
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {

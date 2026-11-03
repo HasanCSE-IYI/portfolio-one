@@ -116,6 +116,12 @@ const CAPABILITIES = [
   },
 ]
 
+const TERMINAL_TABS = [
+  { id: 'bash', label: 'bash', icon: faTerminal },
+  { id: 'containers', label: 'docker', icon: faBoxesStacked },
+  { id: 'health', label: 'health', icon: faHeartbeat },
+]
+
 const LiveLocationClock = memo(() => {
   const [currentTime, setCurrentTime] = useState('')
 
@@ -166,6 +172,31 @@ const Home = () => {
   const cliHistoryRef = useRef(null)
   const cliInputRef = useRef(null)
   const copyTimerRef = useRef(null)
+  const terminalTabBtnsRef = useRef([])
+
+  const handleTerminalTabKeyDown = (e, index) => {
+    let nextIndex = null
+    if (e.key === 'ArrowRight') {
+      nextIndex = (index + 1) % TERMINAL_TABS.length
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = (index - 1 + TERMINAL_TABS.length) % TERMINAL_TABS.length
+    } else if (e.key === 'Home') {
+      nextIndex = 0
+    } else if (e.key === 'End') {
+      nextIndex = TERMINAL_TABS.length - 1
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault()
+      const nextTab = TERMINAL_TABS[nextIndex]
+      setActiveTerminalTab(nextTab.id)
+      playSound('tick')
+      const targetBtn = terminalTabBtnsRef.current[nextIndex]
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus()
+      }
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -1063,48 +1094,30 @@ const Home = () => {
                 </div>
 
                 <div className="terminal-tabs" role="tablist" aria-label="Terminal views">
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={activeTerminalTab === 'bash'}
-                    className={`tab-btn ${activeTerminalTab === 'bash' ? 'active' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      playSound('tick')
-                      setActiveTerminalTab('bash')
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faTerminal} className="tab-icon" />
-                    <span>bash</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={activeTerminalTab === 'containers'}
-                    className={`tab-btn ${activeTerminalTab === 'containers' ? 'active' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      playSound('tick')
-                      setActiveTerminalTab('containers')
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faBoxesStacked} className="tab-icon" />
-                    <span>docker</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={activeTerminalTab === 'health'}
-                    className={`tab-btn ${activeTerminalTab === 'health' ? 'active' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      playSound('tick')
-                      setActiveTerminalTab('health')
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faHeartbeat} className="tab-icon" />
-                    <span>health</span>
-                  </button>
+                  {TERMINAL_TABS.map((tab, idx) => (
+                    <button
+                      key={tab.id}
+                      ref={(el) => {
+                        terminalTabBtnsRef.current[idx] = el
+                      }}
+                      id={`terminal-tab-${tab.id}`}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeTerminalTab === tab.id}
+                      aria-controls={`terminal-panel-${tab.id}`}
+                      tabIndex={activeTerminalTab === tab.id ? 0 : -1}
+                      className={`tab-btn ${activeTerminalTab === tab.id ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        playSound('tick')
+                        setActiveTerminalTab(tab.id)
+                      }}
+                      onKeyDown={(e) => handleTerminalTabKeyDown(e, idx)}
+                    >
+                      <FontAwesomeIcon icon={tab.icon} className="tab-icon" />
+                      <span>{tab.label}</span>
+                    </button>
+                  ))}
                 </div>
 
                 <div className="terminal-header-controls">
@@ -1190,7 +1203,12 @@ const Home = () => {
                 )}
 
                 {activeTerminalTab === 'containers' && (
-                  <div className="terminal-tab-panel docker-panel">
+                  <div
+                    id="terminal-panel-containers"
+                    role="tabpanel"
+                    aria-labelledby="terminal-tab-containers"
+                    className="terminal-tab-panel docker-panel"
+                  >
                     <div className="panel-header">
                       <span className="panel-title">Active Microservices (Docker Compose)</span>
                       <button
@@ -1245,7 +1263,12 @@ const Home = () => {
                 )}
 
                 {activeTerminalTab === 'health' && (
-                  <div className="terminal-tab-panel health-panel">
+                  <div
+                    id="terminal-panel-health"
+                    role="tabpanel"
+                    aria-labelledby="terminal-tab-health"
+                    className="terminal-tab-panel health-panel"
+                  >
                     <div className="panel-header">
                       <span className="panel-title">Live REST API Health &amp; SLA Probe</span>
                       <button
@@ -1282,7 +1305,12 @@ const Home = () => {
                 )}
 
                 {activeTerminalTab === 'bash' && (
-                  <div className="terminal-cli-zone">
+                  <div
+                    id="terminal-panel-bash"
+                    role="tabpanel"
+                    aria-labelledby="terminal-tab-bash"
+                    className="terminal-cli-zone"
+                  >
                     {terminalHistory.length === 0 ? (
                       <div className="cli-welcome-banner" aria-hidden="true">
                         <div className="welcome-tag">
