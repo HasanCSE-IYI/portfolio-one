@@ -24,9 +24,12 @@ import {
   ADDITIONAL_ACTIVITIES,
   REFERENCES,
 } from '../../data/resumeData';
+import { useUi } from '../../context/UiContext';
 import './index.scss';
 
 const ResumeModal = ({ isOpen, onClose }) => {
+  const { playSound } = useUi();
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -51,6 +54,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handlePrint = () => {
+    playSound('click');
     const originalTitle = document.title;
     document.title = 'Mahmud_Al_Hasan_CV_Backend_Software_Engineer';
     document.body.classList.add('resume-modal-open');

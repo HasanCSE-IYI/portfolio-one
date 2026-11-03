@@ -33,12 +33,15 @@ import {
   REFERENCES,
   getPlainTextResume,
 } from '../../data/resumeData';
+import { useUi } from '../../context/UiContext';
 import './index.scss';
 
 const Resume = () => {
+  const { playSound } = useUi();
   const [copied, setCopied] = useState(false);
 
   const handlePrint = () => {
+    playSound('click');
     const originalTitle = document.title;
     document.title = 'Mahmud_Al_Hasan_CV_Backend_Software_Engineer';
     document.body.classList.remove('resume-modal-open');
@@ -52,6 +55,7 @@ const Resume = () => {
     const plainTextResume = getPlainTextResume();
 
     const triggerSuccess = () => {
+      playSound('chime');
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     };
