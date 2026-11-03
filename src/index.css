@@ -13,6 +13,12 @@ html {
 }
 
 :root {
+  /* Active Theme Fallbacks (Default: Amber Gold, updated dynamically by UiContext) */
+  --primary-accent: #f59e0b;
+  --primary-accent-hover: #fbbf24;
+  --primary-accent-rgb: 245, 158, 11;
+  --primary-accent-glow: rgba(245, 158, 11, 0.28);
+
   /* Apple Obsidian & VisionOS Color Space */
   --bg-base: #07090e;
   --bg-surface: rgba(15, 20, 30, 0.72);
@@ -136,6 +142,19 @@ h1, h2, h3, h4, h5, h6 {
   100% {
     left: 140%;
   }
+}
+
+/* Accessibility: Screen Reader Only Utility (WCAG 2.1 AA) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border-width: 0 !important;
 }
 
 /* Accessibility: Respect Reduced Motion Preferences */

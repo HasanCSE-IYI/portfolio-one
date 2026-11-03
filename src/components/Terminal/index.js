@@ -525,6 +525,8 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
         <div
           className="terminal-body"
           ref={terminalBodyRef}
+          role="log"
+          aria-live="polite"
           onClick={() => inputRef.current && inputRef.current.focus()}
         >
           {history.map((entry, idx) => {
@@ -600,4 +602,4 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
   );
 };
 
-export default Terminal;
+export default React.memo(Terminal);

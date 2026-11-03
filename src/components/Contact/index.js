@@ -203,6 +203,7 @@ const Contact = () => {
   const [localTime, setLocalTime] = useState(getBSTTime)
   const [weather, setWeather] = useState({ temp: 28, icon: '🌤️' })
   const form = useRef()
+  const messageInputRef = useRef(null)
 
   // Update live BST time & fetch real-time weather in Bayazid, Chattogram
   useEffect(() => {
@@ -314,9 +315,8 @@ const Contact = () => {
     if (!messageText.trim()) {
       setMessageText(`Hi Mahmud,\n\nI would like to explore working with you regarding "${tierTitle}". Here are the details of our requirements: `)
     }
-    const messageInput = document.querySelector('textarea[name="message"]')
-    if (messageInput) {
-      messageInput.focus()
+    if (messageInputRef.current) {
+      messageInputRef.current.focus()
     }
   }
 
@@ -627,7 +627,11 @@ const Contact = () => {
                 />
                 <ul>
                   <li className="half">
+                    <label htmlFor="contact-name-input" className="sr-only">
+                      Your Name
+                    </label>
                     <input
+                      id="contact-name-input"
                       placeholder="Your Name"
                       type="text"
                       name="name"
@@ -637,13 +641,18 @@ const Contact = () => {
                   </li>
                   <li className="half email-input-col">
                     <div className="input-wrap">
+                      <label htmlFor="contact-email-input" className="sr-only">
+                        Your Email
+                      </label>
                       <input
+                        id="contact-email-input"
                         placeholder="Your Email"
                         type="email"
                         name="email"
                         value={emailText}
                         onChange={(e) => setEmailText(e.target.value)}
                         aria-label="Your Email"
+                        aria-invalid={Boolean(emailText && !isEmailValid)}
                         required
                       />
                       {emailText && (
@@ -657,7 +666,11 @@ const Contact = () => {
                     </div>
                   </li>
                   <li>
+                    <label htmlFor="contact-subject-input" className="sr-only">
+                      Message Subject
+                    </label>
                     <input
+                      id="contact-subject-input"
                       placeholder="Subject (e.g. Backend Opportunity / Consulting)"
                       type="text"
                       name="subject"
@@ -668,7 +681,12 @@ const Contact = () => {
                     />
                   </li>
                   <li className="message-input-col">
+                    <label htmlFor="contact-message-input" className="sr-only">
+                      Your Message
+                    </label>
                     <textarea
+                      ref={messageInputRef}
+                      id="contact-message-input"
                       placeholder="Message (Please describe your project, timeline, or engineering opportunity)"
                       name="message"
                       value={messageText}

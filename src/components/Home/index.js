@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -116,10 +116,37 @@ const CAPABILITIES = [
   },
 ]
 
+const LiveLocationClock = memo(() => {
+  const [currentTime, setCurrentTime] = useState('')
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date()
+      const options = {
+        timeZone: 'Asia/Dhaka',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      }
+      setCurrentTime(new Intl.DateTimeFormat('en-US', options).format(now))
+    }
+    updateTime()
+    const interval = setInterval(updateTime, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <span className="location-clock">
+      <FontAwesomeIcon icon={faMapMarkerAlt} className="clock-loc-icon" /> Bayazid, Chattogram, BD (GMT+6) ·{' '}
+      <span className="time-val">{currentTime || '12:00 PM'}</span>
+    </span>
+  )
+})
+
 const Home = () => {
   const { soundEnabled, toggleSound, playSound } = useUi()
   const [letterClass, setLetterClass] = useState('text-animate')
-  const [currentTime, setCurrentTime] = useState('')
   const [activeCapability, setActiveCapability] = useState(0)
   const [isSpecCollapsed, setIsSpecCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -895,24 +922,6 @@ const Home = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Live ticking local time (Dhaka, Bangladesh GMT+6)
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date()
-      const options = {
-        timeZone: 'Asia/Dhaka',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-      }
-      setCurrentTime(new Intl.DateTimeFormat('en-US', options).format(now))
-    }
-    updateTime()
-    const interval = setInterval(updateTime, 1000)
-    return () => clearInterval(interval)
-  }, [])
-
   const impactMetrics = portfolioData.impactMetrics || []
 
   return (
@@ -927,9 +936,7 @@ const Home = () => {
                 <span className="pulse-indicator"></span>
                 Open to Opportunities · Senior Backend Software Engineer
               </span>
-              <span className="location-clock">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="clock-loc-icon" /> Bayazid, Chattogram, BD (GMT+6) · <span className="time-val">{currentTime || '12:00 PM'}</span>
-              </span>
+              <LiveLocationClock />
             </div>
 
             <h1>

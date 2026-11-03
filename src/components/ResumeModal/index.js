@@ -263,4 +263,4 @@ const ResumeModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default ResumeModal;
+export default React.memo(ResumeModal);

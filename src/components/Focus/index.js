@@ -164,13 +164,19 @@ const Focus = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Focus Visit Streak Tracker (Nahian portfolio mindfulness concept)
+  // Focus Visit Streak Tracker (tracks daily calendar streaks without multi-mount false increments)
   useEffect(() => {
     try {
+      const today = new Date().toISOString().slice(0, 10);
+      const lastVisit = localStorage.getItem('focus_last_visit_date');
       const raw = localStorage.getItem('focus_visit_streak') || '0';
-      const streak = parseInt(raw, 10) + 1;
-      localStorage.setItem('focus_visit_streak', streak.toString());
-      setVisitStreak(streak);
+      let streak = parseInt(raw, 10);
+      if (lastVisit !== today) {
+        streak = Math.max(1, streak + 1);
+        localStorage.setItem('focus_visit_streak', streak.toString());
+        localStorage.setItem('focus_last_visit_date', today);
+      }
+      setVisitStreak(streak || 1);
     } catch {}
   }, []);
 

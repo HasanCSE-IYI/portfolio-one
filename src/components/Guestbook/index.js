@@ -74,6 +74,7 @@ const Guestbook = ({ isOpen, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        playSound('close');
         onClose();
       }
     };
@@ -87,17 +88,19 @@ const Guestbook = ({ isOpen, onClose }) => {
       document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, playSound]);
 
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name.trim()) {
+      playSound('pop');
       setErrorMsg('Please enter your name.');
       return;
     }
     if (!message.trim()) {
+      playSound('pop');
       setErrorMsg('Please write a short note or message.');
       return;
     }
@@ -127,10 +130,13 @@ const Guestbook = ({ isOpen, onClose }) => {
   return (
     <div
       className="guestbook-overlay-backdrop"
-      onClick={onClose}
+      onClick={() => {
+        playSound('close');
+        onClose();
+      }}
       role="dialog"
       aria-modal="true"
-      aria-label="Public Guestbook & Social Wall"
+      aria-labelledby="guestbook-modal-title"
     >
       <div className="guestbook-modal" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
@@ -138,14 +144,17 @@ const Guestbook = ({ isOpen, onClose }) => {
           <div className="header-title-wrap">
             <FontAwesomeIcon icon={faComments} className="guestbook-icon" />
             <div>
-              <h3>Public Guestbook &amp; Social Wall</h3>
+              <h3 id="guestbook-modal-title">Public Guestbook &amp; Social Wall</h3>
               <p className="guestbook-subtitle">Leave a signature, note, or peer recommendation for Mahmud.</p>
             </div>
           </div>
           <button
             type="button"
             className="close-guestbook-btn"
-            onClick={onClose}
+            onClick={() => {
+              playSound('close');
+              onClose();
+            }}
             aria-label="Close guestbook"
           >
             <FontAwesomeIcon icon={faTimes} />
@@ -188,6 +197,7 @@ const Guestbook = ({ isOpen, onClose }) => {
                         playSound('click');
                       }}
                       aria-label={`Select avatar ${av}`}
+                      aria-pressed={avatar === av}
                     >
                       {av}
                     </button>
@@ -229,15 +239,17 @@ const Guestbook = ({ isOpen, onClose }) => {
                   onChange={(e) => setMessage(e.target.value)}
                   maxLength={280}
                   rows={3}
+                  aria-describedby="gb-char-count"
                   required
                 />
-                <span className="char-count">{message.length}/280</span>
+                <span id="gb-char-count" className="char-count" aria-live="polite">
+                  {message.length}/280
+                </span>
               </div>
 
               <button
                 type="submit"
                 className="submit-guestbook-btn"
-                onClick={() => playSound('click')}
               >
                 <FontAwesomeIcon icon={faPaperPlane} />
                 <span>Pin Message</span>
@@ -253,19 +265,25 @@ const Guestbook = ({ isOpen, onClose }) => {
             </h4>
 
             <div className="feed-list">
-              {entries.map((item) => (
-                <div key={item.id} className="feed-card">
-                  <div className="feed-card-header">
-                    <span className="user-avatar">{item.avatar}</span>
-                    <div className="user-meta">
-                      <span className="user-name">{item.name}</span>
-                      <span className="user-role">{item.role}</span>
+              {entries.length > 0 ? (
+                entries.map((item) => (
+                  <div key={item.id} className="feed-card">
+                    <div className="feed-card-header">
+                      <span className="user-avatar">{item.avatar}</span>
+                      <div className="user-meta">
+                        <span className="user-name">{item.name}</span>
+                        <span className="user-role">{item.role}</span>
+                      </div>
+                      <span className="user-date">{item.date}</span>
                     </div>
-                    <span className="user-date">{item.date}</span>
+                    <p className="user-message">&ldquo;{item.message}&rdquo;</p>
                   </div>
-                  <p className="user-message">&ldquo;{item.message}&rdquo;</p>
+                ))
+              ) : (
+                <div className="empty-feed-card">
+                  <p>Be the first to sign the guestbook wall!</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
@@ -274,4 +292,4 @@ const Guestbook = ({ isOpen, onClose }) => {
   );
 };
 
-export default Guestbook;
+export default React.memo(Guestbook);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFolder,
@@ -86,22 +86,24 @@ const Portfolio = () => {
     }
   };
 
-  const filteredPortfolio = portfolio.filter((item) => {
-    const matchesCategory =
-      activeCategory === 'all' || item.category === activeCategory;
-    if (!matchesCategory) return false;
-    if (!searchQuery.trim()) return true;
+  const filteredPortfolio = useMemo(() => {
+    return portfolio.filter((item) => {
+      const matchesCategory =
+        activeCategory === 'all' || item.category === activeCategory;
+      if (!matchesCategory) return false;
+      if (!searchQuery.trim()) return true;
 
-    const q = searchQuery.toLowerCase().trim();
-    return (
-      (item.title && item.title.toLowerCase().includes(q)) ||
-      (item.description && item.description.toLowerCase().includes(q)) ||
-      (item.language && item.language.toLowerCase().includes(q)) ||
-      (item.role && item.role.toLowerCase().includes(q)) ||
-      (item.tags && item.tags.some((t) => t.toLowerCase().includes(q))) ||
-      (item.highlights && item.highlights.some((h) => h.toLowerCase().includes(q)))
-    );
-  });
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        (item.title && item.title.toLowerCase().includes(q)) ||
+        (item.description && item.description.toLowerCase().includes(q)) ||
+        (item.language && item.language.toLowerCase().includes(q)) ||
+        (item.role && item.role.toLowerCase().includes(q)) ||
+        (item.tags && item.tags.some((t) => t.toLowerCase().includes(q))) ||
+        (item.highlights && item.highlights.some((h) => h.toLowerCase().includes(q)))
+      );
+    });
+  }, [portfolio, activeCategory, searchQuery]);
 
   const getCategoryCount = (catId) => {
     if (catId === 'all') return portfolio.length;
@@ -186,15 +188,20 @@ const Portfolio = () => {
                 type="button"
                 className="toggle-simulator-btn"
                 onClick={() => {
-                  playSound('click');
+                  playSound('pop');
                   setShowSimulator(!showSimulator);
                 }}
                 aria-expanded={showSimulator}
+                aria-controls="store-api-simulator-section"
               >
                 {showSimulator ? '▲ Hide API Simulator' : '▼ Open Interactive API Simulator'}
               </button>
             </div>
-            {showSimulator && <StoreApiDemo />}
+            {showSimulator && (
+              <div id="store-api-simulator-section">
+                <StoreApiDemo />
+              </div>
+            )}
           </div>
         )}
 
@@ -260,9 +267,13 @@ const Portfolio = () => {
                             type="button"
                             className={`tag-pill ${isTagActive ? 'active' : ''}`}
                             key={tIdx}
-                            onClick={() => setSearchQuery(isTagActive ? '' : tag)}
+                            onClick={() => {
+                              playSound('click')
+                              setSearchQuery(isTagActive ? '' : tag)
+                            }}
                             title={isTagActive ? `Clear filter: ${tag}` : `Filter projects by ${tag}`}
                             aria-label={`Filter by ${tag}`}
+                            aria-pressed={isTagActive}
                           >
                             {tag}
                           </button>
@@ -304,6 +315,7 @@ const Portfolio = () => {
                         type="button"
                         className="action-btn secondary"
                         onClick={() => {
+                          playSound('pop');
                           setShowSimulator(true);
                           window.scrollTo({ top: 180, behavior: 'smooth' });
                         }}
@@ -329,6 +341,7 @@ const Portfolio = () => {
               type="button"
               className="reset-filters-btn"
               onClick={() => {
+                playSound('click');
                 setSearchQuery('');
                 setActiveCategory('all');
               }}

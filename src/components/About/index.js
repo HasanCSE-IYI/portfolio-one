@@ -265,6 +265,7 @@ const About = () => {
                 setShowPrinciples(!showPrinciples)
               }}
               aria-expanded={showPrinciples}
+              aria-controls="principles-grid-content"
             >
               <FontAwesomeIcon
                 icon={showPrinciples ? faChevronUp : faChevronDown}
@@ -278,7 +279,7 @@ const About = () => {
             </button>
 
             {showPrinciples && (
-              <div className="principles-grid">
+              <div id="principles-grid-content" className="principles-grid">
                 {PRINCIPLES.map((p, idx) => (
                   <div className="principle-card" key={idx}>
                     <div className="principle-title">

@@ -5,12 +5,13 @@ import { useUi, ACCENT_THEMES } from '../../context/UiContext';
 import './index.scss';
 
 const ThemeSwitcher = ({ isOpen, onClose }) => {
-  const { accentTheme, setAccentTheme } = useUi();
+  const { accentTheme, setAccentTheme, playSound } = useUi();
 
   // Handle Escape key & body scroll lock for accessible modal behavior
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        playSound('close');
         onClose();
       }
     };
@@ -24,29 +25,35 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
       document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, playSound]);
 
   if (!isOpen) return null;
 
   return (
     <div
       className="theme-switcher-backdrop"
-      onClick={onClose}
+      onClick={() => {
+        playSound('close');
+        onClose();
+      }}
       role="dialog"
       aria-modal="true"
-      aria-label="Theme Accent Color Switcher"
+      aria-labelledby="theme-switcher-title"
     >
       <div className="theme-switcher-modal" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="theme-header">
           <div className="theme-title-wrap">
             <FontAwesomeIcon icon={faPalette} className="palette-icon" />
-            <h3>Global Accent Theme</h3>
+            <h3 id="theme-switcher-title">Global Accent Theme</h3>
           </div>
           <button
             type="button"
             className="close-theme-btn"
-            onClick={onClose}
+            onClick={() => {
+              playSound('close');
+              onClose();
+            }}
             aria-label="Close theme switcher"
           >
             <FontAwesomeIcon icon={faTimes} />
@@ -62,7 +69,10 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
                 key={th.id}
                 type="button"
                 className={`theme-card-btn ${isSelected ? 'selected' : ''}`}
-                onClick={() => setAccentTheme(th.id)}
+                onClick={() => {
+                  playSound('click');
+                  setAccentTheme(th.id);
+                }}
                 aria-pressed={isSelected}
               >
                 <div className="color-swatch-wrap">
@@ -94,4 +104,4 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
   );
 };
 
-export default ThemeSwitcher;
+export default React.memo(ThemeSwitcher);

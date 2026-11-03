@@ -471,4 +471,4 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
   );
 };
 
-export default CommandPalette;
+export default React.memo(CommandPalette);

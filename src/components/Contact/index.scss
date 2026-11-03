@@ -485,7 +485,7 @@
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.14);
-            color: var(--primary-accent, #fbbf24);
+            color: var(--primary-accent, #f59e0b);
             border-radius: 999px;
             cursor: pointer;
             font-size: 1.25rem;
@@ -493,7 +493,7 @@
             transition: all 0.2s ease;
 
             &:hover {
-              background: var(--primary-accent, #fbbf24);
+              background: var(--primary-accent-hover, #fbbf24);
               color: #0f172a;
               transform: scale(1.08);
             }
@@ -616,11 +616,11 @@
           transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
           &:hover {
-            background: var(--primary-accent, #fbbf24);
+            background: var(--primary-accent-hover, #fbbf24);
             color: #0f172a;
-            border-color: var(--primary-accent, #fbbf24);
+            border-color: var(--primary-accent-hover, #fbbf24);
             transform: scale(1.08);
-            box-shadow: 0 6px 18px var(--primary-accent-glow, rgba(251, 191, 36, 0.4));
+            box-shadow: 0 6px 18px var(--primary-accent-glow, rgba(245, 158, 11, 0.4));
           }
 
           &:active {
@@ -1222,7 +1222,7 @@
     padding: 12px 28px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary-accent, #f59e0b) 0%, var(--primary-accent-hover, #ea580c) 100%);
+    background: linear-gradient(135deg, var(--primary-accent, #f59e0b) 0%, var(--primary-accent-hover, #fbbf24) 100%);
     text-transform: uppercase;
     text-align: center;
     cursor: pointer;

@@ -58,6 +58,7 @@ const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
         to="/contact"
         className="availability-pill"
         aria-label="Available for hire · Bangladesh Standard Time · Click to contact"
+        aria-expanded={showTooltip ? isTooltipVisible : undefined}
         onClick={() => playSound('click')}
       >
         <span className="beacon-indicator" aria-hidden="true">
@@ -80,7 +81,8 @@ const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
       {showTooltip && (
         <div
           className={`availability-popover ${isTooltipVisible ? 'visible' : ''}`}
-          role="tooltip"
+          role="region"
+          aria-label="Live Availability Details"
           aria-hidden={!isTooltipVisible}
         >
           <div className="popover-header">

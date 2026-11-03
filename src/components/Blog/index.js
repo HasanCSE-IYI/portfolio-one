@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -46,9 +46,10 @@ const Blog = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [copiedCodeId, setCopiedCodeId] = useState(null);
   const [shareToast, setShareToast] = useState('');
+  const [readingProgress, setReadingProgress] = useState(0);
 
-  const articles = getAllArticles();
-  const currentArticle = slug ? getArticleBySlug(slug) : null;
+  const articles = useMemo(() => getAllArticles(), []);
+  const currentArticle = useMemo(() => (slug ? getArticleBySlug(slug) : null), [slug]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,12 +58,37 @@ const Blog = () => {
     return () => clearTimeout(timer);
   }, [slug]);
 
-  // Set document title to article title when reading a specific article
+  // Set document title to article title when reading a specific article, or Not Found
   useEffect(() => {
-    if (currentArticle?.title && typeof document !== 'undefined') {
-      document.title = `${currentArticle.title} | Mahmud al Hasan`;
+    if (typeof document === 'undefined') return;
+    if (slug) {
+      if (currentArticle?.title) {
+        document.title = `${currentArticle.title} | Mahmud al Hasan`;
+      } else {
+        document.title = 'Article Not Found | Mahmud al Hasan';
+      }
+    } else {
+      document.title = 'Engineering Notes & Architecture Blog | Mahmud al Hasan';
     }
-  }, [currentArticle]);
+  }, [slug, currentArticle]);
+
+  // Track reading scroll depth for article detail view
+  useEffect(() => {
+    if (!slug || !currentArticle) return;
+    const handleScroll = () => {
+      const totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScrollable <= 0) {
+        setReadingProgress(0);
+        return;
+      }
+      const progress = Math.min(100, Math.max(0, (window.scrollY / totalScrollable) * 100));
+      setReadingProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [slug, currentArticle]);
 
   // Robust cross-browser clipboard copy with execCommand fallback
   const safeCopyText = (text, onSuccess) => {
@@ -116,17 +142,19 @@ const Blog = () => {
     });
   };
 
-  // Filter articles by category and search
-  const filteredArticles = articles.filter((art) => {
-    const matchesCategory = activeCategory === 'All' || art.category === activeCategory;
+  // Filter articles by category and search (memoized)
+  const filteredArticles = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
-    const matchesSearch =
-      !query ||
-      art.title.toLowerCase().includes(query) ||
-      art.summary.toLowerCase().includes(query) ||
-      art.tags.some((t) => t.toLowerCase().includes(query));
-    return matchesCategory && matchesSearch;
-  });
+    return articles.filter((art) => {
+      const matchesCategory = activeCategory === 'All' || art.category === activeCategory;
+      const matchesSearch =
+        !query ||
+        art.title.toLowerCase().includes(query) ||
+        art.summary.toLowerCase().includes(query) ||
+        art.tags.some((t) => t.toLowerCase().includes(query));
+      return matchesCategory && matchesSearch;
+    });
+  }, [articles, activeCategory, searchQuery]);
 
   // Handle Invalid Slug (Article Not Found)
   if (slug && !currentArticle) {
@@ -164,6 +192,21 @@ const Blog = () => {
   if (slug && currentArticle) {
     return (
       <div className="container blog-page blog-article-view">
+        {/* Dynamic Reading Progress Bar */}
+        <div
+          className="reading-progress-track"
+          role="progressbar"
+          aria-valuenow={Math.round(readingProgress)}
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="Article reading progress"
+        >
+          <div
+            className="reading-progress-bar"
+            style={{ width: `${readingProgress}%` }}
+          />
+        </div>
+
         <div className="article-container">
           {/* Top Navigation & Breadcrumbs */}
           <nav className="article-nav-bar" aria-label="Breadcrumb">
@@ -386,7 +429,10 @@ const Blog = () => {
                 <button
                   type="button"
                   className="clear-search-btn"
-                  onClick={() => setSearchQuery('')}
+                  onClick={() => {
+                    playSound('close');
+                    setSearchQuery('');
+                  }}
                   aria-label="Clear search"
                 >
                   ✕
@@ -441,9 +487,19 @@ const Blog = () => {
 
                 <div className="card-tags-row">
                   {art.tags.slice(0, 4).map((tag) => (
-                    <span key={tag} className="card-tag">
+                    <button
+                      key={tag}
+                      type="button"
+                      className="card-tag card-tag-btn"
+                      onClick={() => {
+                        playSound('click');
+                        setSearchQuery(tag);
+                      }}
+                      title={`Filter articles by #${tag}`}
+                      aria-label={`Filter articles by tag ${tag}`}
+                    >
                       #{tag}
-                    </span>
+                    </button>
                   ))}
                 </div>
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   playClickSound,
@@ -341,32 +341,57 @@ export const UiProvider = ({ children }) => {
     playSound,
   ]);
 
-  const value = {
-    accentTheme,
-    setAccentTheme,
-    themes: ACCENT_THEMES,
-    currentTheme: ACCENT_THEMES[accentTheme] || ACCENT_THEMES.gold,
-    soundEnabled,
-    toggleSound,
-    playSound,
-    // Modals
-    isTerminalOpen,
-    openTerminal,
-    closeTerminal,
-    toggleTerminal,
-    isCheatsheetOpen,
-    openCheatsheet,
-    closeCheatsheet,
-    toggleCheatsheet,
-    isGuestbookOpen,
-    openGuestbook,
-    closeGuestbook,
-    toggleGuestbook,
-    isThemePickerOpen,
-    openThemePicker,
-    closeThemePicker,
-    toggleThemePicker,
-  };
+  const value = useMemo(
+    () => ({
+      accentTheme,
+      setAccentTheme,
+      themes: ACCENT_THEMES,
+      currentTheme: ACCENT_THEMES[accentTheme] || ACCENT_THEMES.gold,
+      soundEnabled,
+      toggleSound,
+      playSound,
+      // Modals
+      isTerminalOpen,
+      openTerminal,
+      closeTerminal,
+      toggleTerminal,
+      isCheatsheetOpen,
+      openCheatsheet,
+      closeCheatsheet,
+      toggleCheatsheet,
+      isGuestbookOpen,
+      openGuestbook,
+      closeGuestbook,
+      toggleGuestbook,
+      isThemePickerOpen,
+      openThemePicker,
+      closeThemePicker,
+      toggleThemePicker,
+    }),
+    [
+      accentTheme,
+      setAccentTheme,
+      soundEnabled,
+      toggleSound,
+      playSound,
+      isTerminalOpen,
+      openTerminal,
+      closeTerminal,
+      toggleTerminal,
+      isCheatsheetOpen,
+      openCheatsheet,
+      closeCheatsheet,
+      toggleCheatsheet,
+      isGuestbookOpen,
+      openGuestbook,
+      closeGuestbook,
+      toggleGuestbook,
+      isThemePickerOpen,
+      openThemePicker,
+      closeThemePicker,
+      toggleThemePicker,
+    ]
+  );
 
   return <UiContext.Provider value={value}>{children}</UiContext.Provider>;
 };

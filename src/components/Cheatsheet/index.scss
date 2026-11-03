@@ -79,6 +79,63 @@
       }
     }
 
+    // Filter Bar
+    .cheatsheet-filter-bar {
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.015);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+      .cs-filter-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .cs-search-icon {
+          position: absolute;
+          left: 12px;
+          color: #64748b;
+          font-size: 1.15rem;
+          pointer-events: none;
+        }
+
+        .cs-filter-input {
+          width: 100%;
+          background: rgba(15, 23, 42, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          padding: 8px 32px 8px 34px;
+          color: #f8fafc;
+          font-size: 1.25rem;
+          outline: none;
+          transition: border-color 0.2s ease;
+
+          &:focus {
+            border-color: var(--primary-accent, #f59e0b);
+          }
+
+          &::placeholder {
+            color: #64748b;
+          }
+        }
+
+        .cs-clear-btn {
+          position: absolute;
+          right: 10px;
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          font-size: 1.1rem;
+          cursor: pointer;
+          padding: 4px;
+          line-height: 1;
+
+          &:hover {
+            color: #f8fafc;
+          }
+        }
+      }
+    }
+
     // Body
     .cheatsheet-body {
       padding: 20px;
@@ -89,6 +146,13 @@
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+
+      .cs-empty-state {
+        padding: 30px 10px;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 1.3rem;
+      }
 
       &::-webkit-scrollbar {
         width: 6px;

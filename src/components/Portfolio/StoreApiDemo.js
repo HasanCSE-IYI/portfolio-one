@@ -651,7 +651,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               )}
             </div>
           </div>
-          <div className="output-body">
+          <div className="output-body" aria-busy={isExecuting} role="region" aria-label="HTTP response output">
             {!hasExecuted && !isExecuting && (
               <div className="placeholder-state">
                 <p>Click <strong>▶ Send Request</strong> to execute the ASP.NET Core pipeline and inspect the simulated HTTP response.</p>
