@@ -21,6 +21,23 @@ import './index.scss';
 
 const CATEGORIES = ['All', 'Architecture', 'Backend', 'Database', 'DevOps'];
 
+// Formats inline markdown (**bold** and `code`) into semantic React elements
+const renderInlineMarkdown = (text) => {
+  if (!text) return text;
+  const regex = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+  const parts = text.split(regex);
+
+  return parts.map((part, pIdx) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
+      return <strong key={pIdx}>{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith('`') && part.endsWith('`') && part.length >= 2) {
+      return <code key={pIdx}>{part.slice(1, -1)}</code>;
+    }
+    return part;
+  });
+};
+
 const Blog = () => {
   const { slug } = useParams();
   const { playSound } = useUi();
@@ -282,7 +299,7 @@ const Blog = () => {
                   return (
                     <ul key={idx} className="content-ul">
                       {items.map((it, iIdx) => (
-                        <li key={iIdx}>{it}</li>
+                        <li key={iIdx}>{renderInlineMarkdown(it)}</li>
                       ))}
                     </ul>
                   );
@@ -294,7 +311,7 @@ const Blog = () => {
                   return (
                     <ol key={idx} className="content-ol">
                       {items.map((it, iIdx) => (
-                        <li key={iIdx}>{it}</li>
+                        <li key={iIdx}>{renderInlineMarkdown(it)}</li>
                       ))}
                     </ol>
                   );
@@ -303,7 +320,7 @@ const Blog = () => {
                 // Standard Paragraph
                 return (
                   <p key={idx} className="content-p">
-                    {trimmed}
+                    {renderInlineMarkdown(trimmed)}
                   </p>
                 );
               })}

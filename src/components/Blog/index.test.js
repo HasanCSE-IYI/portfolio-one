@@ -74,6 +74,7 @@ describe('Blog Component', () => {
     expect(screen.getByText(/Architecting High-Throughput Clean Architecture in ASP\.NET Core 8 & C#/i)).toBeInTheDocument();
     expect(screen.getByText('Mahmud al Hasan')).toBeInTheDocument();
     expect(screen.getByText(/The Challenge with Monolithic Layering/i)).toBeInTheDocument();
+    expect(screen.getByText('Domain Layer')).toBeInTheDocument();
   });
 
   it('renders Article Not Found fallback when slug does not exist', () => {
