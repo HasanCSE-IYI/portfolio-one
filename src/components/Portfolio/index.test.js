@@ -38,4 +38,19 @@ describe('Portfolio Component', () => {
     fireEvent.click(toggleBtn);
     expect(screen.getByRole('button', { name: /▼ Open Interactive API Simulator/i })).toBeInTheDocument();
   });
+
+  test('clicking tag pill filters projects and ensures all category', () => {
+    render(<Portfolio />);
+
+    const dotnetBtn = screen.getByRole('button', { name: /\.NET Core & C#/i });
+    fireEvent.click(dotnetBtn);
+    expect(dotnetBtn).toHaveAttribute('aria-pressed', 'true');
+
+    // Click a tag pill
+    const tagPill = screen.getAllByRole('button', { name: /Filter by /i })[0];
+    fireEvent.click(tagPill);
+
+    const allBtn = screen.getByRole('button', { name: /All Repositories/i });
+    expect(allBtn).toHaveAttribute('aria-pressed', 'true');
+  });
 });

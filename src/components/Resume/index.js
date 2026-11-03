@@ -129,7 +129,11 @@ const Resume = () => {
             <FontAwesomeIcon icon={faPrint} />
             <span>Print / Save PDF</span>
           </button>
-          <Link to="/contact" className="action-btn contact-btn">
+          <Link
+            to="/contact"
+            className="action-btn contact-btn"
+            onClick={() => playSound('click')}
+          >
             <FontAwesomeIcon icon={faEnvelope} />
             <span>Contact Me</span>
           </Link>

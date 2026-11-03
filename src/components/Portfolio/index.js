@@ -297,8 +297,13 @@ const Portfolio = () => {
                             className={`tag-pill ${isTagActive ? 'active' : ''}`}
                             key={tIdx}
                             onClick={() => {
-                              playSound('click')
-                              setSearchQuery(isTagActive ? '' : tag)
+                              playSound('click');
+                              if (isTagActive) {
+                                setSearchQuery('');
+                              } else {
+                                setActiveCategory('all');
+                                setSearchQuery(tag);
+                              }
                             }}
                             title={isTagActive ? `Clear filter: ${tag}` : `Filter projects by ${tag}`}
                             aria-label={`Filter by ${tag}`}
