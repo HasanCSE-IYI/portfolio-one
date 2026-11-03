@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUi } from '../../context/UiContext';
 import './StoreApiDemo.scss';
 
 const safeCopyText = (text) => {
@@ -167,6 +168,7 @@ LIMIT 1;
 ];
 
 const StoreApiDemo = () => {
+  const { playSound } = useUi();
   const [activeEndpointId, setActiveEndpointId] = useState('get-products');
   const [role, setRole] = useState('Admin'); // 'Admin' or 'User'
   const [isExecuting, setIsExecuting] = useState(false);
@@ -287,6 +289,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
   const activeEndpoint = getDynamicEndpoint();
 
   const handleExecute = () => {
+    playSound('click');
     setIsExecuting(true);
     setHasExecuted(false);
     setTimeout(() => {
@@ -298,6 +301,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
   const handleCopyCode = () => {
     const textToCopy = viewTab === 'curl' ? activeEndpoint.curlCmd : activeEndpoint.csharpCode;
     safeCopyText(textToCopy);
+    playSound('chime');
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
@@ -312,12 +316,14 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
         }
       : activeEndpoint.responseData;
     safeCopyText(JSON.stringify(payload, null, 2));
+    playSound('chime');
     setCopiedJson(true);
     setTimeout(() => setCopiedJson(false), 2000);
   };
 
   const handleCopySql = () => {
     safeCopyText(activeEndpoint.sqlExecution);
+    playSound('chime');
     setCopiedSql(true);
     setTimeout(() => setCopiedSql(false), 2000);
   };
@@ -329,6 +335,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
     queryPageSize !== 2;
 
   const handleResetQuery = () => {
+    playSound('pop');
     setQueryCategory('All');
     setSearchKeyword('');
     setQueryPage(1);
@@ -362,6 +369,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
             aria-selected={activeEndpointId === 'get-products'}
             className={`endpoint-btn ${activeEndpointId === 'get-products' ? 'active' : ''}`}
             onClick={() => {
+              playSound('tick');
               setActiveEndpointId('get-products');
               setHasExecuted(false);
             }}
@@ -377,6 +385,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               aria-selected={activeEndpointId === ep.id}
               className={`endpoint-btn ${activeEndpointId === ep.id ? 'active' : ''}`}
               onClick={() => {
+                playSound('tick');
                 setActiveEndpointId(ep.id);
                 setHasExecuted(false);
               }}
@@ -400,6 +409,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                     aria-pressed={queryCategory === cat}
                     className={`param-pill ${queryCategory === cat ? 'active' : ''}`}
                     onClick={() => {
+                      playSound('tick');
                       setQueryCategory(cat);
                       setQueryPage(1);
                       setHasExecuted(false);
@@ -432,6 +442,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                       type="button"
                       className="clear-sim-search"
                       onClick={() => {
+                        playSound('pop');
                         setSearchKeyword('');
                         setQueryPage(1);
                         setHasExecuted(false);
@@ -455,6 +466,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                       aria-current={safePage === p ? 'page' : undefined}
                       className={`param-pill page-pill ${safePage === p ? 'active' : ''}`}
                       onClick={() => {
+                        playSound('tick');
                         setQueryPage(p);
                         setHasExecuted(false);
                       }}
@@ -475,6 +487,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                       aria-pressed={queryPageSize === size}
                       className={`param-pill ${queryPageSize === size ? 'active' : ''}`}
                       onClick={() => {
+                        playSound('tick');
                         setQueryPageSize(size);
                         setQueryPage(1);
                         setHasExecuted(false);
@@ -510,6 +523,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               <button
                 className={`role-btn ${role === 'Admin' ? 'active admin' : ''}`}
                 onClick={() => {
+                  playSound('click');
                   setRole('Admin');
                   setHasExecuted(false);
                 }}
@@ -519,6 +533,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               <button
                 className={`role-btn ${role === 'User' ? 'active user' : ''}`}
                 onClick={() => {
+                  playSound('click');
                   setRole('User');
                   setHasExecuted(false);
                 }}
@@ -559,14 +574,20 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               <button
                 type="button"
                 className={`tab-btn ${viewTab === 'csharp' ? 'active' : ''}`}
-                onClick={() => setViewTab('csharp')}
+                onClick={() => {
+                  playSound('tick');
+                  setViewTab('csharp');
+                }}
               >
                 C# Controller &amp; LINQ
               </button>
               <button
                 type="button"
                 className={`tab-btn ${viewTab === 'curl' ? 'active' : ''}`}
-                onClick={() => setViewTab('curl')}
+                onClick={() => {
+                  playSound('tick');
+                  setViewTab('curl');
+                }}
               >
                 cURL Command
               </button>

@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import StoreApiDemo from './StoreApiDemo';
+import { useUi } from '../../context/UiContext';
 import './index.scss';
 import portfolioData from '../../data/portfolio.json';
 
@@ -23,6 +24,7 @@ const CATEGORIES = [
 ];
 
 const Portfolio = () => {
+  const { playSound } = useUi();
   const [letterClass, setLetterClass] = useState('text-animate');
   const [portfolio] = useState(portfolioData.portfolio || []);
   const [activeCategory, setActiveCategory] = useState('all');
@@ -43,6 +45,7 @@ const Portfolio = () => {
   const handleCopyRepoUrl = (id, url) => {
     if (!url) return;
     const triggerSuccess = () => {
+      playSound('chime');
       setCopiedRepoId(id);
       setTimeout(() => setCopiedRepoId(null), 2000);
     };
@@ -135,7 +138,10 @@ const Portfolio = () => {
                 <button
                   type="button"
                   className="clear-search-btn"
-                  onClick={() => setSearchQuery('')}
+                  onClick={() => {
+                    playSound('pop');
+                    setSearchQuery('');
+                  }}
                   aria-label="Clear search query"
                 >
                   <FontAwesomeIcon icon={faTimes} />
@@ -155,7 +161,10 @@ const Portfolio = () => {
                 type="button"
                 key={cat.id}
                 className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
-                onClick={() => setActiveCategory(cat.id)}
+                onClick={() => {
+                  playSound('click');
+                  setActiveCategory(cat.id);
+                }}
                 aria-pressed={activeCategory === cat.id}
               >
                 <span>{cat.label}</span>
@@ -176,7 +185,10 @@ const Portfolio = () => {
               <button
                 type="button"
                 className="toggle-simulator-btn"
-                onClick={() => setShowSimulator(!showSimulator)}
+                onClick={() => {
+                  playSound('click');
+                  setShowSimulator(!showSimulator);
+                }}
                 aria-expanded={showSimulator}
               >
                 {showSimulator ? '▲ Hide API Simulator' : '▼ Open Interactive API Simulator'}

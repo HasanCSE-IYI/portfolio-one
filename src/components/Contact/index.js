@@ -31,6 +31,7 @@ import {
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons'
 import AnimatedLetters from '../AnimatedLetters'
+import { useUi } from '../../context/UiContext'
 import './index.scss'
 
 // Fix Leaflet's default marker icon missing in Webpack production builds
@@ -186,6 +187,7 @@ const COLLABORATION_TIERS = [
 ]
 
 const Contact = () => {
+  const { playSound } = useUi()
   const [letterClass, setLetterClass] = useState('text-animate')
   const [selectedTier, setSelectedTier] = useState('')
   const [subject, setSubject] = useState('')
@@ -239,10 +241,12 @@ const Contact = () => {
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
 
   const toggleFullscreen = () => {
+    playSound('pop')
     setIsFullscreen((prev) => !prev)
   }
 
   const handleToggleDetail = (detailId) => {
+    playSound('click')
     setActiveDetail((prev) => (prev === detailId ? null : detailId))
   }
 
@@ -294,6 +298,7 @@ const Contact = () => {
   }, [])
 
   const handleRecenter = () => {
+    playSound('pop')
     if (mapInstance) {
       mapInstance.flyTo(BAYAZID_COORDS, 17, {
         duration: 1.2,
@@ -303,6 +308,7 @@ const Contact = () => {
   }
 
   const handleSelectTier = (tierTitle) => {
+    playSound('click')
     setSelectedTier(tierTitle)
     setSubject(`[Engagement] ${tierTitle}`)
     if (!messageText.trim()) {
@@ -319,6 +325,7 @@ const Contact = () => {
     const { name, email, subject: sub, message } = formFeedback.formData
     const textToCopy = `Sender: ${name} (${email})\nSubject: ${sub}\n\n${message}`
     const triggerSuccess = () => {
+      playSound('chime')
       setCopiedMessage(true)
       setTimeout(() => setCopiedMessage(false), 2400)
     }
@@ -408,6 +415,7 @@ const Contact = () => {
       })
       .then(
         () => {
+          playSound('chime')
           setIsSubmitting(false)
           setFormFeedback({
             type: 'success',
@@ -747,7 +755,10 @@ const Contact = () => {
                     aria-selected={activeBaseType === type.id}
                     aria-label={type.label}
                     className={`map-layer-tab ${activeBaseType === type.id ? 'active' : ''}`}
-                    onClick={() => setActiveBaseType(type.id)}
+                    onClick={() => {
+                      playSound('click')
+                      setActiveBaseType(type.id)
+                    }}
                     title={type.title}
                   >
                     <FontAwesomeIcon icon={type.icon} className="tab-icon" />
@@ -821,7 +832,10 @@ const Contact = () => {
               <button
                 type="button"
                 className="modern-zoom-btn zoom-in"
-                onClick={() => mapInstance && mapInstance.zoomIn()}
+                onClick={() => {
+                  playSound('tick')
+                  if (mapInstance) mapInstance.zoomIn()
+                }}
                 title="Zoom In (+)"
                 aria-label="Zoom in"
               >
@@ -830,7 +844,10 @@ const Contact = () => {
               <button
                 type="button"
                 className="modern-zoom-btn zoom-out"
-                onClick={() => mapInstance && mapInstance.zoomOut()}
+                onClick={() => {
+                  playSound('tick')
+                  if (mapInstance) mapInstance.zoomOut()
+                }}
                 title="Zoom Out (-)"
                 aria-label="Zoom out"
               >

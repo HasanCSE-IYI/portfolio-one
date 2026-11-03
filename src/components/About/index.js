@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import AnimatedLetters from '../AnimatedLetters'
+import { useUi } from '../../context/UiContext'
 import './index.scss'
 
 const BOOKS = [
@@ -61,6 +62,7 @@ const PRINCIPLES = [
 ]
 
 const About = () => {
+  const { playSound } = useUi()
   const [letterClass, setLetterClass] = useState('text-animate')
   const [showPrinciples, setShowPrinciples] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
@@ -121,6 +123,7 @@ const About = () => {
   }
 
   const handleResetCube = () => {
+    playSound('pop')
     setHasInteracted(false)
     setRotation({ x: -12, y: 20 })
   }
@@ -129,18 +132,22 @@ const About = () => {
     const step = 15
     if (e.key === 'ArrowLeft') {
       e.preventDefault()
+      playSound('tick')
       setHasInteracted(true)
       setRotation((prev) => ({ ...prev, y: prev.y - step }))
     } else if (e.key === 'ArrowRight') {
       e.preventDefault()
+      playSound('tick')
       setHasInteracted(true)
       setRotation((prev) => ({ ...prev, y: prev.y + step }))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
+      playSound('tick')
       setHasInteracted(true)
       setRotation((prev) => ({ ...prev, x: prev.x - step }))
     } else if (e.key === 'ArrowDown') {
       e.preventDefault()
+      playSound('tick')
       setHasInteracted(true)
       setRotation((prev) => ({ ...prev, x: prev.x + step }))
     } else if (e.key.toLowerCase() === 'r' || e.key === 'Escape') {
@@ -253,7 +260,10 @@ const About = () => {
             <button
               type="button"
               className="philosophy-toggle-btn"
-              onClick={() => setShowPrinciples(!showPrinciples)}
+              onClick={() => {
+                playSound('click')
+                setShowPrinciples(!showPrinciples)
+              }}
               aria-expanded={showPrinciples}
             >
               <FontAwesomeIcon
@@ -335,6 +345,7 @@ const About = () => {
             <Link
               to="/resume"
               className="about-cv-btn"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faFilePdf} className="cv-btn-icon" />
               <span>VIEW / DOWNLOAD EXECUTIVE CV (PDF)</span>
