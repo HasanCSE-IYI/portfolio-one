@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useUi } from '../../context/UiContext'
 import './index.scss'
@@ -27,10 +27,13 @@ const NotFound = () => {
           <Link to="/portfolio" className="btn-secondary" onClick={() => playSound('click')}>
             Browse Projects
           </Link>
+          <Link to="/blog" className="btn-secondary" onClick={() => playSound('click')}>
+            Engineering Blog
+          </Link>
         </div>
       </div>
     </div>
   )
 }
 
-export default NotFound
+export default React.memo(NotFound)

@@ -43,6 +43,7 @@ const INITIAL_ENTRIES = [
 const Guestbook = ({ isOpen, onClose }) => {
   const { playSound } = useUi();
   const modalRef = useRef(null);
+  const avatarBtnsRef = useRef([]);
 
   useFocusTrap(isOpen, modalRef, { initialFocusSelector: '#gb-name' });
   const [entries, setEntries] = useState(() => {
@@ -95,6 +96,29 @@ const Guestbook = ({ isOpen, onClose }) => {
   }, [isOpen, onClose, playSound]);
 
   if (!isOpen) return null;
+
+  const handleAvatarKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % DEFAULT_AVATARS.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + DEFAULT_AVATARS.length) % DEFAULT_AVATARS.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = DEFAULT_AVATARS.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      playSound('click');
+      setAvatar(DEFAULT_AVATARS[nextIndex]);
+      const targetBtn = avatarBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -189,19 +213,29 @@ const Guestbook = ({ isOpen, onClose }) => {
 
             <form onSubmit={handleSubmit} className="guestbook-form">
               <div className="avatar-picker-row">
-                <span className="picker-label">Choose Avatar:</span>
-                <div className="avatar-options">
-                  {DEFAULT_AVATARS.map((av) => (
+                <span className="picker-label" id="gb-avatar-label">Choose Avatar:</span>
+                <div
+                  className="avatar-options"
+                  role="radiogroup"
+                  aria-labelledby="gb-avatar-label"
+                >
+                  {DEFAULT_AVATARS.map((av, idx) => (
                     <button
                       key={av}
+                      ref={(el) => {
+                        avatarBtnsRef.current[idx] = el;
+                      }}
                       type="button"
+                      role="radio"
+                      aria-checked={avatar === av}
+                      tabIndex={avatar === av ? 0 : -1}
                       className={`avatar-option-btn ${avatar === av ? 'active' : ''}`}
                       onClick={() => {
                         setAvatar(av);
                         playSound('click');
                       }}
+                      onKeyDown={(e) => handleAvatarKeyDown(e, idx)}
                       aria-label={`Select avatar ${av}`}
-                      aria-pressed={avatar === av}
                     >
                       {av}
                     </button>

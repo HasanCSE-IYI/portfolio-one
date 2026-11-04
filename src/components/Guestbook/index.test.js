@@ -86,4 +86,33 @@ describe('Guestbook Component', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
+
+  it('navigates avatars using arrow keys and home/end keys', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Guestbook isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const initialAvatar = screen.getByRole('radio', { name: /Select avatar 💻/i });
+    expect(initialAvatar).toHaveAttribute('aria-checked', 'true');
+    expect(initialAvatar).toHaveAttribute('tabIndex', '0');
+
+    // ArrowRight to next avatar (🚀)
+    fireEvent.keyDown(initialAvatar, { key: 'ArrowRight' });
+    const nextAvatar = screen.getByRole('radio', { name: /Select avatar 🚀/i });
+    expect(nextAvatar).toHaveAttribute('aria-checked', 'true');
+    expect(nextAvatar).toHaveAttribute('tabIndex', '0');
+
+    // End key to last avatar (🌟)
+    fireEvent.keyDown(nextAvatar, { key: 'End' });
+    const lastAvatar = screen.getByRole('radio', { name: /Select avatar 🌟/i });
+    expect(lastAvatar).toHaveAttribute('aria-checked', 'true');
+
+    // Home key back to first avatar (💻)
+    fireEvent.keyDown(lastAvatar, { key: 'Home' });
+    expect(screen.getByRole('radio', { name: /Select avatar 💻/i })).toHaveAttribute('aria-checked', 'true');
+  });
 });
