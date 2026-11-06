@@ -132,16 +132,17 @@ const ResumeModal = ({ isOpen, onClose }) => {
               <span>
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="contact-icon" /> {RESUME_META.location}
               </span>
-              <a href={`tel:${RESUME_META.phoneRaw}`}>
+              <a href={`tel:${RESUME_META.phoneRaw}`} onClick={() => playSound('click')}>
                 <FontAwesomeIcon icon={faPhone} className="contact-icon" /> {RESUME_META.phone}
               </a>
-              <a href={`mailto:${RESUME_META.email}`}>
+              <a href={`mailto:${RESUME_META.email}`} onClick={() => playSound('click')}>
                 <FontAwesomeIcon icon={faEnvelope} className="contact-icon" /> {RESUME_META.email}
               </a>
               <a
                 href={RESUME_META.linkedin}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => playSound('click')}
               >
                 <FontAwesomeIcon icon={faLinkedin} className="contact-icon" /> LinkedIn
               </a>
@@ -149,6 +150,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
                 href={RESUME_META.github}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => playSound('click')}
               >
                 <FontAwesomeIcon icon={faGithub} className="contact-icon" /> GitHub
               </a>
@@ -156,6 +158,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
                 href={RESUME_META.whatsapp}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => playSound('click')}
               >
                 <FontAwesomeIcon icon={faWhatsapp} className="contact-icon" /> WhatsApp
               </a>
@@ -273,16 +276,27 @@ const ResumeModal = ({ isOpen, onClose }) => {
                   ))}
                   {ref.web && (
                     <div className="ref-web">
-                      <a href={ref.webUrl} target="_blank" rel="noreferrer">
+                      <a
+                        href={ref.webUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => playSound('click')}
+                      >
                         <FontAwesomeIcon icon={faGlobe} /> {ref.web}
                       </a>
                     </div>
                   )}
                   <div className="ref-contact">
-                    <a href={`tel:${ref.phoneRaw}`}>
+                    <a
+                      href={`tel:${ref.phoneRaw}`}
+                      onClick={() => playSound('click')}
+                    >
                       <FontAwesomeIcon icon={faPhone} /> {ref.phone}
                     </a>
-                    <a href={`mailto:${ref.email}`}>
+                    <a
+                      href={`mailto:${ref.email}`}
+                      onClick={() => playSound('click')}
+                    >
                       <FontAwesomeIcon icon={faEnvelope} /> {ref.email}
                     </a>
                   </div>

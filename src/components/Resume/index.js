@@ -160,11 +160,19 @@ const Resume = () => {
               <FontAwesomeIcon icon={faMapMarkerAlt} className="strip-icon" />
               <span>{RESUME_META.location}</span>
             </span>
-            <a href={`tel:${RESUME_META.phoneRaw}`} className="strip-item link">
+            <a
+              href={`tel:${RESUME_META.phoneRaw}`}
+              className="strip-item link"
+              onClick={() => playSound('click')}
+            >
               <FontAwesomeIcon icon={faPhone} className="strip-icon" />
               <span>{RESUME_META.phone}</span>
             </a>
-            <a href={`mailto:${RESUME_META.email}`} className="strip-item link">
+            <a
+              href={`mailto:${RESUME_META.email}`}
+              className="strip-item link"
+              onClick={() => playSound('click')}
+            >
               <FontAwesomeIcon icon={faEnvelope} className="strip-icon" />
               <span>{RESUME_META.email}</span>
             </a>
@@ -173,6 +181,7 @@ const Resume = () => {
               target="_blank"
               rel="noreferrer"
               className="strip-item link"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faLinkedin} className="strip-icon" />
               <span>LinkedIn</span>
@@ -182,6 +191,7 @@ const Resume = () => {
               target="_blank"
               rel="noreferrer"
               className="strip-item link"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faGithub} className="strip-icon" />
               <span>GitHub</span>
@@ -191,6 +201,7 @@ const Resume = () => {
               target="_blank"
               rel="noreferrer"
               className="strip-item link whatsapp"
+              onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faWhatsapp} className="strip-icon" />
               <span>WhatsApp</span>
@@ -253,6 +264,7 @@ const Resume = () => {
                     rel="noreferrer"
                     className="date-badge project-link-badge"
                     aria-label={`View ${proj.title} source repository on GitHub`}
+                    onClick={() => playSound('click')}
                   >
                     <FontAwesomeIcon icon={faGithub} className="cal-icon" />
                     <span>GitHub Repository ↗</span>
@@ -385,11 +397,19 @@ const Resume = () => {
                 ))}
               </div>
               <div className="ref-contact-row">
-                <a href={`tel:${ref.phoneRaw}`} className="ref-contact-link">
+                <a
+                  href={`tel:${ref.phoneRaw}`}
+                  className="ref-contact-link"
+                  onClick={() => playSound('click')}
+                >
                   <FontAwesomeIcon icon={faPhone} className="ref-icon" />
                   <span>{ref.phone}</span>
                 </a>
-                <a href={`mailto:${ref.email}`} className="ref-contact-link">
+                <a
+                  href={`mailto:${ref.email}`}
+                  className="ref-contact-link"
+                  onClick={() => playSound('click')}
+                >
                   <FontAwesomeIcon icon={faEnvelope} className="ref-icon" />
                   <span>{ref.email}</span>
                 </a>
@@ -399,6 +419,7 @@ const Resume = () => {
                     target="_blank"
                     rel="noreferrer"
                     className="ref-contact-link"
+                    onClick={() => playSound('click')}
                   >
                     <FontAwesomeIcon icon={faGlobe} className="ref-icon" />
                     <span>{ref.web} ↗</span>
@@ -435,7 +456,11 @@ const Resume = () => {
                 <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
                 <span>{copied ? 'Copied!' : 'Copy Plain Text'}</span>
               </button>
-              <Link to="/contact" className="action-btn contact-btn">
+              <Link
+                to="/contact"
+                className="action-btn contact-btn"
+                onClick={() => playSound('click')}
+              >
                 <FontAwesomeIcon icon={faEnvelope} />
                 <span>Get in Touch</span>
               </Link>
@@ -457,4 +482,4 @@ const Resume = () => {
   );
 };
 
-export default Resume;
+export default React.memo(Resume);
