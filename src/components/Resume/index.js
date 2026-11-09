@@ -455,6 +455,9 @@ const Resume = () => {
               >
                 <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
                 <span>{copied ? 'Copied!' : 'Copy Plain Text'}</span>
+                <span className="sr-only" role="status" aria-live="polite">
+                  {copied ? 'Plain text resume copied to clipboard' : ''}
+                </span>
               </button>
               <Link
                 to="/contact"

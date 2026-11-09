@@ -107,7 +107,12 @@ const ResumeModal = ({ isOpen, onClose }) => {
             >
               ↗ Open Full Page
             </Link>
-            <button type="button" className="print-btn" onClick={handlePrint}>
+            <button
+              type="button"
+              className="print-btn"
+              onClick={handlePrint}
+              aria-label="Print / Save PDF"
+            >
               <FontAwesomeIcon icon={faPrint} /> Print / Save PDF
             </button>
             <button
