@@ -14,6 +14,14 @@ const COMMANDS_LIST = [
   { cmd: 'skills', desc: 'List core backend & fullstack technical stack' },
   { cmd: 'projects', desc: 'Display featured production architecture repositories' },
   { cmd: 'portfolio', desc: 'Navigate to interactive portfolio & GitHub repos' },
+  { cmd: 'dotnet', desc: 'Inspect .NET 8 SDK and ASP.NET Core runtime details' },
+  { cmd: 'docker', desc: 'Inspect running microservice containers' },
+  { cmd: 'git', desc: 'Display git working tree status and recent commits' },
+  { cmd: 'curl', desc: 'Perform HTTP health probe: curl health' },
+  { cmd: 'uptime', desc: 'Display system uptime and server load averages' },
+  { cmd: 'uname', desc: 'Print operating system name and kernel version' },
+  { cmd: 'cat', desc: 'Display file contents: cat [bio|skills|contact|resume]' },
+  { cmd: 'echo', desc: 'Write arguments to the terminal output' },
   { cmd: 'focus', desc: 'Launch ambient Focus Station & Pomodoro workspace' },
   { cmd: 'contact', desc: 'Get direct communication channels & coordinates' },
   { cmd: 'resume', desc: 'Open the printable executive resume modal' },
@@ -163,6 +171,147 @@ Bio: Architecting high-throughput REST APIs, relational databases, clean archite
   4. GIS Spatial Mapping & Logistics Tracker (Leaflet + GeoJSON)
 
 Type 'contact' to request private architectural walk-throughs.`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'dotnet': {
+        newHistory.push({
+          type: 'output',
+          text: `.NET SDK (reflecting environment):
+ Version:   8.0.404
+ Commit:    c78903e1e2
+
+Runtime Environment:
+ OS Name:     linux-x64
+ Architecture: x64
+ .NET Runtimes Installed:
+   Microsoft.AspNetCore.App 8.0.404 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+   Microsoft.NETCore.App 8.0.404 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+
+Active Architecture : Clean Architecture (Domain, Application, Infrastructure, WebApi)
+Patterns & Tooling  : MediatR, FluentValidation, Entity Framework Core, Redis Caching`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'docker': {
+        newHistory.push({
+          type: 'output',
+          text: `CONTAINER ID   IMAGE                    STATUS         PORTS                    NAMES
+a48f29c1d01    store-api:net8           Up 48 hours    0.0.0.0:5000->80/tcp     store-api-core
+b83e10f922a    redis:7.2-alpine         Up 48 hours    0.0.0.0:6379->6379/tcp   cache-redis
+c9210f8481e    postgres:16-alpine       Up 48 hours    0.0.0.0:5432->5432/tcp   prod-postgres
+d103fa7231c    rabbitmq:3.13-management Up 48 hours    0.0.0.0:5672->5672/tcp   event-bus
+
+4 containers active · 0 failed · Swarm / Compose mesh healthy`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'git': {
+        newHistory.push({
+          type: 'output',
+          text: `On branch main
+Your branch is up to date with 'origin/main'.
+
+Recent engineering commits:
+  * feat(resume): add quick section navigation bar and section anchor links
+  * feat(guestbook): add interactive heart reactions and mobile sound controls
+  * feat(portfolio): integrate URL search deep linking with query sync
+
+working tree clean`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'curl': {
+        newHistory.push({
+          type: 'output',
+          text: `HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Server: Kestrel (.NET 8.0)
+X-Response-Time: 1.84ms
+
+{
+  "status": "Healthy",
+  "service": "Mahmud-Portfolio-Engine",
+  "version": "2.4.0",
+  "uptime": "99.98%",
+  "database": "PostgreSQL 16 (Online)",
+  "cache": "Redis 7.2 (Active)",
+  "region": "ap-southeast-1"
+}`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'uptime': {
+        newHistory.push({
+          type: 'output',
+          text: ` 15:15:00 up 450 days, 14:32,  1 user,  load average: 0.14, 0.09, 0.06`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'uname': {
+        newHistory.push({
+          type: 'output',
+          text: `Linux hasan-portfolio-srv 6.8.0-generic x86_64 GNU/Linux`,
+        });
+        playSound('click');
+        break;
+      }
+
+      case 'cat': {
+        if (!arg) {
+          newHistory.push({
+            type: 'output',
+            text: `usage: cat [bio|skills|contact|resume]`,
+          });
+        } else if (arg === 'bio' || arg === 'about') {
+          newHistory.push({
+            type: 'output',
+            text: `Mahmud al Hasan — Senior Backend Software Engineer with 8+ years experience building enterprise systems in ASP.NET Core, Laravel, and NestJS.`,
+          });
+        } else if (arg === 'skills') {
+          newHistory.push({
+            type: 'output',
+            text: `Core Stack: C# (.NET 8), ASP.NET Core Web API, EF Core, Laravel, PHP, NestJS, Node.js, PostgreSQL, MySQL, Redis, AWS, Docker.`,
+          });
+        } else if (arg === 'contact') {
+          newHistory.push({
+            type: 'output',
+            text: `Email: mahmud.csem@gmail.com | Phone/WhatsApp: +880 1727 328200 | Location: Bayazid, Chattogram`,
+          });
+        } else if (arg === 'resume' || arg === 'cv') {
+          newHistory.push({
+            type: 'output',
+            text: `Opening Executive Resume modal...`,
+          });
+          onClose();
+          if (onOpenResumeModal) onOpenResumeModal();
+        } else {
+          newHistory.push({
+            type: 'error',
+            text: `cat: ${arg}: No such file or directory. Try 'cat bio', 'cat skills', or 'cat contact'.`,
+          });
+        }
+        playSound('click');
+        break;
+      }
+
+      case 'echo': {
+        const textToEcho = parts.slice(1).join(' ');
+        newHistory.push({
+          type: 'output',
+          text: textToEcho,
         });
         playSound('click');
         break;
@@ -540,6 +689,24 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
               <FontAwesomeIcon icon={faTimes} />
             </button>
           </div>
+        </div>
+
+        {/* Quick Command Chips Toolbar */}
+        <div className="terminal-quick-chips" role="toolbar" aria-label="Quick shell commands">
+          <span className="chips-label">Quick:</span>
+          {['help', 'skills', 'projects', 'dotnet', 'docker', 'curl health', 'contact', 'clear'].map((cmd) => (
+            <button
+              key={cmd}
+              type="button"
+              className="term-chip"
+              onClick={() => {
+                playSound('tick');
+                handleCommandExecution(cmd);
+              }}
+            >
+              {cmd}
+            </button>
+          ))}
         </div>
 
         {/* Terminal Body Screen */}

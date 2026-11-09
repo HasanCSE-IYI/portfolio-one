@@ -158,4 +158,54 @@ describe('Terminal Component', () => {
 
     expect(screen.getByText(/npm run start\^C/i)).toBeInTheDocument();
   });
+
+  it('executes dotnet command and displays .NET 8 SDK and runtime details', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'dotnet' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/\.NET SDK \(reflecting environment\):/i)).toBeInTheDocument();
+    expect(screen.getByText(/Microsoft\.AspNetCore\.App 8\.0\.404/i)).toBeInTheDocument();
+  });
+
+  it('executes docker command and displays active microservice containers', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'docker' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/store-api:net8/i)).toBeInTheDocument();
+    expect(screen.getByText(/cache-redis/i)).toBeInTheDocument();
+  });
+
+  it('triggers quick command chip on click', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const chip = screen.getByRole('button', { name: 'curl health' });
+    expect(chip).toBeInTheDocument();
+    fireEvent.click(chip);
+
+    expect(screen.getByText(/"service": "Mahmud-Portfolio-Engine"/i)).toBeInTheDocument();
+  });
 });
