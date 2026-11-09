@@ -140,6 +140,16 @@ const Resume = () => {
         </div>
       </div>
 
+      {/* Quick Section Navigation Bar (Screen Only) */}
+      <nav className="resume-section-nav screen-only" aria-label="Resume quick navigation">
+        <a href="#section-summary" className="nav-pill" onClick={() => playSound('click')}>Summary</a>
+        <a href="#section-skills" className="nav-pill" onClick={() => playSound('click')}>Skills</a>
+        <a href="#section-projects" className="nav-pill" onClick={() => playSound('click')}>Projects</a>
+        <a href="#section-experience" className="nav-pill" onClick={() => playSound('click')}>Experience</a>
+        <a href="#section-education" className="nav-pill" onClick={() => playSound('click')}>Education</a>
+        <a href="#section-references" className="nav-pill" onClick={() => playSound('click')}>References</a>
+      </nav>
+
       {/* Main Resume Paper / Document Card */}
       <article className="resume-paper" id="printable-resume">
         {/* Document Header */}
@@ -210,7 +220,7 @@ const Resume = () => {
         </header>
 
         {/* Section: Professional Summary */}
-        <section className="paper-section">
+        <section className="paper-section" id="section-summary">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faBriefcase} className="section-icon" />
             <span>Professional Summary</span>
@@ -221,7 +231,7 @@ const Resume = () => {
         </section>
 
         {/* Section: Technical Skills */}
-        <section className="paper-section">
+        <section className="paper-section" id="section-skills">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faCode} className="section-icon" />
             <span>Technical Skills</span>
@@ -239,7 +249,7 @@ const Resume = () => {
         </section>
 
         {/* Section: Featured Projects */}
-        <section className="paper-section">
+        <section className="paper-section" id="section-projects">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faLayerGroup} className="section-icon" />
             <span>Featured Engineering Projects</span>
@@ -281,7 +291,7 @@ const Resume = () => {
         </section>
 
         {/* Section: Work Experience */}
-        <section className="paper-section">
+        <section className="paper-section" id="section-experience">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faBriefcase} className="section-icon" />
             <span>Work Experience</span>
@@ -314,7 +324,7 @@ const Resume = () => {
         </section>
 
         {/* Section: Education */}
-        <section className="paper-section">
+        <section className="paper-section" id="section-education">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faGraduationCap} className="section-icon" />
             <span>Education</span>
@@ -372,7 +382,7 @@ const Resume = () => {
         </section>
 
         {/* Section: Professional References */}
-        <section className="paper-section reference-section">
+        <section className="paper-section reference-section" id="section-references">
           <h2 className="section-title">
             <FontAwesomeIcon icon={faUserTie} className="section-icon" />
             <span>Professional References</span>

@@ -142,6 +142,35 @@
     }
   }
 
+  // Quick Section Navigation Bar (Screen Only)
+  .resume-section-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 0 auto 16px;
+    padding: 0 4px;
+
+    .nav-pill {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      padding: 5px 12px;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        color: var(--primary-accent, #f59e0b);
+        background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12);
+        border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.3);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
   // The Resume Paper
   .resume-paper {
     background: rgba(14, 18, 26, 0.88);

@@ -33,4 +33,13 @@ test('renders resume page with authentic credentials and sections', () => {
   // Check control buttons
   expect(screen.getByRole('button', { name: /copy plain text resume/i })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /print or save pdf/i })).toBeInTheDocument();
+
+  // Check quick section navigation pills
+  expect(screen.getByRole('navigation', { name: /resume quick navigation/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^Summary$/i })).toHaveAttribute('href', '#section-summary');
+  expect(screen.getByRole('link', { name: /^Skills$/i })).toHaveAttribute('href', '#section-skills');
+  expect(screen.getByRole('link', { name: /^Projects$/i })).toHaveAttribute('href', '#section-projects');
+  expect(screen.getByRole('link', { name: /^Experience$/i })).toHaveAttribute('href', '#section-experience');
+  expect(screen.getByRole('link', { name: /^Education$/i })).toHaveAttribute('href', '#section-education');
+  expect(screen.getByRole('link', { name: /^References$/i })).toHaveAttribute('href', '#section-references');
 });
