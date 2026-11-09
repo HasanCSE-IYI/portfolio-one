@@ -43,7 +43,7 @@ const CAPABILITIES = [
     tag: '.NET & C#',
     summary: 'Clean Architecture, ASP.NET Core Web API, EF Core (Code-First & Migrations), and JWT Role-Based Authorization.',
     project: 'Store API',
-    link: '/portfolio',
+    link: '/portfolio?cat=dotnet',
     codeHint: 'Repository Pattern · Unit of Work · EF Core LINQ',
     architecture: {
       headline: 'Enterprise Clean Architecture & ASP.NET Core 8 Web API',
@@ -62,7 +62,7 @@ const CAPABILITIES = [
     tag: 'Laravel & Cloud',
     summary: 'Led 4-member backend team, designed relational schemas, and maintained 99.9% uptime real-time consultations.',
     project: 'Doctor Dekhao',
-    link: '/portfolio',
+    link: '/portfolio?q=Doctor%20Dekhao',
     codeHint: 'Zero-Downtime Migrations · Real-Time Doctor Sync',
     architecture: {
       headline: 'Real-Time Telemedicine Engine (Doctor Dekhao)',
@@ -100,7 +100,7 @@ const CAPABILITIES = [
     tag: 'Python & Redis',
     summary: 'Asynchronous task processing with Celery, Redis queues, and high-volume data ingestion pipelines.',
     project: 'Shuni Live',
-    link: '/portfolio',
+    link: '/portfolio?q=Shuni%20Live',
     codeHint: 'Scrapy Crawler · Celery Workers · Redis Pub/Sub',
     architecture: {
       headline: 'Distributed Asynchronous Ingestion (Shuni Live)',

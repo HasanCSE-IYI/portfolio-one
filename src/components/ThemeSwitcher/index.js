@@ -27,7 +27,9 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
 
     if (nextIndex !== null) {
       e.preventDefault();
+      const nextTheme = themeList[nextIndex];
       playSound('tick');
+      setAccentTheme(nextTheme.id);
       const targetBtn = themeBtnsRef.current[nextIndex];
       if (targetBtn && typeof targetBtn.focus === 'function') {
         targetBtn.focus();
@@ -101,6 +103,7 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
                 type="button"
                 role="radio"
                 className={`theme-card-btn ${isSelected ? 'selected' : ''}`}
+                tabIndex={isSelected ? 0 : -1}
                 onClick={() => {
                   playSound('click');
                   setAccentTheme(th.id);

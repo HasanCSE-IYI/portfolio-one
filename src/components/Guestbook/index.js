@@ -17,6 +17,7 @@ const INITIAL_ENTRIES = [
     message:
       'Mahmud is one of the most reliable backend engineers I have collaborated with. His ASP.NET Core clean architecture models and query optimizations scaled our transactions seamlessly.',
     date: 'Oct 24, 2026',
+    likes: 14,
   },
   {
     id: 'entry-2',
@@ -27,6 +28,7 @@ const INITIAL_ENTRIES = [
     message:
       'Incredible attention to detail in database indexing and asynchronous event queues with RabbitMQ. A true 10x backend problem solver.',
     date: 'Oct 19, 2026',
+    likes: 9,
   },
   {
     id: 'entry-3',
@@ -37,6 +39,7 @@ const INITIAL_ENTRIES = [
     message:
       'Great teamwork and mentorship! The Focus Station and Store API simulator in this portfolio reflect the exact high standard he brings to production code.',
     date: 'Oct 12, 2026',
+    likes: 18,
   },
 ];
 
@@ -65,6 +68,37 @@ const Guestbook = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [likedEntries, setLikedEntries] = useState(() => {
+    try {
+      const saved = localStorage.getItem('portfolio_guestbook_likes');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const handleLikeEntry = (id) => {
+    playSound('pop');
+    const willLike = !likedEntries[id];
+    const nextLiked = { ...likedEntries, [id]: willLike };
+    setLikedEntries(nextLiked);
+    try {
+      localStorage.setItem('portfolio_guestbook_likes', JSON.stringify(nextLiked));
+    } catch {
+      // storage error
+    }
+
+    setEntries((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          const delta = willLike ? 1 : -1;
+          const newLikes = Math.max(0, (item.likes || 0) + delta);
+          return { ...item, likes: newLikes };
+        }
+        return item;
+      })
+    );
+  };
 
   // Persist entries to localStorage
   useEffect(() => {
@@ -140,6 +174,7 @@ const Guestbook = ({ isOpen, onClose }) => {
       avatar,
       message: message.trim(),
       date: 'Just now',
+      likes: 0,
     };
 
     setEntries((prev) => [newEntry, ...prev]);
@@ -315,6 +350,18 @@ const Guestbook = ({ isOpen, onClose }) => {
                       <span className="user-date">{item.date}</span>
                     </div>
                     <p className="user-message">&ldquo;{item.message}&rdquo;</p>
+                    <div className="feed-card-footer">
+                      <button
+                        type="button"
+                        className={`entry-like-btn ${likedEntries[item.id] ? 'is-liked' : ''}`}
+                        onClick={() => handleLikeEntry(item.id)}
+                        aria-label={`Like note by ${item.name}. Currently ${item.likes || 0} likes`}
+                        aria-pressed={Boolean(likedEntries[item.id])}
+                      >
+                        <FontAwesomeIcon icon={faHeart} className="like-icon" />
+                        <span className="like-count">{item.likes || 0}</span>
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (

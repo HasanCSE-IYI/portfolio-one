@@ -348,6 +348,53 @@
               color: #cbd5e1;
               font-style: italic;
             }
+
+            .feed-card-footer {
+              display: flex;
+              justify-content: flex-end;
+              margin-top: 10px;
+
+              .entry-like-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 9999px;
+                padding: 4px 10px;
+                font-size: 1.1rem;
+                color: #94a3b8;
+                cursor: pointer;
+                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+                &:hover {
+                  background: rgba(244, 63, 94, 0.12);
+                  border-color: rgba(244, 63, 94, 0.3);
+                  color: #fb7185;
+                  transform: scale(1.05);
+                }
+
+                &.is-liked {
+                  background: rgba(244, 63, 94, 0.18);
+                  border-color: #f43f5e;
+                  color: #f43f5e;
+
+                  .like-icon {
+                    transform: scale(1.15);
+                  }
+                }
+
+                .like-icon {
+                  font-size: 1rem;
+                  transition: transform 0.2s ease;
+                }
+
+                .like-count {
+                  font-weight: 600;
+                  font-family: var(--font-mono);
+                }
+              }
+            }
           }
         }
       }

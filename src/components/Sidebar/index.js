@@ -412,6 +412,28 @@ const Sidebar = () => {
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </button>
 
+                {/* Sound Effects Toggle Mobile Item */}
+                <button
+                  type="button"
+                  className={`dropdown-item sound-item ${!soundEnabled ? 'muted' : ''}`}
+                  role="menuitem"
+                  onClick={() => {
+                    toggleSound()
+                  }}
+                  aria-label={soundEnabled ? 'Mute UI sound effects' : 'Enable UI sound effects'}
+                >
+                  <span className={`item-icon-box sound-box ${!soundEnabled ? 'muted' : ''}`}>
+                    <FontAwesomeIcon icon={soundEnabled ? faVolumeHigh : faVolumeXmark} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">UI Sound Effects</span>
+                    <span className="item-sub-title">
+                      {soundEnabled ? 'Audio cues active (Clicks, Chimes)' : 'Procedural audio currently muted'}
+                    </span>
+                  </div>
+                  <span className="item-kbd-badge">{soundEnabled ? 'ON' : 'MUTED'}</span>
+                </button>
+
                 {/* Public Guestbook Mobile Item */}
                 <button
                   type="button"

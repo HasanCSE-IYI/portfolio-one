@@ -50,4 +50,22 @@ describe('Sidebar Component', () => {
       screen.getByRole('dialog', { name: /Executive Resume of Mahmud al Hasan/i })
     ).toBeInTheDocument();
   });
+
+  test('opens quick menu and toggles sound effects on mobile dropdown', () => {
+    render(
+      <MemoryRouter>
+        <Sidebar />
+      </MemoryRouter>
+    );
+
+    const moreBtn = screen.getByRole('button', { name: /Quick Connect Options & Menu/i });
+    fireEvent.click(moreBtn);
+
+    expect(screen.getByRole('dialog', { name: /Quick Connect Channels and Navigation Menu/i })).toBeInTheDocument();
+
+    const soundItem = screen.getByRole('menuitem', { name: /Mute UI sound effects|Enable UI sound effects/i });
+    expect(soundItem).toBeInTheDocument();
+
+    fireEvent.click(soundItem);
+  });
 });

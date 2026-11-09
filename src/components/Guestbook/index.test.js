@@ -115,4 +115,24 @@ describe('Guestbook Component', () => {
     fireEvent.keyDown(lastAvatar, { key: 'Home' });
     expect(screen.getByRole('radio', { name: /Select avatar 💻/i })).toHaveAttribute('aria-checked', 'true');
   });
+
+  it('toggles like reaction on guestbook entry', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Guestbook isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const likeBtn = screen.getByRole('button', { name: /Like note by Samiul Karim/i });
+    expect(likeBtn).toHaveAttribute('aria-pressed', 'false');
+
+    fireEvent.click(likeBtn);
+    expect(likeBtn).toHaveAttribute('aria-pressed', 'true');
+    expect(likeBtn).toHaveClass('is-liked');
+
+    fireEvent.click(likeBtn);
+    expect(likeBtn).toHaveAttribute('aria-pressed', 'false');
+  });
 });

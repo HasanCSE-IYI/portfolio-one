@@ -62,4 +62,33 @@ describe('ThemeSwitcher Component', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
+
+  it('navigates and selects themes using arrow keys', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <ThemeSwitcher isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const amberRadio = screen.getByRole('radio', { name: /Amber Gold/i });
+    expect(amberRadio).toHaveAttribute('aria-checked', 'true');
+    expect(amberRadio).toHaveAttribute('tabIndex', '0');
+
+    // ArrowRight to Cyber Cyan
+    fireEvent.keyDown(amberRadio, { key: 'ArrowRight' });
+    const cyanRadio = screen.getByRole('radio', { name: /Cyber Cyan/i });
+    expect(cyanRadio).toHaveAttribute('aria-checked', 'true');
+    expect(cyanRadio).toHaveAttribute('tabIndex', '0');
+
+    // End to Neon Rose
+    fireEvent.keyDown(cyanRadio, { key: 'End' });
+    const roseRadio = screen.getByRole('radio', { name: /Neon Rose/i });
+    expect(roseRadio).toHaveAttribute('aria-checked', 'true');
+
+    // Home back to Amber Gold
+    fireEvent.keyDown(roseRadio, { key: 'Home' });
+    expect(amberRadio).toHaveAttribute('aria-checked', 'true');
+  });
 });
