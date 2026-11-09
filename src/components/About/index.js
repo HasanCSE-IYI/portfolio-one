@@ -25,24 +25,28 @@ const BOOKS = [
     author: 'Robert C. Martin (Uncle Bob)',
     takeaway: 'Separation of concerns, dependency inversion, and business logic decoupled from frameworks and databases.',
     tag: 'Architecture',
+    link: '/blog?cat=Architecture',
   },
   {
     title: 'Designing Data-Intensive Applications',
     author: 'Martin Kleppmann',
     takeaway: 'Reliability, scalability, and maintainability across transactional isolation levels, replication, and distributed storage.',
     tag: 'Distributed Systems',
+    link: '/blog?q=Database',
   },
   {
     title: 'Domain-Driven Design',
     author: 'Eric Evans',
     takeaway: 'Ubiquitous language, bounded contexts, aggregates, and modeling complex business rules directly into domain code.',
     tag: 'Domain Modeling',
+    link: '/blog?cat=Architecture',
   },
   {
     title: 'Pro ASP.NET Core Web API',
     author: 'Adam Freeman',
     takeaway: 'Deep dive into HTTP pipeline interception, IoC container, EF Core Code-First patterns, and high-performance Web APIs.',
     tag: '.NET Ecosystem',
+    link: '/portfolio?cat=dotnet',
   },
 ]
 
@@ -356,7 +360,15 @@ const About = () => {
               {BOOKS.map((book, idx) => (
                 <div className="book-card" key={idx}>
                   <div className="book-top">
-                    <span className="book-tag">{book.tag}</span>
+                    <Link
+                      to={book.link}
+                      className="book-tag"
+                      onClick={() => playSound('click')}
+                      title={`Explore related engineering articles and projects for ${book.tag}`}
+                    >
+                      <span>{book.tag}</span>
+                      <span className="tag-arrow" aria-hidden="true">↗</span>
+                    </Link>
                     <span className="book-icon" aria-hidden="true">
                       <FontAwesomeIcon icon={faBookOpen} />
                     </span>

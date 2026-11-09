@@ -169,4 +169,42 @@ describe('Blog Component', () => {
     expect(screen.getByRole('tab', { name: /^All$/i })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByText(/Clean Architecture in ASP\.NET Core/i)).toBeInTheDocument();
   });
+
+  it('filters by tag when card tag button is clicked and renders interactive tag links in article view', () => {
+    render(
+      <MemoryRouter initialEntries={['/blog']}>
+        <UiProvider>
+          <Routes>
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<Blog />} />
+          </Routes>
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    // Click on a tag button in the article cards (e.g. #architecture)
+    const tagBtns = screen.getAllByRole('button', { name: /filter articles by tag/i });
+    expect(tagBtns.length).toBeGreaterThan(0);
+    fireEvent.click(tagBtns[0]);
+
+    // Check that search query input is populated with the tag
+    const searchInput = screen.getByPlaceholderText(/Search articles by topic/i);
+    expect(searchInput.value.length).toBeGreaterThan(0);
+  });
+
+  it('renders interactive tag links in article detail view', () => {
+    render(
+      <MemoryRouter initialEntries={['/blog/clean-architecture-aspnet-core']}>
+        <UiProvider>
+          <Routes>
+            <Route path="/blog/:slug" element={<Blog />} />
+          </Routes>
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const tagLinks = screen.getAllByRole('listitem');
+    expect(tagLinks.length).toBeGreaterThan(0);
+    expect(tagLinks[0]).toHaveAttribute('href', expect.stringContaining('/blog?q='));
+  });
 });

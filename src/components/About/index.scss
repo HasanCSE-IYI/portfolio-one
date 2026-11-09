@@ -583,6 +583,29 @@
             padding: 3px 9px;
             border-radius: 9999px;
             font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+            .tag-arrow {
+              font-size: 0.9em;
+              opacity: 0.8;
+              transition: transform 0.2s ease;
+            }
+
+            &:hover {
+              background: rgba(56, 189, 248, 0.22);
+              border-color: rgba(56, 189, 248, 0.5);
+              color: #ffffff;
+              transform: translateY(-1px);
+
+              .tag-arrow {
+                transform: translate(2px, -2px);
+                opacity: 1;
+              }
+            }
           }
 
           .book-icon {

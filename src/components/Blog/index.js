@@ -248,6 +248,30 @@ const Blog = () => {
     );
   }, [playSound, setSearchParams]);
 
+  const handleTagClick = useCallback(
+    (tag) => {
+      playSound('click');
+      const isTagActive = searchQuery.trim().toLowerCase() === tag.toLowerCase();
+      if (isTagActive) {
+        handleClearSearch();
+      } else {
+        setActiveCategory('All');
+        setSearchQuery(tag);
+        setSearchParams(
+          (prev) => {
+            const next = new URLSearchParams(prev);
+            next.delete('cat');
+            next.delete('category');
+            next.set('q', tag);
+            return next;
+          },
+          { replace: true }
+        );
+      }
+    },
+    [playSound, searchQuery, handleClearSearch, setSearchParams]
+  );
+
   const handleResetFilters = useCallback(() => {
     playSound('click');
     setSearchQuery('');
@@ -415,12 +439,19 @@ const Blog = () => {
               </div>
             </div>
 
-            <div className="article-tags-wrap">
+            <div className="article-tags-wrap" role="list" aria-label="Article tags">
               {currentArticle.tags.map((tag) => (
-                <span key={tag} className="article-tag-badge">
+                <Link
+                  key={tag}
+                  to={`/blog?q=${encodeURIComponent(tag)}`}
+                  className="article-tag-link"
+                  onClick={() => playSound('click')}
+                  title={`View all engineering articles tagged #${tag}`}
+                  role="listitem"
+                >
                   <FontAwesomeIcon icon={faTag} className="tag-icon" />
-                  <span>{tag}</span>
-                </span>
+                  <span>#{tag}</span>
+                </Link>
               ))}
             </div>
           </header>
@@ -677,21 +708,22 @@ const Blog = () => {
                 <p className="card-summary">{art.summary}</p>
 
                 <div className="card-tags-row">
-                  {art.tags.slice(0, 4).map((tag) => (
-                    <button
-                      key={tag}
-                      type="button"
-                      className="card-tag card-tag-btn"
-                      onClick={() => {
-                        playSound('click');
-                        handleSearchChange(tag);
-                      }}
-                      title={`Filter articles by #${tag}`}
-                      aria-label={`Filter articles by tag ${tag}`}
-                    >
-                      #{tag}
-                    </button>
-                  ))}
+                  {art.tags.slice(0, 4).map((tag) => {
+                    const isTagActive = searchQuery.trim().toLowerCase() === tag.toLowerCase();
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        className={`card-tag card-tag-btn ${isTagActive ? 'active' : ''}`}
+                        onClick={() => handleTagClick(tag)}
+                        title={isTagActive ? `Clear filter: #${tag}` : `Filter articles by #${tag}`}
+                        aria-label={`Filter articles by tag ${tag}`}
+                        aria-pressed={isTagActive}
+                      >
+                        #{tag}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <div className="card-footer-row">

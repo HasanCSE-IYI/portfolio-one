@@ -84,4 +84,20 @@ describe('About Component', () => {
     expect(dockerLink).toBeInTheDocument();
     expect(dockerLink).toHaveAttribute('href', '/portfolio?q=Docker');
   });
+
+  test('renders book tags as interactive links to blog categories and portfolio', () => {
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
+
+    const archTagLink = screen.getByRole('link', { name: /Architecture/i });
+    expect(archTagLink).toBeInTheDocument();
+    expect(archTagLink).toHaveAttribute('href', '/blog?cat=Architecture');
+
+    const dotnetTagLink = screen.getByRole('link', { name: /\.NET Ecosystem/i });
+    expect(dotnetTagLink).toBeInTheDocument();
+    expect(dotnetTagLink).toHaveAttribute('href', '/portfolio?cat=dotnet');
+  });
 });
