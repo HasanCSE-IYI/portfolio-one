@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,6 +7,8 @@ import {
   faEnvelope,
   faPrint,
   faGlobe,
+  faCopy,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -23,6 +25,7 @@ import {
   LANGUAGES,
   ADDITIONAL_ACTIVITIES,
   REFERENCES,
+  getPlainTextResume,
 } from '../../data/resumeData';
 import { useUi } from '../../context/UiContext';
 import { useFocusTrap } from '../../utils/useFocusTrap';
@@ -30,6 +33,7 @@ import './index.scss';
 
 const ResumeModal = ({ isOpen, onClose }) => {
   const { playSound } = useUi();
+  const [copied, setCopied] = useState(false);
   const modalRef = useRef(null);
 
   useFocusTrap(isOpen, modalRef);
@@ -73,6 +77,51 @@ const ResumeModal = ({ isOpen, onClose }) => {
     setTimeout(cleanup, 2000);
   };
 
+  const handleCopyPlainText = () => {
+    const plainTextResume = getPlainTextResume();
+
+    const triggerSuccess = () => {
+      playSound('chime');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    };
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(plainTextResume)
+        .then(triggerSuccess)
+        .catch(() => {
+          try {
+            const el = document.createElement('textarea');
+            el.value = plainTextResume;
+            el.style.position = 'fixed';
+            el.style.opacity = '0';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            triggerSuccess();
+          } catch (e) {
+            // ignore
+          }
+        });
+    } else {
+      try {
+        const el = document.createElement('textarea');
+        el.value = plainTextResume;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        triggerSuccess();
+      } catch (e) {
+        // ignore
+      }
+    }
+  };
+
   return (
     <div
       className="resume-modal-overlay"
@@ -97,6 +146,15 @@ const ResumeModal = ({ isOpen, onClose }) => {
             </span>
           </div>
           <div className="modal-actions">
+            <button
+              type="button"
+              className={`copy-text-btn ${copied ? 'copied' : ''}`}
+              onClick={handleCopyPlainText}
+              aria-label="Copy plain text resume"
+            >
+              <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
+              <span>{copied ? 'Copied Text!' : 'Copy Text'}</span>
+            </button>
             <Link
               to="/resume"
               className="full-page-link"

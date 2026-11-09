@@ -72,4 +72,26 @@ describe('ResumeModal Component', () => {
 
     window.print = originalPrint;
   });
+
+  test('renders copy text button and handles click', async () => {
+    const originalClipboard = navigator.clipboard;
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn().mockImplementation(() => Promise.resolve()),
+      },
+    });
+
+    render(
+      <MemoryRouter>
+        <ResumeModal isOpen={true} onClose={mockOnClose} />
+      </MemoryRouter>
+    );
+
+    const copyBtn = screen.getByRole('button', { name: /Copy plain text resume/i });
+    expect(copyBtn).toBeInTheDocument();
+    fireEvent.click(copyBtn);
+    expect(await screen.findByText(/Copied Text!/i)).toBeInTheDocument();
+
+    Object.assign(navigator, { clipboard: originalClipboard });
+  });
 });
