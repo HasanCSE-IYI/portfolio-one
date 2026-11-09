@@ -185,7 +185,7 @@ const BASE_COMMANDS = [
     title: 'Launch Store API Simulator',
     subtitle: 'Simulate C# controller, EF Core queries & JWT RBAC live',
     icon: faCode,
-    action: (navigate) => navigate('/portfolio'),
+    action: (navigate) => navigate('/portfolio?cat=dotnet'),
   },
   {
     id: 'act-focus-station',
@@ -249,7 +249,7 @@ const PROJECT_COMMANDS = (portfolioData.portfolio || []).map((port) => ({
   title: port.title,
   subtitle: `${port.language} · ${port.categoryLabel} ${port.metrics ? '• ' + port.metrics : ''}`,
   icon: faFolder,
-  action: (navigate) => navigate('/portfolio'),
+  action: (navigate) => navigate(`/portfolio?q=${encodeURIComponent(port.title)}`),
 }));
 
 const BLOG_COMMANDS = getAllArticles().map((art) => ({

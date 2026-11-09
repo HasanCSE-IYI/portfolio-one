@@ -74,12 +74,49 @@ const Portfolio = () => {
     [playSound, setSearchParams]
   );
 
+  const handleSearchChange = useCallback(
+    (val) => {
+      setSearchQuery(val);
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (!val.trim()) {
+            next.delete('q');
+            next.delete('search');
+          } else {
+            next.set('q', val);
+          }
+          return next;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
+
   const handleClearSearch = useCallback(() => {
     playSound('pop');
     setSearchQuery('');
     setSearchParams(
       (prev) => {
         const next = new URLSearchParams(prev);
+        next.delete('q');
+        next.delete('search');
+        return next;
+      },
+      { replace: true }
+    );
+  }, [playSound, setSearchParams]);
+
+  const handleResetFilters = useCallback(() => {
+    playSound('click');
+    setSearchQuery('');
+    setActiveCategory('all');
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('cat');
+        next.delete('category');
         next.delete('q');
         next.delete('search');
         return next;
@@ -236,7 +273,7 @@ const Portfolio = () => {
                 className="search-input"
                 placeholder="Search by keyword, tech, or architecture (e.g. C#, MySQL, Redis, Docker, JWT)..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 aria-label="Search repositories"
               />
               {searchQuery && (
@@ -250,11 +287,23 @@ const Portfolio = () => {
                 </button>
               )}
             </div>
-            <span className="search-count-badge" role="status" aria-live="polite">
-              {searchQuery || activeCategory !== 'all'
-                ? `Showing ${filteredPortfolio.length} of ${portfolio.length} repositories`
-                : `${portfolio.length} Production Repositories`}
-            </span>
+            <div className="search-count-wrap">
+              <span className="search-count-badge" role="status" aria-live="polite">
+                {searchQuery || activeCategory !== 'all'
+                  ? `Showing ${filteredPortfolio.length} of ${portfolio.length} repositories`
+                  : `${portfolio.length} Production Repositories`}
+              </span>
+              {(searchQuery || activeCategory !== 'all') && (
+                <button
+                  type="button"
+                  className="clear-all-filters-btn"
+                  onClick={handleResetFilters}
+                  aria-label="Clear all active filters"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="category-filters" role="toolbar" aria-label="Project category filters">
@@ -441,11 +490,7 @@ const Portfolio = () => {
             <button
               type="button"
               className="reset-filters-btn"
-              onClick={() => {
-                playSound('click');
-                setSearchQuery('');
-                setActiveCategory('all');
-              }}
+              onClick={handleResetFilters}
             >
               Reset Filters &amp; Show All
             </button>

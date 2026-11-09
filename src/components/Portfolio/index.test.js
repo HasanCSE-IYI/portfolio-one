@@ -90,4 +90,33 @@ describe('Portfolio Component', () => {
     const searchInput = screen.getByRole('textbox', { name: /Search repositories/i });
     expect(searchInput.value).toBe('GIS');
   });
+
+  test('displays clear all filters button when filters are active and clicking it resets all', () => {
+    renderPortfolio(['/portfolio?cat=dotnet']);
+
+    const clearAllBtn = screen.getByRole('button', { name: /clear all active filters/i });
+    expect(clearAllBtn).toBeInTheDocument();
+
+    fireEvent.click(clearAllBtn);
+
+    const allBtn = screen.getByRole('button', { name: /All Repositories/i });
+    expect(allBtn).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('button', { name: /clear all active filters/i })).not.toBeInTheDocument();
+  });
+
+  test('clicking Reset Filters & Show All in no-results card resets filters', () => {
+    renderPortfolio();
+
+    const searchInput = screen.getByRole('textbox', { name: /Search repositories/i });
+    fireEvent.change(searchInput, { target: { value: 'NonExistentProject12345' } });
+
+    expect(screen.getByText(/No matching repositories found/i)).toBeInTheDocument();
+    const resetBtn = screen.getByRole('button', { name: /Reset Filters & Show All/i });
+    expect(resetBtn).toBeInTheDocument();
+
+    fireEvent.click(resetBtn);
+
+    expect(screen.queryByText(/No matching repositories found/i)).not.toBeInTheDocument();
+    expect(searchInput.value).toBe('');
+  });
 });
