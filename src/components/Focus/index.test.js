@@ -429,6 +429,49 @@ describe('Focus Station Page', () => {
     fireEvent.keyDown(sprintModeTab, { key: 'ArrowLeft' });
     expect(pomodoroModeTab).toHaveAttribute('aria-selected', 'true');
   });
+
+  test('navigates sound categories and visualizer modes using arrow keys', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    // Switch to soundboard view
+    const soundboardTab = screen.getByRole('tab', { name: /Nature Soundboard/i });
+    fireEvent.click(soundboardTab);
+
+    // Test sound categories arrow navigation
+    const allCatBtn = screen.getByRole('button', { name: /Filter by all/i });
+    expect(allCatBtn).toHaveClass('active');
+
+    fireEvent.keyDown(allCatBtn, { key: 'ArrowRight' });
+    const activeCatBtn = screen.getByRole('button', { name: /Filter by Active/i });
+    expect(activeCatBtn).toHaveClass('active');
+
+    fireEvent.keyDown(activeCatBtn, { key: 'ArrowLeft' });
+    expect(allCatBtn).toHaveClass('active');
+
+    // Switch back to timer view to test visualizer modes arrow navigation
+    const timerTab = screen.getByRole('tab', { name: /Flow Timer & Log/i });
+    fireEvent.click(timerTab);
+
+    const barsBtn = screen.getByRole('button', { name: /^Bars$/i });
+    expect(barsBtn).toHaveClass('active');
+
+    fireEvent.keyDown(barsBtn, { key: 'ArrowRight' });
+    const waveBtn = screen.getByRole('button', { name: /^Wave$/i });
+    expect(waveBtn).toHaveClass('active');
+
+    fireEvent.keyDown(waveBtn, { key: 'ArrowRight' });
+    const radialBtn = screen.getByRole('button', { name: /^Radial$/i });
+    expect(radialBtn).toHaveClass('active');
+
+    fireEvent.keyDown(radialBtn, { key: 'ArrowLeft' });
+    expect(waveBtn).toHaveClass('active');
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {

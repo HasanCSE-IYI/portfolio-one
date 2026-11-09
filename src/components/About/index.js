@@ -13,7 +13,7 @@ import {
   faFilePdf,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import AnimatedLetters from '../AnimatedLetters'
 import { useUi } from '../../context/UiContext'
@@ -386,4 +386,4 @@ const About = () => {
   )
 }
 
-export default About
+export default React.memo(About)

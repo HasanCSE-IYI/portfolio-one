@@ -129,4 +129,4 @@ const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
   );
 };
 
-export default AvailabilityBadge;
+export default React.memo(AvailabilityBadge);

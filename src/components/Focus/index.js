@@ -78,6 +78,8 @@ const Focus = () => {
   const ytIframeRef = useRef(null);
   const workspaceTabBtnsRef = useRef([]);
   const timerModeBtnsRef = useRef([]);
+  const categoryFilterBtnsRef = useRef([]);
+  const vizModeBtnsRef = useRef([]);
 
   const {
     // Soundboard
@@ -407,15 +409,42 @@ const Focus = () => {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    const width = canvas.clientWidth || 320;
-    const height = canvas.clientHeight || 90;
+    const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+    let width = canvas.clientWidth || 320;
+    let height = canvas.clientHeight || 90;
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    if (ctx.scale) ctx.scale(dpr, dpr);
+    if (ctx && ctx.scale) ctx.scale(dpr, dpr);
+
+    const updateDimensions = () => {
+      if (!canvas || !ctx) return;
+      const newWidth = canvas.clientWidth || 320;
+      const newHeight = canvas.clientHeight || 90;
+      if (newWidth !== width || newHeight !== height) {
+        width = newWidth;
+        height = newHeight;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        if (ctx.scale) ctx.scale(dpr, dpr);
+      }
+    };
+
+    window.addEventListener('resize', updateDimensions);
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      try {
+        resizeObserver = new ResizeObserver(updateDimensions);
+        resizeObserver.observe(canvas);
+      } catch (e) {
+        // ignore
+      }
+    }
 
     const renderSpectrum = () => {
       animId = requestAnimationFrame(renderSpectrum);
+      // Skip expensive canvas rendering passes when browser tab is hidden / backgrounded
+      if (typeof document !== 'undefined' && document.hidden) return;
+      if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
 
       let dataArray = new Uint8Array(32);
@@ -509,7 +538,11 @@ const Focus = () => {
     };
 
     renderSpectrum();
-    return () => cancelAnimationFrame(animId);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', updateDimensions);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
   }, [analyserRef, isPlaying, visualizerMode]);
 
   // Category icons mapping for modern visual hierarchy
@@ -531,6 +564,56 @@ const Focus = () => {
   const categories = useMemo(() => {
     return ['all', 'Active', 'Favorites', 'Rain', 'Nature', 'Animals', 'Places', 'Transport', 'Things', 'City', 'Noise & Waves'];
   }, []);
+
+  const VIZ_MODES = useMemo(() => ['bars', 'wave', 'radial'], []);
+
+  const handleSoundCategoryKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % categories.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + categories.length) % categories.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = categories.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const targetCat = categories[nextIndex].toLowerCase();
+      setActiveCategory(targetCat);
+      playSound('tick');
+      const targetBtn = categoryFilterBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
+
+  const handleVizModeKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % VIZ_MODES.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + VIZ_MODES.length) % VIZ_MODES.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = VIZ_MODES.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const targetMode = VIZ_MODES[nextIndex];
+      setVisualizerMode(targetMode);
+      playSound('tick');
+      const targetBtn = vizModeBtnsRef.current[nextIndex];
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus();
+      }
+    }
+  };
 
   const getCategoryCount = (cat) => {
     const c = cat.toLowerCase();
@@ -1849,40 +1932,29 @@ const Focus = () => {
                   <h3>Acoustic Spectrum</h3>
                 </div>
                 <div className="viz-header-controls">
-                  <div className="viz-mode-segmented" role="group" aria-label="Visualizer Mode">
-                    <button
-                      type="button"
-                      className={`viz-mode-btn ${visualizerMode === 'bars' ? 'active' : ''}`}
-                      onClick={() => {
-                        playSound('tick');
-                        setVisualizerMode('bars');
-                      }}
-                      aria-pressed={visualizerMode === 'bars'}
-                    >
-                      Bars
-                    </button>
-                    <button
-                      type="button"
-                      className={`viz-mode-btn ${visualizerMode === 'wave' ? 'active' : ''}`}
-                      onClick={() => {
-                        playSound('tick');
-                        setVisualizerMode('wave');
-                      }}
-                      aria-pressed={visualizerMode === 'wave'}
-                    >
-                      Wave
-                    </button>
-                    <button
-                      type="button"
-                      className={`viz-mode-btn ${visualizerMode === 'radial' ? 'active' : ''}`}
-                      onClick={() => {
-                        playSound('tick');
-                        setVisualizerMode('radial');
-                      }}
-                      aria-pressed={visualizerMode === 'radial'}
-                    >
-                      Radial
-                    </button>
+                  <div className="viz-mode-segmented" role="toolbar" aria-label="Visualizer Mode">
+                    {VIZ_MODES.map((mode, idx) => {
+                      const isActive = visualizerMode === mode;
+                      const label = mode.charAt(0).toUpperCase() + mode.slice(1);
+                      return (
+                        <button
+                          key={mode}
+                          ref={(el) => {
+                            vizModeBtnsRef.current[idx] = el;
+                          }}
+                          type="button"
+                          className={`viz-mode-btn ${isActive ? 'active' : ''}`}
+                          onClick={() => {
+                            playSound('tick');
+                            setVisualizerMode(mode);
+                          }}
+                          onKeyDown={(e) => handleVizModeKeyDown(e, idx)}
+                          aria-pressed={isActive}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
                   </div>
                   <span className="viz-status-pill">
                     {isPlaying ? 'ACTIVE FREQUENCY' : 'IDLE BREATH'}
@@ -2233,7 +2305,7 @@ const Focus = () => {
 
               {/* Category Filter Pills */}
               <div className="category-filter-bar" role="toolbar" aria-label="Sound Categories">
-                {categories.map((cat) => {
+                {categories.map((cat, idx) => {
                   const catKey = cat.toLowerCase();
                   const isCur = activeCategory.toLowerCase() === catKey;
                   const count = getCategoryCount(cat);
@@ -2241,14 +2313,19 @@ const Focus = () => {
                   return (
                     <button
                       key={cat}
+                      ref={(el) => {
+                        categoryFilterBtnsRef.current[idx] = el;
+                      }}
                       type="button"
                       className={`cat-pill ${isCur ? 'active' : ''} ${catKey === 'active' && activeSoundsCount > 0 ? 'has-live-active' : ''}`}
                       onClick={() => {
                         playSound('click');
                         setActiveCategory(catKey);
                       }}
+                      onKeyDown={(e) => handleSoundCategoryKeyDown(e, idx)}
                       title={`Filter by ${cat} (${count})`}
                       aria-label={`Filter by ${cat} (${count})`}
+                      aria-pressed={isCur}
                     >
                       <span className="cat-icon" aria-hidden="true">{icon}</span>
                       <span>{cat}</span>
@@ -2591,4 +2668,4 @@ const Focus = () => {
   );
 };
 
-export default Focus;
+export default React.memo(Focus);

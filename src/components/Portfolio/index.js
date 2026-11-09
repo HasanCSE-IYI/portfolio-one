@@ -428,4 +428,4 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;
+export default React.memo(Portfolio);
