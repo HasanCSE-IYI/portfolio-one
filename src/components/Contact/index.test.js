@@ -116,3 +116,35 @@ test('renders contact page with 3 Map Types, Traffic detail toggle, removed Tran
   fireEvent.click(exitFullViewBtn);
   expect(screen.queryByRole('button', { name: /Exit Full View/i })).not.toBeInTheDocument();
 });
+
+test('navigates collaboration tiers and map types using arrow keys', async () => {
+  render(
+    <MemoryRouter>
+      <Contact />
+    </MemoryRouter>
+  );
+
+  await screen.findByText(/28°C/);
+
+  // Test collaboration tiers arrow navigation
+  const firstTier = screen.getByRole('button', { name: /Full-Time Backend Software Engineer/i });
+  expect(firstTier).toBeInTheDocument();
+
+  fireEvent.keyDown(firstTier, { key: 'ArrowRight' });
+  const secondTier = screen.getByRole('button', { name: /System Architecture & Database Optimization/i });
+  expect(secondTier).toHaveAttribute('aria-pressed', 'true');
+
+  fireEvent.keyDown(secondTier, { key: 'ArrowLeft' });
+  expect(firstTier).toHaveAttribute('aria-pressed', 'true');
+
+  // Test map types arrow navigation
+  const satelliteTab = screen.getByRole('tab', { name: /^Satellite$/i });
+  expect(satelliteTab).toHaveAttribute('aria-selected', 'true');
+
+  fireEvent.keyDown(satelliteTab, { key: 'ArrowRight' });
+  const roadmapTab = screen.getByRole('tab', { name: /^Roadmap$/i });
+  expect(roadmapTab).toHaveAttribute('aria-selected', 'true');
+
+  fireEvent.keyDown(roadmapTab, { key: 'ArrowLeft' });
+  expect(satelliteTab).toHaveAttribute('aria-selected', 'true');
+});

@@ -31,7 +31,7 @@ describe('AvailabilityBadge Component', () => {
   });
 
   it('shows detailed popover on hover/focus and dismisses on Escape key', () => {
-    const { container } = render(
+    render(
       <MemoryRouter>
         <UiProvider>
           <AvailabilityBadge compact={false} showTooltip={true} />
@@ -41,18 +41,18 @@ describe('AvailabilityBadge Component', () => {
 
     const pill = screen.getByRole('link', { name: /Available for hire/i });
     expect(pill).toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: /Live Availability Details/i })).not.toBeInTheDocument();
 
-    const popover = container.querySelector('.availability-popover');
-    expect(popover).not.toHaveClass('visible');
-
-    // Hover to reveal popover
-    fireEvent.mouseEnter(pill.parentElement);
+    // Focus on pill reveals popover
+    fireEvent.focus(pill);
+    const popover = screen.getByRole('region', { name: /Live Availability Details/i });
+    expect(popover).toBeInTheDocument();
     expect(popover).toHaveClass('visible');
     expect(screen.getByText(/Live Availability Status/i)).toBeInTheDocument();
     expect(screen.getByText(/Chattogram, Bangladesh/i)).toBeInTheDocument();
 
     // Press Escape to dismiss
     fireEvent.keyDown(window, { key: 'Escape' });
-    expect(popover).not.toHaveClass('visible');
+    expect(screen.queryByRole('region', { name: /Live Availability Details/i })).not.toBeInTheDocument();
   });
 });

@@ -204,6 +204,8 @@ const Contact = () => {
   const [weather, setWeather] = useState({ temp: 28, icon: '🌤️' })
   const form = useRef()
   const messageInputRef = useRef(null)
+  const tierCardsRef = useRef([])
+  const mapTabBtnsRef = useRef([])
 
   // Update live BST time & fetch real-time weather in Bayazid, Chattogram
   useEffect(() => {
@@ -313,28 +315,63 @@ const Contact = () => {
     const currentIndex = types.indexOf(currentType)
     if (currentIndex === -1) return
 
+    let nextIndex = null
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % types.length
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + types.length) % types.length
+    } else if (e.key === 'Home') {
+      nextIndex = 0
+    } else if (e.key === 'End') {
+      nextIndex = types.length - 1
+    }
+
+    if (nextIndex !== null) {
       e.preventDefault()
-      const nextIndex = (currentIndex + 1) % types.length
       playSound('click')
       setActiveBaseType(types[nextIndex])
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      e.preventDefault()
-      const prevIndex = (currentIndex - 1 + types.length) % types.length
-      playSound('click')
-      setActiveBaseType(types[prevIndex])
+      const targetBtn = mapTabBtnsRef.current[nextIndex]
+      if (targetBtn && typeof targetBtn.focus === 'function') {
+        targetBtn.focus()
+      }
     }
   }
 
-  const handleSelectTier = (tierTitle) => {
+  const handleSelectTier = (tierTitle, shouldFocusInput = true) => {
     playSound('click')
     setSelectedTier(tierTitle)
     setSubject(`[Engagement] ${tierTitle}`)
     if (!messageText.trim()) {
       setMessageText(`Hi Mahmud,\n\nI would like to explore working with you regarding "${tierTitle}". Here are the details of our requirements: `)
     }
-    if (messageInputRef.current) {
+    if (shouldFocusInput && messageInputRef.current) {
       messageInputRef.current.focus()
+    }
+  }
+
+  const handleTierKeyDown = (e, index) => {
+    let nextIndex = null
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % COLLABORATION_TIERS.length
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + COLLABORATION_TIERS.length) % COLLABORATION_TIERS.length
+    } else if (e.key === 'Home') {
+      nextIndex = 0
+    } else if (e.key === 'End') {
+      nextIndex = COLLABORATION_TIERS.length - 1
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault()
+      playSound('tick')
+      handleSelectTier(COLLABORATION_TIERS[nextIndex].title, false)
+      const targetCard = tierCardsRef.current[nextIndex]
+      if (targetCard && typeof targetCard.focus === 'function') {
+        targetCard.focus()
+      }
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleSelectTier(COLLABORATION_TIERS[index].title, true)
     }
   }
 
@@ -539,21 +576,19 @@ const Contact = () => {
           {/* Collaboration Tiers (Inspired by Al Nahian's Work With Me section) */}
           <div className="collaboration-section">
             <h2 className="section-title">Ways We Can Work Together</h2>
-            <div className="tiers-grid" role="group" aria-label="Collaboration and engagement types">
+            <div className="tiers-grid" role="region" aria-label="Collaboration and engagement types">
               {COLLABORATION_TIERS.map((tier, idx) => (
                 <div
+                  ref={(el) => {
+                    tierCardsRef.current[idx] = el
+                  }}
                   className={`tier-card ${selectedTier === tier.title ? 'selected' : ''}`}
                   key={idx}
                   role="button"
                   tabIndex={0}
                   aria-pressed={selectedTier === tier.title}
                   onClick={() => handleSelectTier(tier.title)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      handleSelectTier(tier.title)
-                    }
-                  }}
+                  onKeyDown={(e) => handleTierKeyDown(e, idx)}
                   title="Click to select this engagement type"
                 >
                   <div className="tier-header">
@@ -795,9 +830,12 @@ const Contact = () => {
             <div className="map-glass-controls">
               {/* Unified Map Types & Traffic Detail Segmented Capsule */}
               <div className="map-layer-selector" role="tablist" aria-label="Map Types and Traffic">
-                {Object.values(MAP_TYPES).map((type) => (
+                {Object.values(MAP_TYPES).map((type, idx) => (
                   <button
                     key={type.id}
+                    ref={(el) => {
+                      mapTabBtnsRef.current[idx] = el
+                    }}
                     type="button"
                     role="tab"
                     aria-selected={activeBaseType === type.id}
