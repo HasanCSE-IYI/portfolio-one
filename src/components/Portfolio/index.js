@@ -35,9 +35,9 @@ const Portfolio = () => {
 
   const handleCategoryKeyDown = (e, index) => {
     let nextIndex = null;
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       nextIndex = (index + 1) % CATEGORIES.length;
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       nextIndex = (index - 1 + CATEGORIES.length) % CATEGORIES.length;
     } else if (e.key === 'Home') {
       nextIndex = 0;

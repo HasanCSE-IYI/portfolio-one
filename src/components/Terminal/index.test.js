@@ -125,4 +125,37 @@ describe('Terminal Component', () => {
 
     expect(screen.getByText(/Navigating to Portfolio & Repositories/i)).toBeInTheDocument();
   });
+
+  it('clears screen when Ctrl+L is pressed', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(/MAHMUD AL HASAN/i)).toBeInTheDocument();
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.keyDown(input, { key: 'l', ctrlKey: true });
+
+    expect(screen.queryByText(/MAHMUD AL HASAN/i)).toBeNull();
+  });
+
+  it('cancels input line when Ctrl+C is pressed with text entered', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'npm run start' } });
+    fireEvent.keyDown(input, { key: 'c', ctrlKey: true });
+
+    expect(screen.getByText(/npm run start\^C/i)).toBeInTheDocument();
+  });
 });

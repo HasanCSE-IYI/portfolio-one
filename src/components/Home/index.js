@@ -173,6 +173,7 @@ const Home = () => {
   const cliInputRef = useRef(null)
   const copyTimerRef = useRef(null)
   const terminalTabBtnsRef = useRef([])
+  const capabilityNodesRef = useRef([])
 
   const handleTerminalTabKeyDown = (e, index) => {
     let nextIndex = null
@@ -195,6 +196,33 @@ const Home = () => {
       if (targetBtn && typeof targetBtn.focus === 'function') {
         targetBtn.focus()
       }
+    }
+  }
+
+  const handleCapabilityKeyDown = (e, index) => {
+    let nextIndex = null
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % CAPABILITIES.length
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + CAPABILITIES.length) % CAPABILITIES.length
+    } else if (e.key === 'Home') {
+      nextIndex = 0
+    } else if (e.key === 'End') {
+      nextIndex = CAPABILITIES.length - 1
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault()
+      playSound('tick')
+      setActiveCapability(nextIndex)
+      const targetNode = capabilityNodesRef.current[nextIndex]
+      if (targetNode && typeof targetNode.focus === 'function') {
+        targetNode.focus()
+      }
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      playSound('click')
+      setActiveCapability(index)
     }
   }
 
@@ -1509,11 +1537,14 @@ const Home = () => {
             <h3>Architectural Capabilities</h3>
             <p>Four connected domains. Each traced directly to real production systems.</p>
           </div>
-          <div className="capabilities-grid">
+          <div className="capabilities-grid" role="region" aria-label="System Domains and Architectural Patterns">
             {CAPABILITIES.map((cap, idx) => (
               <div
                 className={`capability-node ${activeCapability === idx ? 'active' : ''}`}
                 key={idx}
+                ref={(el) => {
+                  capabilityNodesRef.current[idx] = el
+                }}
                 onClick={() => {
                   playSound('click')
                   setActiveCapability(idx)
@@ -1521,13 +1552,8 @@ const Home = () => {
                 role="button"
                 tabIndex={0}
                 aria-pressed={activeCapability === idx}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    playSound('click')
-                    setActiveCapability(idx)
-                  }
-                }}
+                aria-label={`${cap.name} (${cap.tag})`}
+                onKeyDown={(e) => handleCapabilityKeyDown(e, idx)}
               >
                 <div className="cap-top">
                   <span className="cap-tag">{cap.tag}</span>
@@ -1611,4 +1637,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default memo(Home)

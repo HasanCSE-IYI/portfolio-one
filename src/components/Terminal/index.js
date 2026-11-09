@@ -421,6 +421,14 @@ Redirecting to direct executive contact with prioritized response guarantee...`,
       }
     }
 
+    // Unix Ctrl+L: Clear terminal screen
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+      e.preventDefault();
+      setHistory([]);
+      playSound('click');
+      return;
+    }
+
     // Arrow Up / Down for command history
     if (e.key === 'ArrowUp') {
       e.preventDefault();

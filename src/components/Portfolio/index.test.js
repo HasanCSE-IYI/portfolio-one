@@ -53,4 +53,22 @@ describe('Portfolio Component', () => {
     const allBtn = screen.getByRole('button', { name: /All Repositories/i });
     expect(allBtn).toHaveAttribute('aria-pressed', 'true');
   });
+
+  test('navigates categories using keyboard arrow keys', () => {
+    render(<Portfolio />);
+
+    const allBtn = screen.getByRole('button', { name: /All Repositories/i });
+    expect(allBtn).toHaveAttribute('aria-pressed', 'true');
+
+    fireEvent.keyDown(allBtn, { key: 'ArrowRight' });
+    const dotnetBtn = screen.getByRole('button', { name: /\.NET Core & C#/i });
+    expect(dotnetBtn).toHaveAttribute('aria-pressed', 'true');
+
+    fireEvent.keyDown(dotnetBtn, { key: 'ArrowRight' });
+    const mobileBtn = screen.getByRole('button', { name: /Mobile & GIS/i });
+    expect(mobileBtn).toHaveAttribute('aria-pressed', 'true');
+
+    fireEvent.keyDown(mobileBtn, { key: 'ArrowLeft' });
+    expect(dotnetBtn).toHaveAttribute('aria-pressed', 'true');
+  });
 });

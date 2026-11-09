@@ -202,4 +202,30 @@ describe('Home Component', () => {
 
     expect(screen.queryByText(/storeapi:dotnet8/i)).not.toBeInTheDocument();
   });
+
+  test('navigates architectural capabilities using arrow keys', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const firstCap = screen.getByRole('button', { name: /ASP\.NET Core & Modern C#/i });
+    expect(firstCap).toHaveAttribute('aria-pressed', 'true');
+
+    // ArrowRight to switch to Telemedicine
+    fireEvent.keyDown(firstCap, { key: 'ArrowRight' });
+    const secondCap = screen.getByRole('button', { name: /High-Concurrency Telemedicine/i });
+    expect(secondCap).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText(/Real-Time Telemedicine Engine \(Doctor Dekhao\)/i)).toBeInTheDocument();
+
+    // ArrowRight to Cloud Infrastructure
+    fireEvent.keyDown(secondCap, { key: 'ArrowRight' });
+    const thirdCap = screen.getByRole('button', { name: /Cloud Infrastructure & DevOps/i });
+    expect(thirdCap).toHaveAttribute('aria-pressed', 'true');
+
+    // ArrowLeft back to Telemedicine
+    fireEvent.keyDown(thirdCap, { key: 'ArrowLeft' });
+    expect(secondCap).toHaveAttribute('aria-pressed', 'true');
+  });
 });
