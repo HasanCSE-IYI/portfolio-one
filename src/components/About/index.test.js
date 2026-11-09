@@ -78,10 +78,10 @@ describe('About Component', () => {
 
     const csharpLink = screen.getByRole('link', { name: /C# \(\.NET 8\)/i });
     expect(csharpLink).toBeInTheDocument();
-    expect(csharpLink).toHaveAttribute('href', '/portfolio');
+    expect(csharpLink).toHaveAttribute('href', '/portfolio?cat=dotnet');
 
     const dockerLink = screen.getByRole('link', { name: /Docker/i });
     expect(dockerLink).toBeInTheDocument();
-    expect(dockerLink).toHaveAttribute('href', '/portfolio');
+    expect(dockerLink).toHaveAttribute('href', '/portfolio?q=Docker');
   });
 });

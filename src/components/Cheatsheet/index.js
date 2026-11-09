@@ -25,6 +25,16 @@ const SHORTCUT_GROUPS = [
       { keys: ['⌘ / Ctrl', '~'], label: 'Toggle Interactive Terminal CLI' },
       { keys: ['?'], label: 'Open this Keyboard Cheatsheet' },
       { keys: ['Esc'], label: 'Close any active modal or overlay' },
+      { keys: ['PgUp', 'PgDn'], label: 'Jump 5 items in Command Spotlight' },
+    ],
+  },
+  {
+    title: 'Terminal CLI & Shell Controls',
+    shortcuts: [
+      { keys: ['Ctrl', 'L'], label: 'Clear terminal screen buffer' },
+      { keys: ['Ctrl', 'C'], label: 'Cancel current command input' },
+      { keys: ['Tab'], label: 'Autocomplete shell command name' },
+      { keys: ['↑', '↓'], label: 'Traverse execution command history' },
     ],
   },
   {
@@ -32,6 +42,8 @@ const SHORTCUT_GROUPS = [
     shortcuts: [
       { keys: ['M'], label: 'Toggle UI Sound Effects (Mute / Unmute)' },
       { keys: ['Space'], label: 'Play / Pause Timer (on Focus Station)' },
+      { keys: ['R'], label: 'Reset interval timer to starting duration' },
+      { keys: ['Arrow Keys'], label: 'Roving focus navigation (Tabs, Nodes & Sounds)' },
     ],
   },
 ];

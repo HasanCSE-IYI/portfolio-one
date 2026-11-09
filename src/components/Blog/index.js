@@ -52,6 +52,18 @@ const Blog = () => {
   const articles = useMemo(() => getAllArticles(), []);
   const currentArticle = useMemo(() => (slug ? getArticleBySlug(slug) : null), [slug]);
 
+  const { prevArticle, nextArticle } = useMemo(() => {
+    if (!currentArticle) return { prevArticle: null, nextArticle: null };
+    const currentIndex = articles.findIndex((a) => a.slug === currentArticle.slug);
+    return {
+      prevArticle: currentIndex > 0 ? articles[currentIndex - 1] : null,
+      nextArticle:
+        currentIndex >= 0 && currentIndex < articles.length - 1
+          ? articles[currentIndex + 1]
+          : null,
+    };
+  }, [articles, currentArticle]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover');
@@ -399,6 +411,36 @@ const Blog = () => {
                 );
               })}
           </article>
+
+          {/* Adjacent Articles Sequential Navigation */}
+          {(prevArticle || nextArticle) && (
+            <nav className="article-pagination-nav" aria-label="Adjacent engineering articles">
+              {prevArticle ? (
+                <Link
+                  to={`/blog/${prevArticle.slug}`}
+                  className="pagination-card prev-card"
+                  onClick={() => playSound('click')}
+                >
+                  <span className="pagination-direction">← Previous Article</span>
+                  <span className="pagination-title">{prevArticle.title}</span>
+                </Link>
+              ) : (
+                <div className="pagination-spacer" aria-hidden="true" />
+              )}
+              {nextArticle ? (
+                <Link
+                  to={`/blog/${nextArticle.slug}`}
+                  className="pagination-card next-card"
+                  onClick={() => playSound('click')}
+                >
+                  <span className="pagination-direction">Next Article →</span>
+                  <span className="pagination-title">{nextArticle.title}</span>
+                </Link>
+              ) : (
+                <div className="pagination-spacer" aria-hidden="true" />
+              )}
+            </nav>
+          )}
 
           {/* Article Footer & Quick Contact */}
           <footer className="article-footer">

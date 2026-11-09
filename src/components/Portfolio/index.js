@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFolder,
@@ -25,13 +26,91 @@ const CATEGORIES = [
 
 const Portfolio = () => {
   const { playSound } = useUi();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [letterClass, setLetterClass] = useState('text-animate');
   const [portfolio] = useState(portfolioData.portfolio || []);
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+
+  const paramCat = searchParams.get('cat') || searchParams.get('category');
+  const paramQuery = searchParams.get('q') || searchParams.get('search');
+
+  const [activeCategory, setActiveCategory] = useState(
+    paramCat && CATEGORIES.some((c) => c.id === paramCat) ? paramCat : 'all'
+  );
+  const [searchQuery, setSearchQuery] = useState(paramQuery || '');
   const [copiedRepoId, setCopiedRepoId] = useState(null);
   const [showSimulator, setShowSimulator] = useState(true);
   const categoryBtnsRef = useRef([]);
+
+  // Sync state if URL search parameters update
+  useEffect(() => {
+    const nextCat = searchParams.get('cat') || searchParams.get('category');
+    if (nextCat && CATEGORIES.some((c) => c.id === nextCat)) {
+      setActiveCategory(nextCat);
+    }
+    const nextQ = searchParams.get('q') || searchParams.get('search');
+    if (nextQ !== null && nextQ !== undefined) {
+      setSearchQuery(nextQ);
+    }
+  }, [searchParams]);
+
+  const handleCategorySelect = useCallback(
+    (catId) => {
+      setActiveCategory(catId);
+      playSound('tick');
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (catId === 'all') {
+            next.delete('cat');
+            next.delete('category');
+          } else {
+            next.set('cat', catId);
+          }
+          return next;
+        },
+        { replace: true }
+      );
+    },
+    [playSound, setSearchParams]
+  );
+
+  const handleClearSearch = useCallback(() => {
+    playSound('pop');
+    setSearchQuery('');
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('q');
+        next.delete('search');
+        return next;
+      },
+      { replace: true }
+    );
+  }, [playSound, setSearchParams]);
+
+  const handleTagClick = useCallback(
+    (tag) => {
+      playSound('click');
+      const isTagActive = searchQuery.trim().toLowerCase() === tag.toLowerCase();
+      if (isTagActive) {
+        handleClearSearch();
+      } else {
+        setActiveCategory('all');
+        setSearchQuery(tag);
+        setSearchParams(
+          (prev) => {
+            const next = new URLSearchParams(prev);
+            next.delete('cat');
+            next.delete('category');
+            next.set('q', tag);
+            return next;
+          },
+          { replace: true }
+        );
+      }
+    },
+    [playSound, searchQuery, handleClearSearch, setSearchParams]
+  );
 
   const handleCategoryKeyDown = (e, index) => {
     let nextIndex = null;
@@ -48,8 +127,7 @@ const Portfolio = () => {
     if (nextIndex !== null) {
       e.preventDefault();
       const nextCat = CATEGORIES[nextIndex];
-      setActiveCategory(nextCat.id);
-      playSound('tick');
+      handleCategorySelect(nextCat.id);
       const targetBtn = categoryBtnsRef.current[nextIndex];
       if (targetBtn && typeof targetBtn.focus === 'function') {
         targetBtn.focus();
@@ -165,10 +243,7 @@ const Portfolio = () => {
                 <button
                   type="button"
                   className="clear-search-btn"
-                  onClick={() => {
-                    playSound('pop');
-                    setSearchQuery('');
-                  }}
+                  onClick={handleClearSearch}
                   aria-label="Clear search query"
                 >
                   <FontAwesomeIcon icon={faTimes} />
@@ -176,8 +251,8 @@ const Portfolio = () => {
               )}
             </div>
             <span className="search-count-badge" role="status" aria-live="polite">
-              {searchQuery
-                ? `Found ${filteredPortfolio.length} of ${portfolio.length} repos`
+              {searchQuery || activeCategory !== 'all'
+                ? `Showing ${filteredPortfolio.length} of ${portfolio.length} repositories`
                 : `${portfolio.length} Production Repositories`}
             </span>
           </div>
@@ -191,10 +266,7 @@ const Portfolio = () => {
                   categoryBtnsRef.current[idx] = el;
                 }}
                 className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
-                onClick={() => {
-                  playSound('click');
-                  setActiveCategory(cat.id);
-                }}
+                onClick={() => handleCategorySelect(cat.id)}
                 onKeyDown={(e) => handleCategoryKeyDown(e, idx)}
                 aria-pressed={activeCategory === cat.id}
               >
@@ -296,15 +368,7 @@ const Portfolio = () => {
                             type="button"
                             className={`tag-pill ${isTagActive ? 'active' : ''}`}
                             key={tIdx}
-                            onClick={() => {
-                              playSound('click');
-                              if (isTagActive) {
-                                setSearchQuery('');
-                              } else {
-                                setActiveCategory('all');
-                                setSearchQuery(tag);
-                              }
-                            }}
+                            onClick={() => handleTagClick(tag)}
                             title={isTagActive ? `Clear filter: ${tag}` : `Filter projects by ${tag}`}
                             aria-label={`Filter by ${tag}`}
                             aria-pressed={isTagActive}

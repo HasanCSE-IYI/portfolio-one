@@ -91,4 +91,28 @@ describe('CommandPalette Component', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
+
+  test('navigates with ArrowDown, ArrowUp, PageDown, and PageUp keys', () => {
+    render(
+      <MemoryRouter>
+        <CommandPalette
+          isOpen={true}
+          onClose={mockOnClose}
+          onOpenResumeModal={mockOnOpenResumeModal}
+        />
+      </MemoryRouter>
+    );
+
+    const options = screen.getAllByRole('option');
+    expect(options[0]).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(window, { key: 'ArrowDown' });
+    expect(options[1]).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(window, { key: 'PageDown' });
+    expect(options[6]).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(window, { key: 'PageUp' });
+    expect(options[1]).toHaveAttribute('aria-selected', 'true');
+  });
 });

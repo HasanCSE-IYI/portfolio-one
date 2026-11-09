@@ -75,6 +75,25 @@ describe('Blog Component', () => {
     expect(screen.getByText('Mahmud al Hasan')).toBeInTheDocument();
     expect(screen.getByText(/The Challenge with Monolithic Layering/i)).toBeInTheDocument();
     expect(screen.getByText('Domain Layer')).toBeInTheDocument();
+
+    // Verify Next Article pagination link exists
+    const nextArticleLink = screen.getByRole('link', { name: /Next Article/i });
+    expect(nextArticleLink).toBeInTheDocument();
+  });
+
+  it('renders both previous and next article links on middle articles', () => {
+    render(
+      <MemoryRouter initialEntries={['/blog/database-indexing-optimization-mysql']}>
+        <UiProvider>
+          <Routes>
+            <Route path="/blog/:slug" element={<Blog />} />
+          </Routes>
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('link', { name: /Previous Article/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Next Article/i })).toBeInTheDocument();
   });
 
   it('renders Article Not Found fallback when slug does not exist', () => {

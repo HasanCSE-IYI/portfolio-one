@@ -347,6 +347,18 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
             ? (prev - 1 + filteredCommands.length) % filteredCommands.length
             : 0
         );
+      } else if (e.key === 'PageDown') {
+        e.preventDefault();
+        ui?.playSound?.('tick');
+        setSelectedIndex((prev) =>
+          filteredCommands.length ? Math.min(filteredCommands.length - 1, prev + 5) : 0
+        );
+      } else if (e.key === 'PageUp') {
+        e.preventDefault();
+        ui?.playSound?.('tick');
+        setSelectedIndex((prev) =>
+          filteredCommands.length ? Math.max(0, prev - 5) : 0
+        );
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (filteredCommands[selectedIndex]) {
@@ -471,6 +483,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenResumeModal }) => {
         <div className="palette-footer">
           <div className="footer-shortcuts">
             <span><kbd>↑</kbd> <kbd>↓</kbd> Navigate</span>
+            <span><kbd>PgUp</kbd> <kbd>PgDn</kbd> Jump</span>
             <span><kbd>↵</kbd> Select</span>
             <span><kbd>esc</kbd> Dismiss</span>
           </div>

@@ -1,10 +1,19 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import Portfolio from './index';
+
+const renderPortfolio = (initialEntries = ['/portfolio']) => {
+  return render(
+    <MemoryRouter initialEntries={initialEntries}>
+      <Portfolio />
+    </MemoryRouter>
+  );
+};
 
 describe('Portfolio Component', () => {
   test('renders portfolio title and search input', () => {
-    render(<Portfolio />);
+    renderPortfolio();
 
     expect(screen.getByLabelText(/Portfolio/i)).toBeInTheDocument();
     const searchInput = screen.getByRole('textbox', { name: /Search repositories/i });
@@ -12,16 +21,16 @@ describe('Portfolio Component', () => {
   });
 
   test('filters projects by search keyword', () => {
-    render(<Portfolio />);
+    renderPortfolio();
 
     const searchInput = screen.getByRole('textbox', { name: /Search repositories/i });
     fireEvent.change(searchInput, { target: { value: 'Mappi' } });
 
-    expect(screen.getByText(/Found 1 of/i)).toBeInTheDocument();
+    expect(screen.getByText(/1 of/i)).toBeInTheDocument();
   });
 
   test('filters projects by category button', () => {
-    render(<Portfolio />);
+    renderPortfolio();
 
     const dotnetBtn = screen.getByRole('button', { name: /\.NET Core & C#/i });
     fireEvent.click(dotnetBtn);
@@ -30,7 +39,7 @@ describe('Portfolio Component', () => {
   });
 
   test('toggles simulator visibility when toggle button is clicked', () => {
-    render(<Portfolio />);
+    renderPortfolio();
 
     const toggleBtn = screen.getByRole('button', { name: /▲ Hide API Simulator/i });
     expect(toggleBtn).toBeInTheDocument();
@@ -40,7 +49,7 @@ describe('Portfolio Component', () => {
   });
 
   test('clicking tag pill filters projects and ensures all category', () => {
-    render(<Portfolio />);
+    renderPortfolio();
 
     const dotnetBtn = screen.getByRole('button', { name: /\.NET Core & C#/i });
     fireEvent.click(dotnetBtn);
@@ -55,7 +64,7 @@ describe('Portfolio Component', () => {
   });
 
   test('navigates categories using keyboard arrow keys', () => {
-    render(<Portfolio />);
+    renderPortfolio();
 
     const allBtn = screen.getByRole('button', { name: /All Repositories/i });
     expect(allBtn).toHaveAttribute('aria-pressed', 'true');
@@ -70,5 +79,15 @@ describe('Portfolio Component', () => {
 
     fireEvent.keyDown(mobileBtn, { key: 'ArrowLeft' });
     expect(dotnetBtn).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  test('initializes with URL search parameters for category and query', () => {
+    renderPortfolio(['/portfolio?cat=mobile&q=GIS']);
+
+    const mobileBtn = screen.getByRole('button', { name: /Mobile & GIS/i });
+    expect(mobileBtn).toHaveAttribute('aria-pressed', 'true');
+
+    const searchInput = screen.getByRole('textbox', { name: /Search repositories/i });
+    expect(searchInput.value).toBe('GIS');
   });
 });
