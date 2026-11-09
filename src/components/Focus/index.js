@@ -1920,6 +1920,19 @@ const Focus = () => {
                     placeholder="e.g. Focused reading, architecture design, calm meditation..."
                     className="task-text-input"
                   />
+                  {currentTask && (
+                    <button
+                      type="button"
+                      className="clear-task-btn"
+                      onClick={() => {
+                        playSound('pop');
+                        setCurrentTask('');
+                      }}
+                      aria-label="Clear focus goal"
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

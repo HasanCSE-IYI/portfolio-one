@@ -1550,6 +1550,10 @@
       }
 
       .task-input-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+
         .task-text-input {
           width: 100%;
           box-sizing: border-box;
@@ -1558,9 +1562,30 @@
           color: #f8fafc;
           font-size: 1.35rem;
           outline: none;
+          padding-right: 28px;
 
           &::placeholder {
             color: #64748b;
+          }
+        }
+
+        .clear-task-btn {
+          position: absolute;
+          right: 0;
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          font-size: 1.15rem;
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          transition: color 0.15s ease;
+
+          &:hover {
+            color: #f8fafc;
           }
         }
       }

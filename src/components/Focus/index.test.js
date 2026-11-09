@@ -472,6 +472,27 @@ describe('Focus Station Page', () => {
     fireEvent.keyDown(radialBtn, { key: 'ArrowLeft' });
     expect(waveBtn).toHaveClass('active');
   });
+
+  test('updates focus goal input and clears on button click', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const taskInput = screen.getByLabelText(/CURRENT FOCUS GOAL/i);
+    fireEvent.change(taskInput, { target: { value: 'Distributed Systems Study' } });
+    expect(taskInput.value).toBe('Distributed Systems Study');
+
+    const clearGoalBtn = screen.getByRole('button', { name: /Clear focus goal/i });
+    expect(clearGoalBtn).toBeInTheDocument();
+
+    fireEvent.click(clearGoalBtn);
+    expect(taskInput.value).toBe('');
+    expect(screen.queryByRole('button', { name: /Clear focus goal/i })).not.toBeInTheDocument();
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {
