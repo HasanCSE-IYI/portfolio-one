@@ -164,6 +164,44 @@
         }
       }
     }
+
+    // Results Status & Clear Meta Strip
+    .blog-results-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 0 4px;
+      font-size: 1.15rem;
+      color: #94a3b8;
+
+      .results-count {
+        font-weight: 500;
+      }
+
+      .clear-all-filters-btn {
+        background: transparent;
+        border: none;
+        color: var(--primary-accent, #f59e0b);
+        font-size: 1.15rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 2px 4px;
+        text-decoration: underline;
+        transition: color 0.15s ease;
+
+        &:hover {
+          color: #ffffff;
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--primary-accent, #f59e0b);
+          border-radius: 4px;
+        }
+      }
+    }
   }
 
   // Articles Grid

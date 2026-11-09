@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
@@ -41,13 +41,37 @@ const renderInlineMarkdown = (text) => {
 const Blog = () => {
   const { slug } = useParams();
   const { playSound } = useUi();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [letterClass, setLetterClass] = useState('text-animate');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
+
+  const paramCat = searchParams.get('cat') || searchParams.get('category');
+  const paramQuery = searchParams.get('q') || searchParams.get('search');
+
+  const [activeCategory, setActiveCategory] = useState(
+    paramCat && CATEGORIES.some((c) => c.toLowerCase() === paramCat.toLowerCase())
+      ? CATEGORIES.find((c) => c.toLowerCase() === paramCat.toLowerCase())
+      : 'All'
+  );
+  const [searchQuery, setSearchQuery] = useState(paramQuery || '');
   const [copiedCodeId, setCopiedCodeId] = useState(null);
   const [shareToast, setShareToast] = useState('');
   const [readingProgress, setReadingProgress] = useState(0);
   const categoryBtnsRef = useRef([]);
+
+  // Sync state if URL query params change (e.g. browser back/forward or external deep links)
+  useEffect(() => {
+    const nextCat = searchParams.get('cat') || searchParams.get('category');
+    if (nextCat) {
+      const match = CATEGORIES.find((c) => c.toLowerCase() === nextCat.toLowerCase());
+      if (match) setActiveCategory(match);
+    } else {
+      setActiveCategory('All');
+    }
+    const nextQ = searchParams.get('q') || searchParams.get('search');
+    if (nextQ !== null && nextQ !== undefined) {
+      setSearchQuery(nextQ);
+    }
+  }, [searchParams]);
 
   const articles = useMemo(() => getAllArticles(), []);
   const currentArticle = useMemo(() => (slug ? getArticleBySlug(slug) : null), [slug]);
@@ -169,6 +193,78 @@ const Blog = () => {
     });
   }, [articles, activeCategory, searchQuery]);
 
+  const handleCategorySelect = useCallback(
+    (cat) => {
+      playSound('click');
+      setActiveCategory(cat);
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (cat === 'All') {
+            next.delete('cat');
+            next.delete('category');
+          } else {
+            next.set('cat', cat);
+          }
+          return next;
+        },
+        { replace: true }
+      );
+    },
+    [playSound, setSearchParams]
+  );
+
+  const handleSearchChange = useCallback(
+    (val) => {
+      setSearchQuery(val);
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (!val.trim()) {
+            next.delete('q');
+            next.delete('search');
+          } else {
+            next.set('q', val);
+          }
+          return next;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
+
+  const handleClearSearch = useCallback(() => {
+    playSound('close');
+    setSearchQuery('');
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('q');
+        next.delete('search');
+        return next;
+      },
+      { replace: true }
+    );
+  }, [playSound, setSearchParams]);
+
+  const handleResetFilters = useCallback(() => {
+    playSound('click');
+    setSearchQuery('');
+    setActiveCategory('All');
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('cat');
+        next.delete('category');
+        next.delete('q');
+        next.delete('search');
+        return next;
+      },
+      { replace: true }
+    );
+  }, [playSound, setSearchParams]);
+
   const handleCategoryKeyDown = (e, index) => {
     let nextIndex = null;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -184,8 +280,7 @@ const Blog = () => {
     if (nextIndex !== null) {
       e.preventDefault();
       const nextCat = CATEGORIES[nextIndex];
-      setActiveCategory(nextCat);
-      playSound('click');
+      handleCategorySelect(nextCat);
       const targetBtn = categoryBtnsRef.current[nextIndex];
       if (targetBtn && typeof targetBtn.focus === 'function') {
         targetBtn.focus();
@@ -495,17 +590,14 @@ const Blog = () => {
                 className="search-input"
                 placeholder="Search articles by topic, architecture, or tag..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 aria-label="Search technical articles"
               />
               {searchQuery && (
                 <button
                   type="button"
                   className="clear-search-btn"
-                  onClick={() => {
-                    playSound('close');
-                    setSearchQuery('');
-                  }}
+                  onClick={handleClearSearch}
                   aria-label="Clear search"
                 >
                   ✕
@@ -527,16 +619,30 @@ const Blog = () => {
                   aria-selected={activeCategory === cat}
                   aria-controls="articles-grid"
                   className={`category-pill ${activeCategory === cat ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveCategory(cat);
-                    playSound('click');
-                  }}
+                  onClick={() => handleCategorySelect(cat)}
                   onKeyDown={(e) => handleCategoryKeyDown(e, idx)}
                 >
                   {cat}
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Results Status & Reset Meta Bar */}
+          <div className="blog-results-meta" aria-live="polite">
+            <span className="results-count">
+              Showing {filteredArticles.length} of {articles.length} engineering articles
+            </span>
+            {(searchQuery || activeCategory !== 'All') && (
+              <button
+                type="button"
+                className="clear-all-filters-btn"
+                onClick={handleResetFilters}
+                aria-label="Clear all active filters"
+              >
+                Clear all filters
+              </button>
+            )}
           </div>
         </header>
 
@@ -578,7 +684,7 @@ const Blog = () => {
                       className="card-tag card-tag-btn"
                       onClick={() => {
                         playSound('click');
-                        setSearchQuery(tag);
+                        handleSearchChange(tag);
                       }}
                       title={`Filter articles by #${tag}`}
                       aria-label={`Filter articles by tag ${tag}`}
@@ -614,11 +720,7 @@ const Blog = () => {
               <button
                 type="button"
                 className="reset-search-btn"
-                onClick={() => {
-                  setSearchQuery('');
-                  setActiveCategory('All');
-                  playSound('click');
-                }}
+                onClick={handleResetFilters}
               >
                 Reset Filters
               </button>

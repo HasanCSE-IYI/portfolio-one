@@ -142,4 +142,31 @@ describe('Blog Component', () => {
     fireEvent.keyDown(devopsTab, { key: 'Home' });
     expect(screen.getByRole('tab', { name: /^All$/i })).toHaveAttribute('aria-selected', 'true');
   });
+
+  it('supports deep linking via URL query parameters and displays results meta count', () => {
+    render(
+      <MemoryRouter initialEntries={['/blog?cat=Database']}>
+        <UiProvider>
+          <Routes>
+            <Route path="/blog" element={<Blog />} />
+          </Routes>
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('tab', { name: /^Database$/i })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Database Indexing & Query Optimization/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Clean Architecture in ASP\.NET Core/i)).toBeNull();
+
+    // Verify results count badge
+    expect(screen.getByText(/Showing 1 of \d+ engineering articles/i)).toBeInTheDocument();
+
+    // Click clear all filters
+    const clearBtn = screen.getByRole('button', { name: /clear all active filters/i });
+    expect(clearBtn).toBeInTheDocument();
+    fireEvent.click(clearBtn);
+
+    expect(screen.getByRole('tab', { name: /^All$/i })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Clean Architecture in ASP\.NET Core/i)).toBeInTheDocument();
+  });
 });

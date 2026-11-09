@@ -228,4 +228,16 @@ describe('Home Component', () => {
     fireEvent.keyDown(thirdCap, { key: 'ArrowLeft' });
     expect(secondCap).toHaveAttribute('aria-pressed', 'true');
   });
+
+  test('renders featured engineering deep-dives showcase with article links', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { level: 2, name: /Featured Engineering Deep-Dives/i })).toBeInTheDocument();
+    expect(screen.getByText(/Architecting High-Throughput Clean Architecture in ASP\.NET Core 8 & C#/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Explore All Engineering Notes & Case Studies/i })).toHaveAttribute('href', '/blog');
+  });
 });

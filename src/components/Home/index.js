@@ -29,13 +29,17 @@ import {
   faVolumeMute,
   faPaperPlane,
   faChevronRight,
+  faBookOpen,
 } from '@fortawesome/free-solid-svg-icons'
 import LogoTitle from '../../assets/images/logo-m.svg'
 import AnimatedLetters from '../AnimatedLetters'
 import RequestPipeline from '../RequestPipeline'
+import { getAllArticles } from '../../data/blogData'
 import { useUi } from '../../context/UiContext'
 import './index.scss'
 import portfolioData from '../../data/portfolio.json'
+
+const FEATURED_ARTICLES = getAllArticles().slice(0, 3)
 
 const CAPABILITIES = [
   {
@@ -1632,6 +1636,70 @@ const Home = () => {
 
         {/* Systems in Motion: REST API Request Lifecycle Pipeline */}
         <RequestPipeline />
+
+        {/* Featured Engineering Case Studies & Architecture Notes */}
+        <section className="home-blog-showcase" aria-labelledby="featured-notes-heading">
+          <div className="section-head">
+            <div className="badge-eyebrow">
+              <FontAwesomeIcon icon={faBookOpen} className="badge-icon" />
+              <span>TECHNICAL WRITING &amp; ARCHITECTURE NOTES</span>
+            </div>
+            <h2 id="featured-notes-heading" className="section-heading">
+              Featured Engineering Deep-Dives
+            </h2>
+            <p className="section-sub">
+              Hands-on teardowns of clean architecture patterns, database indexing internals, and resilient message bus architectures.
+            </p>
+          </div>
+
+          <div className="notes-cards-grid">
+            {FEATURED_ARTICLES.map((article) => (
+              <article key={article.slug} className="note-card">
+                <div className="note-card-meta">
+                  <span className="note-category">{article.category}</span>
+                  <span className="note-readtime">{article.readTime}</span>
+                </div>
+                <h3 className="note-title">
+                  <Link
+                    to={`/blog/${article.slug}`}
+                    className="note-link"
+                    onClick={() => playSound('pop')}
+                  >
+                    {article.title}
+                  </Link>
+                </h3>
+                <p className="note-summary">{article.summary}</p>
+                <div className="note-footer">
+                  <div className="note-tags">
+                    {article.tags.slice(0, 3).map((tag) => (
+                      <span key={tag} className="tag-pill">#{tag}</span>
+                    ))}
+                  </div>
+                  <Link
+                    to={`/blog/${article.slug}`}
+                    className="read-action"
+                    onClick={() => playSound('pop')}
+                    aria-label={`Read ${article.title}`}
+                  >
+                    <span>Read Note</span>
+                    <span className="arrow" aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="view-all-notes-row">
+            <Link
+              to="/blog"
+              className="view-all-notes-btn"
+              onClick={() => playSound('click')}
+            >
+              <span>Explore All Engineering Notes &amp; Case Studies</span>
+              <FontAwesomeIcon icon={faArrowRight} className="btn-icon" />
+            </Link>
+          </div>
+        </section>
       </div>
     </>
   )
