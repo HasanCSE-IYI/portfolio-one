@@ -1395,6 +1395,29 @@
   }
 }
 
+// Ultra Narrow Devices (<= 340px)
+@media screen and (max-width: 340px) {
+  .mobile-bottom-dock {
+    height: 52px;
+    padding: 2px 2px;
+    width: calc(100% - 12px);
+
+    .dock-item {
+      height: 42px;
+      gap: 2px;
+
+      .dock-icon {
+        font-size: 13px;
+      }
+
+      .dock-label {
+        font-size: 0.88rem;
+        letter-spacing: 0;
+      }
+    }
+  }
+}
+
 // Print Media Hide
 @media print {
   .modern-navbar,

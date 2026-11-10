@@ -13,7 +13,7 @@ const COMMANDS_LIST = [
   { cmd: 'about', desc: 'Read executive engineer bio & summary' },
   { cmd: 'skills', desc: 'List core backend & fullstack technical stack' },
   { cmd: 'projects', desc: 'Display featured production architecture repositories' },
-  { cmd: 'portfolio', desc: 'Navigate to interactive portfolio & GitHub repos' },
+  { cmd: 'portfolio', desc: 'Navigate or filter portfolio: portfolio [cat/query]' },
   { cmd: 'dotnet', desc: 'Inspect .NET 8 SDK and ASP.NET Core runtime details' },
   { cmd: 'docker', desc: 'Inspect running microservice containers' },
   { cmd: 'git', desc: 'Display git working tree status and recent commits' },
@@ -25,7 +25,7 @@ const COMMANDS_LIST = [
   { cmd: 'focus', desc: 'Launch ambient Focus Station & Pomodoro workspace' },
   { cmd: 'contact', desc: 'Get direct communication channels & coordinates' },
   { cmd: 'resume', desc: 'Open the printable executive resume modal' },
-  { cmd: 'blog', desc: 'Browse latest engineering articles & deep-dives' },
+  { cmd: 'blog', desc: 'Browse or search engineering notes: blog [cat/query]' },
   { cmd: 'cheatsheet', desc: 'Open keyboard shortcuts cheatsheet modal' },
   { cmd: 'theme', desc: 'Switch accent theme: theme [gold|cyan|emerald|violet|rose]' },
   { cmd: 'sound', desc: 'Toggle sound effects: sound [on|off]' },
@@ -365,14 +365,27 @@ Navigating to /contact in 2 seconds...`,
       case 'portfolio':
       case 'repos':
       case 'work': {
+        const query = parts.slice(1).join(' ').trim();
+        let targetUrl = '/portfolio';
+        let feedback = 'Navigating to Portfolio & Repositories...';
+        if (query) {
+          const knownCategories = ['dotnet', 'backend', 'cloud', 'fullstack', 'gis', 'featured', 'all'];
+          if (knownCategories.includes(query.toLowerCase())) {
+            targetUrl = `/portfolio?cat=${encodeURIComponent(query.toLowerCase())}`;
+            feedback = `Filtering Portfolio for category '${query}' and navigating...`;
+          } else {
+            targetUrl = `/portfolio?q=${encodeURIComponent(query)}`;
+            feedback = `Searching Portfolio for '${query}' and navigating...`;
+          }
+        }
         newHistory.push({
           type: 'output',
-          text: `Navigating to Portfolio & Repositories...`,
+          text: feedback,
         });
         playSound('chime');
         setTimeout(() => {
           onClose();
-          navigate('/portfolio');
+          navigate(targetUrl);
         }, 1200);
         break;
       }
@@ -403,6 +416,24 @@ Navigating to /contact in 2 seconds...`,
       }
 
       case 'blog': {
+        const query = parts.slice(1).join(' ').trim();
+        if (query) {
+          const knownCategories = ['architecture', 'dotnet', 'backend', 'performance', 'devops', 'cloud', 'all'];
+          let targetUrl = `/blog?q=${encodeURIComponent(query)}`;
+          if (knownCategories.includes(query.toLowerCase())) {
+            targetUrl = `/blog?cat=${encodeURIComponent(query.toLowerCase())}`;
+          }
+          newHistory.push({
+            type: 'output',
+            text: `Filtering Engineering Notes for '${query}' and navigating...`,
+          });
+          playSound('chime');
+          setTimeout(() => {
+            onClose();
+            navigate(targetUrl);
+          }, 1200);
+          break;
+        }
         const articles = getAllArticles();
         const articleList = articles
           .map((a, i) => `  ${i + 1}. [${a.category}] ${a.title} (${a.readTime})`)

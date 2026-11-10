@@ -24,6 +24,7 @@ import {
   faDirections,
   faPlus,
   faMinus,
+  faPhone,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -530,6 +531,15 @@ const Contact = () => {
           {/* Quick Connect Channels */}
           <div className="quick-connect-bar">
             <a
+              href="tel:+8801727328200"
+              className="quick-link phone"
+              title="Call directly: +880 1727 328200"
+              onClick={() => playSound('click')}
+            >
+              <FontAwesomeIcon icon={faPhone} className="channel-icon" />
+              <span>+880 1727 328200</span>
+            </a>
+            <a
               href="https://wa.me/8801727328200"
               target="_blank"
               rel="noreferrer"
@@ -538,7 +548,7 @@ const Contact = () => {
               onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faWhatsapp} className="channel-icon" />
-              <span>WhatsApp · +880 1727 328200</span>
+              <span>WhatsApp</span>
             </a>
             <a
               href="mailto:mahmud.csem@gmail.com"

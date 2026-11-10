@@ -126,6 +126,38 @@ describe('Terminal Component', () => {
     expect(screen.getByText(/Navigating to Portfolio & Repositories/i)).toBeInTheDocument();
   });
 
+  it('executes portfolio command with category argument and displays filter message', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'portfolio dotnet' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/Filtering Portfolio for category 'dotnet'/i)).toBeInTheDocument();
+  });
+
+  it('executes blog command with search argument and displays filter message', () => {
+    render(
+      <MemoryRouter>
+        <UiProvider>
+          <Terminal isOpen={true} onClose={() => {}} />
+        </UiProvider>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText('Terminal command prompt');
+    fireEvent.change(input, { target: { value: 'blog architecture' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/Filtering Engineering Notes for 'architecture'/i)).toBeInTheDocument();
+  });
+
   it('clears screen when Ctrl+L is pressed', () => {
     render(
       <MemoryRouter>

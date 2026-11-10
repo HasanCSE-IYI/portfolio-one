@@ -41,6 +41,16 @@ test('renders contact page with 3 Map Types, Traffic detail toggle, removed Tran
   expect(infoMap).toHaveTextContent('+880 1727 328200');
   expect(infoMap).toHaveTextContent('mahmud.csem@gmail.com');
 
+  // Verify 1-click quick contact channels
+  const phoneLinks = screen.getAllByRole('link', { name: /\+880 1727 328200/i });
+  expect(phoneLinks.length).toBeGreaterThanOrEqual(2);
+  expect(phoneLinks[0]).toHaveAttribute('href', 'tel:+8801727328200');
+  const whatsappLink = screen.getByRole('link', { name: /WhatsApp/i });
+  expect(whatsappLink).toHaveAttribute('href', 'https://wa.me/8801727328200');
+  const emailLinks = screen.getAllByRole('link', { name: /mahmud\.csem@gmail\.com/i });
+  expect(emailLinks.length).toBeGreaterThanOrEqual(2);
+  expect(emailLinks[0]).toHaveAttribute('href', 'mailto:mahmud.csem@gmail.com');
+
   // Verify unwanted street details from the old card are NOT present
   expect(screen.queryByText(/পাবলিক মোড়/i)).not.toBeInTheDocument();
   expect(screen.queryByText(/পাবলিক মোড়/i)).not.toBeInTheDocument();
