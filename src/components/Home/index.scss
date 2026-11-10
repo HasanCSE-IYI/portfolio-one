@@ -2807,8 +2807,21 @@
 
             .tag-pill {
               font-size: 1.05rem;
-              color: #64748b;
+              color: #94a3b8;
               font-family: var(--font-mono);
+              text-decoration: none;
+              padding: 2px 7px;
+              border-radius: 4px;
+              background: rgba(255, 255, 255, 0.04);
+              border: 1px solid rgba(255, 255, 255, 0.08);
+              transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+              &:hover {
+                color: var(--primary-accent, #f59e0b);
+                background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.14);
+                border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.35);
+                transform: translateY(-1px);
+              }
             }
           }
 

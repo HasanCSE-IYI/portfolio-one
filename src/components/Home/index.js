@@ -1672,7 +1672,15 @@ const Home = () => {
                 <div className="note-footer">
                   <div className="note-tags">
                     {article.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="tag-pill">#{tag}</span>
+                      <Link
+                        key={tag}
+                        to={`/blog?q=${encodeURIComponent(tag)}`}
+                        className="tag-pill"
+                        onClick={() => playSound('click')}
+                        title={`Explore articles tagged #${tag}`}
+                      >
+                        #{tag}
+                      </Link>
                     ))}
                   </div>
                   <Link
