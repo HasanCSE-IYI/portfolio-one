@@ -66,6 +66,14 @@ describe('Sidebar Component', () => {
     const soundItem = screen.getByRole('menuitem', { name: /Mute UI sound effects|Enable UI sound effects/i });
     expect(soundItem).toBeInTheDocument();
 
+    const phoneItem = screen.getByRole('menuitem', { name: /Direct Phone Call/i });
+    expect(phoneItem).toBeInTheDocument();
+    expect(phoneItem).toHaveAttribute('href', 'tel:+8801727328200');
+
+    const emailItem = screen.getByRole('menuitem', { name: /Direct Email/i });
+    expect(emailItem).toBeInTheDocument();
+    expect(emailItem).toHaveAttribute('href', 'mailto:mahmud.csem@gmail.com');
+
     fireEvent.click(soundItem);
   });
 });

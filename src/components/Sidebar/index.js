@@ -22,6 +22,7 @@ import {
   faVolumeXmark,
   faKeyboard,
   faComments,
+  faPhone,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink, useLocation } from 'react-router-dom'
@@ -562,7 +563,43 @@ const Sidebar = () => {
                 {/* Social & Contact Channels */}
                 <div className="dropdown-section-label">CHANNELS &amp; CONNECT</div>
                 <a
-                  href="https://github.com/HasanCSE-IYI"
+                  href="tel:+8801727328200"
+                  className="dropdown-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
+                >
+                  <span className="item-icon-box phone-box">
+                    <FontAwesomeIcon icon={faPhone} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Direct Phone Call</span>
+                    <span className="item-sub-title">+880 1727 328200</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </a>
+                <a
+                  href="mailto:mahmud.csem@gmail.com"
+                  className="dropdown-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
+                >
+                  <span className="item-icon-box email-box">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Direct Email</span>
+                    <span className="item-sub-title">mahmud.csem@gmail.com</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </a>
+                <a
+                  href="https://wa.me/8801727328200"
                   target="_blank"
                   rel="noreferrer"
                   className="dropdown-item"
@@ -572,12 +609,12 @@ const Sidebar = () => {
                     playSound('click')
                   }}
                 >
-                  <span className="item-icon-box github-box">
-                    <FontAwesomeIcon icon={faGithub} />
+                  <span className="item-icon-box whatsapp-box">
+                    <FontAwesomeIcon icon={faWhatsapp} />
                   </span>
                   <div className="item-text-group">
-                    <span className="item-main-title">GitHub Profile</span>
-                    <span className="item-sub-title">github.com/HasanCSE-IYI</span>
+                    <span className="item-main-title">WhatsApp Chat</span>
+                    <span className="item-sub-title">+880 1727-328200</span>
                   </div>
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
@@ -602,7 +639,7 @@ const Sidebar = () => {
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
                 <a
-                  href="https://wa.me/8801727328200"
+                  href="https://github.com/HasanCSE-IYI"
                   target="_blank"
                   rel="noreferrer"
                   className="dropdown-item"
@@ -612,12 +649,12 @@ const Sidebar = () => {
                     playSound('click')
                   }}
                 >
-                  <span className="item-icon-box whatsapp-box">
-                    <FontAwesomeIcon icon={faWhatsapp} />
+                  <span className="item-icon-box github-box">
+                    <FontAwesomeIcon icon={faGithub} />
                   </span>
                   <div className="item-text-group">
-                    <span className="item-main-title">WhatsApp Chat</span>
-                    <span className="item-sub-title">+880 1727-328200</span>
+                    <span className="item-main-title">GitHub Profile</span>
+                    <span className="item-sub-title">github.com/HasanCSE-IYI</span>
                   </div>
                   <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
                 </a>
