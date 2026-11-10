@@ -77,6 +77,25 @@ describe('CommandPalette Component', () => {
     expect(screen.getByText(/Building Resilient Microservices with Laravel/i)).toBeInTheDocument();
   });
 
+  test('searches and finds direct call action and print resume action in command palette', () => {
+    render(
+      <MemoryRouter>
+        <CommandPalette
+          isOpen={true}
+          onClose={mockOnClose}
+          onOpenResumeModal={mockOnOpenResumeModal}
+        />
+      </MemoryRouter>
+    );
+
+    const input = screen.getByRole('combobox', { name: /Command search/i });
+    fireEvent.change(input, { target: { value: 'Call Directly' } });
+    expect(screen.getByText(/Call Directly \(\+880 1727 328200\)/i)).toBeInTheDocument();
+
+    fireEvent.change(input, { target: { value: 'Print / Save PDF' } });
+    expect(screen.getByText(/Print \/ Save PDF Resume/i)).toBeInTheDocument();
+  });
+
   test('closes on Escape key press', () => {
     render(
       <MemoryRouter>

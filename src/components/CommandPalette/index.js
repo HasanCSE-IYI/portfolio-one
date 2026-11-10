@@ -22,6 +22,7 @@ import {
   faPalette,
   faVolumeHigh,
   faComments,
+  faPrint,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -180,6 +181,21 @@ const BASE_COMMANDS = [
     action: (navigate, onOpenResumeModal) => onOpenResumeModal && onOpenResumeModal(),
   },
   {
+    id: 'act-print-resume',
+    category: 'Quick Actions',
+    title: 'Print / Save PDF Resume',
+    subtitle: 'Navigate to Executive Resume and trigger browser print dialog',
+    icon: faPrint,
+    action: (navigate) => {
+      navigate('/resume');
+      setTimeout(() => {
+        if (typeof window !== 'undefined' && typeof window.print === 'function') {
+          window.print();
+        }
+      }, 400);
+    },
+  },
+  {
     id: 'act-store-api',
     category: 'Quick Actions',
     title: 'Launch Store API Simulator',
@@ -215,6 +231,18 @@ const BASE_COMMANDS = [
     action: () => {
       safeCopyText('+8801727328200');
       return 'Phone number copied to clipboard!';
+    },
+  },
+  {
+    id: 'act-call-phone',
+    category: 'Contact & Channels',
+    title: 'Call Directly (+880 1727 328200)',
+    subtitle: 'Initiate direct telephone dial for recruitment & technical roles',
+    icon: faPhone,
+    action: () => {
+      if (typeof window !== 'undefined') {
+        window.location.href = 'tel:+8801727328200';
+      }
     },
   },
   {
