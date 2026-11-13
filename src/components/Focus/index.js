@@ -51,7 +51,7 @@ import { useFocusTrap } from '../../utils/useFocusTrap';
 import './index.scss';
 
 const Focus = () => {
-  const { playSound } = useUi();
+  const { playSound, openCheatsheet } = useUi();
   const [letterClass, setLetterClass] = useState('text-animate');
   const [activeCategory, setActiveCategory] = useState('all');
   const [isBrainwaveExpanded, setIsBrainwaveExpanded] = useState(true);
@@ -1333,6 +1333,21 @@ const Focus = () => {
                   <span className="shortcut-label">Show Shortcuts Help</span>
                   <div className="keys"><kbd>?</kbd></div>
                 </div>
+              </div>
+
+              <div className="shortcuts-footer">
+                <button
+                  type="button"
+                  className="view-global-cheatsheet-btn"
+                  onClick={() => {
+                    playSound('pop');
+                    setShowShortcutsModal(false);
+                    if (openCheatsheet) openCheatsheet();
+                  }}
+                >
+                  <span>View Full Portfolio &amp; Navigation Cheatsheet</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </button>
               </div>
             </div>
           </div>

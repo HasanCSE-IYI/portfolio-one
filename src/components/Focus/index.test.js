@@ -493,6 +493,30 @@ describe('Focus Station Page', () => {
     expect(taskInput.value).toBe('');
     expect(screen.queryByRole('button', { name: /Clear focus goal/i })).not.toBeInTheDocument();
   });
+
+  test('opens studio keyboard shortcuts modal and displays link to global cheatsheet', () => {
+    render(
+      <FocusProvider>
+        <MemoryRouter initialEntries={['/focus']}>
+          <Focus />
+        </MemoryRouter>
+      </FocusProvider>
+    );
+
+    const shortcutsBtn = screen.getByRole('button', { name: /Keyboard Shortcuts/i });
+    expect(shortcutsBtn).toBeInTheDocument();
+
+    fireEvent.click(shortcutsBtn);
+
+    expect(screen.getByRole('heading', { name: /Studio Keyboard Shortcuts/i })).toBeInTheDocument();
+    expect(screen.getByText(/Mindful Box Breathing/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /View Full Portfolio & Navigation Cheatsheet/i })).toBeInTheDocument();
+
+    // Close modal via close button
+    const closeBtn = screen.getByRole('button', { name: /Close shortcuts modal/i });
+    fireEvent.click(closeBtn);
+    expect(screen.queryByRole('heading', { name: /Studio Keyboard Shortcuts/i })).not.toBeInTheDocument();
+  });
 });
 
 describe('Focus MiniPlayer Dock', () => {

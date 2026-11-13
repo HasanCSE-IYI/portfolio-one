@@ -5,9 +5,25 @@ import { faClock, faCircleDot, faEnvelope, faMapMarkerAlt } from '@fortawesome/f
 import { useUi } from '../../context/UiContext';
 import './index.scss';
 
+const getInitialBstTime = () => {
+  try {
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Dhaka',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+    return formatter.format(now);
+  } catch {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+};
+
 const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
   const { playSound } = useUi();
-  const [bstTime, setBstTime] = useState('');
+  const [bstTime, setBstTime] = useState(getInitialBstTime);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   useEffect(() => {
