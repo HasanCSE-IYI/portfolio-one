@@ -126,8 +126,24 @@ const TERMINAL_TABS = [
   { id: 'health', label: 'health', icon: faHeartbeat },
 ]
 
+const getInitialDhakaTime = () => {
+  try {
+    const now = new Date()
+    const options = {
+      timeZone: 'Asia/Dhaka',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    }
+    return new Intl.DateTimeFormat('en-US', options).format(now)
+  } catch {
+    return ''
+  }
+}
+
 const LiveLocationClock = memo(() => {
-  const [currentTime, setCurrentTime] = useState('')
+  const [currentTime, setCurrentTime] = useState(getInitialDhakaTime)
 
   useEffect(() => {
     const updateTime = () => {
@@ -155,7 +171,7 @@ const LiveLocationClock = memo(() => {
 })
 
 const Home = () => {
-  const { soundEnabled, toggleSound, playSound } = useUi()
+  const { soundEnabled, toggleSound, playSound, openGuestbook } = useUi()
   const [letterClass, setLetterClass] = useState('text-animate')
   const [activeCapability, setActiveCapability] = useState(0)
   const [isSpecCollapsed, setIsSpecCollapsed] = useState(() => {
@@ -244,6 +260,11 @@ const Home = () => {
     { cmd: 'help', desc: 'Display all available commands & shortcuts', icon: faInfoCircle, cat: 'Core' },
     { cmd: 'skills', desc: 'Full backend technical stack & proficiencies', icon: faBolt, cat: 'Core' },
     { cmd: 'projects', desc: 'Top production systems & GitHub repositories', icon: faFolderOpen, cat: 'Core' },
+    { cmd: 'portfolio', desc: 'Navigate to interactive portfolio & GitHub repos', icon: faFolderOpen, cat: 'Core' },
+    { cmd: 'blog', desc: 'Browse engineering deep-dives & architectural notes', icon: faBookOpen, cat: 'Core' },
+    { cmd: 'focus', desc: 'Launch ambient Focus Station & Pomodoro workspace', icon: faLaptopCode, cat: 'Core' },
+    { cmd: 'about', desc: 'Executive engineer biography & 8+ years overview', icon: faServer, cat: 'Profile' },
+    { cmd: 'guestbook', desc: 'Open visitor recommendations & peer wall', icon: faInfoCircle, cat: 'Channels' },
     { cmd: 'docker ps', desc: 'List active containerized services & ports', icon: faBoxesStacked, cat: 'DevOps' },
     { cmd: 'curl /api/health', desc: 'Run live REST healthcheck probe', icon: faHeartbeat, cat: 'DevOps' },
     { cmd: 'ping', desc: 'Simulate latency ping to API gateway', icon: faNetworkWired, cat: 'DevOps' },
@@ -358,7 +379,7 @@ const Home = () => {
 
     switch (trimmed) {
       case 'help':
-        rawText = `Available Backend CLI Commands:\n• skills           - Technical stack (.NET 8, Laravel, AWS, Docker)\n• projects         - Top production systems & repositories\n• docker ps        - List active containerized services & ports\n• curl /api/health - Live REST healthcheck probe\n• ping             - Simulate latency ping to API gateway\n• top              - Server resource allocation & processes\n• neofetch         - Architecture specs & ASCII info\n• tree             - Project codebase architecture tree\n• whoami           - Senior Backend Engineer profile\n• experience       - 8+ years timeline & achievements\n• contact          - Email, WhatsApp & GitHub channels\n• resume           - View & download PDF resume\n• theme            - Switch terminal theme (amber, emerald, cyber, dracula)\n• history          - List session command history\n• clear            - Clear terminal (Ctrl+L)`
+        rawText = `Available Backend CLI Commands:\n• skills           - Technical stack (.NET 8, Laravel, AWS, Docker)\n• projects         - Top production systems & repositories\n• portfolio        - Interactive portfolio & GitHub repositories\n• blog             - Engineering deep-dives & architecture notes\n• focus            - Launch ambient Focus Station & Pomodoro\n• docker ps        - List active containerized services & ports\n• curl /api/health - Live REST healthcheck probe\n• ping             - Simulate latency ping to API gateway\n• top              - Server resource allocation & processes\n• neofetch         - Architecture specs & ASCII info\n• tree             - Project codebase architecture tree\n• whoami           - Senior Backend Engineer profile\n• about            - Executive biography & 8+ years overview\n• experience       - 8+ years timeline & achievements\n• contact          - Email, WhatsApp & GitHub channels\n• guestbook        - Public guestbook & social wall\n• resume           - View & download PDF resume\n• theme            - Switch terminal theme (amber, emerald, cyber, dracula)\n• history          - List session command history\n• clear            - Clear terminal (Ctrl+L)`
         result = (
           <div className="cli-output help-output">
             <div className="output-header-badge help-badge">HELP</div>
@@ -368,8 +389,11 @@ const Home = () => {
                 <div className="help-section-title">Core &amp; Architecture</div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('skills')}>skills</button><span>- Technical stack &amp; frameworks</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('projects')}>projects</button><span>- Production systems &amp; repositories</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('portfolio')}>portfolio</button><span>- Interactive portfolio &amp; repos</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('blog')}>blog</button><span>- Technical notes &amp; deep-dives</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('experience')}>experience</button><span>- 8+ years timeline &amp; achievements</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('whoami')}>whoami</button><span>- Senior Backend Engineer profile</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('about')}>about</button><span>- Executive biography &amp; overview</span></div>
               </div>
               <div className="help-col">
                 <div className="help-section-title">DevOps &amp; System</div>
@@ -383,6 +407,8 @@ const Home = () => {
               <div className="help-col">
                 <div className="help-section-title">Contact &amp; Settings</div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('contact')}>contact</button><span>- Direct email, WhatsApp &amp; GitHub</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('guestbook')}>guestbook</button><span>- Public wall &amp; recommendations</span></div>
+                <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('focus')}>focus</button><span>- Ambient Focus Station</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('resume')}>resume</button><span>- View &amp; download PDF resume</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('theme')}>theme</button><span>- Switch colors (amber, emerald...)</span></div>
                 <div className="help-row"><button type="button" className="help-cmd-btn" onClick={() => executeCliCommand('history')}>history</button><span>- List session command history</span></div>
@@ -491,6 +517,86 @@ const Home = () => {
             </div>
             <div className="projects-cli-footer">
               <span>View interactive architecture demos in <Link to="/portfolio" className="cli-link">Portfolio &rarr;</Link></span>
+            </div>
+          </div>
+        )
+        break
+      case 'portfolio':
+      case 'repos':
+        rawText = `Navigating to Portfolio: 6 production backend systems & Store API simulator at /portfolio`
+        result = (
+          <div className="cli-output projects-output">
+            <div className="output-header-badge projects-badge">PORTFOLIO</div>
+            <p className="p-desc">Interactive portfolio featuring Store API (.NET 8 Clean Architecture), GIS mobile engines, and cloud microservices.</p>
+            <div className="projects-cli-footer">
+              <Link to="/portfolio" className="cli-link">Open Portfolio &amp; Repositories &rarr;</Link>
+            </div>
+          </div>
+        )
+        break
+      case 'blog':
+      case 'articles':
+        rawText = `Engineering Notes & Architectural Deep-Dives: Clean Architecture, Distributed Microservices, Database Indexing at /blog`
+        result = (
+          <div className="cli-output help-output">
+            <div className="output-header-badge help-badge">BLOG</div>
+            <p className="help-heading">Featured Engineering Articles:</p>
+            <ul className="content-ul" style={{ paddingLeft: '16px', margin: '8px 0', listStyle: 'disc' }}>
+              {FEATURED_ARTICLES.map((art) => (
+                <li key={art.slug} style={{ marginBottom: '6px' }}>
+                  <Link to={`/blog/${art.slug}`} className="cli-link">[{art.category}] {art.title}</Link>
+                </li>
+              ))}
+            </ul>
+            <div className="projects-cli-footer">
+              <Link to="/blog" className="cli-link">Explore All Engineering Notes &rarr;</Link>
+            </div>
+          </div>
+        )
+        break
+      case 'focus':
+        rawText = `Focus Station: Ambient soundscapes, Pomodoro interval timer, and binaural nature audio at /focus`
+        result = (
+          <div className="cli-output whoami-output">
+            <div className="output-header-badge whoami-badge">FOCUS STATION</div>
+            <p className="whoami-primary">Ambient nature workspace, Pomodoro flow timer, and binaural soundscapes.</p>
+            <div className="projects-cli-footer" style={{ marginTop: '8px' }}>
+              <Link to="/focus" className="cli-link">Launch Focus Station &rarr;</Link>
+            </div>
+          </div>
+        )
+        break
+      case 'about':
+      case 'bio':
+        rawText = `Mahmud al Hasan — Senior Backend Engineer with 8+ years experience in ASP.NET Core, Laravel, NestJS, AWS & Docker at /about`
+        result = (
+          <div className="cli-output whoami-output">
+            <div className="output-header-badge whoami-badge">ABOUT ME</div>
+            <p className="whoami-primary">Senior Backend Software Engineer with 8+ years building high-throughput REST APIs, relational schemas, and microservices.</p>
+            <p className="whoami-secondary">Former Co-Founder &amp; Backend Lead @ Doctor Dekhao (telemedicine startup).</p>
+            <div className="projects-cli-footer" style={{ marginTop: '8px' }}>
+              <Link to="/about" className="cli-link">Read Full Background &amp; 3D Cube &rarr;</Link>
+            </div>
+          </div>
+        )
+        break
+      case 'guestbook':
+        rawText = `Public Guestbook & Wall: Peer recommendations, signatures, and notes`
+        result = (
+          <div className="cli-output contact-output">
+            <div className="output-header-badge contact-badge">GUESTBOOK</div>
+            <p>Read endorsements from principal architects, engineering managers, and collaborators or leave a note on the wall.</p>
+            <div className="projects-cli-footer" style={{ marginTop: '8px' }}>
+              <button
+                type="button"
+                className="cli-link"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                onClick={() => {
+                  if (openGuestbook) openGuestbook();
+                }}
+              >
+                Open Public Guestbook &rarr;
+              </button>
             </div>
           </div>
         )

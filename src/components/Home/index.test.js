@@ -244,4 +244,30 @@ describe('Home Component', () => {
     expect(aspnetTagLink).toBeInTheDocument();
     expect(aspnetTagLink).toHaveAttribute('href', expect.stringContaining('/blog?q='));
   });
+
+  test('executes portfolio, blog, and focus commands in interactive terminal', () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+
+    const input = screen.getByLabelText(/Interactive CLI command prompt/i);
+    const runBtn = screen.getByRole('button', { name: /Execute CLI command/i });
+
+    // Test portfolio command
+    fireEvent.change(input, { target: { value: 'portfolio' } });
+    fireEvent.click(runBtn);
+    expect(screen.getByRole('link', { name: /Open Portfolio & Repositories/i })).toBeInTheDocument();
+
+    // Test blog command
+    fireEvent.change(input, { target: { value: 'blog' } });
+    fireEvent.click(runBtn);
+    expect(screen.getByRole('link', { name: /^Explore All Engineering Notes →$/i })).toBeInTheDocument();
+
+    // Test focus command
+    fireEvent.change(input, { target: { value: 'focus' } });
+    fireEvent.click(runBtn);
+    expect(screen.getByRole('link', { name: /Launch Focus Station/i })).toBeInTheDocument();
+  });
 });
