@@ -648,7 +648,9 @@
     margin-top: 40px;
     text-align: left;
     display: flex;
-    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
 
     .about-cv-btn {
       background: linear-gradient(135deg, rgba(var(--primary-accent-rgb, 245, 158, 11), 0.22), rgba(var(--primary-accent-rgb, 245, 158, 11), 0.12));
@@ -673,6 +675,19 @@
       .cv-btn-icon {
         font-size: 1.3rem;
         transition: transform 0.25s ease;
+      }
+
+      &.secondary-contact {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid rgba(255, 255, 255, 0.18);
+        color: #f8fafc;
+
+        &:hover {
+          background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.18);
+          border-color: var(--primary-accent, #f59e0b);
+          color: #fff;
+          box-shadow: 0 8px 26px rgba(0, 0, 0, 0.55);
+        }
       }
 
       &:hover {

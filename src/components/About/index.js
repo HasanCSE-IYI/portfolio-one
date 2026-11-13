@@ -11,6 +11,7 @@ import {
   faChevronDown,
   faChevronUp,
   faFilePdf,
+  faEnvelope,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState, useRef } from 'react'
@@ -381,15 +382,23 @@ const About = () => {
             </div>
           </div>
 
-          {/* Direct Resume / CV Trigger */}
+          {/* Direct Resume / CV Trigger & Contact Actions */}
           <div className="about-cv-cta">
             <Link
               to="/resume"
-              className="about-cv-btn"
+              className="about-cv-btn primary-cv"
               onClick={() => playSound('click')}
             >
               <FontAwesomeIcon icon={faFilePdf} className="cv-btn-icon" />
               <span>VIEW / DOWNLOAD EXECUTIVE CV (PDF)</span>
+            </Link>
+            <Link
+              to="/contact"
+              className="about-cv-btn secondary-contact"
+              onClick={() => playSound('click')}
+            >
+              <FontAwesomeIcon icon={faEnvelope} className="cv-btn-icon" />
+              <span>DISCUSS PROJECTS &amp; ROLES</span>
             </Link>
           </div>
         </div>

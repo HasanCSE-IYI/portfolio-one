@@ -100,4 +100,20 @@ describe('About Component', () => {
     expect(dotnetTagLink).toBeInTheDocument();
     expect(dotnetTagLink).toHaveAttribute('href', '/portfolio?cat=dotnet');
   });
+
+  test('renders executive CV download link and direct contact link', () => {
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
+
+    const cvLink = screen.getByRole('link', { name: /VIEW \/ DOWNLOAD EXECUTIVE CV/i });
+    expect(cvLink).toBeInTheDocument();
+    expect(cvLink).toHaveAttribute('href', '/resume');
+
+    const contactLink = screen.getByRole('link', { name: /DISCUSS PROJECTS & ROLES/i });
+    expect(contactLink).toBeInTheDocument();
+    expect(contactLink).toHaveAttribute('href', '/contact');
+  });
 });
