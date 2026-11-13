@@ -33,6 +33,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import AnimatedLetters from '../AnimatedLetters'
 import { useUi } from '../../context/UiContext'
+import { copyToClipboard } from '../../utils/clipboard'
+import { getDhakaTime } from '../../utils/time'
 import './index.scss'
 
 // Fix Leaflet's default marker icon missing in Webpack production builds
@@ -138,25 +140,7 @@ L.Icon.Default.mergeOptions({
 });
 
 // Helper for Bangladesh Standard Time (BST = UTC+6)
-const getBSTTime = () => {
-  try {
-    return new Date().toLocaleTimeString('en-US', {
-      timeZone: 'Asia/Dhaka',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-  } catch (e) {
-    const d = new Date();
-    const utc = d.getTime() + d.getTimezoneOffset() * 60000;
-    const bstDate = new Date(utc + 6 * 3600000);
-    return bstDate.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-  }
-};
+const getBSTTime = () => getDhakaTime({ includeSeconds: false });
 
 // Weather icon helper mapping WMO weather codes to emojis
 const getWeatherIcon = (code, isDay = 1) => {
@@ -376,49 +360,15 @@ const Contact = () => {
     }
   }
 
-  const handleCopyFullMessage = () => {
+  const handleCopyFullMessage = async () => {
     if (!formFeedback?.formData) return
     const { name, email, subject: sub, message } = formFeedback.formData
     const textToCopy = `Sender: ${name} (${email})\nSubject: ${sub}\n\n${message}`
-    const triggerSuccess = () => {
+    const success = await copyToClipboard(textToCopy)
+    if (success) {
       playSound('chime')
       setCopiedMessage(true)
       setTimeout(() => setCopiedMessage(false), 2400)
-    }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(textToCopy)
-        .then(triggerSuccess)
-        .catch(() => {
-          try {
-            const el = document.createElement('textarea')
-            el.value = textToCopy
-            el.style.position = 'fixed'
-            el.style.opacity = '0'
-            document.body.appendChild(el)
-            el.select()
-            document.execCommand('copy')
-            document.body.removeChild(el)
-            triggerSuccess()
-          } catch (e) {
-            // ignore
-          }
-        })
-    } else {
-      try {
-        const el = document.createElement('textarea')
-        el.value = textToCopy
-        el.style.position = 'fixed'
-        el.style.opacity = '0'
-        document.body.appendChild(el)
-        el.select()
-        document.execCommand('copy')
-        document.body.removeChild(el)
-        triggerSuccess()
-      } catch (e) {
-        // ignore
-      }
     }
   }
 

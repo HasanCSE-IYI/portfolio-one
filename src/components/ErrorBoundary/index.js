@@ -9,6 +9,7 @@ import {
   faCopy,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import { copyToClipboard } from '../../utils/clipboard';
 import './index.scss';
 
 class ErrorBoundary extends React.Component {
@@ -51,48 +52,11 @@ class ErrorBoundary extends React.Component {
     const errorText = `Fault: ${this.state.error?.toString() || 'Unknown'}\n\nComponent Stack:\n${
       this.state.errorInfo?.componentStack || 'No component stack trace available.'
     }`;
-
-    const triggerSuccess = () => {
-      this.setState({ copiedTrace: true });
-      setTimeout(() => {
-        this.setState({ copiedTrace: false });
-      }, 2400);
-    };
-
-    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(errorText)
-        .then(triggerSuccess)
-        .catch(() => {
-          try {
-            const el = document.createElement('textarea');
-            el.value = errorText;
-            el.style.position = 'fixed';
-            el.style.opacity = '0';
-            document.body.appendChild(el);
-            if (typeof el.select === 'function') el.select();
-            if (typeof document.execCommand === 'function') document.execCommand('copy');
-            document.body.removeChild(el);
-          } catch (e) {
-            // ignore
-          }
-          triggerSuccess();
-        });
-    } else {
-      try {
-        const el = document.createElement('textarea');
-        el.value = errorText;
-        el.style.position = 'fixed';
-        el.style.opacity = '0';
-        document.body.appendChild(el);
-        if (typeof el.select === 'function') el.select();
-        if (typeof document.execCommand === 'function') document.execCommand('copy');
-        document.body.removeChild(el);
-      } catch (e) {
-        // ignore
-      }
-      triggerSuccess();
-    }
+    this.setState({ copiedTrace: true });
+    setTimeout(() => {
+      this.setState({ copiedTrace: false });
+    }, 2400);
+    copyToClipboard(errorText);
   };
 
   render() {

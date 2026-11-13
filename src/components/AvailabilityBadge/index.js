@@ -3,23 +3,10 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faCircleDot, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { useUi } from '../../context/UiContext';
+import { getDhakaTime } from '../../utils/time';
 import './index.scss';
 
-const getInitialBstTime = () => {
-  try {
-    const now = new Date();
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'Asia/Dhaka',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-    return formatter.format(now);
-  } catch {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-};
+const getInitialBstTime = () => getDhakaTime({ includeSeconds: false });
 
 const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
   const { playSound } = useUi();
@@ -28,20 +15,7 @@ const AvailabilityBadge = ({ compact = false, showTooltip = true }) => {
 
   useEffect(() => {
     const updateTime = () => {
-      try {
-        const now = new Date();
-        const formatter = new Intl.DateTimeFormat('en-US', {
-          timeZone: 'Asia/Dhaka',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-        });
-        setBstTime(formatter.format(now));
-      } catch {
-        // Fallback for older engines
-        const now = new Date();
-        setBstTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-      }
+      setBstTime(getDhakaTime({ includeSeconds: false }));
     };
 
     updateTime();

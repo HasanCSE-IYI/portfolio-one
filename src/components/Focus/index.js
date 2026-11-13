@@ -48,6 +48,7 @@ import {
 } from '../../context/FocusContext';
 import { useUi } from '../../context/UiContext';
 import { useFocusTrap } from '../../utils/useFocusTrap';
+import { copyToClipboard } from '../../utils/clipboard';
 import './index.scss';
 
 const Focus = () => {
@@ -668,7 +669,7 @@ const Focus = () => {
   const strokeDashoffset = circumference * (1 - progressRatio);
 
   // Handle Share Mix
-  const handleShareMix = () => {
+  const handleShareMix = async () => {
     const active = {};
     SOUND_DEFINITIONS.forEach((s) => {
       if (volumes[s.id] > 0) active[s.id] = volumes[s.id];
@@ -676,37 +677,12 @@ const Focus = () => {
     try {
       const encoded = btoa(JSON.stringify(active));
       const url = `${window.location.origin}/focus?mix=${encoded}`;
-
-      const triggerSuccess = () => {
+      const success = await copyToClipboard(url);
+      if (success) {
         playSound('chime');
         setShareCopied(true);
         setTimeout(() => setShareCopied(false), 2500);
-      };
-
-      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard
-          .writeText(url)
-          .then(triggerSuccess)
-          .catch(() => {
-            fallbackShareCopy(url, triggerSuccess);
-          });
-      } else {
-        fallbackShareCopy(url, triggerSuccess);
       }
-    } catch {}
-  };
-
-  const fallbackShareCopy = (text, onSuccess) => {
-    try {
-      const el = document.createElement('textarea');
-      el.value = text;
-      el.style.position = 'fixed';
-      el.style.opacity = '0';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      if (onSuccess) onSuccess();
     } catch {}
   };
 

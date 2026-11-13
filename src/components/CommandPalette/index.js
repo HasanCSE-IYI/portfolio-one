@@ -34,31 +34,7 @@ import portfolioData from '../../data/portfolio.json';
 import { getAllArticles } from '../../data/blogData';
 import { useUi } from '../../context/UiContext';
 import { useFocusTrap } from '../../utils/useFocusTrap';
-
-const safeCopyText = (text) => {
-  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {
-      fallbackCopy(text)
-    })
-  } else {
-    fallbackCopy(text)
-  }
-}
-
-const fallbackCopy = (text) => {
-  try {
-    const el = document.createElement('textarea')
-    el.value = text
-    el.style.position = 'fixed'
-    el.style.opacity = '0'
-    document.body.appendChild(el)
-    el.select()
-    document.execCommand('copy')
-    document.body.removeChild(el)
-  } catch (e) {
-    // ignore
-  }
-}
+import { copyToClipboard } from '../../utils/clipboard';
 
 const BASE_COMMANDS = [
   // Navigation
@@ -218,7 +194,7 @@ const BASE_COMMANDS = [
     subtitle: 'mahmud.csem@gmail.com',
     icon: faCopy,
     action: () => {
-      safeCopyText('mahmud.csem@gmail.com');
+      copyToClipboard('mahmud.csem@gmail.com');
       return 'Email copied to clipboard!';
     },
   },
@@ -229,7 +205,7 @@ const BASE_COMMANDS = [
     subtitle: '+880 1727-328200',
     icon: faPhone,
     action: () => {
-      safeCopyText('+8801727328200');
+      copyToClipboard('+8801727328200');
       return 'Phone number copied to clipboard!';
     },
   },

@@ -17,6 +17,7 @@ import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import AnimatedLetters from '../AnimatedLetters';
 import { getAllArticles, getArticleBySlug } from '../../data/blogData';
 import { useUi } from '../../context/UiContext';
+import { copyToClipboard } from '../../utils/clipboard';
 import './index.scss';
 
 const CATEGORIES = ['All', 'Architecture', 'Backend', 'Database', 'DevOps'];
@@ -127,56 +128,26 @@ const Blog = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [slug, currentArticle]);
 
-  // Robust cross-browser clipboard copy with execCommand fallback
-  const safeCopyText = (text, onSuccess) => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          if (onSuccess) onSuccess();
-        })
-        .catch(() => {
-          fallbackCopy(text, onSuccess);
-        });
-    } else {
-      fallbackCopy(text, onSuccess);
-    }
-  };
-
-  const fallbackCopy = (text, onSuccess) => {
-    try {
-      const el = document.createElement('textarea');
-      el.value = text;
-      el.style.position = 'fixed';
-      el.style.opacity = '0';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      if (onSuccess) onSuccess();
-    } catch {
-      // ignore
-    }
-  };
-
   // Handle code snippet copy
-  const handleCopyCode = (codeText, id) => {
-    safeCopyText(codeText.trim(), () => {
+  const handleCopyCode = async (codeText, id) => {
+    const success = await copyToClipboard(codeText.trim());
+    if (success) {
       setCopiedCodeId(id);
       playSound('chime');
       setTimeout(() => setCopiedCodeId(null), 2500);
-    });
+    }
   };
 
   // Handle article share link
-  const handleShare = () => {
+  const handleShare = async () => {
     const url = typeof window !== 'undefined' ? window.location.href : '';
     if (!url) return;
-    safeCopyText(url, () => {
+    const success = await copyToClipboard(url);
+    if (success) {
       setShareToast('Link copied to clipboard!');
       playSound('chime');
       setTimeout(() => setShareToast(''), 3000);
-    });
+    }
   };
 
   // Filter articles by category and search (memoized)

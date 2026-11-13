@@ -1,31 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useUi } from '../../context/UiContext';
+import { copyToClipboard } from '../../utils/clipboard';
 import './StoreApiDemo.scss';
-
-const safeCopyText = (text) => {
-  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {
-      fallbackCopy(text);
-    });
-  } else {
-    fallbackCopy(text);
-  }
-};
-
-const fallbackCopy = (text) => {
-  try {
-    const el = document.createElement('textarea');
-    el.value = text;
-    el.style.position = 'fixed';
-    el.style.opacity = '0';
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-  } catch (e) {
-    // ignore
-  }
-};
 
 const CATALOG_ITEMS = [
   { id: 1, name: "Mechanical Keyboard (Cherry MX)", category: "Peripherals", price: 89.99, stock: 34, inStock: true, createdAt: "2026-10-28T09:15:00Z" },
@@ -302,7 +278,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
 
   const handleCopyCode = () => {
     const textToCopy = viewTab === 'curl' ? activeEndpoint.curlCmd : activeEndpoint.csharpCode;
-    safeCopyText(textToCopy);
+    copyToClipboard(textToCopy);
     playSound('chime');
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
@@ -317,14 +293,14 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
           path: activeEndpoint.path
         }
       : activeEndpoint.responseData;
-    safeCopyText(JSON.stringify(payload, null, 2));
+    copyToClipboard(JSON.stringify(payload, null, 2));
     playSound('chime');
     setCopiedJson(true);
     setTimeout(() => setCopiedJson(false), 2000);
   };
 
   const handleCopySql = () => {
-    safeCopyText(activeEndpoint.sqlExecution);
+    copyToClipboard(activeEndpoint.sqlExecution);
     playSound('chime');
     setCopiedSql(true);
     setTimeout(() => setCopiedSql(false), 2000);

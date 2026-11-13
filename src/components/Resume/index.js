@@ -34,6 +34,7 @@ import {
   getPlainTextResume,
 } from '../../data/resumeData';
 import { useUi } from '../../context/UiContext';
+import { copyToClipboard } from '../../utils/clipboard';
 import './index.scss';
 
 const Resume = () => {
@@ -51,48 +52,13 @@ const Resume = () => {
     }, 1500);
   };
 
-  const handleCopyText = () => {
+  const handleCopyText = async () => {
     const plainTextResume = getPlainTextResume();
-
-    const triggerSuccess = () => {
+    const success = await copyToClipboard(plainTextResume);
+    if (success) {
       playSound('chime');
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
-    };
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(plainTextResume)
-        .then(triggerSuccess)
-        .catch(() => {
-          try {
-            const el = document.createElement('textarea');
-            el.value = plainTextResume;
-            el.style.position = 'fixed';
-            el.style.opacity = '0';
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            triggerSuccess();
-          } catch (e) {
-            // ignore
-          }
-        });
-    } else {
-      try {
-        const el = document.createElement('textarea');
-        el.value = plainTextResume;
-        el.style.position = 'fixed';
-        el.style.opacity = '0';
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        triggerSuccess();
-      } catch (e) {
-        // ignore
-      }
     }
   };
 

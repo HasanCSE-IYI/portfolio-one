@@ -13,6 +13,7 @@ import {
 import AnimatedLetters from '../AnimatedLetters';
 import StoreApiDemo from './StoreApiDemo';
 import { useUi } from '../../context/UiContext';
+import { copyToClipboard } from '../../utils/clipboard';
 import './index.scss';
 import portfolioData from '../../data/portfolio.json';
 
@@ -182,47 +183,13 @@ const Portfolio = () => {
     };
   }, []);
 
-  const handleCopyRepoUrl = (id, url) => {
+  const handleCopyRepoUrl = async (id, url) => {
     if (!url) return;
-    const triggerSuccess = () => {
+    const success = await copyToClipboard(url);
+    if (success) {
       playSound('chime');
       setCopiedRepoId(id);
       setTimeout(() => setCopiedRepoId(null), 2000);
-    };
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(url)
-        .then(triggerSuccess)
-        .catch(() => {
-          try {
-            const el = document.createElement('textarea');
-            el.value = url;
-            el.style.position = 'fixed';
-            el.style.opacity = '0';
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            triggerSuccess();
-          } catch (e) {
-            // ignore
-          }
-        });
-    } else {
-      try {
-        const el = document.createElement('textarea');
-        el.value = url;
-        el.style.position = 'fixed';
-        el.style.opacity = '0';
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        triggerSuccess();
-      } catch (e) {
-        // ignore
-      }
     }
   };
 
