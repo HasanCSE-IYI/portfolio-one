@@ -2173,16 +2173,20 @@
     grid-template-columns: 1fr;
     gap: 16px;
     margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
 
     @media screen and (min-width: 600px) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    @media screen and (min-width: 1100px) {
-      grid-template-columns: repeat(4, 1fr);
+    @media screen and (min-width: 1200px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .impact-card {
+      min-width: 0;
+      box-sizing: border-box;
       background: rgba(18, 22, 30, 0.76);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -2280,13 +2284,15 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
+      width: 100%;
+      box-sizing: border-box;
 
       @media screen and (min-width: 600px) {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      @media screen and (min-width: 1100px) {
-        grid-template-columns: repeat(4, 1fr);
+      @media screen and (min-width: 1200px) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
       .capability-node {
@@ -2300,6 +2306,9 @@
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         flex-direction: column;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
 
         &:hover {
           border-color: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.45);
@@ -2327,7 +2336,16 @@
           justify-content: space-between;
           align-items: center;
           gap: 8px;
+          flex-wrap: wrap;
+          row-gap: 8px;
           margin-bottom: 10px;
+
+          .cap-badge-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+          }
 
           .cap-tag {
             background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.1);
@@ -2353,6 +2371,7 @@
             padding: 2px 7px;
             font-weight: 700;
             letter-spacing: 0.04em;
+            white-space: nowrap;
 
             .active-dot {
               width: 5px;
@@ -2377,6 +2396,10 @@
             align-items: center;
             gap: 4px;
             user-select: none;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             .trace-arrow {
               transition: transform 0.2s ease;
@@ -2410,6 +2433,7 @@
           font-size: 1.42rem;
           font-weight: 700;
           margin: 0 0 8px;
+          word-break: break-word;
         }
 
         .cap-summary {
@@ -2418,6 +2442,7 @@
           line-height: 1.5;
           margin: 0;
           flex: 1;
+          word-break: break-word;
         }
 
         .cap-code-hint {
@@ -2437,6 +2462,9 @@
           }
 
           .hint-code {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
             font-family: var(--font-mono);
             font-size: 1.2rem;
             color: #38bdf8;
@@ -2563,16 +2591,20 @@
         grid-template-columns: 1fr;
         gap: 12px;
         margin-bottom: 18px;
+        width: 100%;
+        box-sizing: border-box;
 
         @media screen and (min-width: 640px) {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        @media screen and (min-width: 1024px) {
-          grid-template-columns: repeat(4, 1fr);
+        @media screen and (min-width: 1200px) {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
         .flow-step-card {
+          min-width: 0;
+          box-sizing: border-box;
           background: rgba(22, 28, 40, 0.75);
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 10px;
@@ -2608,6 +2640,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
             margin-bottom: 8px;
 
             .step-index {
@@ -2625,6 +2659,7 @@
               padding: 2px 6px;
               border-radius: 4px;
               border: 1px solid rgba(56, 189, 248, 0.25);
+              white-space: nowrap;
             }
           }
 
@@ -2633,12 +2668,14 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 4px;
+            word-break: break-word;
           }
 
           .step-detail {
             color: #94a3b8;
             font-size: 1.18rem;
             line-height: 1.45;
+            word-break: break-word;
           }
         }
       }
@@ -2717,11 +2754,13 @@
 
     .notes-cards-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
+      width: 100%;
+      box-sizing: border-box;
 
       @media screen and (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       @media screen and (max-width: 640px) {
@@ -2731,6 +2770,8 @@
       .note-card {
         display: flex;
         flex-direction: column;
+        min-width: 0;
+        box-sizing: border-box;
         background: rgba(15, 23, 42, 0.65);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 14px;

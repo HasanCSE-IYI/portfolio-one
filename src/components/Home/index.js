@@ -1645,13 +1645,15 @@ const Home = () => {
                 onKeyDown={(e) => handleCapabilityKeyDown(e, idx)}
               >
                 <div className="cap-top">
-                  <span className="cap-tag">{cap.tag}</span>
-                  {activeCapability === idx && (
-                    <span className="cap-active-badge">
-                      <span className="active-dot" aria-hidden="true"></span>
-                      Active
-                    </span>
-                  )}
+                  <div className="cap-badge-group">
+                    <span className="cap-tag">{cap.tag}</span>
+                    {activeCapability === idx && (
+                      <span className="cap-active-badge">
+                        <span className="active-dot" aria-hidden="true"></span>
+                        Active
+                      </span>
+                    )}
+                  </div>
                   <Link
                     to={cap.link}
                     className="cap-trace"
