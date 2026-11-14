@@ -25,11 +25,13 @@ const CATEGORIES = [
   { id: 'typescript', label: 'TypeScript & APIs' },
 ];
 
+const PORTFOLIO_ITEMS = portfolioData.portfolio || [];
+
 const Portfolio = () => {
   const { playSound } = useUi();
   const [searchParams, setSearchParams] = useSearchParams();
   const [letterClass, setLetterClass] = useState('text-animate');
-  const [portfolio] = useState(portfolioData.portfolio || []);
+  const portfolio = PORTFOLIO_ITEMS;
 
   const paramCat = searchParams.get('cat') || searchParams.get('category');
   const paramQuery = searchParams.get('q') || searchParams.get('search');

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   BRAINWAVE_MODES,
   SOUND_TO_SCENE_MAP,
@@ -949,7 +949,9 @@ export const FocusProvider = ({ children }) => {
       document.title = `(${timeStr}) ${phaseStr} · Focus Station`;
     } else if (wasTimerRunningRef.current) {
       wasTimerRunningRef.current = false;
-      const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+      const rawPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+      const publicUrl = process.env.PUBLIC_URL || '';
+      const path = (publicUrl && rawPath.startsWith(publicUrl)) ? (rawPath.slice(publicUrl.length) || '/') : rawPath;
       const titles = {
         '/': 'Mahmud al Hasan | Senior Backend Software Engineer',
         '/about': 'About Me | Mahmud al Hasan (8+ Years Backend Engineering)',
@@ -984,8 +986,18 @@ export const FocusProvider = ({ children }) => {
 
       if (binauralNodesRef.current) {
         try {
-          binauralNodesRef.current.leftOsc.stop();
-          binauralNodesRef.current.rightOsc.stop();
+          if (binauralNodesRef.current.oscL && typeof binauralNodesRef.current.oscL.stop === 'function') {
+            binauralNodesRef.current.oscL.stop();
+          }
+          if (binauralNodesRef.current.oscR && typeof binauralNodesRef.current.oscR.stop === 'function') {
+            binauralNodesRef.current.oscR.stop();
+          }
+          if (binauralNodesRef.current.leftOsc && typeof binauralNodesRef.current.leftOsc.stop === 'function') {
+            binauralNodesRef.current.leftOsc.stop();
+          }
+          if (binauralNodesRef.current.rightOsc && typeof binauralNodesRef.current.rightOsc.stop === 'function') {
+            binauralNodesRef.current.rightOsc.stop();
+          }
         } catch {}
         binauralNodesRef.current = null;
       }

@@ -111,7 +111,7 @@ const BASE_COMMANDS = [
     title: 'Open Interactive Terminal CLI',
     subtitle: 'Zsh shell emulator (Ctrl+~) with skills, bio, theme & hiring commands',
     icon: faTerminal,
-    action: (navigate, onOpenResumeModal, ui) => ui?.openTerminal?.(),
+    action: (_navigate, _onOpenResumeModal, ui) => ui?.openTerminal?.(),
   },
   {
     id: 'act-theme',
@@ -119,7 +119,7 @@ const BASE_COMMANDS = [
     title: 'Change Accent Color Theme',
     subtitle: 'Switch between Amber Gold, Cyber Cyan, Emerald, Violet, and Rose',
     icon: faPalette,
-    action: (navigate, onOpenResumeModal, ui) => ui?.openThemePicker?.(),
+    action: (_navigate, _onOpenResumeModal, ui) => ui?.openThemePicker?.(),
   },
   {
     id: 'act-sound',
@@ -127,7 +127,7 @@ const BASE_COMMANDS = [
     title: 'Toggle UI Sound Effects',
     subtitle: 'Mute or unmute procedural Web Audio clicks and harmonic chimes (M)',
     icon: faVolumeHigh,
-    action: (navigate, onOpenResumeModal, ui) => {
+    action: (_navigate, _onOpenResumeModal, ui) => {
       ui?.toggleSound?.();
       return 'Sound effect preferences updated!';
     },
@@ -138,7 +138,7 @@ const BASE_COMMANDS = [
     title: 'Open Public Guestbook & Social Wall',
     subtitle: 'Sign the visitor wall or read peer recommendations and endorsements',
     icon: faComments,
-    action: (navigate, onOpenResumeModal, ui) => ui?.openGuestbook?.(),
+    action: (_navigate, _onOpenResumeModal, ui) => ui?.openGuestbook?.(),
   },
   {
     id: 'act-cheatsheet',
@@ -146,7 +146,7 @@ const BASE_COMMANDS = [
     title: 'Open Keyboard Shortcuts Cheatsheet',
     subtitle: 'View full cheat sheet of navigation and developer hotkeys (?)',
     icon: faKeyboard,
-    action: (navigate, onOpenResumeModal, ui) => ui?.openCheatsheet?.(),
+    action: (_navigate, _onOpenResumeModal, ui) => ui?.openCheatsheet?.(),
   },
   {
     id: 'act-cv-modal',
@@ -154,7 +154,7 @@ const BASE_COMMANDS = [
     title: 'Open Quick CV Preview Modal',
     subtitle: 'Instant popup view of executive resume with A4 print engine',
     icon: faFileAlt,
-    action: (navigate, onOpenResumeModal) => onOpenResumeModal && onOpenResumeModal(),
+    action: (_navigate, onOpenResumeModal) => onOpenResumeModal && onOpenResumeModal(),
   },
   {
     id: 'act-print-resume',

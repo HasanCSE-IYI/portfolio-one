@@ -63,6 +63,8 @@ const Focus = () => {
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const saveModalRef = useRef(null);
   const shortcutsModalRef = useRef(null);
+  const zenModalRef = useRef(null);
+  const breathingModalRef = useRef(null);
 
   useFocusTrap(showSaveModal, saveModalRef);
   useFocusTrap(showShortcutsModal, shortcutsModalRef);
@@ -166,6 +168,9 @@ const Focus = () => {
     isZenMode,
     setIsZenMode,
   } = useFocus();
+
+  useFocusTrap(isZenMode, zenModalRef);
+  useFocusTrap(isBreathingMode, breathingModalRef);
 
   const timerModesList = useMemo(() => Object.values(TIMER_MODES), []);
 
@@ -324,8 +329,8 @@ const Focus = () => {
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Ignore if user is typing in an input or textarea
-      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      // Ignore if user is typing in an input, textarea or interacting with buttons/selects
+      if (['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT'].includes(e.target.tagName) || e.target.isContentEditable) return;
 
       if (e.code === 'Space') {
         e.preventDefault();
@@ -714,6 +719,7 @@ const Focus = () => {
            ========================================================================= */}
         {isZenMode && (
           <div
+            ref={zenModalRef}
             className={`zen-overlay ${isIdle ? 'data-idle' : ''}`}
             role="dialog"
             aria-modal="true"
@@ -894,7 +900,7 @@ const Focus = () => {
                 <span className="zen-task-text">{currentTask || 'Deep Nature Focus Session'}</span>
               </div>
 
-              <div className="zen-timer-display" aria-live="polite">
+              <div className="zen-timer-display">
                 {timerMode === 'stopwatch' ? formatTime(stopwatchSeconds) : formatTime(timeRemaining)}
               </div>
 
@@ -1078,6 +1084,7 @@ const Focus = () => {
            ========================================================================= */}
         {isBreathingMode && (
           <div
+            ref={breathingModalRef}
             className="mindful-breathing-overlay"
             role="dialog"
             aria-modal="true"
@@ -1841,7 +1848,7 @@ const Focus = () => {
                       : 'SHORT BREAK'}
                   </span>
 
-                  <div className="dial-time-digits" aria-live="polite">
+                  <div className="dial-time-digits">
                     {timerMode === 'stopwatch' ? formatTime(stopwatchSeconds) : formatTime(timeRemaining)}
                   </div>
 

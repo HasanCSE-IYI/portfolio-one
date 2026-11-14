@@ -43,6 +43,7 @@ delete L.Icon.Default.prototype._getIconUrl;
 // Exact coordinates from Google Maps: Public Mor, BSRM Goli, Bayazid Bostami Road, Bayazid, Chattogram
 // Link: https://maps.app.goo.gl/saQBZp8WNoPgTQ9t9
 const BAYAZID_COORDS = [22.391135, 91.817740];
+const GOOGLE_MAP_SUBDOMAINS = ['mt0', 'mt1', 'mt2', 'mt3'];
 
 // 3 Distinct Base Google Map Types (from Google Maps app) with 2x Retina Clarity
 const MAP_TYPES = {
@@ -675,15 +676,21 @@ const Contact = () => {
                         onChange={(e) => setEmailText(e.target.value)}
                         aria-label="Your Email"
                         aria-invalid={Boolean(emailText && !isEmailValid)}
+                        aria-describedby={Boolean(emailText && !isEmailValid) ? 'contact-email-error' : undefined}
                         disabled={isSubmitting}
                         required
                       />
                       {emailText && (
                         <span
+                          id="contact-email-error"
                           className={`email-validation-indicator ${isEmailValid ? 'valid' : 'invalid'}`}
                           title={isEmailValid ? 'Valid email format' : 'Incomplete email address'}
+                          aria-live="polite"
                         >
                           <FontAwesomeIcon icon={isEmailValid ? faCheck : faTimes} />
+                          <span className="sr-only">
+                            {isEmailValid ? 'Valid email format' : 'Please enter a complete and valid email address (e.g. name@company.com)'}
+                          </span>
                         </span>
                       )}
                     </div>
@@ -951,7 +958,7 @@ const Contact = () => {
                 key={tileLayerKey}
                 attribution=""
                 url={currentTileUrl}
-                subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                subdomains={GOOGLE_MAP_SUBDOMAINS}
                 tileSize={256}
                 maxNativeZoom={MAP_TYPES[activeBaseType]?.maxNativeZoom || 20}
                 maxZoom={MAP_TYPES[activeBaseType]?.maxZoom || 22}

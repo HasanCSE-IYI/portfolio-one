@@ -89,6 +89,15 @@ const Blog = () => {
     };
   }, [articles, currentArticle]);
 
+  // Memoize markdown blocks to avoid re-parsing on scroll ticks
+  const parsedArticleBlocks = useMemo(() => {
+    if (!currentArticle || !currentArticle.content) return [];
+    return currentArticle.content
+      .split('\n\n')
+      .map((block) => block.trim())
+      .filter(Boolean);
+  }, [currentArticle]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLetterClass('text-animate-hover');
@@ -110,22 +119,36 @@ const Blog = () => {
     }
   }, [slug, currentArticle]);
 
-  // Track reading scroll depth for article detail view
+  // Track reading scroll depth for article detail view (throttled with rAF)
   useEffect(() => {
     if (!slug || !currentArticle) return;
+    let ticking = false;
+    let rafId = null;
+
     const handleScroll = () => {
-      const totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScrollable <= 0) {
-        setReadingProgress(0);
-        return;
+      if (!ticking) {
+        rafId = window.requestAnimationFrame(() => {
+          const totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalScrollable <= 0) {
+            setReadingProgress(0);
+          } else {
+            const progress = Math.min(100, Math.max(0, (window.scrollY / totalScrollable) * 100));
+            setReadingProgress(Math.round(progress));
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
-      const progress = Math.min(100, Math.max(0, (window.scrollY / totalScrollable) * 100));
-      setReadingProgress(progress);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
   }, [slug, currentArticle]);
 
   // Handle code snippet copy
@@ -429,12 +452,7 @@ const Blog = () => {
 
           {/* Article Body Content */}
           <article className="article-body">
-            {currentArticle.content
-              .split('\n\n')
-              .map((block, idx) => {
-                const trimmed = block.trim();
-                if (!trimmed) return null;
-
+            {parsedArticleBlocks.map((trimmed, idx) => {
                 // Code block detection
                 if (trimmed.startsWith('```')) {
                   const lines = trimmed.split('\n');
