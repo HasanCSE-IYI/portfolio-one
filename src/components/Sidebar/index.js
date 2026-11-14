@@ -98,9 +98,11 @@ const Sidebar = () => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [showMoreMenu])
 
-  // Close extra menu on route change
+  // Close extra menu, resume modal, and command palette on route change
   useEffect(() => {
     setShowMoreMenu(false)
+    setIsResumeOpen(false)
+    setIsPaletteOpen(false)
   }, [location.pathname])
 
   // Prevent background scrolling while mobile extra menu is open
@@ -353,6 +355,9 @@ const Sidebar = () => {
               </div>
 
               <div className="dropdown-items" role="menu">
+                {/* Pages & Navigation Section */}
+                <div className="dropdown-section-label">PAGES &amp; EXPLORE</div>
+
                 {/* Spotlight Search Mobile Item */}
                 <button
                   type="button"
@@ -372,6 +377,94 @@ const Sidebar = () => {
                   </div>
                   <span className="item-kbd-badge">{isMac ? '⌘K' : 'Ctrl K'}</span>
                 </button>
+
+                {/* Blog Link */}
+                <Link
+                  to="/blog"
+                  className="dropdown-item blog-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
+                >
+                  <span className="item-icon-box blog-box">
+                    <FontAwesomeIcon icon={faBookOpen} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Engineering Blog</span>
+                    <span className="item-sub-title">Architectural Deep-Dives &amp; Notes</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </Link>
+
+                {/* Focus Station Link */}
+                <Link
+                  to="/focus"
+                  className="dropdown-item focus-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
+                >
+                  <span className="item-icon-box focus-box">
+                    <FontAwesomeIcon icon={faHeadphones} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Focus Station</span>
+                    <span className="item-sub-title">Ambient Soundscapes &amp; Pomodoro</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </Link>
+
+                {/* Executive Resume Section */}
+                <div className="dropdown-section-label">EXECUTIVE RESUME</div>
+
+                {/* Quick CV Modal Preview Button */}
+                <button
+                  type="button"
+                  className="dropdown-item resume-item"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('pop')
+                    setIsResumeOpen(true)
+                  }}
+                  aria-label="Preview Executive CV"
+                >
+                  <span className="item-icon-box resume-box">
+                    <FontAwesomeIcon icon={faFileAlt} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Quick CV Preview</span>
+                    <span className="item-sub-title">Interactive Resume Modal &amp; PDF</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </button>
+
+                {/* Full Dedicated Resume Page Link */}
+                <Link
+                  to="/resume"
+                  className="dropdown-item resume-page-link"
+                  role="menuitem"
+                  onClick={() => {
+                    setShowMoreMenu(false)
+                    playSound('click')
+                  }}
+                >
+                  <span className="item-icon-box resume-box">
+                    <FontAwesomeIcon icon={faFileAlt} />
+                  </span>
+                  <div className="item-text-group">
+                    <span className="item-main-title">Full Resume Page</span>
+                    <span className="item-sub-title">Verified CV, Print Styles &amp; Details</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
+                </Link>
+
+                {/* Power Tools Section */}
+                <div className="dropdown-section-label">POWER TOOLS &amp; SETTINGS</div>
 
                 {/* Interactive Terminal Mobile Item */}
                 <button
@@ -474,91 +567,6 @@ const Sidebar = () => {
                   </div>
                   <span className="item-kbd-badge">?</span>
                 </button>
-
-                {/* Blog Link */}
-                <Link
-                  to="/blog"
-                  className="dropdown-item blog-item"
-                  role="menuitem"
-                  onClick={() => {
-                    setShowMoreMenu(false)
-                    playSound('click')
-                  }}
-                >
-                  <span className="item-icon-box blog-box">
-                    <FontAwesomeIcon icon={faBookOpen} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">Engineering Blog</span>
-                    <span className="item-sub-title">Architectural Deep-Dives &amp; Notes</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </Link>
-
-                {/* Focus Station Link */}
-                <Link
-                  to="/focus"
-                  className="dropdown-item focus-item"
-                  role="menuitem"
-                  onClick={() => {
-                    setShowMoreMenu(false)
-                    playSound('click')
-                  }}
-                >
-                  <span className="item-icon-box focus-box">
-                    <FontAwesomeIcon icon={faHeadphones} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">Focus Station</span>
-                    <span className="item-sub-title">Ambient Soundscapes &amp; Pomodoro</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </Link>
-
-                {/* Executive Resume Section */}
-                <div className="dropdown-section-label">EXECUTIVE RESUME</div>
-
-                {/* Quick CV Modal Preview Button */}
-                <button
-                  type="button"
-                  className="dropdown-item resume-item"
-                  role="menuitem"
-                  onClick={() => {
-                    setShowMoreMenu(false)
-                    playSound('pop')
-                    setIsResumeOpen(true)
-                  }}
-                  aria-label="Preview Executive CV"
-                >
-                  <span className="item-icon-box resume-box">
-                    <FontAwesomeIcon icon={faFileAlt} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">Quick CV Preview</span>
-                    <span className="item-sub-title">Interactive Resume Modal &amp; PDF</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </button>
-
-                {/* Full Dedicated Resume Page Link */}
-                <Link
-                  to="/resume"
-                  className="dropdown-item resume-page-link"
-                  role="menuitem"
-                  onClick={() => {
-                    setShowMoreMenu(false)
-                    playSound('click')
-                  }}
-                >
-                  <span className="item-icon-box resume-box">
-                    <FontAwesomeIcon icon={faFileAlt} />
-                  </span>
-                  <div className="item-text-group">
-                    <span className="item-main-title">Full Resume Page</span>
-                    <span className="item-sub-title">Verified CV, Print Styles &amp; Details</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight} className="item-arrow-icon" />
-                </Link>
 
                 {/* Social & Contact Channels */}
                 <div className="dropdown-section-label">CHANNELS &amp; CONNECT</div>

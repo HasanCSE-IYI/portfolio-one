@@ -345,7 +345,7 @@ const Home = () => {
     setPastCommands((prev) => [...prev, cmd])
     setHistoryIndex(-1)
 
-    if (trimmed === 'clear') {
+    if (trimmed === 'clear' || trimmed === 'cls') {
       setTerminalHistory([])
       setCommandInput('')
       return

@@ -436,7 +436,18 @@ const Portfolio = () => {
                         onClick={() => {
                           playSound('pop');
                           setShowSimulator(true);
-                          window.scrollTo({ top: 180, behavior: 'smooth' });
+                          setTimeout(() => {
+                            const simElement = document.getElementById('store-api-simulator-section');
+                            if (simElement && typeof simElement.scrollIntoView === 'function') {
+                              simElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else {
+                              try {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              } catch {
+                                window.scrollTo(0, 0);
+                              }
+                            }
+                          }, 50);
                         }}
                       >
                         <FontAwesomeIcon icon={faBolt} className="sim-icon" aria-hidden="true" />

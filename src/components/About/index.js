@@ -83,6 +83,31 @@ const About = () => {
     return () => clearTimeout(timer)
   }, [])
 
+  // Window-level mouse tracking for continuous, smooth 3D cube rotation
+  useEffect(() => {
+    if (!isDragging) return
+
+    const handleWindowMouseMove = (e) => {
+      const deltaX = e.clientX - dragStartRef.current.x
+      const deltaY = e.clientY - dragStartRef.current.y
+      setRotation({
+        x: startRotationRef.current.x - deltaY * 0.45,
+        y: startRotationRef.current.y + deltaX * 0.45,
+      })
+    }
+
+    const handleWindowMouseUp = () => {
+      setIsDragging(false)
+    }
+
+    window.addEventListener('mousemove', handleWindowMouseMove)
+    window.addEventListener('mouseup', handleWindowMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', handleWindowMouseMove)
+      window.removeEventListener('mouseup', handleWindowMouseUp)
+    }
+  }, [isDragging])
+
   const handleMouseDown = (e) => {
     setIsDragging(true)
     setHasInteracted(true)
@@ -183,7 +208,6 @@ const About = () => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
           onKeyDown={handleKeyDownCube}
           tabIndex={0}
           title="Click and drag or use arrow keys to rotate the 3D cube"
