@@ -699,7 +699,7 @@ const Home = () => {
         result = (
           <div className="cli-output tree-output">
             <div className="output-header-badge sys-badge">CODEBASE TREE</div>
-            <pre className="tree-pre">
+            <pre className="tree-pre" tabIndex={0} aria-label="Codebase directory tree">
 {`.
 ├── src/
 │   ├── components/

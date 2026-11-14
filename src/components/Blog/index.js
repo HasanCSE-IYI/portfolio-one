@@ -478,7 +478,7 @@ const Blog = () => {
                           </span>
                         </button>
                       </div>
-                      <pre className="code-pre">
+                      <pre className="code-pre" tabIndex={0} aria-label={`${lang} code sample`}>
                         <code className={`language-${lang}`}>{code}</code>
                       </pre>
                     </div>

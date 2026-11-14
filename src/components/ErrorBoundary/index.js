@@ -117,7 +117,7 @@ class ErrorBoundary extends React.Component {
                         </span>
                       </button>
                     </div>
-                    <pre className="error-trace-log">
+                    <pre className="error-trace-log" tabIndex={0} aria-label="Diagnostic stack trace">
                       <code>
                         <strong>Fault:</strong> {this.state.error.toString()}
                         {'\n\n'}

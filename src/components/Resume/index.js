@@ -46,10 +46,14 @@ const Resume = () => {
     const originalTitle = document.title;
     document.title = 'Mahmud_Al_Hasan_CV_Backend_Software_Engineer';
     document.body.classList.remove('resume-modal-open');
-    window.print();
-    setTimeout(() => {
+
+    const cleanup = () => {
       document.title = originalTitle;
-    }, 1500);
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    window.print();
+    setTimeout(cleanup, 2000);
   };
 
   const handleCopyText = async () => {

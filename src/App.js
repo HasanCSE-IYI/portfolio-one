@@ -18,8 +18,14 @@ const Blog = lazy(() => import('./components/Blog'))
 const NotFound = lazy(() => import('./components/NotFound'))
 
 const PageFallback = () => (
-  <div className="route-fallback-loader">
-    <div className="loader-pulse-bar"></div>
+  <div
+    className="route-fallback-loader"
+    role="status"
+    aria-live="polite"
+    aria-label="Loading page content"
+  >
+    <div className="loader-pulse-bar" aria-hidden="true"></div>
+    <span className="sr-only">Loading page content...</span>
   </div>
 )
 

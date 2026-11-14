@@ -674,7 +674,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
             </button>
           </div>
 
-          <pre className="code-block">
+          <pre className="code-block" tabIndex={0} aria-label="Controller and cURL snippet">
             <code>{viewTab === 'curl' ? activeEndpoint.curlCmd : activeEndpoint.csharpCode}</code>
           </pre>
 
@@ -695,7 +695,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               </button>
             </div>
           </div>
-          <pre className="code-block sql-block">
+          <pre className="code-block sql-block" tabIndex={0} aria-label="Generated SQL query">
             <code>{activeEndpoint.sqlExecution}</code>
           </pre>
         </div>
@@ -742,7 +742,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               </div>
             )}
             {hasExecuted && (
-              <pre className="json-output">
+              <pre className="json-output" tabIndex={0} aria-label="HTTP response JSON output">
                 <code>
                   {JSON.stringify(
                     isForbidden
