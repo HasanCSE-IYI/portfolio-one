@@ -405,6 +405,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
             role="tab"
             tabIndex={activeEndpointId === 'get-products' ? 0 : -1}
             aria-selected={activeEndpointId === 'get-products'}
+            aria-controls="store-demo-workspace"
             className={`endpoint-btn ${activeEndpointId === 'get-products' ? 'active' : ''}`}
             onClick={() => {
               playSound('tick');
@@ -427,6 +428,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               role="tab"
               tabIndex={activeEndpointId === ep.id ? 0 : -1}
               aria-selected={activeEndpointId === ep.id}
+              aria-controls="store-demo-workspace"
               className={`endpoint-btn ${activeEndpointId === ep.id ? 'active' : ''}`}
               onClick={() => {
                 playSound('tick');
@@ -544,6 +546,12 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
                 </div>
               </div>
 
+              <div className="param-group count-group">
+                <span className="param-count-badge" role="status" aria-live="polite">
+                  Showing {pagedItems.length} of {totalCount} product{totalCount === 1 ? '' : 's'}
+                </span>
+              </div>
+
               {isQueryModified && (
                 <div className="param-group reset-group">
                   <button
@@ -607,7 +615,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
         </div>
       </div>
 
-      <div className="demo-workspace">
+      <div id="store-demo-workspace" className="demo-workspace" role="region" aria-label="API Simulator Workspace">
         <div className="code-column">
           <div className="panel-header">
             <div className="window-dots">
@@ -721,7 +729,7 @@ ${linqFilters.length > 0 ? '    ' + linqFilters.join('\n    ') + '\n' : ''}    v
               )}
             </div>
           </div>
-          <div className="output-body" aria-busy={isExecuting} role="region" aria-label="HTTP response output">
+          <div className="output-body" aria-busy={isExecuting} aria-live="polite" role="region" aria-label="HTTP response output">
             {!hasExecuted && !isExecuting && (
               <div className="placeholder-state">
                 <p>Click <strong>▶ Send Request</strong> to execute the ASP.NET Core pipeline and inspect the simulated HTTP response.</p>

@@ -723,11 +723,12 @@ const Contact = () => {
                       value={messageText}
                       onChange={(e) => setMessageText(e.target.value)}
                       aria-label="Your Message"
+                      aria-describedby="contact-char-count"
                       disabled={isSubmitting}
                       required
                     ></textarea>
                     <div className="textarea-footer">
-                      <span className="char-count">
+                      <span id="contact-char-count" className="char-count" aria-live="polite">
                         {messageText.length} characters
                       </span>
                     </div>

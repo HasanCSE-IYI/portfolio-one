@@ -83,7 +83,7 @@ const About = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Window-level mouse tracking for continuous, smooth 3D cube rotation
+  // Window-level mouse and touch tracking for continuous, smooth 3D cube rotation
   useEffect(() => {
     if (!isDragging) return
 
@@ -100,11 +100,32 @@ const About = () => {
       setIsDragging(false)
     }
 
+    const handleWindowTouchMove = (e) => {
+      if (e.touches && e.touches.length === 1) {
+        const deltaX = e.touches[0].clientX - dragStartRef.current.x
+        const deltaY = e.touches[0].clientY - dragStartRef.current.y
+        setRotation({
+          x: startRotationRef.current.x - deltaY * 0.45,
+          y: startRotationRef.current.y + deltaX * 0.45,
+        })
+      }
+    }
+
+    const handleWindowTouchEnd = () => {
+      setIsDragging(false)
+    }
+
     window.addEventListener('mousemove', handleWindowMouseMove)
     window.addEventListener('mouseup', handleWindowMouseUp)
+    window.addEventListener('touchmove', handleWindowTouchMove, { passive: true })
+    window.addEventListener('touchend', handleWindowTouchEnd)
+    window.addEventListener('touchcancel', handleWindowTouchEnd)
     return () => {
       window.removeEventListener('mousemove', handleWindowMouseMove)
       window.removeEventListener('mouseup', handleWindowMouseUp)
+      window.removeEventListener('touchmove', handleWindowTouchMove)
+      window.removeEventListener('touchend', handleWindowTouchEnd)
+      window.removeEventListener('touchcancel', handleWindowTouchEnd)
     }
   }, [isDragging])
 

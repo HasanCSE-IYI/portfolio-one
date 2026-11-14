@@ -247,6 +247,19 @@
           }
         }
 
+        .count-group {
+          .param-count-badge {
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            color: var(--primary-accent, #f59e0b);
+            background: rgba(var(--primary-accent-rgb, 245, 158, 11), 0.1);
+            border: 1px solid rgba(var(--primary-accent-rgb, 245, 158, 11), 0.28);
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+          }
+        }
+
         .reset-group {
           margin-left: auto;
 

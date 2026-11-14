@@ -30,6 +30,9 @@ describe('StoreApiDemo Component', () => {
 
     // Verify SQL query contains WHERE [p].[Category] = 'Audio'
     expect(screen.getByText(/WHERE \[p\]\.\[Category\] = 'Audio'/i)).toBeInTheDocument();
+
+    // Verify dynamic product count badge reflects filtered total
+    expect(screen.getByText(/Showing \d+ of 2 products/i)).toBeInTheDocument();
   });
 
   test('simulates pipeline execution and inspects JSON response', () => {
@@ -67,6 +70,7 @@ describe('StoreApiDemo Component', () => {
     const getCatalogTab = screen.getByRole('tab', { name: /Browse Catalog/i });
     expect(getCatalogTab).toHaveAttribute('aria-selected', 'true');
     expect(getCatalogTab).toHaveAttribute('tabIndex', '0');
+    expect(getCatalogTab).toHaveAttribute('aria-controls', 'store-demo-workspace');
 
     // ArrowRight to next endpoint
     fireEvent.keyDown(getCatalogTab, { key: 'ArrowRight' });
